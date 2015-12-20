@@ -1,0 +1,153 @@
+﻿body {
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    color: #232323;
+    background-color: #fff;
+}
+
+header, footer, nav, section {
+    display: block;
+}
+
+
+/* Styles for basic forms
+-----------------------------------------------------------*/
+fieldset {
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea {
+    min-height: 75px;
+}
+
+.editor-label {
+    margin: 1em 0 0 0;
+}
+
+.editor-field {
+    margin: 0.5em 0 0 0;
+}
+
+
+/* Styles for validation helpers
+-----------------------------------------------------------*/
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 1px solid #f00;
+    background-color: #fee;
+}
+
+.validation-summary-errors {
+    font-weight: bold;
+    color: #f00;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+/* ------------- */
+
+#cardsPrice {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 8px;
+    border: 2px dashed #f00;
+    background-color: #ddd;
+    z-index: 1;
+}
+
+.allSteamApps {
+    padding: 10px;
+    border: 3px dotted #2b8d63;
+}
+
+.steamApp {
+    clear: left;
+    padding: 3px;
+    border-top: 1px dashed #2b8d78;
+    border-bottom: 1px dashed #2b8d78;
+}
+
+.appName {
+    text-align: center;
+    border-bottom: 1px dotted #9a5b43;
+    margin-bottom: 2px;
+}
+
+.myCards {
+    float: left;
+    width: 50%;
+}
+
+    .myCards > div {
+        text-align: left;
+    }
+
+.otherCards {
+    float: right;
+    width: 50%;
+}
+
+    .otherCards > div {
+        text-align: right;
+    }
+
+.sep {
+    clear: both;
+}
+
+.steamCard {
+    display: inline-block;
+    max-width: 95px;
+    max-height: 95px;
+}
+
+    .steamCard.weHaveIt {
+        opacity: 0.4;
+    }
+
+    .steamCard > img {
+        max-width: 95px;
+        max-height: 95px;
+        border-top: 1px solid #000;
+        border-right: 3px outset #000;
+        border-bottom: 6px solid #000;
+        border-left: 1px outset #000;
+    }
+
+    .steamCard.selected > img {
+        opacity: 0.8;
+        border-top: 6px solid #000;
+        border-right: 1px inset #000;
+        border-bottom: 1px solid #000;
+        border-left: 3px inset #000;
+        outline: 3px solid #f00;
+    }
+
+    .steamCard.heDontHaveIt > img {
+        border-color: #efbd32;
+    }
+
+    .steamCard.isDuplicated > img {
+        border-color: #35c8b6;
+    }
+
+    .steamCard.heDontHaveIt.isDuplicated > img {
+        border-color: #5ac835;
+    }

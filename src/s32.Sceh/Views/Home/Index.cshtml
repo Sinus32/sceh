@@ -1,0 +1,104 @@
+﻿@model IndexViewModel
+@using s32.Sceh.Code
+@{
+    ViewBag.Title = "Sceh";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Trade suggestions</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Input.MyProfile)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Input.MyProfile)
+            @if (Model.MyInv != null)
+            {
+                <a href="@Html.Raw(Model.MyInv.Link)" target="_blank">@Model.MyInv.Link</a>
+            }
+            @Html.ValidationMessageFor(model => model.Input.MyProfile)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Input.OtherProfile)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Input.OtherProfile)
+            @if (Model.OtherInv != null)
+            {
+                <a href="@Html.Raw(Model.OtherInv.Link)" target="_blank">@Model.OtherInv.Link</a>
+            }
+            @Html.ValidationMessageFor(model => model.Input.OtherProfile)
+        </div>
+
+        <p>
+            <input type="submit" value="Get trade suggestions" />
+        </p>
+    </fieldset>
+}
+@helper SteamCard(Card card, HashSet<int> otherSet)
+{
+    var c = "steamCard";
+    if (!otherSet.Contains(card.AppDataItemType))
+    {
+        c += " heDontHaveIt";
+    }
+    else
+    {
+        c += " weHaveIt";
+    }
+
+    if (card.IsDuplicated)
+    {
+        c += " isDuplicated";
+    }
+    <div class="@c" data-id="@card.Id" data-app-data-app-id="@card.AppDataAppId" data-app-data-item-type="@card.AppDataItemType" data-market-hash-name="@card.MarketHashName">
+        <img src="@card.IconFullUrl" alt="@card.Name" title="@card.Name" />
+    </div>
+}
+@if (Model.SteamApps != null)
+{
+    <div class="allSteamApps">
+        @foreach (var app in Model.SteamApps)
+        {
+            if (app.Skip)
+            {
+                continue;
+            }
+            <div class="steamApp">
+                <div class="appName">
+                    @app.Name
+                </div>
+                <div class="appCards">
+                    <div class="myCards">
+                        <div>
+                            @foreach (var card in app.MyCards)
+                            {
+                                @SteamCard(card, app.OtherSet)
+                            }
+                        </div>
+                    </div>
+                    <div class="otherCards">
+                        <div>
+                            @foreach (var card in app.OtherCards)
+                            {
+                                @SteamCard(card, app.MySet)
+                            }
+                        </div>
+                    </div>
+                    <div class="sep"></div>
+                </div>
+            </div>
+        }
+    </div>
+    <div id="cardsPrice" data-card-price-service="@Url.Action("GetCardPrice")">
+        <div>Price of my cards: <span id="priceOfMine">0</span>&euro;</div>
+        <div>Price of other's cards: <span id="priceOfOther">0</span>&euro;</div>
+        <button onclick="unselectAll();">Unselect all</button>
+    </div>
+}
