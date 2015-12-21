@@ -77,12 +77,24 @@ textarea {
     border: 3px dotted #2b8d63;
 }
 
+    .allSteamApps.filterSelectedApp .steamApp:not(.hasSelected) {
+        display: none;
+    }
+
+    .allSteamApps.filterSelected .steamCard:not(.selected) {
+        display: none;
+    }
+
 .steamApp {
     clear: left;
     padding: 3px;
     border-top: 1px dashed #2b8d78;
     border-bottom: 1px dashed #2b8d78;
 }
+
+    .steamApp.hide:not(.hasSelected) {
+        display: none;
+    }
 
 .appName {
     text-align: center;
@@ -114,8 +126,8 @@ textarea {
 
 .steamCard {
     display: inline-block;
-    max-width: 95px;
-    max-height: 95px;
+    width: 95px;
+    height: 95px;
 }
 
     .steamCard.weHaveIt {

@@ -58,7 +58,7 @@
         c += " isDuplicated";
     }
     <div class="@c" data-id="@card.Id" data-app-data-app-id="@card.AppDataAppId" data-app-data-item-type="@card.AppDataItemType" data-market-hash-name="@card.MarketHashName">
-        <img src="@card.IconFullUrl" alt="@card.Name" title="@card.Name" />
+        <img src="@Url.Content("~/Content/dots.png")" data-original="@card.IconFullUrl" alt="@card.Name" title="@card.Name" />
     </div>
 }
 @if (Model.SteamApps != null)
@@ -66,11 +66,8 @@
     <div class="allSteamApps">
         @foreach (var app in Model.SteamApps)
         {
-            if (app.Skip)
-            {
-                continue;
-            }
-            <div class="steamApp">
+            var c = app.Hide ? "steamApp hide" : "steamApp";
+            <div class="@c">
                 <div class="appName">
                     @app.Name
                 </div>
@@ -99,6 +96,14 @@
     <div id="cardsPrice" data-card-price-service="@Url.Action("GetCardPrice")">
         <div>Price of my cards: <span id="priceOfMine">0</span>&euro;</div>
         <div>Price of other's cards: <span id="priceOfOther">0</span>&euro;</div>
-        <button onclick="unselectAll();">Unselect all</button>
+        <div>
+            <button onclick="unselectAll();">Unselect all</button>
+            <button onclick="selectFromHtml();">Select cards from offer html</button>
+        </div>
+        <div>
+            <button onclick="filterSelected(1);">Show all</button>
+            <button onclick="filterSelected(2);">Show selected apps</button>
+            <button onclick="filterSelected(3);">Show selected cards</button>
+        </div>
     </div>
 }
