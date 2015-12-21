@@ -10,12 +10,12 @@ namespace s32.Sceh.Models
     {
         [Display(Name="My profile")]
         [Required]
-        [RegularExpression("^[0-9a-zA-Z_]{3,20}$")]
+        [RegularExpression("^[0-9a-zA-Z_-]{3,20}$")]
         public string MyProfile { get; set; }
 
         [Display(Name = "Other profile")]
         [Required]
-        [RegularExpression("^[0-9a-zA-Z_]{3,20}$")]
+        [RegularExpression("^[0-9a-zA-Z_-]{3,20}$")]
         public string OtherProfile { get; set; }
     }
 }

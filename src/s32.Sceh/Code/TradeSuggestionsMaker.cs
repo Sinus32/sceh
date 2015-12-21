@@ -75,26 +75,18 @@ namespace s32.Sceh.Code
         {
             foreach (var dt in steamApps)
             {
-                dt.Skip = dt.MyCards.Count == 0 || dt.OtherCards.Count == 0;
-
-                if (dt.Skip)
-                    continue;
-
-                dt.MySet = new HashSet<int>();
-                dt.OtherSet = new HashSet<int>();
-
                 foreach (var card in dt.MyCards)
                     card.IsDuplicated = !dt.MySet.Add(card.AppDataItemType);
 
                 foreach (var card in dt.OtherCards)
                     card.IsDuplicated = !dt.OtherSet.Add(card.AppDataItemType);
 
-                dt.Skip = dt.MySet.SetEquals(dt.OtherSet);
+                dt.Hide = dt.MySet.Count == 0 || dt.OtherSet.Count == 0 || dt.MySet.SetEquals(dt.OtherSet);
             }
         }
 
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,20}$", RegexOptions.None);
-        private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_]{3,20}$", RegexOptions.None);
+        private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
 
         private static Inventory GetInventory(string profile, out string errorMessage)
         {

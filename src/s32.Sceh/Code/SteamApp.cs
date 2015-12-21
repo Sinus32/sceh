@@ -13,6 +13,8 @@ namespace s32.Sceh.Code
             Name = name;
             MyCards = new List<Card>();
             OtherCards = new List<Card>();
+            MySet = new HashSet<int>();
+            OtherSet = new HashSet<int>();
         }
 
         public long Id { get; private set; }
@@ -23,7 +25,7 @@ namespace s32.Sceh.Code
 
         public List<Card> OtherCards { get; private set; }
 
-        public bool Skip { get; set; }
+        public bool Hide { get; set; }
 
         public HashSet<int> MySet { get; set; }
 
