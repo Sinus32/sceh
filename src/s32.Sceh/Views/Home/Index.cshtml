@@ -20,6 +20,8 @@
             @if (Model.MyInv != null)
             {
                 <a href="@Html.Raw(Model.MyInv.Link)" target="_blank">@Model.MyInv.Link</a>
+                <a href="@Html.Raw(Model.MyInv.Link)/badges" target="_blank">Badges</a>
+                <a href="@Html.Raw(Model.MyInv.Link)/inventory" target="_blank">Inventory</a>
             }
             @Html.ValidationMessageFor(model => model.Input.MyProfile)
         </div>
@@ -32,6 +34,8 @@
             @if (Model.OtherInv != null)
             {
                 <a href="@Html.Raw(Model.OtherInv.Link)" target="_blank">@Model.OtherInv.Link</a>
+                <a href="@Html.Raw(Model.OtherInv.Link)/badges" target="_blank">Badges</a>
+                <a href="@Html.Raw(Model.OtherInv.Link)/inventory" target="_blank">Inventory</a>
             }
             @Html.ValidationMessageFor(model => model.Input.OtherProfile)
         </div>
@@ -58,18 +62,22 @@
         c += " isDuplicated";
     }
     <div class="@c" data-id="@card.Id" data-app-data-app-id="@card.AppDataAppId" data-app-data-item-type="@card.AppDataItemType" data-market-hash-name="@card.MarketHashName">
-        <img src="@Url.Content("~/Content/dots.png")" data-original="@card.IconFullUrl" alt="@card.Name" title="@card.Name" />
+        <img src="@Url.Content("~/Content/dots.png")" data-original="@card.ThumbnailUrl" alt="@card.Name" title="@card.Name" />
     </div>
 }
 @if (Model.SteamApps != null)
 {
+    <div>
+        Cache info: <b>@Model.ThumbnailsUsed</b> thumbnails from cache and <b>@Model.OriginalsUsed</b> original images was used.
+    </div>
     <div class="allSteamApps">
         @foreach (var app in Model.SteamApps)
         {
             var c = app.Hide ? "steamApp hide" : "steamApp";
             <div class="@c">
                 <div class="appName">
-                    @app.Name
+                    @app.Name (<a href="@Html.Raw(Model.MyInv.Link)/gamecards/@(app.Id)" target="_blank">Badge</a>
+                    <a href="http://steamcommunity.com/app/@(app.Id)/tradingforum/" target="_blank">Trading</a>)
                 </div>
                 <div class="appCards">
                     <div class="myCards">

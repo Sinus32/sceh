@@ -61,28 +61,40 @@ namespace s32.Sceh.Code
                 hasOther = it.MoveNext();
             }
 
-            Prepare(steamApps);
+            var manager = new CardImageManager();
+
+            foreach (var dt in steamApps)
+            {
+                foreach (var card in dt.MyCards)
+                {
+                    card.IsDuplicated = !dt.MySet.Add(card.AppDataItemType);
+                    card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
+                }
+
+                foreach (var card in dt.OtherCards)
+                {
+                    card.IsDuplicated = !dt.OtherSet.Add(card.AppDataItemType);
+                    card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
+                }
+
+                dt.Hide = dt.MySet.Count == 0 || dt.OtherSet.Count == 0 || dt.MySet.SetEquals(dt.OtherSet);
+            }
+
+            steamApps.Sort(SteamAppsComparison);
 
             var result = new IndexViewModel(input);
             result.MyInv = myInv;
             result.OtherInv = otherInv;
             result.SteamApps = steamApps;
+            result.OriginalsUsed = manager.OryginalsUsed;
+            result.ThumbnailsUsed = manager.ThumbnailsUsed;
 
             return result;
         }
 
-        private static void Prepare(List<SteamApp> steamApps)
+        private static int SteamAppsComparison(SteamApp x, SteamApp y)
         {
-            foreach (var dt in steamApps)
-            {
-                foreach (var card in dt.MyCards)
-                    card.IsDuplicated = !dt.MySet.Add(card.AppDataItemType);
-
-                foreach (var card in dt.OtherCards)
-                    card.IsDuplicated = !dt.OtherSet.Add(card.AppDataItemType);
-
-                dt.Hide = dt.MySet.Count == 0 || dt.OtherSet.Count == 0 || dt.MySet.SetEquals(dt.OtherSet);
-            }
+            return String.Compare(x.Name, y.Name, true);
         }
 
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,20}$", RegexOptions.None);

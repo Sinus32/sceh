@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using s32.Sceh.Code;
 
 namespace s32.Sceh
 {
-    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
-    // visit http://go.microsoft.com/?LinkId=9394801
-
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
+        private CardImageManager.Worker _cardImageWorker;
+        private Thread _cardImageWorkerThread;
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -22,6 +24,18 @@ namespace s32.Sceh
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            CardImageManager.SetApp(this);
+
+            _cardImageWorker = new CardImageManager.Worker(this);
+            _cardImageWorkerThread = new Thread(_cardImageWorker.ThreadStart);
+            _cardImageWorkerThread.Start();
+        }
+
+        protected void Application_End()
+        {
+            _cardImageWorker.Terminate();
+            _cardImageWorkerThread.Join(1000);
         }
     }
 }
