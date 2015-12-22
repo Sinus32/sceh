@@ -73,8 +73,6 @@ textarea {
 }
 
 .allSteamApps {
-    padding: 10px;
-    border: 3px dotted #2b8d63;
 }
 
     .allSteamApps.filterSelectedApp .steamApp:not(.hasSelected) {
@@ -91,6 +89,18 @@ textarea {
     border-top: 1px dashed #2b8d78;
     border-bottom: 1px dashed #2b8d78;
 }
+
+    .steamApp.hasSelectedMine .appName {
+        background: linear-gradient(170deg, red, transparent, transparent, transparent, transparent);
+    }
+
+    .steamApp.hasSelectedOther .appName {
+        background: linear-gradient(170deg, transparent, transparent, transparent, transparent, red);
+    }
+
+    .steamApp.hasSelectedMine.hasSelectedOther .appName {
+        background: linear-gradient(170deg, red, transparent, transparent, transparent, red);
+    }
 
     .steamApp.hide:not(.hasSelected) {
         display: none;

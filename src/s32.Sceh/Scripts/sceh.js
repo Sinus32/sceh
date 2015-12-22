@@ -76,8 +76,25 @@
         var steamApp = obj.closest('.steamApp');
         if (obj.hasClass('selected')) {
             steamApp.addClass('hasSelected');
-        } else if (!steamApp.find('.steamCard.selected:first').length) {
-            steamApp.removeClass('hasSelected');
+            if (obj.is('.myCards .steamCard')) {
+                steamApp.addClass('hasSelectedMine');
+            } else {
+                steamApp.addClass('hasSelectedOther');
+            }
+        } else {
+            var a = steamApp.find('.myCards .steamCard.selected:first').length;
+            var b = steamApp.find('.otherCards .steamCard.selected:first').length;
+            if (a) {
+                if (!b) {
+                    steamApp.removeClass('hasSelectedOther');
+                }
+            } else {
+                if (b) {
+                    steamApp.removeClass('hasSelectedMine');
+                } else {
+                    steamApp.removeClass('hasSelected hasSelectedMine hasSelectedOther');
+                }
+            }
         }
         downloadValue(obj);
     });
@@ -88,7 +105,7 @@
 
     window.unselectAll = function () {
         $('.allSteamApps .selected').removeClass('selected');
-        $('.steamApp.hasSelected').removeClass('hasSelected');
+        $('.steamApp.hasSelected').removeClass('hasSelected hasSelectedMine hasSelectedOther');
         updatePrice();
     };
 
@@ -139,12 +156,16 @@
                             var q = '.allSteamApps .steamCard[data-id=' + parts[2] + ']:first';
                             var obj = $(q);
                             if (obj.length) {
-                                if (obj.is('.myCards .steamCard'))
+                                var steamApp = obj.closest('.steamApp');
+                                if (obj.is('.myCards .steamCard')) {
                                     mine += 1;
-                                else
+                                    steamApp.addClass('hasSelectedMine');
+                                } else {
                                     others += 1;
+                                    steamApp.addClass('hasSelectedOther');
+                                }
                                 obj.addClass('selected');
-                                obj.closest('.steamApp').addClass('hasSelected');
+                                steamApp.addClass('hasSelected');
                                 downloadQueue.push(obj);
                             } else {
                                 missing += 1;

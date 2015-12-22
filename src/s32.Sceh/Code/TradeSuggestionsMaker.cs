@@ -73,13 +73,21 @@ namespace s32.Sceh.Code
 
         private static void Prepare(List<SteamApp> steamApps)
         {
+            var manager = new CardImageManager();
+
             foreach (var dt in steamApps)
             {
                 foreach (var card in dt.MyCards)
+                {
                     card.IsDuplicated = !dt.MySet.Add(card.AppDataItemType);
+                    card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
+                }
 
                 foreach (var card in dt.OtherCards)
+                {
                     card.IsDuplicated = !dt.OtherSet.Add(card.AppDataItemType);
+                    card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
+                }
 
                 dt.Hide = dt.MySet.Count == 0 || dt.OtherSet.Count == 0 || dt.MySet.SetEquals(dt.OtherSet);
             }
