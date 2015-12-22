@@ -20,6 +20,8 @@
             @if (Model.MyInv != null)
             {
                 <a href="@Html.Raw(Model.MyInv.Link)" target="_blank">@Model.MyInv.Link</a>
+                <a href="@Html.Raw(Model.MyInv.Link)/badges" target="_blank">Badges</a>
+                <a href="@Html.Raw(Model.MyInv.Link)/inventory" target="_blank">Inventory</a>
             }
             @Html.ValidationMessageFor(model => model.Input.MyProfile)
         </div>
@@ -32,6 +34,8 @@
             @if (Model.OtherInv != null)
             {
                 <a href="@Html.Raw(Model.OtherInv.Link)" target="_blank">@Model.OtherInv.Link</a>
+                <a href="@Html.Raw(Model.OtherInv.Link)/badges" target="_blank">Badges</a>
+                <a href="@Html.Raw(Model.OtherInv.Link)/inventory" target="_blank">Inventory</a>
             }
             @Html.ValidationMessageFor(model => model.Input.OtherProfile)
         </div>
@@ -72,7 +76,8 @@
             var c = app.Hide ? "steamApp hide" : "steamApp";
             <div class="@c">
                 <div class="appName">
-                    @app.Name
+                    @app.Name (<a href="@Html.Raw(Model.MyInv.Link)/gamecards/@(app.Id)" target="_blank">Badge</a>
+                    <a href="http://steamcommunity.com/app/@(app.Id)/tradingforum/" target="_blank">Trading</a>)
                 </div>
                 <div class="appCards">
                     <div class="myCards">
