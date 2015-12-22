@@ -63,6 +63,9 @@
 }
 @if (Model.SteamApps != null)
 {
+    <div>
+        Cache info: <b>@Model.ThumbnailsUsed</b> thumbnails from cache and <b>@Model.OriginalsUsed</b> original images was used.
+    </div>
     <div class="allSteamApps">
         @foreach (var app in Model.SteamApps)
         {

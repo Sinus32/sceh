@@ -23,8 +23,6 @@ namespace s32.Sceh.Code
 
         public string IconUrl { get { return DescriptionItem.IconUrl; } }
 
-        public string ThumbnailUrl { get; set; }
-
         public string MarketHashName { get { return DescriptionItem.MarketHashName; } }
 
         public long AppDataAppId { get { return DescriptionItem.AppData.AppId; } }
@@ -41,5 +39,7 @@ namespace s32.Sceh.Code
         }
 
         public bool IsDuplicated { get; set; }
+
+        public string ThumbnailUrl { get; set; }
     }
 }

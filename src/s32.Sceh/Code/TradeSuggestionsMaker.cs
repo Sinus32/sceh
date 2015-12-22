@@ -61,18 +61,6 @@ namespace s32.Sceh.Code
                 hasOther = it.MoveNext();
             }
 
-            Prepare(steamApps);
-
-            var result = new IndexViewModel(input);
-            result.MyInv = myInv;
-            result.OtherInv = otherInv;
-            result.SteamApps = steamApps;
-
-            return result;
-        }
-
-        private static void Prepare(List<SteamApp> steamApps)
-        {
             var manager = new CardImageManager();
 
             foreach (var dt in steamApps)
@@ -91,6 +79,22 @@ namespace s32.Sceh.Code
 
                 dt.Hide = dt.MySet.Count == 0 || dt.OtherSet.Count == 0 || dt.MySet.SetEquals(dt.OtherSet);
             }
+
+            steamApps.Sort(SteamAppsComparison);
+
+            var result = new IndexViewModel(input);
+            result.MyInv = myInv;
+            result.OtherInv = otherInv;
+            result.SteamApps = steamApps;
+            result.OriginalsUsed = manager.OryginalsUsed;
+            result.ThumbnailsUsed = manager.ThumbnailsUsed;
+
+            return result;
+        }
+
+        private static int SteamAppsComparison(SteamApp x, SteamApp y)
+        {
+            return String.Compare(x.Name, y.Name, true);
         }
 
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,20}$", RegexOptions.None);

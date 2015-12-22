@@ -126,8 +126,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Code\Base32.cs" />
     <Compile Include="Code\Card.cs" />
-    <Compile Include="Code\CardImage.cs" />
+    <Compile Include="Code\CardThumbnailRequest.cs" />
     <Compile Include="Code\CardImageManager.cs" />
     <Compile Include="Code\Data\SteamAppInfo.cs" />
     <Compile Include="Code\GetInventoryResponse.cs" />

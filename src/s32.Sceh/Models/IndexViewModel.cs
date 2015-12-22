@@ -20,5 +20,9 @@ namespace s32.Sceh.Models
         public Inventory OtherInv { get; set; }
 
         public List<SteamApp> SteamApps { get; set; }
+
+        public int OriginalsUsed { get; set; }
+
+        public int ThumbnailsUsed { get; set; }
     }
 }
