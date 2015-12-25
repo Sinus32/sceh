@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using s32.Sceh.Data;
+using s32.Sceh.Interfaces;
 
 namespace s32.Sceh.Code
 {
     public class SteamUsers
     {
-        public static SteamUser Get(string me)
+        public static ISteamUser Get(string me)
         {
             throw new NotImplementedException();
         }

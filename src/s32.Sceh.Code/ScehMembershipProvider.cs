@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Web.Security;
 
-namespace s32.Sceh.Data
+namespace s32.Sceh.Code
 {
     public class ScehMembershipProvider : MembershipProvider
     {

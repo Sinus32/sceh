@@ -30,8 +30,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,21 +59,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base32.cs" />
-    <Compile Include="Card.cs" />
     <Compile Include="CardImageManager.cs" />
     <Compile Include="CardThumbnailRequest.cs" />
-    <Compile Include="GetInventoryResponse.cs" />
-    <Compile Include="Inventory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SteamApp.cs" />
+    <Compile Include="ScehMembershipProvider.cs" />
     <Compile Include="SteamUsers.cs" />
     <Compile Include="TradeSuggestionsMaker.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\s32.Sceh.Classes\s32.Sceh.Classes.csproj">
+      <Project>{95b9d584-2509-4a9b-b093-7360051f2e98}</Project>
+      <Name>s32.Sceh.Classes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\s32.Sceh.Data\s32.Sceh.Data.csproj">
       <Project>{6bc4b31b-5ff7-4eab-9cc9-8cfcffda0846}</Project>
       <Name>s32.Sceh.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\s32.Sceh.Interfaces\s32.Sceh.Interfaces.csproj">
+      <Project>{0ca5fad4-daee-4d54-a38b-3a38a918acba}</Project>
+      <Name>s32.Sceh.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

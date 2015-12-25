@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using s32.Sceh.Classes;
 using s32.Sceh.Code;
 using s32.Sceh.Models;
 
@@ -22,7 +23,7 @@ namespace s32.Sceh.Controllers
 
 
 
-            var viewModel = Session["Result"] as IndexViewModel;
+            var viewModel = Session["Result"] as TradeSuggestions;
             if (viewModel == null)
             {
                 viewModel = new IndexViewModel(new IndexModel()
@@ -41,7 +42,7 @@ namespace s32.Sceh.Controllers
             if (ModelState.IsValid)
             {
                 string errorMessage;
-                var result = TradeSuggestionsMaker.Generate(input, out errorMessage);
+                var result = TradeSuggestionsMaker.Generate(input.MyProfile, input.OtherProfile, out errorMessage);
                 if (errorMessage == null)
                 {
                     Session["Result"] = result;
@@ -59,7 +60,7 @@ namespace s32.Sceh.Controllers
             return View();
         }
 
-        private bool TryAuthenticate(string me)
+        private Guid? TryAuthenticate(string me)
         {
             var user = SteamUsers.Get(me);
         }
