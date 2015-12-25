@@ -13,7 +13,21 @@
     @Scripts.Render("~/bundles/sceh")
 </head>
 <body>
-    @RenderBody()
+    @if (IsSectionDefined("topPanel"))
+    {
+    <div id="top_panel">
+        @RenderSection("topPanel")
+    </div>
+    <div id="main_panel" class="has-top-panel">
+        @RenderBody()
+    </div>
+    }
+    else
+    {
+        <div id="main_panel">
+            @RenderBody()
+        </div>
+    }
 
     @RenderSection("scripts", required: false)
 </body>

@@ -12,14 +12,23 @@ namespace s32.Sceh.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string me, string other)
+        public ActionResult Index(string me)
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                if (TryAuthenticate(me))
+                    return RedirectToAction("Index");
+            }
+
+
+
             var viewModel = Session["Result"] as IndexViewModel;
             if (viewModel == null)
             {
-                viewModel = new IndexViewModel(new IndexModel() {
+                viewModel = new IndexViewModel(new IndexModel()
+                {
                     MyProfile = me,
-                    OtherProfile = other
+                    OtherProfile = null
                 });
             }
             return View(viewModel);
@@ -43,6 +52,16 @@ namespace s32.Sceh.Controllers
 
             var viewModel = new IndexViewModel(input);
             return View(viewModel);
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        private bool TryAuthenticate(string me)
+        {
+            var user = SteamUsers.Get(me);
         }
 
         public ActionResult GetCardPrice(string marketHashName)

@@ -3,14 +3,12 @@
 @{
     ViewBag.Title = "Sceh";
 }
-
-@using (Html.BeginForm())
+@section topPanel
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
-
-    <fieldset>
-        <legend>Trade suggestions</legend>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Input.MyProfile)
@@ -43,7 +41,21 @@
         <p>
             <input type="submit" value="Get trade suggestions" />
         </p>
-    </fieldset>
+        <div id="cardsPrice" data-card-price-service="@Url.Action("GetCardPrice")">
+            <div>Price of my cards: <span id="priceOfMine">0</span>&euro;</div>
+            <div>Price of other's cards: <span id="priceOfOther">0</span>&euro;</div>
+            <div>
+                <button onclick="unselectAll();">Unselect all</button>
+                <button onclick="selectFromHtml();">Select cards from offer html</button>
+            </div>
+            <div>
+                <button onclick="filterSelected(1);">My cards</button>
+                <button onclick="filterSelected(2);">Normal</button>
+                <button onclick="filterSelected(3);">Selected apps</button>
+                <button onclick="filterSelected(4);">Selected cards</button>
+            </div>
+        </div>
+    }
 }
 @helper SteamCard(Card card, HashSet<int> otherSet)
 {
@@ -73,8 +85,8 @@
     <div class="allSteamApps">
         @foreach (var app in Model.SteamApps)
         {
-            var c = app.Hide ? "steamApp hide" : "steamApp";
-            <div class="@c">
+            var c = app.Hide ? (app.MySet.Count > 0 ? "steamApp hide iHaveAny" : "steamApp hide") : "steamApp";
+            <div class="@c" data-app-id="@app.Id" data-app-name="@app.Name">
                 <div class="appName">
                     @app.Name (<a href="@Html.Raw(Model.MyInv.Link)/gamecards/@(app.Id)" target="_blank">Badge</a>
                     <a href="http://steamcommunity.com/app/@(app.Id)/tradingforum/" target="_blank">Trading</a>)
@@ -100,18 +112,5 @@
                 </div>
             </div>
         }
-    </div>
-    <div id="cardsPrice" data-card-price-service="@Url.Action("GetCardPrice")">
-        <div>Price of my cards: <span id="priceOfMine">0</span>&euro;</div>
-        <div>Price of other's cards: <span id="priceOfOther">0</span>&euro;</div>
-        <div>
-            <button onclick="unselectAll();">Unselect all</button>
-            <button onclick="selectFromHtml();">Select cards from offer html</button>
-        </div>
-        <div>
-            <button onclick="filterSelected(1);">Show all</button>
-            <button onclick="filterSelected(2);">Show selected apps</button>
-            <button onclick="filterSelected(3);">Show selected cards</button>
-        </div>
     </div>
 }

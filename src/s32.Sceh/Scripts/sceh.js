@@ -111,9 +111,10 @@
 
     window.filterSelected = function (mode) {
         switch (mode) {
-            case 1: $('.allSteamApps').removeClass('filterSelectedApp filterSelected'); break;
-            case 2: $('.allSteamApps').addClass('filterSelectedApp').removeClass('filterSelected'); break;
-            case 3: $('.allSteamApps').addClass('filterSelectedApp filterSelected'); break;
+            case 1: $('.allSteamApps').removeClass('filterSelectedApp filterSelected').addClass('showMyApps'); break;
+            case 2: $('.allSteamApps').removeClass('showMyApps filterSelectedApp filterSelected'); break;
+            case 3: $('.allSteamApps').addClass('filterSelectedApp').removeClass('showMyApps filterSelected'); break;
+            case 4: $('.allSteamApps').addClass('filterSelectedApp filterSelected').removeClass('showMyApps'); break;
         }
     };
 

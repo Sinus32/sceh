@@ -62,6 +62,8 @@ textarea {
 
 /* ------------- */
 
+/* ------------- */
+
 #cardsPrice {
     position: fixed;
     top: 10px;
@@ -77,6 +79,10 @@ textarea {
 
     .allSteamApps.filterSelectedApp .steamApp:not(.hasSelected) {
         display: none;
+    }
+
+    .allSteamApps.showMyApps .steamApp.hide.iHaveAny {
+        display: block;
     }
 
     .allSteamApps.filterSelected .steamCard:not(.selected) {
