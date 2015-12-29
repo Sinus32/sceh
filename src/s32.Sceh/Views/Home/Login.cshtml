@@ -1,0 +1,18 @@
+﻿@model LoginModel
+@{
+    ViewBag.Title = "Login";
+}
+@using (Html.BeginForm())
+{
+    <div class="editor-label">
+        @Html.LabelFor(model => model.MyProfile)
+    </div>
+    <div class="editor-field">
+        @Html.EditorFor(model => model.MyProfile)
+        @Html.ValidationMessageFor(model => model.MyProfile)
+    </div>
+
+    <p>
+        <input type="submit" value="Log in" />
+    </p>
+}

@@ -4,22 +4,22 @@ using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web;
-using s32.Sceh.Models;
 using Newtonsoft.Json;
 using System.IO;
 using System.IO.Compression;
+using s32.Sceh.Classes;
 
 namespace s32.Sceh.Code
 {
     public class TradeSuggestionsMaker
     {
-        public static IndexViewModel Generate(IndexModel input, out string errorMessage)
+        public static TradeSuggestions Generate(string myProfile, string otherProfile, out string errorMessage)
         {
-            var myInv = GetInventory(input.MyProfile, out errorMessage);
+            var myInv = GetInventory(myProfile, out errorMessage);
             if (errorMessage != null)
                 return null;
 
-            var otherInv = GetInventory(input.OtherProfile, out errorMessage);
+            var otherInv = GetInventory(otherProfile, out errorMessage);
             if (errorMessage != null)
                 return null;
 
@@ -82,7 +82,7 @@ namespace s32.Sceh.Code
 
             steamApps.Sort(SteamAppsComparison);
 
-            var result = new IndexViewModel(input);
+            var result = new TradeSuggestions();
             result.MyInv = myInv;
             result.OtherInv = otherInv;
             result.SteamApps = steamApps;
@@ -104,6 +104,7 @@ namespace s32.Sceh.Code
         {
             string url;
             var result = new Inventory();
+            result.User = profile;
             if (_steamidRe.IsMatch(profile))
             {
                 url = String.Concat("http://steamcommunity.com/profiles/", profile, "/inventory/json/753/6");
@@ -156,7 +157,7 @@ namespace s32.Sceh.Code
                 return null;
             }
 
-            result.Load(ret);
+            Load(result, ret);
 
             while (ret.More)
             {
@@ -190,13 +191,38 @@ namespace s32.Sceh.Code
                     return null;
                 }
 
-                result.Load(ret);
+                Load(result, ret);
             }
 
-            result.Prepare();
+            result.Cards.Sort(CardComparison);
 
             errorMessage = null;
             return result;
+        }
+
+        public static void Load(Inventory result, GetInventoryResponse ret)
+        {
+            foreach (var dt in ret.RgInventory.Values)
+            {
+                var card = new Card();
+                card.InventoryItem = dt;
+                var key = new GetInventoryResponse.RgDescriptionKey(dt.ClassId, dt.InstanceId);
+                card.DescriptionItem = ret.RgDescriptions[key];
+                if (card.DescriptionItem.Tradable && card.DescriptionItem.Marketable)
+                    result.Cards.Add(card);
+            }
+        }
+
+        private static int CardComparison(Card x, Card y)
+        {
+            int ret = x.AppDataAppId.CompareTo(y.AppDataAppId);
+            if (ret == 0)
+            {
+                ret = x.AppDataItemType.CompareTo(y.AppDataItemType);
+                if (ret == 0)
+                    x.Id.CompareTo(y.Id);
+            }
+            return ret;
         }
     }
 }

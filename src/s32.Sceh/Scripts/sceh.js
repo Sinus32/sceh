@@ -99,6 +99,12 @@
         downloadValue(obj);
     });
 
+    $('#result_selector').on('change', function () {
+        var target = this.value;
+        if (target)
+            window.location.href = target;
+    });
+
     $('.allSteamApps .steamCard img').lazyload({
         skip_invisible: true
     });
@@ -111,9 +117,10 @@
 
     window.filterSelected = function (mode) {
         switch (mode) {
-            case 1: $('.allSteamApps').removeClass('filterSelectedApp filterSelected'); break;
-            case 2: $('.allSteamApps').addClass('filterSelectedApp').removeClass('filterSelected'); break;
-            case 3: $('.allSteamApps').addClass('filterSelectedApp filterSelected'); break;
+            case 1: $('.allSteamApps').removeClass('filterSelectedApp filterSelected').addClass('showMyApps'); break;
+            case 2: $('.allSteamApps').removeClass('showMyApps filterSelectedApp filterSelected'); break;
+            case 3: $('.allSteamApps').addClass('filterSelectedApp').removeClass('showMyApps filterSelected'); break;
+            case 4: $('.allSteamApps').addClass('filterSelectedApp filterSelected').removeClass('showMyApps'); break;
         }
     };
 

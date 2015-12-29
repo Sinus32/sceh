@@ -1,22 +1,38 @@
 ﻿@model IndexViewModel
-@using s32.Sceh.Code
+@using s32.Sceh.Classes
 @{
     ViewBag.Title = "Sceh";
 }
-
-@using (Html.BeginForm())
+@section topPanel
 {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Trade suggestions</legend>
+        if (Model.OtherInv != null)
+        {
+            <div id="cardsPrice" data-card-price-service="@Url.Action("GetCardPrice")">
+                <div>Price of my cards: <span id="priceOfMine">0</span>&euro;</div>
+                <div>Price of other's cards: <span id="priceOfOther">0</span>&euro;</div>
+                <div>
+                    <button onclick="unselectAll(); return false;">Unselect all</button>
+                    <button onclick="selectFromHtml(); return false;">Select cards from offer html</button>
+                </div>
+                <div>
+                    <button onclick="filterSelected(1); return false;">My cards</button>
+                    <button onclick="filterSelected(2); return false;">Normal</button>
+                    <button onclick="filterSelected(3); return false;">Selected apps</button>
+                    <button onclick="filterSelected(4); return false;">Selected cards</button>
+                </div>
+            </div>
+        }
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Input.MyProfile)
+            @Html.LabelFor(model => model.Input.MyProfile) @Ajax.ActionLink("Logout", "LogOut", new AjaxOptions() { HttpMethod = "POST" })
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Input.MyProfile)
+            @Html.DisplayFor(model => model.Input.MyProfile)
             @if (Model.MyInv != null)
             {
                 <a href="@Html.Raw(Model.MyInv.Link)" target="_blank">@Model.MyInv.Link</a>
@@ -40,10 +56,30 @@
             @Html.ValidationMessageFor(model => model.Input.OtherProfile)
         </div>
 
-        <p>
-            <input type="submit" value="Get trade suggestions" />
-        </p>
-    </fieldset>
+            var list = new List<string>();
+            foreach (string key in Session.Keys)
+            {
+                if (key.StartsWith("Result$") && (Model.OtherInv == null || key != "Result$" + Model.OtherInv.User))
+                {
+                    list.Add(key.Substring("Result$".Length));
+                }
+            }
+
+            <p>
+                <input type="submit" value="Get trade suggestions" />
+                @if (list.Count > 0)
+                {
+                    list.Sort();
+                    <select id="result_selector">
+                        <option value="">Stored result:</option>
+                        @foreach (var opt in list)
+                        {
+                            <option value="@Url.Action("Index", new { id = opt })">@opt</option>
+                        }
+                    </select>
+                }
+            </p>
+    }
 }
 @helper SteamCard(Card card, HashSet<int> otherSet)
 {
@@ -73,8 +109,8 @@
     <div class="allSteamApps">
         @foreach (var app in Model.SteamApps)
         {
-            var c = app.Hide ? "steamApp hide" : "steamApp";
-            <div class="@c">
+            var c = app.Hide ? (app.MySet.Count > 0 ? "steamApp hide iHaveAny" : "steamApp hide") : "steamApp";
+            <div class="@c" data-app-id="@app.Id" data-app-name="@app.Name">
                 <div class="appName">
                     @app.Name (<a href="@Html.Raw(Model.MyInv.Link)/gamecards/@(app.Id)" target="_blank">Badge</a>
                     <a href="http://steamcommunity.com/app/@(app.Id)/tradingforum/" target="_blank">Trading</a>)
@@ -100,18 +136,5 @@
                 </div>
             </div>
         }
-    </div>
-    <div id="cardsPrice" data-card-price-service="@Url.Action("GetCardPrice")">
-        <div>Price of my cards: <span id="priceOfMine">0</span>&euro;</div>
-        <div>Price of other's cards: <span id="priceOfOther">0</span>&euro;</div>
-        <div>
-            <button onclick="unselectAll();">Unselect all</button>
-            <button onclick="selectFromHtml();">Select cards from offer html</button>
-        </div>
-        <div>
-            <button onclick="filterSelected(1);">Show all</button>
-            <button onclick="filterSelected(2);">Show selected apps</button>
-            <button onclick="filterSelected(3);">Show selected cards</button>
-        </div>
     </div>
 }

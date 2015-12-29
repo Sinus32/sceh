@@ -20,7 +20,7 @@ namespace s32.Sceh.Code
         public const int THUMBNAIL_WIDTH = 96;
 
         private static ConcurrentQueue<CardThumbnailRequest> _cardsToProcess;
-        private static MvcApplication _app;
+        private static HttpApplication _app;
         private static string _thumbnailFullPath;
         private Dictionary<string, string> _tmp;
 
@@ -34,7 +34,7 @@ namespace s32.Sceh.Code
             _tmp = new Dictionary<string, string>();
         }
 
-        public static void SetApp(MvcApplication app)
+        public static void SetApp(HttpApplication app)
         {
             _app = app;
             _thumbnailFullPath = app.Server.MapPath(THUMBNAIL_PATH);
@@ -108,11 +108,11 @@ namespace s32.Sceh.Code
 
         public class Worker
         {
-            private MvcApplication _app;
+            private HttpApplication _app;
             private string _thumbnailFullPath;
             private ManualResetEvent _terminateEvent;
 
-            public Worker(MvcApplication app)
+            public Worker(HttpApplication app)
             {
                 _app = app;
                 _thumbnailFullPath = app.Server.MapPath(THUMBNAIL_PATH);

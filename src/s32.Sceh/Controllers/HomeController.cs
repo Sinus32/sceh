@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using s32.Sceh.Classes;
 using s32.Sceh.Code;
 using s32.Sceh.Models;
 
@@ -12,37 +14,87 @@ namespace s32.Sceh.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index(string me, string other)
+        public ActionResult Index(string id)
         {
-            var viewModel = Session["Result"] as IndexViewModel;
-            if (viewModel == null)
-            {
-                viewModel = new IndexViewModel(new IndexModel() {
-                    MyProfile = me,
-                    OtherProfile = other
-                });
-            }
+            if (!User.Identity.IsAuthenticated)
+                return RedirectToAction("LogIn");
+
+            var viewModel = new IndexViewModel(new IndexModel() { MyProfile = User.Identity.Name });
+
+            var tradeSuggestions = Session[id == null ? "LastResult" : "Result$" + id] as TradeSuggestions;
+            if (tradeSuggestions != null)
+                FillViewModel(viewModel, tradeSuggestions);
+
             return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Index(IndexModel input)
         {
             if (ModelState.IsValid)
             {
                 string errorMessage;
-                var result = TradeSuggestionsMaker.Generate(input, out errorMessage);
+                var result = TradeSuggestionsMaker.Generate(User.Identity.Name, input.OtherProfile, out errorMessage);
                 if (errorMessage == null)
                 {
-                    Session["Result"] = result;
-                    return RedirectToAction("Index");
+                    Session["LastResult"] = result;
+                    Session["Result$" + input.OtherProfile] = result;
+                    return RedirectToAction("Index", new { id = input.OtherProfile });
                 }
                 ModelState.AddModelError(String.Empty, errorMessage);
             }
 
             var viewModel = new IndexViewModel(input);
             return View(viewModel);
+        }
+
+        public ActionResult LogIn()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LogIn(LoginModel input)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = TryAuthenticate(input.MyProfile);
+                if (userId != Guid.Empty)
+                    return RedirectToAction("Index");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            Session.Abandon();
+            return JavaScript("window.location.href = '" + VirtualPathUtility.ToAbsolute(FormsAuthentication.LoginUrl) + "';");
+        }
+
+        private void FillViewModel(IndexViewModel viewModel, TradeSuggestions tradeSuggestions)
+        {
+            viewModel.Input.OtherProfile = tradeSuggestions.OtherInv.User;
+            viewModel.MyInv = tradeSuggestions.MyInv;
+            viewModel.OtherInv = tradeSuggestions.OtherInv;
+            viewModel.SteamApps = tradeSuggestions.SteamApps;
+            viewModel.OriginalsUsed = tradeSuggestions.OriginalsUsed;
+            viewModel.ThumbnailsUsed = tradeSuggestions.ThumbnailsUsed;
+        }
+
+        private Guid TryAuthenticate(string login)
+        {
+            var user = SteamUsers.Get(login);
+
+            if (user == null)
+                return Guid.Empty;
+
+            FormsAuthentication.SetAuthCookie(login, true);
+
+            return user.Id;
         }
 
         public ActionResult GetCardPrice(string marketHashName)

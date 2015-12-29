@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace s32.Sceh.Code.Data
+namespace s32.Sceh.Data
 {
     public class ScehContext : DbContext
     {
@@ -13,6 +13,7 @@ namespace s32.Sceh.Code.Data
         {
         }
 
+        public DbSet<SteamUser> SteamUsers { get; set; }
         public DbSet<SteamAppInfo> SteamAppInfos { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

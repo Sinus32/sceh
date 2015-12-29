@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace s32.Sceh.Code
+namespace s32.Sceh.Classes
 {
     public class Card
     {
@@ -33,13 +33,13 @@ namespace s32.Sceh.Code
 
         public GetInventoryResponse.RgDescriptionItem DescriptionItem { get; set; }
 
+        public bool IsDuplicated { get; set; }
+
+        public string ThumbnailUrl { get; set; }
+
         public override string ToString()
         {
             return String.Concat(AppDataAppId, '/', AppDataItemType, ' ', Name);
         }
-
-        public bool IsDuplicated { get; set; }
-
-        public string ThumbnailUrl { get; set; }
     }
 }

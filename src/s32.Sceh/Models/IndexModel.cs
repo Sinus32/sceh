@@ -6,11 +6,17 @@ using System.Web;
 
 namespace s32.Sceh.Models
 {
-    public class IndexModel
+    public class LoginModel
     {
-        [Display(Name="My profile")]
+        [Display(Name = "My profile")]
         [Required]
         [RegularExpression("^[0-9a-zA-Z_-]{3,20}$")]
+        public string MyProfile { get; set; }
+    }
+
+    public class IndexModel
+    {
+        [Display(Name = "My profile")]
         public string MyProfile { get; set; }
 
         [Display(Name = "Other profile")]

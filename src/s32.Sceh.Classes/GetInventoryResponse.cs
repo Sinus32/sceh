@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
 
-namespace s32.Sceh.Code
+namespace s32.Sceh.Classes
 {
     public class GetInventoryResponse
     {

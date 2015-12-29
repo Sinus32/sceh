@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using s32.Sceh.Classes;
-using s32.Sceh.Code;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace s32.Sceh.Models
+namespace s32.Sceh.Classes
 {
-    public class IndexViewModel
+    public class TradeSuggestions
     {
-        public IndexViewModel(IndexModel model)
-        {
-            Input = model;
-        }
-
-        public IndexModel Input { get; set; }
-
         public Inventory MyInv { get; set; }
 
         public Inventory OtherInv { get; set; }
