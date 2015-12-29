@@ -11,7 +11,10 @@ namespace s32.Sceh.Code
     {
         public static ISteamUser Get(string me)
         {
-            throw new NotImplementedException();
+            return new SteamUser()
+            {
+                Id = Guid.NewGuid()
+            };
         }
     }
 }

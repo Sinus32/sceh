@@ -12,8 +12,10 @@ namespace s32.Sceh.Classes
             Cards = new List<Card>();
         }
 
-        public List<Card> Cards { get; set; }
+        public string User { get; set; }
 
         public string Link { get; set; }
+
+        public List<Card> Cards { get; set; }
     }
 }

@@ -99,6 +99,12 @@
         downloadValue(obj);
     });
 
+    $('#result_selector').on('change', function () {
+        var target = this.value;
+        if (target)
+            window.location.href = target;
+    });
+
     $('.allSteamApps .steamCard img').lazyload({
         skip_invisible: true
     });

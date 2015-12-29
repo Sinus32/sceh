@@ -104,6 +104,7 @@ namespace s32.Sceh.Code
         {
             string url;
             var result = new Inventory();
+            result.User = profile;
             if (_steamidRe.IsMatch(profile))
             {
                 url = String.Concat("http://steamcommunity.com/profiles/", profile, "/inventory/json/753/6");

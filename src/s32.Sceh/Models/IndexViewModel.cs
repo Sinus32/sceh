@@ -16,6 +16,14 @@ namespace s32.Sceh.Models
 
         public IndexModel Input { get; set; }
 
-        public TradeSuggestions Suggestions { get; set; }
+        public Inventory MyInv { get; set; }
+
+        public Inventory OtherInv { get; set; }
+
+        public List<SteamApp> SteamApps { get; set; }
+
+        public int OriginalsUsed { get; set; }
+
+        public int ThumbnailsUsed { get; set; }
     }
 }

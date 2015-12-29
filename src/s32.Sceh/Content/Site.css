@@ -12,6 +12,17 @@ header, footer, nav, section {
 
 /* Styles for basic forms
 -----------------------------------------------------------*/
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+form {
+    margin: 0;
+    padding: 0;
+}
+
 fieldset {
     border: 1px solid #ddd;
     padding: 0 1.4em 1.4em 1.4em;
@@ -28,11 +39,14 @@ textarea {
 }
 
 .editor-label {
-    margin: 1em 0 0 0;
+    float: left;
+    clear: left;
+    margin: 0 0 6px 0;
+    width: 150px;
 }
 
 .editor-field {
-    margin: 0.5em 0 0 0;
+    margin: 0 0 6px 0;
 }
 
 
@@ -62,16 +76,30 @@ textarea {
 
 /* ------------- */
 
+#top_panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    padding: 10px;
+    border-bottom: 2px dashed #f00;
+    background-color: #ddd;
+    z-index: 1;
+}
+
+#main_panel {
+    padding: 10px;
+}
+
+.has-top-panel {
+    margin-top: 122px;
+}
+
 /* ------------- */
 
 #cardsPrice {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    padding: 8px;
-    border: 2px dashed #f00;
-    background-color: #ddd;
-    z-index: 1;
+    float: right;
 }
 
 .allSteamApps {
