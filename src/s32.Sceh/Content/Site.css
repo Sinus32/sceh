@@ -52,6 +52,17 @@ textarea {
 
 /* Styles for validation helpers
 -----------------------------------------------------------*/
+
+.validation-summary-errors {
+    display: inline-block;
+}
+
+    .validation-summary-errors ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
 .field-validation-error {
     color: #f00;
 }

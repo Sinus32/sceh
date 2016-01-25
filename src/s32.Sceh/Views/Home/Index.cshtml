@@ -8,8 +8,6 @@
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true)
-
         if (Model.OtherInv != null)
         {
             <div id="cardsPrice" data-card-price-service="@Url.Action("GetCardPrice")">
@@ -54,6 +52,7 @@
                 <a href="@Html.Raw(Model.OtherInv.Link)/inventory" target="_blank">Inventory</a>
             }
             @Html.ValidationMessageFor(model => model.Input.OtherProfile)
+            @Html.ValidationSummary(true)
         </div>
 
             var list = new List<string>();
