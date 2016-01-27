@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+@using (Html.BeginForm())
+{
+    <div class="editor-label">
+        <label for="provider">Provider</label>
+    </div>
+    <div class="editor-field">
+        <input id="provider" type="text" value="https://steamcommunity.com/openid" name="provider" />
+    </div>
+
+    <p>
+        <input type="submit" value="Log in by steam" />
+    </p>
+}
