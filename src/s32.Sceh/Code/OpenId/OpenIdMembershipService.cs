@@ -21,16 +21,9 @@ namespace s32.Sceh.Code.OpenId
 
         public IAuthenticationRequest ValidateAtOpenIdProvider(string openIdIdentifier)
         {
-            IAuthenticationRequest openIdRequest = openId.CreateRequest(Identifier.Parse(openIdIdentifier));
-
-            //var fields = new ClaimsRequest()
-            //{
-            //    Email = DemandLevel.Require,
-            //    FullName = DemandLevel.Require,
-            //    Nickname = DemandLevel.Require
-            //};
-            //openIdRequest.AddExtension(fields);
-
+            var userSuppliedIdentifier = Identifier.Parse(openIdIdentifier);
+            IAuthenticationRequest openIdRequest = openId.CreateRequest(userSuppliedIdentifier);
+            
             return openIdRequest;
         }
 
