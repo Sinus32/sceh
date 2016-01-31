@@ -46,6 +46,7 @@ namespace s32.Sceh.Controllers
                 ModelState.AddModelError(String.Empty, errorMessage);
             }
 
+            input.MyProfile = User.Identity.Name;
             var viewModel = new IndexViewModel(input);
             return View(viewModel);
         }

@@ -2,17 +2,17 @@
 @{
     ViewBag.Title = "Login";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("BeginLogin", "Steam"))
 {
-    <div class="editor-label">
+    @*<div class="editor-label">
         @Html.LabelFor(model => model.MyProfile)
     </div>
     <div class="editor-field">
         @Html.EditorFor(model => model.MyProfile)
         @Html.ValidationMessageFor(model => model.MyProfile)
-    </div>
+    </div>*@
 
     <p>
-        <input type="submit" value="Log in" />
+        <input type="image" src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_large_noborder.png" value="Sign in through STEAM" />
     </p>
 }
