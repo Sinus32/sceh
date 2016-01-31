@@ -99,6 +99,12 @@
         downloadValue(obj);
     });
 
+    $(document).on('dblclick', '.steamCard', function () {
+        var obj = $(this);
+        var marketHashName = obj.data('market-hash-name');
+        window.open('http://steamcommunity.com/market/listings/753/' + encodeURIComponent(marketHashName));
+    });
+
     $('#result_selector').on('change', function () {
         var target = this.value;
         if (target)
