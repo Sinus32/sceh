@@ -25,9 +25,11 @@ namespace s32.Sceh.Classes
 
         public string MarketHashName { get { return DescriptionItem.MarketHashName; } }
 
-        public long AppDataAppId { get { return DescriptionItem.AppData.AppId; } }
+        public long MarketFeeApp { get { return DescriptionItem.MarketFeeApp; } }
 
-        public int AppDataItemType { get { return DescriptionItem.AppData.ItemType; } }
+        //public long AppDataAppId { get { return DescriptionItem.AppData.AppId; } }
+
+        //public int AppDataItemType { get { return DescriptionItem.AppData.ItemType; } }
 
         public GetInventoryResponse.RgInventoryItem InventoryItem { get; set; }
 
@@ -39,7 +41,7 @@ namespace s32.Sceh.Classes
 
         public override string ToString()
         {
-            return String.Concat(AppDataAppId, '/', AppDataItemType, ' ', Name);
+            return MarketHashName;
         }
     }
 }

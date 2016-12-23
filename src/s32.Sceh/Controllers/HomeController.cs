@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using s32.Sceh.Classes;
 using s32.Sceh.Code;
+using s32.Sceh.Data;
 using s32.Sceh.Models;
 
 namespace s32.Sceh.Controllers
@@ -25,12 +26,22 @@ namespace s32.Sceh.Controllers
             if (tradeSuggestions != null)
                 FillViewModel(viewModel, tradeSuggestions);
 
+            //using (var context = new ScehContext())
+            //{
+            //    var u = new SteamUser();
+            //    u.Login = "qwer";
+            //    u.SteamId = 234567876543L;
+            //    u.UserUrl = null;
+            //    context.SteamUsers.Add(u);
+            //    context.SaveChanges();
+            //}
+
             return View(viewModel);
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(IndexModel input)
         {
             if (ModelState.IsValid)
