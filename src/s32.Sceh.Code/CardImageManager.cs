@@ -134,7 +134,7 @@ namespace s32.Sceh.Code
                         if (File.Exists(card.PhysicalPath))
                         {
                             var lastMod = File.GetLastWriteTime(card.PhysicalPath);
-                            if (lastMod.AddDays(1) > DateTime.Now)
+                            if (lastMod.AddDays(30) > DateTime.Now)
                                 continue;
                         }
 

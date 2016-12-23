@@ -158,6 +158,12 @@ namespace s32.Sceh.Classes
             [JsonProperty("market_name")]
             public string MarketName { get; set; }
 
+            [JsonProperty("name_color")]
+            public string NameColor { get; set; }
+
+            [JsonProperty("background_color")]
+            public string BackgroundColor { get; set; }
+
             [JsonProperty("type")]
             public string Type { get; set; }
 
@@ -170,17 +176,14 @@ namespace s32.Sceh.Classes
             [JsonProperty("commodity")]
             public bool Commodity { get; set; }
 
-            [JsonProperty("app_data")]
-            public AppDataItem AppData { get; set; }
+            [JsonProperty("market_fee_app")]
+            public long MarketFeeApp { get; set; }
 
-            public class AppDataItem
-            {
-                [JsonProperty("appid")]
-                public long AppId { get; set; }
+            [JsonProperty("market_tradable_restriction")]
+            public int MarketTradableRestriction { get; set; }
 
-                [JsonProperty("item_type")]
-                public int ItemType { get; set; }
-            }
+            [JsonProperty("market_marketable_restriction")]
+            public int MarketMarketableRestriction { get; set; }
         }
     }
 }

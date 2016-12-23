@@ -30,20 +30,20 @@ namespace s32.Sceh.Code
 
             foreach (var card in myInv.Cards)
             {
-                while (hasOther && it.Current.AppDataAppId < card.AppDataAppId)
+                while (hasOther && it.Current.MarketFeeApp < card.MarketFeeApp)
                 {
-                    if (it.Current.AppDataAppId != current.Id)
+                    if (it.Current.MarketFeeApp != current.Id)
                     {
-                        current = new SteamApp(it.Current.AppDataAppId, it.Current.DescriptionItem.Type);
+                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.DescriptionItem.Type);
                         steamApps.Add(current);
                     }
                     current.OtherCards.Add(it.Current);
                     hasOther = it.MoveNext();
                 }
 
-                if (card.AppDataAppId != current.Id)
+                if (card.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(card.AppDataAppId, card.DescriptionItem.Type);
+                    current = new SteamApp(card.MarketFeeApp, card.DescriptionItem.Type);
                     steamApps.Add(current);
                 }
 
@@ -52,9 +52,9 @@ namespace s32.Sceh.Code
 
             while (hasOther)
             {
-                if (it.Current.AppDataAppId != current.Id)
+                if (it.Current.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(it.Current.AppDataAppId, it.Current.DescriptionItem.Type);
+                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.DescriptionItem.Type);
                     steamApps.Add(current);
                 }
                 current.OtherCards.Add(it.Current);
@@ -67,13 +67,13 @@ namespace s32.Sceh.Code
             {
                 foreach (var card in dt.MyCards)
                 {
-                    card.IsDuplicated = !dt.MySet.Add(card.AppDataItemType);
+                    card.IsDuplicated = !dt.MySet.Add(card.MarketHashName);
                     card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
                 }
 
                 foreach (var card in dt.OtherCards)
                 {
-                    card.IsDuplicated = !dt.OtherSet.Add(card.AppDataItemType);
+                    card.IsDuplicated = !dt.OtherSet.Add(card.MarketHashName);
                     card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
                 }
 
@@ -215,12 +215,12 @@ namespace s32.Sceh.Code
 
         private static int CardComparison(Card x, Card y)
         {
-            int ret = x.AppDataAppId.CompareTo(y.AppDataAppId);
+            int ret = x.MarketFeeApp.CompareTo(y.MarketFeeApp);
             if (ret == 0)
             {
-                ret = x.AppDataItemType.CompareTo(y.AppDataItemType);
+                ret = String.Compare(x.MarketHashName, y.MarketHashName);
                 if (ret == 0)
-                    x.Id.CompareTo(y.Id);
+                    ret = x.Id.CompareTo(y.Id);
             }
             return ret;
         }

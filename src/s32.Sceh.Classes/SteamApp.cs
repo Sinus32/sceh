@@ -13,8 +13,8 @@ namespace s32.Sceh.Classes
             Name = name;
             MyCards = new List<Card>();
             OtherCards = new List<Card>();
-            MySet = new HashSet<int>();
-            OtherSet = new HashSet<int>();
+            MySet = new HashSet<string>();
+            OtherSet = new HashSet<string>();
         }
 
         public long Id { get; private set; }
@@ -27,8 +27,8 @@ namespace s32.Sceh.Classes
 
         public bool Hide { get; set; }
 
-        public HashSet<int> MySet { get; set; }
+        public HashSet<string> MySet { get; set; }
 
-        public HashSet<int> OtherSet { get; set; }
+        public HashSet<string> OtherSet { get; set; }
     }
 }
