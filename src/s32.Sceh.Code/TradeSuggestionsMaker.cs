@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.IO.Compression;
 using s32.Sceh.Classes;
+using System.Threading;
 
 namespace s32.Sceh.Code
 {
@@ -161,6 +162,8 @@ namespace s32.Sceh.Code
 
             while (ret.More)
             {
+                Thread.Sleep(100);
+
                 request = (HttpWebRequest)HttpWebRequest.Create(String.Concat(url, "?start=", ret.MoreStart));
                 request.Method = "GET";
                 request.Timeout = 10000;
@@ -195,6 +198,7 @@ namespace s32.Sceh.Code
             }
 
             result.Cards.Sort(CardComparison);
+            Thread.Sleep(100);
 
             errorMessage = null;
             return result;
