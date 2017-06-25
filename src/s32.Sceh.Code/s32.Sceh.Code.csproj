@@ -61,6 +61,7 @@
     <Compile Include="Base32.cs" />
     <Compile Include="CardImageManager.cs" />
     <Compile Include="CardThumbnailRequest.cs" />
+    <Compile Include="ProfilePage.cs" />
     <Compile Include="SteamDataDownloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScehMembershipProvider.cs" />

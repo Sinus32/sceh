@@ -18,9 +18,10 @@ namespace s32.Sceh.WinApp.Forms
             InitializeComponent();
         }
 
-        public void SetSteamUser(SteamUser user)
+        public void SetSteamUser(SteamUser steamUser)
         {
-            pvCurrent.SteamUser = user;
+            pvCurrent.SteamUser = steamUser;
+            icInventories.SteamUser = steamUser;
         }
 
         private void changeUserToolStripMenuItem_Click(object sender, EventArgs e)

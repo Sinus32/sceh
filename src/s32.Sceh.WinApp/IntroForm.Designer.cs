@@ -36,6 +36,7 @@
             this.tbLogin = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.bwOpenProfile = new System.ComponentModel.BackgroundWorker();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -82,6 +83,11 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
+            // bwOpenProfile
+            // 
+            this.bwOpenProfile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwOpenProfile_DoWork);
+            this.bwOpenProfile.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwOpenProfile_RunWorkerCompleted);
+            // 
             // IntroForm
             // 
             resources.ApplyResources(this, "$this");
@@ -106,6 +112,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnLogin;
+        private System.ComponentModel.BackgroundWorker bwOpenProfile;
     }
 }
 

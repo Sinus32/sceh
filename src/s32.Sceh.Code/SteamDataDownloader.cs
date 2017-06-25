@@ -13,10 +13,23 @@ using System.Xml.Serialization;
 
 namespace s32.Sceh.Code
 {
-    public class SteamDataDownloader
+    public static class SteamDataDownloader
     {
-        private static readonly Regex _steamidRe = new Regex("^[0-9]{3,20}$", RegexOptions.None);
+        private static readonly Regex _steamidRe = new Regex("^[0-9]{3,18}$", RegexOptions.None);
         private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
+
+        public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
+        {
+            var url = GetProfileUrl(steamUser, ProfilePage.API_GET_INVENTORY);
+
+            if (url == null)
+            {
+                errorMessage = "Invalid profile data";
+                return null;
+            }
+
+            return GetCards(url, out errorMessage);
+        }
 
         public static List<Card> GetCards(string url, out string errorMessage)
         {
@@ -106,41 +119,24 @@ namespace s32.Sceh.Code
 
         public static Inventory GetInventory(string profile, out string errorMessage)
         {
-            string url;
             var result = new Inventory();
             result.User = profile;
-            if (_steamidRe.IsMatch(profile))
-            {
-                url = String.Concat("http://steamcommunity.com/profiles/", profile, "/inventory/json/753/6");
-                result.Link = String.Concat("http://steamcommunity.com/profiles/", profile);
-            }
-            else if (_userurlRe.IsMatch(profile))
-            {
-                url = String.Concat("http://steamcommunity.com/id/", profile, "/inventory/json/753/6");
-                result.Link = String.Concat("http://steamcommunity.com/id/", profile);
-            }
-            else
+            string url = GetProfileUrl(profile, ProfilePage.API_GET_INVENTORY);
+            if (url == null)
             {
                 errorMessage = "Invalid profile";
                 return null;
             }
 
+            result.Link = GetProfileUrl(profile);
             result.Cards = GetCards(url, out errorMessage);
             return result;
         }
 
         public static SteamProfile GetProfile(string profile, out string errorMessage)
         {
-            string url;
-            if (_steamidRe.IsMatch(profile))
-            {
-                url = String.Concat("http://steamcommunity.com/profiles/", profile, "?xml=1");
-            }
-            else if (_userurlRe.IsMatch(profile))
-            {
-                url = String.Concat("http://steamcommunity.com/id/", profile, "?xml=1");
-            }
-            else
+            string url = GetProfileUrl(profile, ProfilePage.API_GET_PROFILE);
+            if (url == null)
             {
                 errorMessage = "Invalid profile";
                 return null;
@@ -192,6 +188,42 @@ namespace s32.Sceh.Code
 
             errorMessage = null;
             return result;
+        }
+
+        public static string GetProfileUrl(string idOrUrl, ProfilePage page = null)
+        {
+            long steamId = 0L;
+            string customUrl = null;
+
+            if (_steamidRe.IsMatch(idOrUrl))
+                steamId = Int64.Parse(idOrUrl);
+            else if (_userurlRe.IsMatch(idOrUrl))
+                customUrl = idOrUrl;
+            else
+                return null;
+
+            return GetProfileUrl(steamId, customUrl, page);
+        }
+
+        public static string GetProfileUrl(long steamId, string customUrl, ProfilePage page = null)
+        {
+            string result;
+            if (!String.IsNullOrEmpty(customUrl))
+                result = String.Concat("http://steamcommunity.com/id/", customUrl);
+            else if (steamId > 0L)
+                result = String.Concat("http://steamcommunity.com/profiles/", steamId);
+            else
+                return null;
+
+            return page == null ? result : String.Concat(result, page.PageUrl);
+        }
+
+        public static string GetProfileUrl(this SteamUser steamUser, ProfilePage page = null)
+        {
+            if (steamUser == null || steamUser.Profile == null)
+                return null;
+
+            return GetProfileUrl(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, page);
         }
 
         public static void Load(List<Card> result, GetInventoryResponse ret)

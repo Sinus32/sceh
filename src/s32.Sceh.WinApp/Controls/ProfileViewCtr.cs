@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using s32.Sceh.Classes;
 using System.Diagnostics;
+using s32.Sceh.Code;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -28,11 +29,11 @@ namespace s32.Sceh.WinApp.Controls
             set { SetSteamUser(value); }
         }
 
-        protected void SetSteamUser(SteamUser user)
+        protected void SetSteamUser(SteamUser steamUser)
         {
-            _steamUser = user;
+            _steamUser = steamUser;
 
-            if (user == null)
+            if (steamUser == null)
             {
                 lblProfile.Text = String.Empty;
                 btnProfile.Visible = false;
@@ -41,11 +42,11 @@ namespace s32.Sceh.WinApp.Controls
             }
             else
             {
-                var name = user.GetName();
+                var name = steamUser.GetName();
                 if (name == null)
-                    lblProfile.Text = user.SteamId.ToString();
+                    lblProfile.Text = steamUser.SteamId.ToString();
                 else
-                    lblProfile.Text = String.Format("{0} ({1})", name, user.SteamId);
+                    lblProfile.Text = String.Format("{0} ({1})", name, steamUser.SteamId);
 
                 btnProfile.Visible = true;
                 btnBadges.Visible = true;
@@ -55,29 +56,20 @@ namespace s32.Sceh.WinApp.Controls
 
         private void btnBadges_Click(object sender, EventArgs e)
         {
-            if (_steamUser == null)
-                return;
-
-            var profileUrl = _steamUser.GetProfileUrl("badges");
+            var profileUrl = _steamUser.GetProfileUrl(ProfilePage.BADGES);
             if (profileUrl != null)
                 Process.Start(profileUrl);
         }
 
         private void btnInventory_Click(object sender, EventArgs e)
         {
-            if (_steamUser == null)
-                return;
-
-            var profileUrl = _steamUser.GetProfileUrl("inventory");
+            var profileUrl = _steamUser.GetProfileUrl(ProfilePage.INVENTORY);
             if (profileUrl != null)
                 Process.Start(profileUrl);
         }
 
         private void btnProfile_Click(object sender, EventArgs e)
         {
-            if (_steamUser == null)
-                return;
-
             var profileUrl = _steamUser.GetProfileUrl();
             if (profileUrl != null)
                 Process.Start(profileUrl);

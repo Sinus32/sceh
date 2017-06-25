@@ -61,14 +61,14 @@
             // changeUserToolStripMenuItem
             // 
             this.changeUserToolStripMenuItem.Name = "changeUserToolStripMenuItem";
-            this.changeUserToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.changeUserToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.changeUserToolStripMenuItem.Text = "&Change user";
             this.changeUserToolStripMenuItem.Click += new System.EventHandler(this.changeUserToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -96,6 +96,7 @@
             this.psOther.Location = new System.Drawing.Point(0, 54);
             this.psOther.Name = "psOther";
             this.psOther.Size = new System.Drawing.Size(731, 30);
+            this.psOther.SteamUser = null;
             this.psOther.TabIndex = 3;
             // 
             // pvCurrent
@@ -104,6 +105,7 @@
             this.pvCurrent.Location = new System.Drawing.Point(0, 24);
             this.pvCurrent.Name = "pvCurrent";
             this.pvCurrent.Size = new System.Drawing.Size(731, 30);
+            this.pvCurrent.SteamUser = null;
             this.pvCurrent.TabIndex = 2;
             // 
             // InvCompareForm
@@ -117,6 +119,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
+            this.MinimumSize = new System.Drawing.Size(600, 400);
             this.Name = "InvCompareForm";
             this.Text = "InvCompareForm";
             this.menuStrip1.ResumeLayout(false);

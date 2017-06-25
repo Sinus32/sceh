@@ -67,6 +67,12 @@
     <Compile Include="Controls\ProfileViewCtr.Designer.cs">
       <DependentUpon>ProfileViewCtr.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SteamAppCtl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\SteamAppCtl.Designer.cs">
+      <DependentUpon>SteamAppCtl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InvCompareForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ProfileViewCtr.resx">
       <DependentUpon>ProfileViewCtr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\SteamAppCtl.resx">
+      <DependentUpon>SteamAppCtl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InvCompareForm.resx">
       <DependentUpon>InvCompareForm.cs</DependentUpon>

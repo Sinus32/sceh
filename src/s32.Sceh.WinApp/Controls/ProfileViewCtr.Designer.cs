@@ -56,7 +56,7 @@
             // btnProfile
             // 
             this.btnProfile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnProfile.Location = new System.Drawing.Point(360, 3);
+            this.btnProfile.Location = new System.Drawing.Point(310, 3);
             this.btnProfile.Name = "btnProfile";
             this.btnProfile.Size = new System.Drawing.Size(75, 23);
             this.btnProfile.TabIndex = 2;
@@ -67,7 +67,7 @@
             // btnBadges
             // 
             this.btnBadges.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBadges.Location = new System.Drawing.Point(441, 3);
+            this.btnBadges.Location = new System.Drawing.Point(391, 3);
             this.btnBadges.Name = "btnBadges";
             this.btnBadges.Size = new System.Drawing.Size(75, 23);
             this.btnBadges.TabIndex = 3;
@@ -78,7 +78,7 @@
             // btnInventory
             // 
             this.btnInventory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnInventory.Location = new System.Drawing.Point(522, 3);
+            this.btnInventory.Location = new System.Drawing.Point(472, 3);
             this.btnInventory.Name = "btnInventory";
             this.btnInventory.Size = new System.Drawing.Size(75, 23);
             this.btnInventory.TabIndex = 4;
@@ -96,7 +96,7 @@
             this.Controls.Add(this.lblProfile);
             this.Controls.Add(this.label1);
             this.Name = "ProfileViewCtr";
-            this.Size = new System.Drawing.Size(600, 30);
+            this.Size = new System.Drawing.Size(550, 30);
             this.ResumeLayout(false);
             this.PerformLayout();
 

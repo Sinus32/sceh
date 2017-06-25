@@ -34,17 +34,49 @@ namespace s32.Sceh.WinApp
                 return;
             }
 
-            SteamUser user;
-            string errorMessage;
+            var data = new LoadAndOpenData() { idOrUrl = idOrUrl };
 
-            if (SteamUserRepository.Instance.TryGetUser(idOrUrl, out user, out errorMessage))
+            btnLogin.Enabled = false;
+            bwOpenProfile.RunWorkerAsync(data);
+        }
+
+        private void bwOpenProfile_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var data = (LoadAndOpenData)e.Argument;
+
+            SteamUser steamUser;
+            string errorMessage;
+            if (SteamUserRepository.Instance.TryGetUser(data.idOrUrl, out steamUser, out errorMessage))
             {
-                OpenInvCompare(user);
+                data.steamUser = steamUser;
             }
             else
             {
-                MessageBox.Show(this, errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                data.errorMessage = errorMessage;
             }
+
+            e.Result = data;
+        }
+
+        private void bwOpenProfile_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            btnLogin.Enabled = true;
+            var data = e.Result as LoadAndOpenData;
+
+            if (data == null)
+            {
+                MessageBox.Show(this, "Failed to load profile", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (data.errorMessage != null)
+            {
+                MessageBox.Show(this, data.errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (data.steamUser != null)
+                OpenInvCompare(data.steamUser);
         }
 
         private void OpenInvCompare(SteamUser user)
@@ -57,6 +89,13 @@ namespace s32.Sceh.WinApp
                 this.Show();
             else
                 this.Close();
+        }
+
+        private class LoadAndOpenData
+        {
+            public string errorMessage;
+            public string idOrUrl;
+            public SteamUser steamUser;
         }
     }
 }
