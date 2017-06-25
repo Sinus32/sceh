@@ -1,4 +1,5 @@
-﻿using System;
+﻿using s32.Sceh.Classes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,21 @@ namespace s32.Sceh.WinApp.Forms
         public InvCompareForm()
         {
             InitializeComponent();
+        }
+
+        public void SetSteamUser(SteamUser user)
+        {
+            pvCurrent.SteamUser = user;
+        }
+
+        private void changeUserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.Yes;
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

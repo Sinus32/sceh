@@ -49,6 +49,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\SteamUserRepository.cs" />
+    <Compile Include="Controls\InvCompareCtr.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\InvCompareCtr.Designer.cs">
+      <DependentUpon>InvCompareCtr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ProfileSelectCtr.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ProfileSelectCtr.Designer.cs">
+      <DependentUpon>ProfileSelectCtr.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ProfileViewCtr.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -69,6 +81,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\InvCompareCtr.resx">
+      <DependentUpon>InvCompareCtr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ProfileSelectCtr.resx">
+      <DependentUpon>ProfileSelectCtr.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\ProfileViewCtr.resx">
       <DependentUpon>ProfileViewCtr.cs</DependentUpon>
     </EmbeddedResource>

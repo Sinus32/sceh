@@ -222,6 +222,9 @@
   <data name="tbLogin.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
+  <data name="tbLogin.Text" xml:space="preserve">
+    <value>sinus32</value>
+  </data>
   <data name="&gt;&gt;tbLogin.Name" xml:space="preserve">
     <value>tbLogin</value>
   </data>
@@ -710,7 +713,7 @@ http://steamcommunity.com/profile/</value>
     <value>Steam cards exchange helper</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>Intro</value>
+    <value>IntroForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
     <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

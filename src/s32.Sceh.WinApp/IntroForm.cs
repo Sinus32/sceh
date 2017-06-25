@@ -1,5 +1,6 @@
 ﻿using s32.Sceh.Classes;
 using s32.Sceh.WinApp.Code;
+using s32.Sceh.WinApp.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -38,12 +39,24 @@ namespace s32.Sceh.WinApp
 
             if (SteamUserRepository.Instance.TryGetUser(idOrUrl, out user, out errorMessage))
             {
-                MessageBox.Show(this, user.Name, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                OpenInvCompare(user);
             }
             else
             {
                 MessageBox.Show(this, errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void OpenInvCompare(SteamUser user)
+        {
+            var invCompareForm = new InvCompareForm();
+            invCompareForm.SetSteamUser(user);
+            this.Hide();
+            var result = invCompareForm.ShowDialog(this);
+            if (result == DialogResult.Yes)
+                this.Show();
+            else
+                this.Close();
         }
     }
 }
