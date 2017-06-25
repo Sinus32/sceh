@@ -50,6 +50,10 @@
     <Compile Include="Card.cs" />
     <Compile Include="GetInventoryResponse.cs" />
     <Compile Include="Inventory.cs" />
+    <Compile Include="RgCurrencyItem.cs" />
+    <Compile Include="RgDescriptionItem.cs" />
+    <Compile Include="RgInventoryItem.cs" />
+    <Compile Include="XmlSerialization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteamApp.cs" />
     <Compile Include="SteamPlayer.cs" />

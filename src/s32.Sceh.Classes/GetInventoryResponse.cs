@@ -31,37 +31,13 @@ namespace s32.Sceh.Classes
         [JsonProperty("more_start")]
         public string MoreStart { get; set; }
 
-        public class RgInventoryItem
-        {
-            [JsonProperty("id")]
-            public long Id { get; set; }
-
-            [JsonProperty("classid")]
-            public long ClassId { get; set; }
-
-            [JsonProperty("instanceid")]
-            public long InstanceId { get; set; }
-
-            [JsonProperty("amount")]
-            public int Amount { get; set; }
-
-            [JsonProperty("pos")]
-            public int Pos { get; set; }
-        }
-
-        public class RgCurrencyItem
-        {
-            [JsonProperty("id")]
-            public long Id { get; set; }
-        }
-
         public class RgDescriptionKeyConverter : TypeConverter
         {
             public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
             {
                 if (sourceType == typeof(string))
                     return true;
-                
+
                 return base.CanConvertFrom(context, sourceType);
             }
 
@@ -130,60 +106,6 @@ namespace s32.Sceh.Classes
             {
                 return String.Concat(ClassId, '_', InstanceId);
             }
-        }
-
-        public class RgDescriptionItem
-        {
-            [JsonProperty("appid")]
-            public long AppId { get; set; }
-
-            [JsonProperty("classid")]
-            public long ClassId { get; set; }
-
-            [JsonProperty("instanceid")]
-            public long InstanceId { get; set; }
-
-            [JsonProperty("icon_url")]
-            public string IconUrl { get; set; }
-
-            [JsonProperty("icon_url_large")]
-            public string IconUrlLarge { get; set; }
-
-            [JsonProperty("name")]
-            public string Name { get; set; }
-
-            [JsonProperty("market_hash_name")]
-            public string MarketHashName { get; set; }
-
-            [JsonProperty("market_name")]
-            public string MarketName { get; set; }
-
-            [JsonProperty("name_color")]
-            public string NameColor { get; set; }
-
-            [JsonProperty("background_color")]
-            public string BackgroundColor { get; set; }
-
-            [JsonProperty("type")]
-            public string Type { get; set; }
-
-            [JsonProperty("tradable")]
-            public bool Tradable { get; set; }
-
-            [JsonProperty("marketable")]
-            public bool Marketable { get; set; }
-
-            [JsonProperty("commodity")]
-            public bool Commodity { get; set; }
-
-            [JsonProperty("market_fee_app")]
-            public long MarketFeeApp { get; set; }
-
-            [JsonProperty("market_tradable_restriction")]
-            public int MarketTradableRestriction { get; set; }
-
-            [JsonProperty("market_marketable_restriction")]
-            public int MarketMarketableRestriction { get; set; }
         }
     }
 }
