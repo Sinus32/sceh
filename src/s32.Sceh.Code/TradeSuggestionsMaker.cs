@@ -16,11 +16,11 @@ namespace s32.Sceh.Code
     {
         public static TradeSuggestions Generate(string myProfile, string otherProfile, out string errorMessage)
         {
-            var myInv = InventoryDownloader.GetInventory(myProfile, out errorMessage);
+            var myInv = SteamDataDownloader.GetInventory(myProfile, out errorMessage);
             if (errorMessage != null)
                 return null;
 
-            var otherInv = InventoryDownloader.GetInventory(otherProfile, out errorMessage);
+            var otherInv = SteamDataDownloader.GetInventory(otherProfile, out errorMessage);
             if (errorMessage != null)
                 return null;
 

@@ -1,4 +1,5 @@
 ﻿using s32.Sceh.Classes;
+using s32.Sceh.WinApp.Code;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,77 +23,26 @@ namespace s32.Sceh.WinApp
             InitializeComponent();
         }
 
-        //[DataContract(IsReference = true, Namespace = XmlSerialization.NS_SCEH)]
-        //public class Person
-        //{
-        //    public Person(string firstName, string lastName, Person parent)
-        //    {
-        //        FirstName = firstName;
-        //        LastName = lastName;
-        //        Children = new List<Person>();
-        //        Parent = parent;
-        //    }
-
-        //    [DataMember]
-        //    public string FirstName { get; set; }
-        //    [DataMember]
-        //    public string LastName { get; set; }
-        //    [DataMember]
-        //    public List<Person> Children { get; set; }
-        //    [DataMember]
-        //    public Person Parent { get; set; }
-        //}
-
-        [XmlRoot("Person", Namespace = XmlSerialization.NS_SCEH)]
-        public class Person
+        private void btnLogin_Click(object sender, EventArgs e)
         {
-            public Person()
-            {
+            var idOrUrl = tbLogin.Text.Trim();
 
+            if (String.IsNullOrEmpty(idOrUrl))
+            {
+                MessageBox.Show(this, "Please, fill the login first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
-            public Person(string firstName, string lastName, Person parent)
+            SteamUser user;
+            string errorMessage;
+
+            if (SteamUserRepository.Instance.TryGetUser(idOrUrl, out user, out errorMessage))
             {
-                FirstName = firstName;
-                LastName = lastName;
-                Children = new List<Person>();
+                MessageBox.Show(this, user.Name, "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
-            public string FirstName { get; set; }
-
-            public string LastName { get; set; }
-
-            public List<Person> Children { get; set; }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Person kim = new Person("Kim", "Abercrombie", null);
-            kim.Children.Add(new Person("Hazem", "Abolrous", kim));
-            kim.Children.Add(new Person("Luka", "Abrus", kim));
-
-            try
+            else
             {
-                //DataContractSerializer dcs = new DataContractSerializer(typeof(Person));
-                var serializer = new XmlSerializer(typeof(Person));
-
-                using (var text = new StringWriter())
-                using (var xml = XmlWriter.Create(text))
-                {
-                    //dcs.WriteStartObject(xml, kim);
-                    //XmlSerialization.WriteNamespaceAttributes(xml);
-                    //dcs.WriteObjectContent(xml, kim);
-                    //dcs.WriteEndObject(xml);
-                    serializer.Serialize(xml, kim);
-                    xml.Flush();
-                    var t = text.ToString();
-                    MessageBox.Show(t, "Result");
-                    Clipboard.SetData(DataFormats.UnicodeText, t);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An exception occured: " + ex.Message);
+                MessageBox.Show(this, errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

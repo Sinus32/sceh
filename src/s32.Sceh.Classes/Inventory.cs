@@ -7,11 +7,6 @@ namespace s32.Sceh.Classes
 {
     public class Inventory
     {
-        public Inventory()
-        {
-            Cards = new List<Card>();
-        }
-
         public string User { get; set; }
 
         public string Link { get; set; }
