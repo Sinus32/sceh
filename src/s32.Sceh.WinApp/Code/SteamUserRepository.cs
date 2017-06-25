@@ -18,6 +18,41 @@ namespace s32.Sceh.WinApp.Code
             _dict = new Dictionary<string, SteamUser>();
         }
 
+        public bool TryGetUser(long steamId, string customURL, out SteamUser result, out string errorMessage)
+        {
+            if (steamId > 0L && _dict.TryGetValue(steamId.ToString(), out result))
+            {
+                errorMessage = null;
+                return true;
+            }
+
+            if (!String.IsNullOrEmpty(customURL) && _dict.TryGetValue(customURL, out result))
+            {
+                errorMessage = null;
+                return true;
+            }
+
+            var profileUri = SteamDataDownloader.GetProfileUri(steamId, customURL, ProfilePage.API_GET_PROFILE);
+            if (profileUri == null)
+            {
+                errorMessage = "Invalid profile";
+                result = null;
+                return false;
+            }
+
+            var profile = SteamDataDownloader.GetProfile(profileUri, out errorMessage);
+
+            if (errorMessage != null)
+            {
+                result = null;
+                return false;
+            }
+
+            result = RegisterSteamProfile(profile);
+            errorMessage = null;
+            return true;
+        }
+
         public bool TryGetUser(string idOrUrl, out SteamUser result, out string errorMessage)
         {
             if (_dict.TryGetValue(idOrUrl, out result))
@@ -26,12 +61,14 @@ namespace s32.Sceh.WinApp.Code
                 return true;
             }
 
-            return TryLoadUser(idOrUrl, out result, out errorMessage);
-        }
+            var profileUri = SteamDataDownloader.GetProfileUri(idOrUrl, ProfilePage.API_GET_PROFILE);
+            if (profileUri == null)
+            {
+                errorMessage = "Invalid profile";
+                return false;
+            }
 
-        private bool TryLoadUser(string idOrUrl, out SteamUser result, out string errorMessage)
-        {
-            var profile = SteamDataDownloader.GetProfile(idOrUrl, out errorMessage);
+            var profile = SteamDataDownloader.GetProfile(profileUri, out errorMessage);
 
             if (errorMessage != null)
             {
@@ -39,17 +76,23 @@ namespace s32.Sceh.WinApp.Code
                 return false;
             }
 
-            result = new SteamUser();
-            result.Profile = profile;
-
-            if (!String.IsNullOrEmpty(profile.CustomURL))
-                _dict[profile.CustomURL] = result;
-
-            var idAsString = profile.SteamId.ToString();
-            _dict[idAsString] = result;
-
+            result = RegisterSteamProfile(profile);
             errorMessage = null;
             return true;
+        }
+
+        private SteamUser RegisterSteamProfile(SteamProfile steamProfile)
+        {
+            var result = new SteamUser();
+            result.Profile = steamProfile;
+
+            if (!String.IsNullOrEmpty(steamProfile.CustomURL))
+                _dict[steamProfile.CustomURL] = result;
+
+            var idAsString = steamProfile.SteamId.ToString();
+            _dict[idAsString] = result;
+
+            return result;
         }
     }
 }

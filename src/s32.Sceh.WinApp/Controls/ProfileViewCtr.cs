@@ -56,23 +56,23 @@ namespace s32.Sceh.WinApp.Controls
 
         private void btnBadges_Click(object sender, EventArgs e)
         {
-            var profileUrl = _steamUser.GetProfileUrl(ProfilePage.BADGES);
-            if (profileUrl != null)
-                Process.Start(profileUrl);
+            var uri = _steamUser.GetProfileUri(ProfilePage.BADGES);
+            if (uri != null)
+                Process.Start(uri.ToString());
         }
 
         private void btnInventory_Click(object sender, EventArgs e)
         {
-            var profileUrl = _steamUser.GetProfileUrl(ProfilePage.INVENTORY);
-            if (profileUrl != null)
-                Process.Start(profileUrl);
+            var uri = _steamUser.GetProfileUri(ProfilePage.INVENTORY);
+            if (uri != null)
+                Process.Start(uri.ToString());
         }
 
         private void btnProfile_Click(object sender, EventArgs e)
         {
-            var profileUrl = _steamUser.GetProfileUrl();
-            if (profileUrl != null)
-                Process.Start(profileUrl);
+            var uri = _steamUser.GetProfileUri();
+            if (uri != null)
+                Process.Start(uri.ToString());
         }
     }
 }

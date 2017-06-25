@@ -20,7 +20,7 @@ namespace s32.Sceh.Code
 
         public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
         {
-            var url = GetProfileUrl(steamUser, ProfilePage.API_GET_INVENTORY);
+            var url = GetProfileUri(steamUser, ProfilePage.API_GET_INVENTORY);
 
             if (url == null)
             {
@@ -31,9 +31,9 @@ namespace s32.Sceh.Code
             return GetCards(url, out errorMessage);
         }
 
-        public static List<Card> GetCards(string url, out string errorMessage)
+        public static List<Card> GetCards(Uri inventoryUri, out string errorMessage)
         {
-            var request = (HttpWebRequest)HttpWebRequest.Create(url);
+            var request = (HttpWebRequest)HttpWebRequest.Create(inventoryUri);
             request.Method = "GET";
             request.Timeout = 10000;
             request.Accept = "application/json";
@@ -77,7 +77,8 @@ namespace s32.Sceh.Code
             {
                 Thread.Sleep(100);
 
-                request = (HttpWebRequest)HttpWebRequest.Create(String.Concat(url, "?start=", ret.MoreStart));
+                var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "?start=", ret.MoreStart));
+                request = (HttpWebRequest)HttpWebRequest.Create(nextUri);
                 request.Method = "GET";
                 request.Timeout = 10000;
                 request.Accept = "application/json";
@@ -117,32 +118,25 @@ namespace s32.Sceh.Code
             return result;
         }
 
-        public static Inventory GetInventory(string profile, out string errorMessage)
+        public static Inventory GetInventory(string idOrUrl, out string errorMessage)
         {
             var result = new Inventory();
-            result.User = profile;
-            string url = GetProfileUrl(profile, ProfilePage.API_GET_INVENTORY);
-            if (url == null)
+            result.User = idOrUrl;
+            var uri = GetProfileUri(idOrUrl, ProfilePage.API_GET_INVENTORY);
+            if (uri == null)
             {
                 errorMessage = "Invalid profile";
                 return null;
             }
 
-            result.Link = GetProfileUrl(profile);
-            result.Cards = GetCards(url, out errorMessage);
+            result.Link = GetProfileUri(idOrUrl).ToString();
+            result.Cards = GetCards(uri, out errorMessage);
             return result;
         }
 
-        public static SteamProfile GetProfile(string profile, out string errorMessage)
+        public static SteamProfile GetProfile(Uri profileUri, out string errorMessage)
         {
-            string url = GetProfileUrl(profile, ProfilePage.API_GET_PROFILE);
-            if (url == null)
-            {
-                errorMessage = "Invalid profile";
-                return null;
-            }
-
-            var request = (HttpWebRequest)HttpWebRequest.Create(url);
+            var request = (HttpWebRequest)HttpWebRequest.Create(profileUri);
             request.Method = "GET";
             request.Timeout = 10000;
             request.Accept = "text/xml";
@@ -190,7 +184,7 @@ namespace s32.Sceh.Code
             return result;
         }
 
-        public static string GetProfileUrl(string idOrUrl, ProfilePage page = null)
+        public static Uri GetProfileUri(string idOrUrl, ProfilePage page = null)
         {
             long steamId = 0L;
             string customUrl = null;
@@ -202,10 +196,10 @@ namespace s32.Sceh.Code
             else
                 return null;
 
-            return GetProfileUrl(steamId, customUrl, page);
+            return GetProfileUri(steamId, customUrl, page);
         }
 
-        public static string GetProfileUrl(long steamId, string customUrl, ProfilePage page = null)
+        public static Uri GetProfileUri(long steamId, string customUrl, ProfilePage page = null)
         {
             string result;
             if (!String.IsNullOrEmpty(customUrl))
@@ -215,15 +209,17 @@ namespace s32.Sceh.Code
             else
                 return null;
 
-            return page == null ? result : String.Concat(result, page.PageUrl);
+            return page == null
+                ? new Uri(result)
+                : new Uri(String.Concat(result, page.PageUrl));
         }
 
-        public static string GetProfileUrl(this SteamUser steamUser, ProfilePage page = null)
+        public static Uri GetProfileUri(this SteamUser steamUser, ProfilePage page = null)
         {
             if (steamUser == null || steamUser.Profile == null)
                 return null;
 
-            return GetProfileUrl(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, page);
+            return GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, page);
         }
 
         public static void Load(List<Card> result, GetInventoryResponse ret)

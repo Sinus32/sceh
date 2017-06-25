@@ -32,11 +32,12 @@
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbRememberMe = new System.Windows.Forms.CheckBox();
             this.btnLogin = new System.Windows.Forms.Button();
-            this.tbLogin = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.bwOpenProfile = new System.ComponentModel.BackgroundWorker();
+            this.cmbLogin = new s32.Sceh.WinApp.Controls.SteamProfileComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -54,12 +55,19 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.cmbLogin);
+            this.panel1.Controls.Add(this.cbRememberMe);
             this.panel1.Controls.Add(this.btnLogin);
-            this.panel1.Controls.Add(this.tbLogin);
             this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.label5);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // cbRememberMe
+            // 
+            resources.ApplyResources(this.cbRememberMe, "cbRememberMe");
+            this.cbRememberMe.Name = "cbRememberMe";
+            this.cbRememberMe.UseVisualStyleBackColor = true;
             // 
             // btnLogin
             // 
@@ -67,11 +75,6 @@
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.UseVisualStyleBackColor = true;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
-            // 
-            // tbLogin
-            // 
-            resources.ApplyResources(this.tbLogin, "tbLogin");
-            this.tbLogin.Name = "tbLogin";
             // 
             // label6
             // 
@@ -87,6 +90,13 @@
             // 
             this.bwOpenProfile.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwOpenProfile_DoWork);
             this.bwOpenProfile.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwOpenProfile_RunWorkerCompleted);
+            // 
+            // cmbLogin
+            // 
+            resources.ApplyResources(this.cmbLogin, "cmbLogin");
+            this.cmbLogin.FormattingEnabled = true;
+            this.cmbLogin.Name = "cmbLogin";
+            this.cmbLogin.SelectedProfile = null;
             // 
             // IntroForm
             // 
@@ -108,11 +118,12 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TextBox tbLogin;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button btnLogin;
         private System.ComponentModel.BackgroundWorker bwOpenProfile;
+        private System.Windows.Forms.CheckBox cbRememberMe;
+        private Controls.SteamProfileComboBox cmbLogin;
     }
 }
 

@@ -24,17 +24,45 @@ namespace s32.Sceh.WinApp
             InitializeComponent();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            //76561198353206398
+
+            //cmbLogin.Items.Add
+
+            var profiles = new SteamProfile[]
+            {
+                new SteamProfile() {CustomURL = "sinus32", Name = "Sinus32"},
+                new SteamProfile() {SteamId = 76561198353206398, Name = "Ravera_6"},
+            };
+
+            foreach (var dt in profiles)
+                cmbLogin.AddItem(dt);
+
+            base.OnLoad(e);
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            var idOrUrl = tbLogin.Text.Trim();
+            LoadAndOpenData data;
 
-            if (String.IsNullOrEmpty(idOrUrl))
+            var item = cmbLogin.SelectedProfile;
+            if (item != null)
             {
-                MessageBox.Show(this, "Please, fill the login first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                data = new LoadAndOpenData() { customURL = item.CustomURL, steamId = item.SteamId };
             }
+            else
+            {
+                var idOrUrl = cmbLogin.Text.Trim();
 
-            var data = new LoadAndOpenData() { idOrUrl = idOrUrl };
+                if (String.IsNullOrEmpty(idOrUrl))
+                {
+                    MessageBox.Show(this, "Please, fill the login first", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                data = new LoadAndOpenData() { idOrUrl = idOrUrl };
+            }
 
             btnLogin.Enabled = false;
             bwOpenProfile.RunWorkerAsync(data);
@@ -46,21 +74,33 @@ namespace s32.Sceh.WinApp
 
             SteamUser steamUser;
             string errorMessage;
-            if (SteamUserRepository.Instance.TryGetUser(data.idOrUrl, out steamUser, out errorMessage))
+            if (data.steamId > 0 || !String.IsNullOrEmpty(data.customURL))
             {
-                data.steamUser = steamUser;
+                if (SteamUserRepository.Instance.TryGetUser(data.steamId, data.customURL, out steamUser, out errorMessage))
+                {
+                    data.steamUser = steamUser;
+                }
+                else
+                {
+                    data.errorMessage = errorMessage;
+                }
             }
             else
             {
-                data.errorMessage = errorMessage;
+                if (SteamUserRepository.Instance.TryGetUser(data.idOrUrl, out steamUser, out errorMessage))
+                {
+                    data.steamUser = steamUser;
+                }
+                else
+                {
+                    data.errorMessage = errorMessage;
+                }
             }
-
             e.Result = data;
         }
 
         private void bwOpenProfile_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            btnLogin.Enabled = true;
             var data = e.Result as LoadAndOpenData;
 
             if (data == null)
@@ -77,6 +117,7 @@ namespace s32.Sceh.WinApp
 
             if (data.steamUser != null)
                 OpenInvCompare(data.steamUser);
+            btnLogin.Enabled = true;
         }
 
         private void OpenInvCompare(SteamUser user)
@@ -93,8 +134,10 @@ namespace s32.Sceh.WinApp
 
         private class LoadAndOpenData
         {
+            public string customURL;
             public string errorMessage;
             public string idOrUrl;
+            public long steamId;
             public SteamUser steamUser;
         }
     }

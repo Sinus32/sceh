@@ -29,15 +29,16 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.pnlMy = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.pnlOther = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
             this.flpMyInv = new System.Windows.Forms.FlowLayoutPanel();
             this.flpOthersInv = new System.Windows.Forms.FlowLayoutPanel();
+            this.bwLoadInventory = new System.ComponentModel.BackgroundWorker();
             this.tableLayoutPanel1.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.pnlMy.SuspendLayout();
+            this.pnlOther.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -45,8 +46,8 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pnlMy, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pnlOther, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.flpMyInv, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.flpOthersInv, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -58,31 +59,18 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(509, 329);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // panel1
+            // pnlMy
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.pnlMy.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(3);
-            this.panel1.Size = new System.Drawing.Size(248, 34);
-            this.panel1.TabIndex = 0;
-            // 
-            // panel2
-            // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.panel2.Controls.Add(this.label2);
-            this.panel2.Location = new System.Drawing.Point(257, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(3);
-            this.panel2.Size = new System.Drawing.Size(249, 34);
-            this.panel2.TabIndex = 1;
+            this.pnlMy.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.pnlMy.Controls.Add(this.label1);
+            this.pnlMy.Location = new System.Drawing.Point(3, 3);
+            this.pnlMy.Name = "pnlMy";
+            this.pnlMy.Padding = new System.Windows.Forms.Padding(3);
+            this.pnlMy.Size = new System.Drawing.Size(248, 34);
+            this.pnlMy.TabIndex = 0;
             // 
             // label1
             // 
@@ -92,6 +80,19 @@
             this.label1.Size = new System.Drawing.Size(67, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "My inventory";
+            // 
+            // pnlOther
+            // 
+            this.pnlOther.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlOther.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.pnlOther.Controls.Add(this.label2);
+            this.pnlOther.Location = new System.Drawing.Point(257, 3);
+            this.pnlOther.Name = "pnlOther";
+            this.pnlOther.Padding = new System.Windows.Forms.Padding(3);
+            this.pnlOther.Size = new System.Drawing.Size(249, 34);
+            this.pnlOther.TabIndex = 1;
             // 
             // label2
             // 
@@ -120,6 +121,11 @@
             this.flpOthersInv.Size = new System.Drawing.Size(249, 283);
             this.flpOthersInv.TabIndex = 3;
             // 
+            // bwLoadInventory
+            // 
+            this.bwLoadInventory.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwLoadInventory_DoWork);
+            this.bwLoadInventory.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwLoadInventory_RunWorkerCompleted);
+            // 
             // InvCompareCtr
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -130,10 +136,10 @@
             this.Padding = new System.Windows.Forms.Padding(5);
             this.Size = new System.Drawing.Size(519, 339);
             this.tableLayoutPanel1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.pnlMy.ResumeLayout(false);
+            this.pnlMy.PerformLayout();
+            this.pnlOther.ResumeLayout(false);
+            this.pnlOther.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -141,12 +147,13 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel pnlMy;
+        private System.Windows.Forms.Panel pnlOther;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FlowLayoutPanel flpMyInv;
         private System.Windows.Forms.FlowLayoutPanel flpOthersInv;
+        private System.ComponentModel.BackgroundWorker bwLoadInventory;
 
 
     }
