@@ -16,7 +16,7 @@ namespace s32.Sceh.WinApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Intro());
+            Application.Run(new IntroForm());
         }
     }
 }

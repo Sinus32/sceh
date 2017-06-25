@@ -16,9 +16,9 @@ using System.Xml.Serialization;
 
 namespace s32.Sceh.WinApp
 {
-    public partial class Intro : Form
+    public partial class IntroForm : Form
     {
-        public Intro()
+        public IntroForm()
         {
             InitializeComponent();
         }

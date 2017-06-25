@@ -49,16 +49,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\SteamUserRepository.cs" />
-    <Compile Include="Intro.cs">
+    <Compile Include="Controls\ProfileViewCtr.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ProfileViewCtr.Designer.cs">
+      <DependentUpon>ProfileViewCtr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\InvCompareForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Intro.Designer.cs">
-      <DependentUpon>Intro.cs</DependentUpon>
+    <Compile Include="Forms\InvCompareForm.Designer.cs">
+      <DependentUpon>InvCompareForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IntroForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IntroForm.Designer.cs">
+      <DependentUpon>IntroForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Intro.resx">
-      <DependentUpon>Intro.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\ProfileViewCtr.resx">
+      <DependentUpon>ProfileViewCtr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\InvCompareForm.resx">
+      <DependentUpon>InvCompareForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntroForm.resx">
+      <DependentUpon>IntroForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -99,10 +117,7 @@
       <Name>s32.Sceh.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controls\" />
-    <Folder Include="Forms\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
