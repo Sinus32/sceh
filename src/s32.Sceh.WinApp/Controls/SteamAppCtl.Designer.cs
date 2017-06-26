@@ -28,18 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SteamAppCtl));
+            this.steamAppHeader1 = new s32.Sceh.WinApp.Controls.SteamAppHeader();
             this.SuspendLayout();
+            // 
+            // steamAppHeader1
+            // 
+            this.steamAppHeader1.BackColor = System.Drawing.SystemColors.Window;
+            resources.ApplyResources(this.steamAppHeader1, "steamAppHeader1");
+            this.steamAppHeader1.Name = "steamAppHeader1";
             // 
             // SteamAppCtl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
+            this.Controls.Add(this.steamAppHeader1);
             this.Name = "SteamAppCtl";
-            this.Size = new System.Drawing.Size(480, 191);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private SteamAppHeader steamAppHeader1;
+
     }
 }

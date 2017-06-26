@@ -28,37 +28,36 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cmbProfile = new System.Windows.Forms.ComboBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProfileSelectCtr));
+            this.cmbOther = new s32.Sceh.WinApp.Controls.SteamProfileComboBox();
             this.SuspendLayout();
             // 
             // lblProfile
             // 
-            this.lblProfile.Visible = false;
+            resources.ApplyResources(this.lblProfile, "lblProfile");
             // 
             // label1
             // 
-            this.label1.Size = new System.Drawing.Size(67, 13);
-            this.label1.Text = "Other profile:";
+            resources.ApplyResources(this.label1, "label1");
             // 
-            // cmbProfile
+            // cmbOther
             // 
-            this.cmbProfile.FormattingEnabled = true;
-            this.cmbProfile.Location = new System.Drawing.Point(80, 5);
-            this.cmbProfile.Name = "cmbProfile";
-            this.cmbProfile.Size = new System.Drawing.Size(200, 21);
-            this.cmbProfile.TabIndex = 5;
+            this.cmbOther.FormattingEnabled = true;
+            resources.ApplyResources(this.cmbOther, "cmbOther");
+            this.cmbOther.Name = "cmbOther";
+            this.cmbOther.SelectedProfile = null;
             // 
             // ProfileSelectCtr
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.Controls.Add(this.cmbProfile);
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.cmbOther);
             this.Name = "ProfileSelectCtr";
             this.Controls.SetChildIndex(this.label1, 0);
             this.Controls.SetChildIndex(this.lblProfile, 0);
             this.Controls.SetChildIndex(this.btnProfile, 0);
             this.Controls.SetChildIndex(this.btnBadges, 0);
             this.Controls.SetChildIndex(this.btnInventory, 0);
-            this.Controls.SetChildIndex(this.cmbProfile, 0);
+            this.Controls.SetChildIndex(this.cmbOther, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -66,6 +65,7 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox cmbProfile;
+        private SteamProfileComboBox cmbOther;
+
     }
 }

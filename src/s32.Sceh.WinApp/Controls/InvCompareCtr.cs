@@ -32,68 +32,116 @@ namespace s32.Sceh.WinApp.Controls
         {
             _otherUser = steamUser;
             if (steamUser == null)
-                flpOthersInv.Controls.Clear();
+                FillAreaWithSuggestions();
             else
-                LoadInventory(pnlOther, flpOthersInv, steamUser);
+                LoadInventory(pnlOther);
         }
 
         protected void SetSteamUser(SteamUser steamUser)
         {
             _steamUser = steamUser;
             if (steamUser == null)
-                flpMyInv.Controls.Clear();
+                FillAreaWithSuggestions();
             else
-                LoadInventory(pnlMy, flpMyInv, steamUser);
+                LoadInventory(pnlMy);
         }
 
-        private void bwLoadInventory_DoWork(object sender, DoWorkEventArgs e)
+        private void FillAreaWithSuggestions()
         {
-            var data = (LoadWorkerData)e.Argument;
+            flpSteamApps.Controls.Clear();
+            var emptyCardList = new List<Card>();
+            var myCards = _steamUser == null || _steamUser.Cards == null ? emptyCardList : _steamUser.Cards;
+            var otherCards = _otherUser == null || _otherUser.Cards == null ? emptyCardList : _otherUser.Cards;
 
-            if (data.steamUser.Cards == null)
-            {
-                string errorMessage;
-                data.steamUser.Cards = SteamDataDownloader.GetCards(data.steamUser, out errorMessage);
-                data.errorMessage = errorMessage;
-            }
+            string errorMessage;
+            var steamApps = TradeSuggestionsMaker.Generate(myCards, otherCards, out errorMessage);
 
-            e.Result = data;
-        }
-
-        private void bwLoadInventory_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            var data = e.Result as LoadWorkerData;
-            if (data == null)
-                return;
-
-            data.pnl.Enabled = true;
-            data.pnl.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption);
-            data.flpInv.Enabled = true;
-
-            if (data.errorMessage != null)
+            if (errorMessage != null)
             {
                 var label = new Label();
-                label.Text = data.errorMessage;
-                data.flpInv.Controls.Add(label);
+                label.Text = errorMessage;
+                flpSteamApps.Controls.Add(label);
+            }
+            else
+            {
+                foreach (var app in steamApps)
+                {
+                    var ctl = new SteamAppCtl();
+                    ctl.SteamApp = app;
+                    flpSteamApps.Controls.Add(ctl);
+                }
             }
         }
 
-        private void LoadInventory(Panel pnl, FlowLayoutPanel flpInv, SteamUser steamUser)
+        private void LoadInventory(Panel pnl)
         {
             pnl.Enabled = false;
             pnl.BackColor = Color.FromKnownColor(KnownColor.InactiveCaption);
-            flpInv.Controls.Clear();
-            flpInv.Enabled = false;
-            var data = new LoadWorkerData() { pnl = pnl, flpInv = flpInv, steamUser = steamUser };
-            bwLoadInventory.RunWorkerAsync(data);
+            flpSteamApps.Controls.Clear();
+            flpSteamApps.Enabled = false;
+            bwLoadMyInventory.RunWorkerAsync(pnl);
         }
 
-        private class LoadWorkerData
+        private void bwOtherMyInventory_DoWork(object sender, DoWorkEventArgs e)
         {
-            public string errorMessage;
-            public FlowLayoutPanel flpInv;
-            public Panel pnl;
-            public SteamUser steamUser;
+            if (_otherUser.Cards == null)
+            {
+                string errorMessage;
+                _otherUser.Cards = SteamDataDownloader.GetCards(_otherUser, out errorMessage);
+                e.Result = errorMessage;
+            }
+
+            e.Result = null;
+        }
+
+        private void bwOtherMyInventory_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            pnlOther.Enabled = true;
+            pnlOther.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption);
+            flpSteamApps.Enabled = true;
+
+            var errorMessage = e.Result as string;
+            if (errorMessage != null)
+            {
+                var label = new Label();
+                label.Text = errorMessage;
+                flpSteamApps.Controls.Add(label);
+            }
+            else
+            {
+                FillAreaWithSuggestions();
+            }
+        }
+
+        private void bwLoadMyInventory_DoWork(object sender, DoWorkEventArgs e)
+        {
+            if (_steamUser.Cards == null)
+            {
+                string errorMessage;
+                _steamUser.Cards = SteamDataDownloader.GetCards(_steamUser, out errorMessage);
+                e.Result = errorMessage;
+            }
+
+            e.Result = null;
+        }
+
+        private void bwLoadMyInventory_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            pnlMy.Enabled = true;
+            pnlMy.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption);
+            flpSteamApps.Enabled = true;
+
+            var errorMessage = e.Result as string;
+            if (errorMessage != null)
+            {
+                var label = new Label();
+                label.Text = errorMessage;
+                flpSteamApps.Controls.Add(label);
+            }
+            else
+            {
+                FillAreaWithSuggestions();
+            }
         }
     }
 }

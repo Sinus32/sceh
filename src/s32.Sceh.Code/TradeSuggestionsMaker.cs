@@ -24,12 +24,45 @@ namespace s32.Sceh.Code
             if (errorMessage != null)
                 return null;
 
+            var steamApps = Generate(myInv.Cards, otherInv.Cards, out errorMessage);
+            var manager = new CardImageManager();
+
+            foreach (var dt in steamApps)
+            {
+                foreach (var card in dt.MyCards)
+                {
+                    card.IsDuplicated = !dt.MySet.Add(card.MarketHashName);
+                    card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
+                }
+
+                foreach (var card in dt.OtherCards)
+                {
+                    card.IsDuplicated = !dt.OtherSet.Add(card.MarketHashName);
+                    card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
+                }
+
+                dt.Hide = dt.MySet.Count == 0 || dt.OtherSet.Count == 0 || dt.MySet.SetEquals(dt.OtherSet);
+            }
+
+            var result = new TradeSuggestions();
+            result.MyInv = myInv;
+            result.OtherInv = otherInv;
+            result.SteamApps = steamApps;
+            result.OriginalsUsed = manager.OryginalsUsed;
+            result.ThumbnailsUsed = manager.ThumbnailsUsed;
+
+            errorMessage = null;
+            return result;
+        }
+
+        public static List<SteamApp> Generate(List<Card> myCards, List<Card> otherCards, out string errorMessage)
+        {
             var current = new SteamApp(-1, null);
-            var it = otherInv.Cards.GetEnumerator();
+            var it = otherCards.GetEnumerator();
             var steamApps = new List<SteamApp>();
             bool hasOther = it.MoveNext();
 
-            foreach (var card in myInv.Cards)
+            foreach (var card in myCards)
             {
                 while (hasOther && it.Current.MarketFeeApp < card.MarketFeeApp)
                 {
@@ -62,35 +95,10 @@ namespace s32.Sceh.Code
                 hasOther = it.MoveNext();
             }
 
-            var manager = new CardImageManager();
-
-            foreach (var dt in steamApps)
-            {
-                foreach (var card in dt.MyCards)
-                {
-                    card.IsDuplicated = !dt.MySet.Add(card.MarketHashName);
-                    card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
-                }
-
-                foreach (var card in dt.OtherCards)
-                {
-                    card.IsDuplicated = !dt.OtherSet.Add(card.MarketHashName);
-                    card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
-                }
-
-                dt.Hide = dt.MySet.Count == 0 || dt.OtherSet.Count == 0 || dt.MySet.SetEquals(dt.OtherSet);
-            }
-
             steamApps.Sort(SteamAppsComparison);
 
-            var result = new TradeSuggestions();
-            result.MyInv = myInv;
-            result.OtherInv = otherInv;
-            result.SteamApps = steamApps;
-            result.OriginalsUsed = manager.OryginalsUsed;
-            result.ThumbnailsUsed = manager.ThumbnailsUsed;
-
-            return result;
+            errorMessage = null;
+            return steamApps;
         }
 
         private static int SteamAppsComparison(SteamApp x, SteamApp y)

@@ -101,6 +101,7 @@ namespace s32.Sceh.WinApp
 
         private void bwOpenProfile_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            btnLogin.Enabled = true;
             var data = e.Result as LoadAndOpenData;
 
             if (data == null)
@@ -117,7 +118,6 @@ namespace s32.Sceh.WinApp
 
             if (data.steamUser != null)
                 OpenInvCompare(data.steamUser);
-            btnLogin.Enabled = true;
         }
 
         private void OpenInvCompare(SteamUser user)
