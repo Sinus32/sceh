@@ -118,30 +118,33 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="steamAppHeader1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="appHeader.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Top</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="steamAppHeader1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="appHeader.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="steamAppHeader1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 24</value>
+  <data name="appHeader.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="appHeader.Size" type="System.Drawing.Size, System.Drawing">
+    <value>480, 26</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="steamAppHeader1.TabIndex" type="System.Int32, mscorlib">
+  <data name="appHeader.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;steamAppHeader1.Name" xml:space="preserve">
-    <value>steamAppHeader1</value>
+  <data name="&gt;&gt;appHeader.Name" xml:space="preserve">
+    <value>appHeader</value>
   </data>
-  <data name="&gt;&gt;steamAppHeader1.Type" xml:space="preserve">
+  <data name="&gt;&gt;appHeader.Type" xml:space="preserve">
     <value>s32.Sceh.WinApp.Controls.SteamAppHeader, s32.Sceh.WinApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;steamAppHeader1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;appHeader.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;steamAppHeader1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;appHeader.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -151,7 +154,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>480, 191</value>
+    <value>480, 77</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>SteamAppCtl</value>

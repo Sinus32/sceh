@@ -2,6 +2,7 @@
 using s32.Sceh.Classes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -17,6 +18,7 @@ namespace s32.Sceh.Code
     {
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,18}$", RegexOptions.None);
         private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
+        private static DateTime _prevCall = DateTime.MinValue;
 
         public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
         {
@@ -33,6 +35,7 @@ namespace s32.Sceh.Code
 
         public static List<Card> GetCards(Uri inventoryUri, out string errorMessage)
         {
+            Delay();
             var request = (HttpWebRequest)HttpWebRequest.Create(inventoryUri);
             request.Method = "GET";
             request.Timeout = 10000;
@@ -75,7 +78,7 @@ namespace s32.Sceh.Code
 
             while (ret.More)
             {
-                Thread.Sleep(100);
+                Delay();
 
                 var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "?start=", ret.MoreStart));
                 request = (HttpWebRequest)HttpWebRequest.Create(nextUri);
@@ -112,10 +115,32 @@ namespace s32.Sceh.Code
             }
 
             result.Sort(CardComparison);
-            Thread.Sleep(100);
 
             errorMessage = null;
             return result;
+        }
+
+        private static void Delay()
+        {
+            var now = DateTime.Now;
+            if (_prevCall == DateTime.MinValue)
+            {
+                _prevCall = now;
+                return;
+            }
+
+            var nextCall = _prevCall.AddMilliseconds(200);
+
+            if (nextCall > now)
+            {
+                var diff = (int)(now - nextCall).TotalMilliseconds + 1;
+                Thread.Sleep(diff);
+                _prevCall = DateTime.Now;
+            }
+            else
+            {
+                _prevCall = now;
+            }
         }
 
         public static Inventory GetInventory(string idOrUrl, out string errorMessage)
@@ -136,6 +161,8 @@ namespace s32.Sceh.Code
 
         public static SteamProfile GetProfile(Uri profileUri, out string errorMessage)
         {
+            Delay();
+
             var request = (HttpWebRequest)HttpWebRequest.Create(profileUri);
             request.Method = "GET";
             request.Timeout = 10000;

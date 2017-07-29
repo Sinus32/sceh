@@ -29,26 +29,27 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InvCompareCtr));
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
             this.pnlMy = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.pnlOther = new System.Windows.Forms.Panel();
             this.label2 = new System.Windows.Forms.Label();
-            this.flpSteamApps = new System.Windows.Forms.FlowLayoutPanel();
             this.bwLoadMyInventory = new System.ComponentModel.BackgroundWorker();
             this.bwOtherMyInventory = new System.ComponentModel.BackgroundWorker();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.pnlSteamApps = new System.Windows.Forms.Panel();
+            this.vsbScroll = new System.Windows.Forms.VScrollBar();
+            this.tlpMain.SuspendLayout();
             this.pnlMy.SuspendLayout();
             this.pnlOther.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // tlpMain
             // 
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.pnlMy, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.pnlOther, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.flpSteamApps, 0, 1);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            resources.ApplyResources(this.tlpMain, "tlpMain");
+            this.tlpMain.Controls.Add(this.pnlMy, 0, 0);
+            this.tlpMain.Controls.Add(this.pnlOther, 1, 0);
+            this.tlpMain.Controls.Add(this.pnlSteamApps, 0, 1);
+            this.tlpMain.Name = "tlpMain";
             // 
             // pnlMy
             // 
@@ -74,12 +75,6 @@
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // flpSteamApps
-            // 
-            this.tableLayoutPanel1.SetColumnSpan(this.flpSteamApps, 2);
-            resources.ApplyResources(this.flpSteamApps, "flpSteamApps");
-            this.flpSteamApps.Name = "flpSteamApps";
-            // 
             // bwLoadMyInventory
             // 
             this.bwLoadMyInventory.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwLoadMyInventory_DoWork);
@@ -90,14 +85,29 @@
             this.bwOtherMyInventory.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bwOtherMyInventory_DoWork);
             this.bwOtherMyInventory.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bwOtherMyInventory_RunWorkerCompleted);
             // 
+            // pnlSteamApps
+            // 
+            this.tlpMain.SetColumnSpan(this.pnlSteamApps, 2);
+            resources.ApplyResources(this.pnlSteamApps, "pnlSteamApps");
+            this.pnlSteamApps.Name = "pnlSteamApps";
+            this.pnlSteamApps.SizeChanged += new System.EventHandler(this.pnlSteamApps_SizeChanged);
+            // 
+            // vsbScroll
+            // 
+            resources.ApplyResources(this.vsbScroll, "vsbScroll");
+            this.vsbScroll.LargeChange = 30;
+            this.vsbScroll.Name = "vsbScroll";
+            this.vsbScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vsbScroll_Scroll);
+            // 
             // InvCompareCtr
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.tlpMain);
+            this.Controls.Add(this.vsbScroll);
             this.Name = "InvCompareCtr";
-            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tlpMain.ResumeLayout(false);
             this.pnlMy.ResumeLayout(false);
             this.pnlMy.PerformLayout();
             this.pnlOther.ResumeLayout(false);
@@ -108,14 +118,15 @@
 
         #endregion
 
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tlpMain;
         private System.Windows.Forms.Panel pnlMy;
         private System.Windows.Forms.Panel pnlOther;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.FlowLayoutPanel flpSteamApps;
         private System.ComponentModel.BackgroundWorker bwLoadMyInventory;
         private System.ComponentModel.BackgroundWorker bwOtherMyInventory;
+        private System.Windows.Forms.Panel pnlSteamApps;
+        private System.Windows.Forms.VScrollBar vsbScroll;
 
 
     }

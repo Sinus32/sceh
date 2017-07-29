@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using s32.Sceh.Classes;
 using s32.Sceh.Code;
+using System.Runtime.InteropServices;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -20,12 +21,22 @@ namespace s32.Sceh.WinApp.Controls
         public InvCompareCtr()
         {
             InitializeComponent();
+            pnlSteamApps.HorizontalScroll.Visible = false;
         }
 
         public SteamUser SteamUser
         {
             get { return _steamUser; }
             set { SetSteamUser(value); }
+        }
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+        private static extern IntPtr SendMessage(HandleRef hWnd, Int32 Msg, IntPtr wParam, IntPtr lParam);
+
+        private static void EnableRepaint(HandleRef handle, bool enable)
+        {
+            const int WM_SETREDRAW = 0x000B;
+            SendMessage(handle, WM_SETREDRAW, new IntPtr(enable ? 1 : 0), IntPtr.Zero);
         }
 
         protected void SetOtherUser(SteamUser steamUser)
@@ -48,7 +59,7 @@ namespace s32.Sceh.WinApp.Controls
 
         private void FillAreaWithSuggestions()
         {
-            flpSteamApps.Controls.Clear();
+            pnlSteamApps.Controls.Clear();
             var emptyCardList = new List<Card>();
             var myCards = _steamUser == null || _steamUser.Cards == null ? emptyCardList : _steamUser.Cards;
             var otherCards = _otherUser == null || _otherUser.Cards == null ? emptyCardList : _otherUser.Cards;
@@ -60,15 +71,29 @@ namespace s32.Sceh.WinApp.Controls
             {
                 var label = new Label();
                 label.Text = errorMessage;
-                flpSteamApps.Controls.Add(label);
+                pnlSteamApps.Controls.Add(label);
             }
             else
             {
-                foreach (var app in steamApps)
+                this.SuspendLayout();
+                HandleRef hnd = new HandleRef(this, this.Handle);
+                EnableRepaint(hnd, false);
+                try
                 {
-                    var ctl = new SteamAppCtl();
-                    ctl.SteamApp = app;
-                    flpSteamApps.Controls.Add(ctl);
+                    foreach (var app in steamApps)
+                    {
+                        var ctl = new SteamAppCtl();
+                        ctl.SteamApp = app;
+                        ctl.Dock = DockStyle.Top;
+                        pnlSteamApps.Controls.Add(ctl);
+                    }
+                }
+                finally
+                {
+                    EnableRepaint(hnd, true);
+                    this.ResumeLayout();
+
+                    this.Refresh();
                 }
             }
         }
@@ -77,8 +102,8 @@ namespace s32.Sceh.WinApp.Controls
         {
             pnl.Enabled = false;
             pnl.BackColor = Color.FromKnownColor(KnownColor.InactiveCaption);
-            flpSteamApps.Controls.Clear();
-            flpSteamApps.Enabled = false;
+            pnlSteamApps.Controls.Clear();
+            pnlSteamApps.Enabled = false;
             bwLoadMyInventory.RunWorkerAsync(pnl);
         }
 
@@ -98,14 +123,14 @@ namespace s32.Sceh.WinApp.Controls
         {
             pnlOther.Enabled = true;
             pnlOther.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption);
-            flpSteamApps.Enabled = true;
+            pnlSteamApps.Enabled = true;
 
             var errorMessage = e.Result as string;
             if (errorMessage != null)
             {
                 var label = new Label();
                 label.Text = errorMessage;
-                flpSteamApps.Controls.Add(label);
+                pnlSteamApps.Controls.Add(label);
             }
             else
             {
@@ -129,19 +154,32 @@ namespace s32.Sceh.WinApp.Controls
         {
             pnlMy.Enabled = true;
             pnlMy.BackColor = Color.FromKnownColor(KnownColor.ActiveCaption);
-            flpSteamApps.Enabled = true;
+            pnlSteamApps.Enabled = true;
 
             var errorMessage = e.Result as string;
             if (errorMessage != null)
             {
                 var label = new Label();
                 label.Text = errorMessage;
-                flpSteamApps.Controls.Add(label);
+                pnlSteamApps.Controls.Add(label);
             }
             else
             {
                 FillAreaWithSuggestions();
             }
+        }
+
+        private void vsbScroll_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (e.OldValue == e.NewValue)
+                return;
+
+            pnlSteamApps.AutoScrollPosition = new Point(0, e.NewValue);
+        }
+
+        private void pnlSteamApps_SizeChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
