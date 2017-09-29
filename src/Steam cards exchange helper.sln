@@ -9,11 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.Code", "s32.Sceh.C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.Classes", "s32.Sceh.Classes\s32.Sceh.Classes.csproj", "{95B9D584-2509-4A9B-B093-7360051F2E98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.Interfaces", "s32.Sceh.Interfaces\s32.Sceh.Interfaces.csproj", "{0CA5FAD4-DAEE-4D54-A38B-3A38A918ACBA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.Data", "s32.Sceh.Data\s32.Sceh.Data.csproj", "{6BC4B31B-5FF7-4EAB-9CC9-8CFCFFDA0846}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.WinApp", "s32.Sceh.WinApp\s32.Sceh.WinApp.csproj", "{4226C85E-D76D-4C68-97EF-F063F1A97CBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.Data", "s32.Sceh.Data\s32.Sceh.Data.csproj", "{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,18 +31,14 @@ Global
 		{95B9D584-2509-4A9B-B093-7360051F2E98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95B9D584-2509-4A9B-B093-7360051F2E98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95B9D584-2509-4A9B-B093-7360051F2E98}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0CA5FAD4-DAEE-4D54-A38B-3A38A918ACBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0CA5FAD4-DAEE-4D54-A38B-3A38A918ACBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0CA5FAD4-DAEE-4D54-A38B-3A38A918ACBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0CA5FAD4-DAEE-4D54-A38B-3A38A918ACBA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BC4B31B-5FF7-4EAB-9CC9-8CFCFFDA0846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BC4B31B-5FF7-4EAB-9CC9-8CFCFFDA0846}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BC4B31B-5FF7-4EAB-9CC9-8CFCFFDA0846}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BC4B31B-5FF7-4EAB-9CC9-8CFCFFDA0846}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4226C85E-D76D-4C68-97EF-F063F1A97CBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4226C85E-D76D-4C68-97EF-F063F1A97CBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4226C85E-D76D-4C68-97EF-F063F1A97CBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4226C85E-D76D-4C68-97EF-F063F1A97CBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

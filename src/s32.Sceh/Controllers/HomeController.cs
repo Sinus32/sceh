@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using System.Web.Security;
 using s32.Sceh.Classes;
 using s32.Sceh.Code;
-using s32.Sceh.Data;
 using s32.Sceh.Models;
 
 namespace s32.Sceh.Controllers
@@ -99,14 +98,14 @@ namespace s32.Sceh.Controllers
 
         private Guid TryAuthenticate(string login)
         {
-            var user = SteamUsers.Get(login);
+            //var user = SteamUsers.Get(login);
 
-            if (user == null)
+            //if (user == null)
                 return Guid.Empty;
 
-            FormsAuthentication.SetAuthCookie(login, true);
+            //FormsAuthentication.SetAuthCookie(login, true);
 
-            return user.Id;
+            //return user.Id;
         }
 
         public ActionResult GetCardPrice(string marketHashName)

@@ -1,0 +1,12 @@
+﻿<Window x:Class="s32.Sceh.WinApp.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
+    xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
+    Title="MainWindow" Height="179" Width="437" Icon="sceh.ico">
+  <StackPanel Margin="60,0" VerticalAlignment="Center">
+    <Label Target="{Binding ProfileComboBox, ElementName=spcbProfile}" Content="{x:Static resx:Strings.LoginProfileLabel}" />
+    <ctl:SteamProfileComboBox x:Name="spcbProfile" Grid.Row="1" Grid.ColumnSpan="2" />
+    <Button x:Name="btnLogin" Content="{x:Static resx:Strings.LoginButtonText}" HorizontalAlignment="Right" Margin="0,10" />
+  </StackPanel>
+</Window>

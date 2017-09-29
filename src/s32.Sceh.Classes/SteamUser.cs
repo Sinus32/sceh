@@ -10,7 +10,7 @@ namespace s32.Sceh.Classes
     {
         public List<Card> Cards { get; set; }
 
-        public SteamProfile Profile { get; set; }
+        public SteamProfileResp Profile { get; set; }
 
         public long SteamId
         {

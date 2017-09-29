@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace s32.Sceh.Classes
 {
-    public class GetInventoryResponse
+    public class RgInventoryResp
     {
         [JsonProperty("success")]
         public bool Success { get; set; }

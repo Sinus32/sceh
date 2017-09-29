@@ -64,7 +64,7 @@ namespace s32.Sceh.Code
             jss.MissingMemberHandling = MissingMemberHandling.Ignore;
             jss.NullValueHandling = NullValueHandling.Include;
             jss.ObjectCreationHandling = ObjectCreationHandling.Replace;
-            var ret = JsonConvert.DeserializeObject<GetInventoryResponse>(rawJson, jss);
+            var ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
 
             if (!ret.Success)
             {
@@ -103,7 +103,7 @@ namespace s32.Sceh.Code
                     }
                 }
 
-                ret = JsonConvert.DeserializeObject<GetInventoryResponse>(rawJson, jss);
+                ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
 
                 if (!ret.Success)
                 {
@@ -159,7 +159,7 @@ namespace s32.Sceh.Code
             return result;
         }
 
-        public static SteamProfile GetProfile(Uri profileUri, out string errorMessage)
+        public static SteamProfileResp GetProfile(Uri profileUri, out string errorMessage)
         {
             Delay();
 
@@ -193,13 +193,13 @@ namespace s32.Sceh.Code
                 }
             }
 
-            var ser = new XmlSerializer(typeof(SteamProfile));
+            var ser = new XmlSerializer(typeof(SteamProfileResp));
 
-            SteamProfile result = null;
+            SteamProfileResp result = null;
             try
             {
                 using (var reader = new StringReader(rawXml))
-                    result = (SteamProfile)ser.Deserialize(reader);
+                    result = (SteamProfileResp)ser.Deserialize(reader);
             }
             catch (InvalidOperationException)
             {
@@ -249,13 +249,13 @@ namespace s32.Sceh.Code
             return GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, page);
         }
 
-        public static void Load(List<Card> result, GetInventoryResponse ret)
+        public static void Load(List<Card> result, RgInventoryResp ret)
         {
             foreach (var dt in ret.RgInventory.Values)
             {
                 var card = new Card();
                 card.InventoryItem = dt;
-                var key = new GetInventoryResponse.RgDescriptionKey(dt.ClassId, dt.InstanceId);
+                var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
                 card.DescriptionItem = ret.RgDescriptions[key];
                 if (card.DescriptionItem.Tradable && card.DescriptionItem.Marketable)
                     result.Add(card);
