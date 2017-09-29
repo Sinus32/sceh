@@ -20,6 +20,13 @@ namespace s32.Sceh.Code
         private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
         private static DateTime _prevCall = DateTime.MinValue;
 
+        public enum GetProfileError
+        {
+            Success,
+            WrongProfile,
+            DeserializationError
+        }
+
         public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
         {
             var url = GetProfileUri(steamUser, ProfilePage.API_GET_INVENTORY);
@@ -120,29 +127,6 @@ namespace s32.Sceh.Code
             return result;
         }
 
-        private static void Delay()
-        {
-            var now = DateTime.Now;
-            if (_prevCall == DateTime.MinValue)
-            {
-                _prevCall = now;
-                return;
-            }
-
-            var nextCall = _prevCall.AddMilliseconds(200);
-
-            if (nextCall > now)
-            {
-                var diff = (int)(now - nextCall).TotalMilliseconds + 1;
-                Thread.Sleep(diff);
-                _prevCall = DateTime.Now;
-            }
-            else
-            {
-                _prevCall = now;
-            }
-        }
-
         public static Inventory GetInventory(string idOrUrl, out string errorMessage)
         {
             var result = new Inventory();
@@ -159,7 +143,7 @@ namespace s32.Sceh.Code
             return result;
         }
 
-        public static SteamProfileResp GetProfile(Uri profileUri, out string errorMessage)
+        public static SteamProfileResp GetProfile(Uri profileUri, out GetProfileError error)
         {
             Delay();
 
@@ -177,7 +161,7 @@ namespace s32.Sceh.Code
             {
                 if (!response.ContentType.StartsWith("text/xml"))
                 {
-                    errorMessage = "Wrong profile";
+                    error = GetProfileError.WrongProfile;
                     return null;
                 }
 
@@ -188,7 +172,7 @@ namespace s32.Sceh.Code
 
                 if (!rawXml.Contains("<profile>"))
                 {
-                    errorMessage = "Wrong profile";
+                    error = GetProfileError.WrongProfile;
                     return null;
                 }
             }
@@ -203,11 +187,11 @@ namespace s32.Sceh.Code
             }
             catch (InvalidOperationException)
             {
-                errorMessage = "Cannot read user profile";
+                error = GetProfileError.DeserializationError;
                 return null;
             }
 
-            errorMessage = null;
+            error = GetProfileError.Success;
             return result;
         }
 
@@ -229,10 +213,10 @@ namespace s32.Sceh.Code
         public static Uri GetProfileUri(long steamId, string customUrl, ProfilePage page = null)
         {
             string result;
-            if (!String.IsNullOrEmpty(customUrl))
-                result = String.Concat("http://steamcommunity.com/id/", customUrl);
-            else if (steamId > 0L)
+            if (steamId > 0L)
                 result = String.Concat("http://steamcommunity.com/profiles/", steamId);
+            else if (!String.IsNullOrEmpty(customUrl))
+                result = String.Concat("http://steamcommunity.com/id/", customUrl);
             else
                 return null;
 
@@ -272,6 +256,29 @@ namespace s32.Sceh.Code
                     ret = x.Id.CompareTo(y.Id);
             }
             return ret;
+        }
+
+        private static void Delay()
+        {
+            var now = DateTime.Now;
+            if (_prevCall == DateTime.MinValue)
+            {
+                _prevCall = now;
+                return;
+            }
+
+            var nextCall = _prevCall.AddMilliseconds(200);
+
+            if (nextCall > now)
+            {
+                var diff = (int)(now - nextCall).TotalMilliseconds + 1;
+                Thread.Sleep(diff);
+                _prevCall = DateTime.Now;
+            }
+            else
+            {
+                _prevCall = now;
+            }
         }
     }
 }

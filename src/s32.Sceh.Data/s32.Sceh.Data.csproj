@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RandomString.cs" />
     <Compile Include="ScehData.cs" />
     <Compile Include="ImageDirectory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

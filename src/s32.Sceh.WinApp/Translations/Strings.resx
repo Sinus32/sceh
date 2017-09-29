@@ -123,10 +123,28 @@
   <data name="CheckButtonText" xml:space="preserve">
     <value>_Sprawdź</value>
   </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>Błąd</value>
+  </data>
+  <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
+    <value>Podczas ściągania danych profilu wystąpił wyjątek: {0}</value>
+  </data>
+  <data name="InvalidProfileIdOrUrl" xml:space="preserve">
+    <value>Błędny identyfikator lub własny url profilu</value>
+  </data>
   <data name="LoginButtonText" xml:space="preserve">
     <value>_Zaloguj</value>
   </data>
   <data name="LoginProfileLabel" xml:space="preserve">
     <value>_Profil:</value>
+  </data>
+  <data name="ProfileDeserializationError" xml:space="preserve">
+    <value>Błąd odczytu danych profilu</value>
+  </data>
+  <data name="UnknownErrorOccured" xml:space="preserve">
+    <value>Wystąpił nieznany błąd</value>
+  </data>
+  <data name="WrongProfileIdOrUrl" xml:space="preserve">
+    <value>Nie znaleziono profilu</value>
   </data>
 </root>

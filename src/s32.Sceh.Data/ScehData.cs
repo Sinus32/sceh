@@ -21,6 +21,33 @@ namespace s32.Sceh.Data
         public static ScehDataFile DataFile { get; private set; }
         public static string DataFilePath { get; private set; }
 
+        public static SteamProfile AddOrUpdateProfile(SteamProfile profile)
+        {
+            if (profile.SteamId <= 0L)
+                throw new ArgumentException("Steam profile is invalid", "profile");
+
+            if (DataFile == null || DataFile.SteamProfiles == null)
+                throw new InvalidOperationException("ScehData is not initialized");
+
+            foreach (var dt in DataFile.SteamProfiles)
+            {
+                if (dt.SteamId == profile.SteamId)
+                {
+                    dt.Name = profile.Name;
+                    dt.CustomURL = profile.CustomURL;
+                    dt.AvatarSmall = profile.AvatarSmall;
+                    dt.AvatarMedium = profile.AvatarMedium;
+                    dt.AvatarFull = profile.AvatarFull;
+                    dt.LastUpdate = profile.LastUpdate;
+                    return dt;
+                }
+            }
+
+            lock (DataFile.SteamProfiles)
+                DataFile.SteamProfiles.Add(profile);
+            return profile;
+        }
+
         public static void Load()
         {
             var dataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -52,7 +79,15 @@ namespace s32.Sceh.Data
                 DataFile.SteamProfiles = new List<SteamProfile>();
 
             if (DataFile.ImageDirectories == null)
+            {
                 DataFile.ImageDirectories = new List<ImageDirectory>();
+            }
+            else
+            {
+                foreach (var dir in DataFile.ImageDirectories)
+                    foreach (var img in dir.Images)
+                        img.Directory = dir;
+            }
 
             AvatarsDirectory = MatchImageDirectory(DataFile.ImageDirectories, "Avatars");
             CardsDirectory = MatchImageDirectory(DataFile.ImageDirectories, "Cards");
@@ -62,6 +97,19 @@ namespace s32.Sceh.Data
 
             Directory.CreateDirectory(AvatarsDirectoryPath);
             Directory.CreateDirectory(CardsDirectoryPath);
+        }
+
+        public static bool LocalFileExists(ImageFile image)
+        {
+            if (image == null)
+                throw new ArgumentNullException("image");
+
+            if (image.Directory == null)
+                throw new ArgumentException("Image directory is null", "image");
+
+            var filePath = Path.Combine(AppDataPath, image.Directory.RelativePath, image.Filename);
+
+            return File.Exists(filePath);
         }
 
         public static void SaveFile()

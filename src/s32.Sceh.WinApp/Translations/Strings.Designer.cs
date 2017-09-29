@@ -79,6 +79,33 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Błąd.
+        /// </summary>
+        public static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Podczas ściągania danych profilu wystąpił wyjątek: {0}.
+        /// </summary>
+        public static string ExceptionDuringDownloadingSteamProfile {
+            get {
+                return ResourceManager.GetString("ExceptionDuringDownloadingSteamProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Błędny identyfikator lub własny url profilu.
+        /// </summary>
+        public static string InvalidProfileIdOrUrl {
+            get {
+                return ResourceManager.GetString("InvalidProfileIdOrUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Zaloguj.
         /// </summary>
         public static string LoginButtonText {
@@ -93,6 +120,33 @@ namespace s32.Sceh.WinApp.Translations {
         public static string LoginProfileLabel {
             get {
                 return ResourceManager.GetString("LoginProfileLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Błąd odczytu danych profilu.
+        /// </summary>
+        public static string ProfileDeserializationError {
+            get {
+                return ResourceManager.GetString("ProfileDeserializationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Wystąpił nieznany błąd.
+        /// </summary>
+        public static string UnknownErrorOccured {
+            get {
+                return ResourceManager.GetString("UnknownErrorOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nie znaleziono profilu.
+        /// </summary>
+        public static string WrongProfileIdOrUrl {
+            get {
+                return ResourceManager.GetString("WrongProfileIdOrUrl", resourceCulture);
             }
         }
     }

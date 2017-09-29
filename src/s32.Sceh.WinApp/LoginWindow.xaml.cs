@@ -12,55 +12,82 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using s32.Sceh.Classes;
+using s32.Sceh.Code;
+using s32.Sceh.Data;
+using s32.Sceh.WinApp.Code;
+using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoginWindow : Window
     {
-        private List<SpecialFolder> _folders;
+        public static readonly DependencyProperty SteamProfilesProperty =
+            DependencyProperty.Register("SteamProfiles", typeof(List<SteamProfile>), typeof(LoginWindow), new PropertyMetadata(null));
 
-        public MainWindow()
+        private static RoutedUICommand _loginCommand;
+
+        static LoginWindow()
+        {
+            _loginCommand = new RoutedUICommand(Strings.LoginButtonText, "Login", typeof(LoginWindow));
+        }
+
+        public LoginWindow()
         {
             InitializeComponent();
 
-            _folders = new List<SpecialFolder>();
-            foreach (Environment.SpecialFolder dt in Enum.GetValues(typeof(Environment.SpecialFolder)))
-                _folders.Add(new SpecialFolder(dt));
-            _folders.Sort((a, b) => String.Compare(a.Name, b.Name));
+            LoadProfiles();
 
             DataContext = this;
         }
 
-        public List<SpecialFolder> Folders
+        public static RoutedUICommand LoginCommand
         {
-            get { return _folders; }
+            get { return _loginCommand; }
         }
 
-        public class SpecialFolder
+        public List<SteamProfile> SteamProfiles
         {
-            private Environment.SpecialFolder _sf;
-            private string _name;
-            private string _path;
+            get { return (List<SteamProfile>)GetValue(SteamProfilesProperty); }
+            set { SetValue(SteamProfilesProperty, value); }
+        }
 
-            public SpecialFolder(Environment.SpecialFolder sf)
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (cbProfile != null)
+                e.CanExecute = cbProfile.SelectedItem != null || !String.IsNullOrWhiteSpace(cbProfile.Text);
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            string errorMessage;
+            var steamProfile = ProfileHelper.GetSteamUser((SteamProfile)cbProfile.SelectedItem, cbProfile.Text, out errorMessage);
+
+            if (errorMessage != null)
             {
-                _sf = sf;
-                _name = Enum.GetName(typeof(Environment.SpecialFolder), _sf);
-                _path = Environment.GetFolderPath(_sf);
+                MessageBox.Show(this, errorMessage, Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            }
+            else if (steamProfile != null)
+            {
+                LoadProfiles();
+                cbProfile.SelectedItem = steamProfile;
+            }
+        }
+
+        private void LoadProfiles()
+        {
+            if (ScehData.DataFile == null || ScehData.DataFile.SteamProfiles == null)
+            {
+                SteamProfiles = new List<SteamProfile>();
+                return;
             }
 
-            public string Name
-            {
-                get { return _name; }
-            }
-
-            public string Path
-            {
-                get { return _path; }
-            }
+            var list = new List<SteamProfile>(ScehData.DataFile.SteamProfiles);
+            list.Sort((a, b) => String.Compare(a.Name, b.Name));
+            SteamProfiles = list;
         }
     }
 }
