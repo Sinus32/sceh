@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ namespace s32.Sceh.Code
             if (result == null)
                 return null;
 
-            var priority = isNew || ScehData.LocalFileExists(result)
+            var priority = isNew || File.Exists(ScehData.LocalFilePath(result))
                 ? DownloadPriority.High : DownloadPriority.Low;
             ImageDownloader.Download(result, priority);
 

@@ -53,6 +53,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Code\ImageFileToImageSourceConverter.cs" />
     <Compile Include="Code\ProfileHelper.cs" />
     <Compile Include="Translations\Strings.Designer.cs">
       <AutoGen>True</AutoGen>

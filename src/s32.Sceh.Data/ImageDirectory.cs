@@ -60,7 +60,7 @@ namespace s32.Sceh.Data
                 return result;
             }
 
-            lock (_urlLookup)
+            lock (this)
             {
                 result = new ImageFile();
                 result.ImageUrl = imageUrl;

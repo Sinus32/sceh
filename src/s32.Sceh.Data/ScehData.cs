@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
@@ -29,23 +30,25 @@ namespace s32.Sceh.Data
             if (DataFile == null || DataFile.SteamProfiles == null)
                 throw new InvalidOperationException("ScehData is not initialized");
 
-            foreach (var dt in DataFile.SteamProfiles)
+            lock (DataFile)
             {
-                if (dt.SteamId == profile.SteamId)
+                foreach (var dt in DataFile.SteamProfiles)
                 {
-                    dt.Name = profile.Name;
-                    dt.CustomURL = profile.CustomURL;
-                    dt.AvatarSmall = profile.AvatarSmall;
-                    dt.AvatarMedium = profile.AvatarMedium;
-                    dt.AvatarFull = profile.AvatarFull;
-                    dt.LastUpdate = profile.LastUpdate;
-                    return dt;
+                    if (dt.SteamId == profile.SteamId)
+                    {
+                        dt.Name = profile.Name;
+                        dt.CustomURL = profile.CustomURL;
+                        dt.AvatarSmall = profile.AvatarSmall;
+                        dt.AvatarMedium = profile.AvatarMedium;
+                        dt.AvatarFull = profile.AvatarFull;
+                        dt.LastUpdate = profile.LastUpdate;
+                        return dt;
+                    }
                 }
-            }
 
-            lock (DataFile.SteamProfiles)
                 DataFile.SteamProfiles.Add(profile);
-            return profile;
+                return profile;
+            }
         }
 
         public static void Load()
@@ -75,9 +78,6 @@ namespace s32.Sceh.Data
                 DataFile = new ScehDataFile();
             }
 
-            if (DataFile.SteamProfiles == null)
-                DataFile.SteamProfiles = new List<SteamProfile>();
-
             if (DataFile.ImageDirectories == null)
             {
                 DataFile.ImageDirectories = new List<ImageDirectory>();
@@ -97,9 +97,26 @@ namespace s32.Sceh.Data
 
             Directory.CreateDirectory(AvatarsDirectoryPath);
             Directory.CreateDirectory(CardsDirectoryPath);
+
+            if (DataFile.SteamProfiles == null)
+            {
+                DataFile.SteamProfiles = new List<SteamProfile>();
+            }
+            else
+            {
+                foreach (var profile in DataFile.SteamProfiles)
+                {
+                    if (profile.AvatarSmall != null)
+                        profile.AvatarSmall.Directory = AvatarsDirectory;
+                    if (profile.AvatarMedium != null)
+                        profile.AvatarMedium.Directory = AvatarsDirectory;
+                    if (profile.AvatarFull != null)
+                        profile.AvatarFull.Directory = AvatarsDirectory;
+                }
+            }
         }
 
-        public static bool LocalFileExists(ImageFile image)
+        public static string LocalFilePath(ImageFile image)
         {
             if (image == null)
                 throw new ArgumentNullException("image");
@@ -107,9 +124,10 @@ namespace s32.Sceh.Data
             if (image.Directory == null)
                 throw new ArgumentException("Image directory is null", "image");
 
-            var filePath = Path.Combine(AppDataPath, image.Directory.RelativePath, image.Filename);
+            if (String.IsNullOrEmpty(image.Filename) || image.Filename.Length < 2)
+                throw new ArgumentException("Image filename is empty", "image");
 
-            return File.Exists(filePath);
+            return Path.Combine(AppDataPath, image.Directory.RelativePath, image.Filename.Remove(2), image.Filename);
         }
 
         public static void SaveFile()
@@ -125,10 +143,24 @@ namespace s32.Sceh.Data
             var namespaces = new XmlSerializerNamespaces();
             namespaces.Add(String.Empty, XML_NAMESPACE);
 
-            using (var stream = File.OpenWrite(DataFilePath))
-            using (var writer = new StreamWriter(stream, Encoding.UTF8))
-            using (var xml = XmlWriter.Create(writer, settings))
-                ser.Serialize(xml, DataFile, namespaces);
+            lock (DataFile)
+            {
+                foreach (var dir in DataFile.ImageDirectories)
+                    Monitor.Enter(dir);
+
+                try
+                {
+                    using (var stream = File.OpenWrite(DataFilePath))
+                    using (var writer = new StreamWriter(stream, Encoding.UTF8))
+                    using (var xml = XmlWriter.Create(writer, settings))
+                        ser.Serialize(xml, DataFile, namespaces);
+                }
+                finally
+                {
+                    foreach (var dir in DataFile.ImageDirectories)
+                        Monitor.Exit(dir);
+                }
+            }
         }
 
         private static ImageDirectory MatchImageDirectory(List<ImageDirectory> directories, string relativePath)
