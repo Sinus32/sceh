@@ -133,6 +133,60 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Odznaki.
+        /// </summary>
+        public static string MenuItem_Badges {
+            get {
+                return ResourceManager.GetString("MenuItem_Badges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z_mień profil.
+        /// </summary>
+        public static string MenuItem_ChangeProfile {
+            get {
+                return ResourceManager.GetString("MenuItem_ChangeProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Zakończ.
+        /// </summary>
+        public static string MenuItem_Exit {
+            get {
+                return ResourceManager.GetString("MenuItem_Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Ekwipunek.
+        /// </summary>
+        public static string MenuItem_Inventory {
+            get {
+                return ResourceManager.GetString("MenuItem_Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mój _profil.
+        /// </summary>
+        public static string MenuItem_MyProfile {
+            get {
+                return ResourceManager.GetString("MenuItem_MyProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drugi profil.
+        /// </summary>
+        public static string MenuItem_OthersProfile {
+            get {
+                return ResourceManager.GetString("MenuItem_OthersProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Błąd odczytu danych profilu.
         /// </summary>
         public static string ProfileDeserializationError {

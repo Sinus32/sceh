@@ -141,6 +141,24 @@
   <data name="LoginWindowTitle" xml:space="preserve">
     <value>Steam cards exchange helper</value>
   </data>
+  <data name="MenuItem_Badges" xml:space="preserve">
+    <value>_Odznaki</value>
+  </data>
+  <data name="MenuItem_ChangeProfile" xml:space="preserve">
+    <value>Z_mień profil</value>
+  </data>
+  <data name="MenuItem_Exit" xml:space="preserve">
+    <value>_Zakończ</value>
+  </data>
+  <data name="MenuItem_Inventory" xml:space="preserve">
+    <value>_Ekwipunek</value>
+  </data>
+  <data name="MenuItem_MyProfile" xml:space="preserve">
+    <value>Mój _profil</value>
+  </data>
+  <data name="MenuItem_OthersProfile" xml:space="preserve">
+    <value>Drugi profil</value>
+  </data>
   <data name="ProfileDeserializationError" xml:space="preserve">
     <value>Błąd odczytu danych profilu</value>
   </data>

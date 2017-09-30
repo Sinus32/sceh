@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 namespace s32.Sceh.Data
 {
     [Serializable]
-    [XmlRoot("Directory", Namespace = ScehData.XML_NAMESPACE)]
+    [XmlRoot("Directory", Namespace = ScehData.NS_SCEH)]
     public class ImageDirectory
     {
         public ImageDirectory()

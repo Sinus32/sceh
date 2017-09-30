@@ -198,7 +198,7 @@ namespace s32.Sceh.Code
             settings.Encoding = Encoding.UTF8;
             settings.OmitXmlDeclaration = false;
             var namespaces = new XmlSerializerNamespaces();
-            namespaces.Add(String.Empty, ScehData.XML_NAMESPACE);
+            namespaces.Add(String.Empty, ScehData.NS_SCEH);
 
             lock (_currentData)
             {

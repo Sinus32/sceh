@@ -33,6 +33,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Img\sceh.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -57,11 +60,18 @@
     <Compile Include="Code\ProfileHelper.cs" />
     <Compile Include="Controls\LazyImage.cs" />
     <Compile Include="Controls\UrlToImageFileConverter.cs" />
+    <Compile Include="InvCompareWindow.xaml.cs">
+      <DependentUpon>InvCompareWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Translations\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Page Include="InvCompareWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

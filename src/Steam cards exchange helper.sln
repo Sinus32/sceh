@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.WinApp", "s32.Sceh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.Data", "s32.Sceh.Data\s32.Sceh.Data.csproj", "{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh.Lib", "s32.Sceh.Lib\s32.Sceh.Lib.csproj", "{06F283D3-6627-454A-A9EF-9A91BC3D4D2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEE0F36F-6C3D-40DC-AB78-88F972DC543C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06F283D3-6627-454A-A9EF-9A91BC3D4D2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06F283D3-6627-454A-A9EF-9A91BC3D4D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06F283D3-6627-454A-A9EF-9A91BC3D4D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06F283D3-6627-454A-A9EF-9A91BC3D4D2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

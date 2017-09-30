@@ -74,6 +74,10 @@ namespace s32.Sceh.WinApp
             {
                 LoadProfiles();
                 cbProfile.SelectedItem = steamProfile;
+
+                var cmpWindow = new InvCompareWindow();
+                cmpWindow.OwnerProfile = steamProfile;
+                cmpWindow.Show();
             }
         }
 

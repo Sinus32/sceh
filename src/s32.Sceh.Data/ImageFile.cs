@@ -8,22 +8,22 @@ using System.Threading.Tasks;
 namespace s32.Sceh.Data
 {
     [Serializable]
-    [XmlRoot("Image", Namespace = ScehData.XML_NAMESPACE)]
+    [XmlRoot("Image", Namespace = ScehData.NS_SCEH)]
     public class ImageFile
     {
-        [XmlElement]
-        public string ImageUrl { get; set; }
-
-        [XmlIgnore]
-        public ImageDirectory Directory { get; set; }
-
-        [XmlElement]
-        public string Filename { get; set; }
+        [XmlAttribute]
+        public DateTime LastUpdate { get; set; }
 
         [XmlAttribute]
         public string ETag { get; set; }
 
-        [XmlAttribute]
-        public DateTime LastUpdate { get; set; }
+        [XmlElement(Order = 0)]
+        public string Filename { get; set; }
+
+        [XmlElement(Order = 1)]
+        public string ImageUrl { get; set; }
+
+        [XmlIgnore]
+        public ImageDirectory Directory { get; set; }
     }
 }
