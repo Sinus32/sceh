@@ -124,6 +124,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Steam cards exchange helper.
+        /// </summary>
+        public static string LoginWindowTitle {
+            get {
+                return ResourceManager.GetString("LoginWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Błąd odczytu danych profilu.
         /// </summary>
         public static string ProfileDeserializationError {

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using s32.Sceh.WinApp.Controls;
 
 namespace s32.Sceh.WinApp.Code
 {
@@ -35,7 +36,7 @@ namespace s32.Sceh.WinApp.Code
 
                     if (set.Add(wr.Target))
                     {
-                        var img = (Image)wr.Target;
+                        var img = (LazyImage)wr.Target;
                         var setter = new ImageSourceSetter(img, new Uri(imagePath));
                         img.Dispatcher.Invoke(setter.Action);
                     }
@@ -47,7 +48,7 @@ namespace s32.Sceh.WinApp.Code
         {
             if (File.Exists(imagePath))
             {
-                var img = (Image)image;
+                var img = (LazyImage)image;
                 var setter = new ImageSourceSetter(img, new Uri(imagePath));
                 img.Dispatcher.Invoke(setter.Action);
             }
@@ -71,10 +72,10 @@ namespace s32.Sceh.WinApp.Code
 
         private class ImageSourceSetter
         {
-            private Image _image;
+            private LazyImage _image;
             private Uri _uri;
 
-            public ImageSourceSetter(Image image, Uri uri)
+            public ImageSourceSetter(LazyImage image, Uri uri)
             {
                 _image = image;
                 _uri = uri;
@@ -82,7 +83,7 @@ namespace s32.Sceh.WinApp.Code
 
             public void Action()
             {
-                _image.Source = new BitmapImage(_uri);
+                _image.LazySource = new BitmapImage(_uri);
             }
         }
     }

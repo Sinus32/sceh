@@ -16,7 +16,7 @@ namespace s32.Sceh.WinApp.Code
         {
             Uri profileUri = null;
             if (steamProfile != null)
-                profileUri = SteamDataDownloader.GetProfileUri(steamProfile.SteamId, steamProfile.CustomURL, ProfilePage.API_GET_PROFILE);
+                profileUri = SteamDataDownloader.GetProfileUri(steamProfile.SteamId, steamProfile.CustomUrl, ProfilePage.API_GET_PROFILE);
             else if (profileIdOrUrl != null)
                 profileUri = SteamDataDownloader.GetProfileUri(profileIdOrUrl, ProfilePage.API_GET_PROFILE);
 
@@ -33,7 +33,7 @@ namespace s32.Sceh.WinApp.Code
                 switch (error)
                 {
                     case SteamDataDownloader.GetProfileError.Success:
-                        SteamProfile profile = DataManager.ReadAndStoreProfile(resp);
+                        SteamProfile profile = DataManager.AddOrUpdateSteamProfile(resp);
                         errorMessage = null;
                         return profile;
 

@@ -56,6 +56,7 @@
     <Compile Include="Code\ImageLoadNotifier.cs" />
     <Compile Include="Code\ProfileHelper.cs" />
     <Compile Include="Controls\LazyImage.cs" />
+    <Compile Include="Controls\UrlToImageFileConverter.cs" />
     <Compile Include="Translations\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -122,10 +123,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="sceh.ico" />
+    <Resource Include="Img\card.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Img\" />
+    <Resource Include="Img\avatar.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\sceh.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

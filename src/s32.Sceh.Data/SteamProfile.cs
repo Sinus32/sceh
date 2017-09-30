@@ -12,25 +12,25 @@ namespace s32.Sceh.Data
     public class SteamProfile
     {
         [XmlElement(Order = 4)]
-        public ImageFile AvatarFull { get; set; }
+        public string AvatarFullUrl { get; set; }
 
         [XmlElement(Order = 3)]
-        public ImageFile AvatarMedium { get; set; }
+        public string AvatarMediumUrl { get; set; }
 
         [XmlElement(Order = 2)]
-        public ImageFile AvatarSmall { get; set; }
+        public string AvatarSmallUrl { get; set; }
 
         [XmlElement(Order = 1)]
-        public string CustomURL { get; set; }
+        public string CustomUrl { get; set; }
 
         [XmlIgnore]
-        public string CustomURLOrSteamID
+        public string CustomUrlOrSteamId
         {
             get
             {
-                if (String.IsNullOrEmpty(CustomURL))
-                    return SteamId.ToString();
-                return CustomURL;
+                return String.IsNullOrEmpty(CustomUrl)
+                    ? SteamId.ToString()
+                    : CustomUrl;
             }
         }
 

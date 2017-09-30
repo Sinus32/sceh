@@ -79,13 +79,9 @@ namespace s32.Sceh.WinApp
 
         private void LoadProfiles()
         {
-            if (ScehData.DataFile == null || ScehData.DataFile.SteamProfiles == null)
-            {
-                SteamProfiles = new List<SteamProfile>();
-                return;
-            }
-
-            var list = new List<SteamProfile>(ScehData.DataFile.SteamProfiles);
+            var profiles = DataManager.GetSteamProfiles();
+            var list = new List<SteamProfile>(profiles.Count);
+            list.AddRange(profiles);
             list.Sort((a, b) => String.Compare(a.Name, b.Name));
             SteamProfiles = list;
         }

@@ -138,6 +138,9 @@
   <data name="LoginProfileLabel" xml:space="preserve">
     <value>_Profil:</value>
   </data>
+  <data name="LoginWindowTitle" xml:space="preserve">
+    <value>Steam cards exchange helper</value>
+  </data>
   <data name="ProfileDeserializationError" xml:space="preserve">
     <value>Błąd odczytu danych profilu</value>
   </data>

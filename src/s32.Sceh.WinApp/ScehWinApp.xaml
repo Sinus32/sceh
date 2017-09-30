@@ -2,11 +2,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     x:Class="s32.Sceh.WinApp.ScehWinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
-    xmlns:code="clr-namespace:s32.Sceh.WinApp.Code"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
+    xmlns:code="clr-namespace:s32.Sceh.Code;assembly=s32.Sceh.Code"
     xmlns:sd="clr-namespace:s32.Sceh.Data;assembly=s32.Sceh.Data"
     StartupUri="LoginWindow.xaml" Exit="Application_Exit" Startup="Application_Startup">
   <Application.Resources>
+    <BitmapImage x:Key="defaultAvatar" UriSource="Img/avatar.jpg" />
+    <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}"
+      NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
     <Style x:Key="urlOrSteamIdTextBlock" TargetType="TextBlock">
       <Setter Property="Foreground" Value="#FF8D8D8D" />
       <Style.Triggers>
@@ -17,10 +20,10 @@
     </Style>
     <DataTemplate DataType="{x:Type sd:SteamProfile}">
       <StackPanel Orientation="Horizontal" Margin="0,1,0,1">
-        <ctl:LazyImage ImageFile="{Binding AvatarSmall}" Height="24" Margin="0,0,5,0" />
-        <!--<Image Source="{Binding AvatarSmall, Converter={StaticResource imageFileToSourceConv}, Mode=OneWay}" Height="24" Margin="0,0,5,0" />-->
+        <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Height="24" Margin="0,0,5,0"
+          Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}" />
         <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-        <TextBlock Text="{Binding CustomURLOrSteamID, StringFormat={} ({0})}" Style="{StaticResource urlOrSteamIdTextBlock}" VerticalAlignment="Center" />
+        <TextBlock Text="{Binding CustomUrlOrSteamId, StringFormat={} ({0})}" Style="{StaticResource urlOrSteamIdTextBlock}" VerticalAlignment="Center" />
       </StackPanel>
     </DataTemplate>
   </Application.Resources>
