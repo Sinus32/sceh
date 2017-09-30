@@ -24,124 +24,103 @@ namespace s32.Sceh.Code
                 _queue[priority.OrderIndex] = new ConcurrentQueue<ImageFile>();
         }
 
-        public static void Download(ImageFile image, DownloadPriority priority)
+        public static void EnqueueDownload(ImageFile image, DownloadPriority priority)
         {
             var queue = _queue[priority.OrderIndex];
             queue.Enqueue(image);
         }
 
-        public class Worker
+        public static bool DownloadNext(out ImageFile image, out string imagePath)
         {
-            private ManualResetEvent _terminateEvent;
-
-            public Worker()
+            var reqTime = DateTime.Now.AddMinutes(-1);
+            image = null;
+            foreach (var priority in DownloadPriority.Order)
             {
-                _terminateEvent = new ManualResetEvent(false);
-            }
-
-            public void Terminate()
-            {
-                _terminateEvent.Set();
-            }
-
-            public void ThreadStart()
-            {
-                var threadWait = 5000;
-
-                while (!_terminateEvent.WaitOne(threadWait))
+                if (_queue[priority.OrderIndex].TryDequeue(out image))
                 {
-                    var reqTime = DateTime.Now.AddMinutes(-1);
-                    ImageFile image = null;
-                    foreach (var priority in DownloadPriority.Order)
-                    {
-                        if (_queue[priority.OrderIndex].TryDequeue(out image))
-                        {
-                            if (image.LastUpdate < reqTime)
-                                break;
-                            else
-                                image = null;
-                        }
-                    }
-
-                    if (image == null)
-                    {
-                        threadWait = 250;
-                        continue;
-                    }
+                    if (image.LastUpdate < reqTime)
+                        break;
                     else
-                    {
-                        threadWait = 50;
-                        var path = ScehData.LocalFilePath(image);
-
-                        try
-                        {
-                            TryDownloadFile(image, path);
-                        }
-                        catch (Exception ex)
-                        {
-                            if (Debugger.IsAttached)
-                                Debugger.Break();
-                            else
-                                Debug.WriteLine("Error while downloading file: {0}", ex.Message);
-                        }
-                    }
+                        image = null;
                 }
             }
 
-            private void TryDownloadFile(ImageFile image, string filePath)
+            if (image == null)
             {
-                var request = (HttpWebRequest)HttpWebRequest.Create(image.ImageUrl);
-                request.Method = "GET";
-                request.Timeout = 10000;
-                request.Accept = "image/png,image/jpeg";
-                request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.Referer = "http://steamcommunity.com/";
+                imagePath = null;
+                return false;
+            }
 
-                if (File.Exists(filePath))
+            imagePath = ScehData.LocalFilePath(image);
+
+            try
+            {
+                TryDownloadFile(image, imagePath);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (Debugger.IsAttached)
+                    Debugger.Break();
+                else
+                    Debug.WriteLine("Error while downloading file: {0}", ex.Message);
+                return false;
+            }
+        }
+
+        private static void TryDownloadFile(ImageFile image, string filePath)
+        {
+            var request = (HttpWebRequest)HttpWebRequest.Create(image.ImageUrl);
+            request.Method = "GET";
+            request.Timeout = 10000;
+            request.Accept = "image/png,image/jpeg";
+            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.Referer = "http://steamcommunity.com/";
+
+            if (File.Exists(filePath))
+            {
+                if (image.LastUpdate.Year > 1900)
+                    request.IfModifiedSince = image.LastUpdate;
+                if (!String.IsNullOrEmpty(image.ETag))
+                    request.Headers.Add(HttpRequestHeader.IfNoneMatch, image.ETag);
+            }
+
+            try
+            {
+                using (var response = (HttpWebResponse)request.GetResponse())
                 {
-                    if (image.LastUpdate.Year > 1900)
-                        request.IfModifiedSince = image.LastUpdate;
-                    if (!String.IsNullOrEmpty(image.ETag))
-                        request.Headers.Add(HttpRequestHeader.IfNoneMatch, image.ETag);
+                    Directory.CreateDirectory(Path.GetDirectoryName(filePath));
+                    using (var fileStream = File.OpenWrite(filePath))
+                    using (var sourceStream = response.GetResponseStream())
+                    {
+                        const int BUFFER_SIZE = 0x10000;
+                        byte[] buffer = new byte[BUFFER_SIZE];
+                        int readed;
+                        while ((readed = sourceStream.Read(buffer, 0, BUFFER_SIZE)) > 0)
+                            fileStream.Write(buffer, 0, readed);
+                    }
+
+                    image.LastUpdate = DateTime.Now;
+                    image.ETag = response.Headers[HttpResponseHeader.ETag];
                 }
-
-                try
+            }
+            catch (WebException ex)
+            {
+                if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
-                    using (var response = (HttpWebResponse)request.GetResponse())
+                    var response = ex.Response as HttpWebResponse;
+                    if (response == null || response.StatusCode != HttpStatusCode.NotModified)
                     {
-                        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                        using (var fileStream = File.OpenWrite(filePath))
-                        using (var sourceStream = response.GetResponseStream())
-                        {
-                            const int BUFFER_SIZE = 0x10000;
-                            byte[] buffer = new byte[BUFFER_SIZE];
-                            int readed;
-                            while ((readed = sourceStream.Read(buffer, 0, BUFFER_SIZE)) > 0)
-                                fileStream.Write(buffer, 0, readed);
-                        }
-
-                        image.LastUpdate = DateTime.Now;
-                        image.ETag = response.Headers[HttpResponseHeader.ETag];
+                        if (response != null)
+                            Debug.WriteLine("Cannot download file - http status: {0}", response.StatusCode);
+                        else
+                            Debug.WriteLine("Cannot download file - no response");
                     }
                 }
-                catch (WebException ex)
+                else
                 {
-                    if (ex.Status == WebExceptionStatus.ProtocolError)
-                    {
-                        var response = ex.Response as HttpWebResponse;
-                        if (response == null || response.StatusCode != HttpStatusCode.NotModified)
-                        {
-                            if (response != null)
-                                Debug.WriteLine("Cannot download file - http status: {0}", response.StatusCode);
-                            else
-                                Debug.WriteLine("Cannot download file - no response");
-                        }
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
             }
         }

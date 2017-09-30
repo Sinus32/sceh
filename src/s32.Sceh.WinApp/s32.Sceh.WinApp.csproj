@@ -53,8 +53,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Code\ImageFileToImageSourceConverter.cs" />
+    <Compile Include="Code\ImageLoadNotifier.cs" />
     <Compile Include="Code\ProfileHelper.cs" />
+    <Compile Include="Controls\LazyImage.cs" />
     <Compile Include="Translations\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -124,7 +125,6 @@
     <Resource Include="sceh.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Controls\" />
     <Folder Include="Img\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

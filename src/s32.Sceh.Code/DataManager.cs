@@ -24,7 +24,7 @@ namespace s32.Sceh.Code
 
             var priority = isNew || File.Exists(ScehData.LocalFilePath(result))
                 ? DownloadPriority.High : DownloadPriority.Low;
-            ImageDownloader.Download(result, priority);
+            ImageDownloader.EnqueueDownload(result, priority);
 
             return result;
         }
