@@ -20,6 +20,13 @@ namespace s32.Sceh.Code
         private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
         private static DateTime _prevCall = DateTime.MinValue;
 
+        public enum GetProfileError
+        {
+            Success,
+            WrongProfile,
+            DeserializationError
+        }
+
         public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
         {
             var url = GetProfileUri(steamUser, ProfilePage.API_GET_INVENTORY);
@@ -64,7 +71,7 @@ namespace s32.Sceh.Code
             jss.MissingMemberHandling = MissingMemberHandling.Ignore;
             jss.NullValueHandling = NullValueHandling.Include;
             jss.ObjectCreationHandling = ObjectCreationHandling.Replace;
-            var ret = JsonConvert.DeserializeObject<GetInventoryResponse>(rawJson, jss);
+            var ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
 
             if (!ret.Success)
             {
@@ -103,7 +110,7 @@ namespace s32.Sceh.Code
                     }
                 }
 
-                ret = JsonConvert.DeserializeObject<GetInventoryResponse>(rawJson, jss);
+                ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
 
                 if (!ret.Success)
                 {
@@ -118,6 +125,137 @@ namespace s32.Sceh.Code
 
             errorMessage = null;
             return result;
+        }
+
+        public static Inventory GetInventory(string idOrUrl, out string errorMessage)
+        {
+            var result = new Inventory();
+            result.User = idOrUrl;
+            var uri = GetProfileUri(idOrUrl, ProfilePage.API_GET_INVENTORY);
+            if (uri == null)
+            {
+                errorMessage = "Invalid profile";
+                return null;
+            }
+
+            result.Link = GetProfileUri(idOrUrl).ToString();
+            result.Cards = GetCards(uri, out errorMessage);
+            return result;
+        }
+
+        public static SteamProfileResp GetProfile(Uri profileUri, out GetProfileError error)
+        {
+            Delay();
+
+            var request = (HttpWebRequest)HttpWebRequest.Create(profileUri);
+            request.Method = "GET";
+            request.Timeout = 10000;
+            request.Accept = "text/xml";
+            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.Referer = "http://steamcommunity.com/";
+
+            string rawXml;
+
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                if (!response.ContentType.StartsWith("text/xml"))
+                {
+                    error = GetProfileError.WrongProfile;
+                    return null;
+                }
+
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    rawXml = reader.ReadToEnd();
+                }
+
+                if (!rawXml.Contains("<profile>"))
+                {
+                    error = GetProfileError.WrongProfile;
+                    return null;
+                }
+            }
+
+            var ser = new XmlSerializer(typeof(SteamProfileResp));
+
+            SteamProfileResp result = null;
+            try
+            {
+                using (var reader = new StringReader(rawXml))
+                    result = (SteamProfileResp)ser.Deserialize(reader);
+            }
+            catch (InvalidOperationException)
+            {
+                error = GetProfileError.DeserializationError;
+                return null;
+            }
+
+            error = GetProfileError.Success;
+            return result;
+        }
+
+        public static Uri GetProfileUri(string idOrUrl, ProfilePage page = null)
+        {
+            long steamId = 0L;
+            string customUrl = null;
+
+            if (_steamidRe.IsMatch(idOrUrl))
+                steamId = Int64.Parse(idOrUrl);
+            else if (_userurlRe.IsMatch(idOrUrl))
+                customUrl = idOrUrl;
+            else
+                return null;
+
+            return GetProfileUri(steamId, customUrl, page);
+        }
+
+        public static Uri GetProfileUri(long steamId, string customUrl, ProfilePage page = null)
+        {
+            string result;
+            if (steamId > 0L)
+                result = String.Concat("http://steamcommunity.com/profiles/", steamId);
+            else if (!String.IsNullOrEmpty(customUrl))
+                result = String.Concat("http://steamcommunity.com/id/", customUrl);
+            else
+                return null;
+
+            return page == null
+                ? new Uri(result)
+                : new Uri(String.Concat(result, page.PageUrl));
+        }
+
+        public static Uri GetProfileUri(this SteamUser steamUser, ProfilePage page = null)
+        {
+            if (steamUser == null || steamUser.Profile == null)
+                return null;
+
+            return GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, page);
+        }
+
+        public static void Load(List<Card> result, RgInventoryResp ret)
+        {
+            foreach (var dt in ret.RgInventory.Values)
+            {
+                var card = new Card();
+                card.InventoryItem = dt;
+                var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
+                card.DescriptionItem = ret.RgDescriptions[key];
+                if (card.DescriptionItem.Tradable && card.DescriptionItem.Marketable)
+                    result.Add(card);
+            }
+        }
+
+        private static int CardComparison(Card x, Card y)
+        {
+            int ret = x.MarketFeeApp.CompareTo(y.MarketFeeApp);
+            if (ret == 0)
+            {
+                ret = String.Compare(x.MarketHashName, y.MarketHashName);
+                if (ret == 0)
+                    ret = x.Id.CompareTo(y.Id);
+            }
+            return ret;
         }
 
         private static void Delay()
@@ -141,137 +279,6 @@ namespace s32.Sceh.Code
             {
                 _prevCall = now;
             }
-        }
-
-        public static Inventory GetInventory(string idOrUrl, out string errorMessage)
-        {
-            var result = new Inventory();
-            result.User = idOrUrl;
-            var uri = GetProfileUri(idOrUrl, ProfilePage.API_GET_INVENTORY);
-            if (uri == null)
-            {
-                errorMessage = "Invalid profile";
-                return null;
-            }
-
-            result.Link = GetProfileUri(idOrUrl).ToString();
-            result.Cards = GetCards(uri, out errorMessage);
-            return result;
-        }
-
-        public static SteamProfile GetProfile(Uri profileUri, out string errorMessage)
-        {
-            Delay();
-
-            var request = (HttpWebRequest)HttpWebRequest.Create(profileUri);
-            request.Method = "GET";
-            request.Timeout = 10000;
-            request.Accept = "text/xml";
-            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.Referer = "http://steamcommunity.com/";
-
-            string rawXml;
-
-            using (var response = (HttpWebResponse)request.GetResponse())
-            {
-                if (!response.ContentType.StartsWith("text/xml"))
-                {
-                    errorMessage = "Wrong profile";
-                    return null;
-                }
-
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    rawXml = reader.ReadToEnd();
-                }
-
-                if (!rawXml.Contains("<profile>"))
-                {
-                    errorMessage = "Wrong profile";
-                    return null;
-                }
-            }
-
-            var ser = new XmlSerializer(typeof(SteamProfile));
-
-            SteamProfile result = null;
-            try
-            {
-                using (var reader = new StringReader(rawXml))
-                    result = (SteamProfile)ser.Deserialize(reader);
-            }
-            catch (InvalidOperationException)
-            {
-                errorMessage = "Cannot read user profile";
-                return null;
-            }
-
-            errorMessage = null;
-            return result;
-        }
-
-        public static Uri GetProfileUri(string idOrUrl, ProfilePage page = null)
-        {
-            long steamId = 0L;
-            string customUrl = null;
-
-            if (_steamidRe.IsMatch(idOrUrl))
-                steamId = Int64.Parse(idOrUrl);
-            else if (_userurlRe.IsMatch(idOrUrl))
-                customUrl = idOrUrl;
-            else
-                return null;
-
-            return GetProfileUri(steamId, customUrl, page);
-        }
-
-        public static Uri GetProfileUri(long steamId, string customUrl, ProfilePage page = null)
-        {
-            string result;
-            if (!String.IsNullOrEmpty(customUrl))
-                result = String.Concat("http://steamcommunity.com/id/", customUrl);
-            else if (steamId > 0L)
-                result = String.Concat("http://steamcommunity.com/profiles/", steamId);
-            else
-                return null;
-
-            return page == null
-                ? new Uri(result)
-                : new Uri(String.Concat(result, page.PageUrl));
-        }
-
-        public static Uri GetProfileUri(this SteamUser steamUser, ProfilePage page = null)
-        {
-            if (steamUser == null || steamUser.Profile == null)
-                return null;
-
-            return GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, page);
-        }
-
-        public static void Load(List<Card> result, GetInventoryResponse ret)
-        {
-            foreach (var dt in ret.RgInventory.Values)
-            {
-                var card = new Card();
-                card.InventoryItem = dt;
-                var key = new GetInventoryResponse.RgDescriptionKey(dt.ClassId, dt.InstanceId);
-                card.DescriptionItem = ret.RgDescriptions[key];
-                if (card.DescriptionItem.Tradable && card.DescriptionItem.Marketable)
-                    result.Add(card);
-            }
-        }
-
-        private static int CardComparison(Card x, Card y)
-        {
-            int ret = x.MarketFeeApp.CompareTo(y.MarketFeeApp);
-            if (ret == 0)
-            {
-                ret = String.Compare(x.MarketHashName, y.MarketHashName);
-                if (ret == 0)
-                    ret = x.Id.CompareTo(y.Id);
-            }
-            return ret;
         }
     }
 }

@@ -338,14 +338,6 @@
       <Project>{87b0720b-e836-4ecb-bf50-38300db7ecae}</Project>
       <Name>s32.Sceh.Code</Name>
     </ProjectReference>
-    <ProjectReference Include="..\s32.Sceh.Data\s32.Sceh.Data.csproj">
-      <Project>{6bc4b31b-5ff7-4eab-9cc9-8cfcffda0846}</Project>
-      <Name>s32.Sceh.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\s32.Sceh.Interfaces\s32.Sceh.Interfaces.csproj">
-      <Project>{0ca5fad4-daee-4d54-a38b-3a38a918acba}</Project>
-      <Name>s32.Sceh.Interfaces</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

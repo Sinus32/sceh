@@ -61,12 +61,14 @@
     <Compile Include="Base32.cs" />
     <Compile Include="CardImageManager.cs" />
     <Compile Include="CardThumbnailRequest.cs" />
+    <Compile Include="DataManager.cs" />
+    <Compile Include="DownloadPriority.cs" />
+    <Compile Include="ImageDownloader.cs" />
     <Compile Include="ProfilePage.cs" />
     <Compile Include="SteamDataDownloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScehMembershipProvider.cs" />
     <Compile Include="ScehMembershipUser.cs" />
-    <Compile Include="SteamUsers.cs" />
     <Compile Include="TradeSuggestionsMaker.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,12 +77,8 @@
       <Name>s32.Sceh.Classes</Name>
     </ProjectReference>
     <ProjectReference Include="..\s32.Sceh.Data\s32.Sceh.Data.csproj">
-      <Project>{6bc4b31b-5ff7-4eab-9cc9-8cfcffda0846}</Project>
+      <Project>{cee0f36f-6c3d-40dc-ab78-88f972dc543c}</Project>
       <Name>s32.Sceh.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\s32.Sceh.Interfaces\s32.Sceh.Interfaces.csproj">
-      <Project>{0ca5fad4-daee-4d54-a38b-3a38a918acba}</Project>
-      <Name>s32.Sceh.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace s32.Sceh.Classes
 {
     [XmlRoot("profile")]
-    public class SteamProfile
+    public class SteamProfileResp
     {
         [XmlElement("steamID64")]
         public long SteamId { get; set; }
