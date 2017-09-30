@@ -27,13 +27,9 @@ namespace s32.Sceh.Classes
 
         public long MarketFeeApp { get { return DescriptionItem.MarketFeeApp; } }
 
-        //public long AppDataAppId { get { return DescriptionItem.AppData.AppId; } }
+        public RgInventoryItem InventoryItem { get; set; }
 
-        //public int AppDataItemType { get { return DescriptionItem.AppData.ItemType; } }
-
-        public GetInventoryResponse.RgInventoryItem InventoryItem { get; set; }
-
-        public GetInventoryResponse.RgDescriptionItem DescriptionItem { get; set; }
+        public RgDescriptionItem DescriptionItem { get; set; }
 
         public bool IsDuplicated { get; set; }
 
