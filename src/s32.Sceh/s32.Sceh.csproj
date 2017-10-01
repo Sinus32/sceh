@@ -220,7 +220,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\OpenId\OpenIdUser.cs" />
+    <Compile Include="Code\Base32.cs" />
+    <Compile Include="Code\CardImageManager.cs" />
+    <Compile Include="Code\CardThumbnailRequest.cs" />
     <Compile Include="Code\OpenId\OpenIdMembershipService.cs" />
+    <Compile Include="Code\TradeSuggestionsMaker.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SteamController.cs" />
     <Compile Include="Global.asax.cs">
@@ -329,16 +333,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\s32.Sceh.Classes\s32.Sceh.Classes.csproj">
-      <Project>{95b9d584-2509-4a9b-b093-7360051f2e98}</Project>
-      <Name>s32.Sceh.Classes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\s32.Sceh.Code\s32.Sceh.Code.csproj">
-      <Project>{87b0720b-e836-4ecb-bf50-38300db7ecae}</Project>
-      <Name>s32.Sceh.Code</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

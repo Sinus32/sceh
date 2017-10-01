@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using s32.Sceh.Classes;
-using s32.Sceh.Data;
+using s32.Sceh.DataStore;
+using s32.Sceh.SteamApi;
 
 namespace s32.Sceh.Code
 {

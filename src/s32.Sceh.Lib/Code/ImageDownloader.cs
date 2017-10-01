@@ -9,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using s32.Sceh.Data;
+using s32.Sceh.DataStore;
 
 namespace s32.Sceh.Code
 {

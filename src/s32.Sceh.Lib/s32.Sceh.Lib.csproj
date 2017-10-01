@@ -46,6 +46,7 @@
     <Compile Include="Code\DataManager.cs" />
     <Compile Include="Code\DownloadPriority.cs" />
     <Compile Include="Code\ImageDownloader.cs" />
+    <Compile Include="Code\ProfilePage.cs" />
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
     <Compile Include="DataStore\ImageDirectory.cs" />
@@ -53,6 +54,11 @@
     <Compile Include="DataStore\ScehData.cs" />
     <Compile Include="DataStore\ScehDataFile.cs" />
     <Compile Include="DataStore\SteamProfile.cs" />
+    <Compile Include="LegacyClasses\Card.cs" />
+    <Compile Include="LegacyClasses\Inventory.cs" />
+    <Compile Include="LegacyClasses\SteamApp.cs" />
+    <Compile Include="LegacyClasses\SteamUser.cs" />
+    <Compile Include="LegacyClasses\TradeSuggestions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteamApi\RgCurrencyItem.cs" />
     <Compile Include="SteamApi\RgDescriptionItem.cs" />
@@ -60,9 +66,7 @@
     <Compile Include="SteamApi\RgInventoryResp.cs" />
     <Compile Include="SteamApi\SteamProfileResp.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="LegacyCode\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
