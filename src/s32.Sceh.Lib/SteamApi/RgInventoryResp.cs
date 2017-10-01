@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
 
-namespace s32.Sceh.Classes
+namespace s32.Sceh.SteamApi
 {
     public class RgInventoryResp
     {

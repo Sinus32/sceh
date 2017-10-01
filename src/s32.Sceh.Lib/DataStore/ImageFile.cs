@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 
-namespace s32.Sceh.Data
+namespace s32.Sceh.DataStore
 {
     [Serializable]
     [XmlRoot("Image", Namespace = ScehData.NS_SCEH)]

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace s32.Sceh.Data
+namespace s32.Sceh.DataStore
 {
     public class ScehData
     {

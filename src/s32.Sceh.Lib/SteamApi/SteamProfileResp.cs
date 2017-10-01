@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace s32.Sceh.Classes
+namespace s32.Sceh.SteamApi
 {
     [XmlRoot("profile")]
     public class SteamProfileResp

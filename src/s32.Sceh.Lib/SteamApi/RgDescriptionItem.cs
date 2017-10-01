@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace s32.Sceh.Classes
+namespace s32.Sceh.SteamApi
 {
     public class RgDescriptionItem
     {

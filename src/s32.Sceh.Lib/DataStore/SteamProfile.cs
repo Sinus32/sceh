@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace s32.Sceh.Data
+namespace s32.Sceh.DataStore
 {
     [Serializable]
     [XmlRoot("SteamProfile", Namespace = ScehData.NS_SCEH)]

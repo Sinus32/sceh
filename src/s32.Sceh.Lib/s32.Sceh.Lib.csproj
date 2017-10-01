@@ -39,13 +39,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\DataManager.cs" />
+    <Compile Include="Code\DownloadPriority.cs" />
+    <Compile Include="Code\ImageDownloader.cs" />
+    <Compile Include="Code\RandomString.cs" />
+    <Compile Include="Code\SteamDataDownloader.cs" />
+    <Compile Include="DataStore\ImageDirectory.cs" />
+    <Compile Include="DataStore\ImageFile.cs" />
+    <Compile Include="DataStore\ScehData.cs" />
+    <Compile Include="DataStore\ScehDataFile.cs" />
+    <Compile Include="DataStore\SteamProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SteamApi\RgCurrencyItem.cs" />
+    <Compile Include="SteamApi\RgDescriptionItem.cs" />
+    <Compile Include="SteamApi\RgInventoryItem.cs" />
+    <Compile Include="SteamApi\RgInventoryResp.cs" />
+    <Compile Include="SteamApi\SteamProfileResp.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Code\" />
-    <Folder Include="DataStore\" />
-    <Folder Include="SteamApi\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

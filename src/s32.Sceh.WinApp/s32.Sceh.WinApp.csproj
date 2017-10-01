@@ -127,10 +127,6 @@
       <Project>{87b0720b-e836-4ecb-bf50-38300db7ecae}</Project>
       <Name>s32.Sceh.Code</Name>
     </ProjectReference>
-    <ProjectReference Include="..\s32.Sceh.Data\s32.Sceh.Data.csproj">
-      <Project>{cee0f36f-6c3d-40dc-ab78-88f972dc543c}</Project>
-      <Name>s32.Sceh.Data</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Img\card.png" />
