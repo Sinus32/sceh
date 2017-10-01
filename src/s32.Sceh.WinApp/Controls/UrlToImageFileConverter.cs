@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using s32.Sceh.Code;
-using s32.Sceh.Data;
+using s32.Sceh.DataStore;
 
 namespace s32.Sceh.WinApp.Controls
 {

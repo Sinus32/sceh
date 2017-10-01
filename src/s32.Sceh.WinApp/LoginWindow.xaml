@@ -1,9 +1,11 @@
 ﻿<Window x:Class="s32.Sceh.WinApp.LoginWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
-    xmlns:sd="clr-namespace:s32.Sceh.Data;assembly=s32.Sceh.Data"
+    xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
+    xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
+    xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
+    xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
     Title="{x:Static resx:Strings.LoginWindowTitle}" Height="180" Width="470" Icon="Img/sceh.ico">
   <Window.Resources>
     <Style TargetType="Label">

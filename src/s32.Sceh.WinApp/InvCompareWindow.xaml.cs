@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using s32.Sceh.Data;
+using s32.Sceh.DataStore;
 
 namespace s32.Sceh.WinApp
 {
