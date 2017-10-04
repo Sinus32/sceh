@@ -30,24 +30,28 @@ namespace s32.Sceh.Code
             DeserializationError
         }
 
-        public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
-        {
-            if (steamUser == null || steamUser.Profile == null)
-            {
-                errorMessage = "Invalid profile data";
-                return null;
-            }
+        //public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
+        //{
+        //    if (steamUser == null || steamUser.Profile == null)
+        //    {
+        //        errorMessage = "Invalid profile data";
+        //        return null;
+        //    }
 
-            var url = GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, ProfilePage.API_GET_INVENTORY);
+        //    var url = GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, ProfilePage.API_GET_INVENTORY);
 
-            if (url == null)
-            {
-                errorMessage = "Invalid profile data";
-                return null;
-            }
+        //    if (url == null)
+        //    {
+        //        errorMessage = "Invalid profile data";
+        //        return null;
+        //    }
 
-            return GetCards(url, out errorMessage);
-        }
+        //    var result = GetCards(url, out errorMessage);
+
+        //    result.Sort(CardComparison);
+
+        //    return result;
+        //}
 
         public static List<Card> GetCards(Uri inventoryUri, out string errorMessage)
         {
@@ -130,8 +134,6 @@ namespace s32.Sceh.Code
                 Load(result, ret);
             }
 
-            result.Sort(CardComparison);
-
             errorMessage = null;
             return result;
         }
@@ -149,6 +151,9 @@ namespace s32.Sceh.Code
 
             result.Link = GetProfileUri(idOrUrl).ToString();
             result.Cards = GetCards(uri, out errorMessage);
+
+            result.Cards.Sort(CardComparison);
+
             return result;
         }
 
@@ -255,14 +260,22 @@ namespace s32.Sceh.Code
 
         private static int CardComparison(Card x, Card y)
         {
-            int ret = x.MarketFeeApp.CompareTo(y.MarketFeeApp);
+            long ret = x.MarketFeeApp - y.MarketFeeApp;
             if (ret == 0)
             {
-                ret = String.Compare(x.MarketHashName, y.MarketHashName);
+                ret = x.ClassId - y.ClassId;
                 if (ret == 0)
-                    ret = x.Id.CompareTo(y.Id);
+                {
+                    ret = x.InstanceId - y.InstanceId;
+                    if (ret == 0)
+                        ret = x.Id - y.Id;
+                }
             }
-            return ret;
+            if (ret < 0L)
+                return -1;
+            if (ret > 0L)
+                return 1;
+            return 0;
         }
 
         private static void Delay()

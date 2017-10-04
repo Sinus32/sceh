@@ -13,7 +13,7 @@ namespace s32.Sceh.DataModel
     {
         private int _amount, _pos;
         private long _id, _appId, _classId, _instanceId, _marketFeeApp;
-        private bool _isSelected, _tradable, _marketable, _isDuplicated, _otherHaveIt;
+        private bool _isSelected, _tradable, _marketable, _isDuplicated, _otherHaveIt, _hide;
         private string _marketHashName, _name, _type, _iconUrl, _thumbnailUrl;
 
         public Card()
@@ -72,6 +72,19 @@ namespace s32.Sceh.DataModel
                 if (_classId != value)
                 {
                     _classId = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public bool Hide
+        {
+            get { return _hide; }
+            set
+            {
+                if (_hide != value)
+                {
+                    _hide = value;
                     NotifyPropertyChanged();
                 }
             }
