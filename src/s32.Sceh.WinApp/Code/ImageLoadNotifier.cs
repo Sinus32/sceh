@@ -5,28 +5,31 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+using s32.Sceh.Code;
+using s32.Sceh.DataStore;
 using s32.Sceh.WinApp.Controls;
 
 namespace s32.Sceh.WinApp.Code
 {
     public class ImageLoadNotifier
     {
-        private static readonly ConcurrentDictionary<string, List<WeakReference>> _requests;
+        private static readonly ConcurrentDictionary<ImageFile, List<WeakReference>> _requests;
 
         static ImageLoadNotifier()
         {
-            _requests = new ConcurrentDictionary<string, List<WeakReference>>();
+            _requests = new ConcurrentDictionary<ImageFile, List<WeakReference>>();
         }
 
-        public static void FileIsReady(string imagePath)
+        public static void FileIsReady(ImageFile imageFile, string imagePath)
         {
             if (String.IsNullOrEmpty(imagePath) || !File.Exists(imagePath))
                 return;
 
             List<WeakReference> targets;
-            if (_requests.TryRemove(imagePath, out targets))
+            if (_requests.TryRemove(imageFile, out targets))
             {
                 var set = new HashSet<object>();
                 foreach (var wr in targets)
@@ -44,19 +47,20 @@ namespace s32.Sceh.WinApp.Code
             }
         }
 
-        public static void OrderImage(string imagePath, object image)
+        public static void OrderImage(ImageFile imageFile, DependencyObject imageCtl)
         {
-            if (File.Exists(imagePath))
+            var imagePath = DataManager.LocalFilePath(imageFile);
+            if (imagePath != null && File.Exists(imagePath))
             {
-                var img = (LazyImage)image;
+                var img = (LazyImage)imageCtl;
                 var setter = new ImageSourceSetter(img, new Uri(imagePath));
                 img.Dispatcher.Invoke(setter.Action);
             }
             else
             {
                 List<WeakReference> targets;
-                var wr = new WeakReference(image);
-                if (_requests.TryGetValue(imagePath, out targets))
+                var wr = new WeakReference(imageCtl);
+                if (_requests.TryGetValue(imageFile, out targets))
                 {
                     lock (targets)
                         targets.Add(wr);
@@ -65,7 +69,7 @@ namespace s32.Sceh.WinApp.Code
                 {
                     targets = new List<WeakReference>();
                     targets.Add(wr);
-                    _requests.TryAdd(imagePath, targets);
+                    _requests.TryAdd(imageFile, targets);
                 }
             }
         }
@@ -83,7 +87,13 @@ namespace s32.Sceh.WinApp.Code
 
             public void Action()
             {
-                _image.LazySource = new BitmapImage(_uri);
+                var bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+                bitmapImage.UriSource = _uri;
+                bitmapImage.EndInit();
+                _image.LazySource = bitmapImage;
             }
         }
     }

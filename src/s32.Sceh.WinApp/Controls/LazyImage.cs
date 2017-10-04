@@ -37,11 +37,7 @@ namespace s32.Sceh.WinApp.Controls
         private static void ImageFileChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null)
-            {
-                var filePath = DataManager.LocalFilePath((ImageFile)e.NewValue);
-                if (filePath != null)
-                    ImageLoadNotifier.OrderImage(filePath, d);
-            }
+                ImageLoadNotifier.OrderImage((ImageFile)e.NewValue, d);
         }
     }
 }

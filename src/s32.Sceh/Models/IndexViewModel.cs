@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using s32.Sceh.Classes;
 using s32.Sceh.Code;
+using s32.Sceh.DataModel;
 
 namespace s32.Sceh.Models
 {

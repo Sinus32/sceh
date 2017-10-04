@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using s32.Sceh.DataModel;
 using s32.Sceh.DataStore;
 using s32.Sceh.SteamApi;
 
@@ -13,7 +15,7 @@ namespace s32.Sceh.Code
 {
     public static class DataManager
     {
-        private const int IMAGE_FILENAME_LENGTH = 8;
+        private const string INVENTORY_CACHE_KEY = "SteamUserInventory_";
         private static ScehData _currentData;
         private static Dictionary<string, ImageFile> _imageUrlLookup;
 
@@ -70,7 +72,20 @@ namespace s32.Sceh.Code
             return AddOrUpdateSteamProfile(result);
         }
 
-        public static ImageFile GetOrCreateImageFileByUrl(string imageUrl, ImageDirectory directory, out bool isNew)
+        public static ImageFile GetOrCreateImageFile(Card steamCard, ImageDirectory directory, out bool isNew)
+        {
+            const string CARD_IMAGE_SOURCE = "http://steamcommunity-a.akamaihd.net/economy/image/";
+
+            if (steamCard == null || String.IsNullOrEmpty(steamCard.IconUrl))
+            {
+                isNew = false;
+                return null;
+            }
+
+            return GetOrCreateImageFile(String.Concat(CARD_IMAGE_SOURCE, steamCard.IconUrl), directory, out isNew);
+        }
+
+        public static ImageFile GetOrCreateImageFile(string imageUrl, ImageDirectory directory, out bool isNew)
         {
             if (String.IsNullOrEmpty(imageUrl))
             {
@@ -91,10 +106,6 @@ namespace s32.Sceh.Code
                 result = new ImageFile();
                 result.ImageUrl = imageUrl;
                 result.Directory = directory;
-                result.Filename = RandomString.Generate(IMAGE_FILENAME_LENGTH);
-                var ext = Path.GetExtension(imageUrl);
-                if (!String.IsNullOrEmpty(ext))
-                    result.Filename += ext;
                 directory.Images.Add(result);
                 _imageUrlLookup[key] = result;
             }
@@ -109,6 +120,38 @@ namespace s32.Sceh.Code
                 return new SteamProfile[0];
 
             return _currentData.DataFile.SteamProfiles;
+        }
+
+        public static List<Card> GetSteamUserInventory(SteamProfile profile, bool forceRefresh, out string errorMessage)
+        {
+            List<Card> result;
+            var key = String.Concat(INVENTORY_CACHE_KEY, profile.SteamId);
+
+            if (!forceRefresh)
+            {
+                result = MemoryCache.Default.Get(key) as List<Card>;
+                if (result != null)
+                {
+                    errorMessage = null;
+                    return result;
+                }
+            }
+
+            var apiUrl = SteamDataDownloader.GetProfileUri(profile, ProfilePage.API_GET_INVENTORY);
+            if (apiUrl == null)
+            {
+                errorMessage = "Invalid profile data";
+                return null;
+            }
+            result = SteamDataDownloader.GetCards(apiUrl, out errorMessage);
+            if (errorMessage != null)
+                return null;
+
+            var policy = new CacheItemPolicy();
+            policy.SlidingExpiration = new TimeSpan(0, 10, 0);
+            MemoryCache.Default.Set(key, result, policy);
+
+            return result;
         }
 
         public static void Initialize()
@@ -182,7 +225,7 @@ namespace s32.Sceh.Code
                 throw new ArgumentException("Image directory is null", "image");
 
             if (String.IsNullOrEmpty(image.Filename) || image.Filename.Length < 2)
-                throw new ArgumentException("Image filename is empty", "image");
+                return null;
 
             return Path.Combine(_currentData.AppDataPath, image.Directory.RelativePath, image.Filename.Remove(2), image.Filename);
         }

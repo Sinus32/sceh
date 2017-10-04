@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 using s32.Sceh.Classes;
+using s32.Sceh.DataModel;
+using s32.Sceh.DataStore;
 using s32.Sceh.SteamApi;
 
 namespace s32.Sceh.Code
@@ -30,7 +32,13 @@ namespace s32.Sceh.Code
 
         public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
         {
-            var url = GetProfileUri(steamUser, ProfilePage.API_GET_INVENTORY);
+            if (steamUser == null || steamUser.Profile == null)
+            {
+                errorMessage = "Invalid profile data";
+                return null;
+            }
+
+            var url = GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, ProfilePage.API_GET_INVENTORY);
 
             if (url == null)
             {
@@ -226,24 +234,22 @@ namespace s32.Sceh.Code
                 : new Uri(String.Concat(result, page.PageUrl));
         }
 
-        public static Uri GetProfileUri(this SteamUser steamUser, ProfilePage page = null)
+        public static Uri GetProfileUri(this SteamProfile steamProfile, ProfilePage page = null)
         {
-            if (steamUser == null || steamUser.Profile == null)
+            if (steamProfile == null)
                 return null;
 
-            return GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, page);
+            return GetProfileUri(steamProfile.SteamId, steamProfile.CustomUrl, page);
         }
 
         public static void Load(List<Card> result, RgInventoryResp ret)
         {
             foreach (var dt in ret.RgInventory.Values)
             {
-                var card = new Card();
-                card.InventoryItem = dt;
                 var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
-                card.DescriptionItem = ret.RgDescriptions[key];
-                if (card.DescriptionItem.Tradable && card.DescriptionItem.Marketable)
-                    result.Add(card);
+                var desc = ret.RgDescriptions[key];
+                if (desc.Tradable && desc.Marketable)
+                    result.Add(new Card(dt, desc));
             }
         }
 

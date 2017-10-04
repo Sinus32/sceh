@@ -9,6 +9,7 @@ using System.IO;
 using System.IO.Compression;
 using s32.Sceh.Classes;
 using System.Threading;
+using s32.Sceh.DataModel;
 
 namespace s32.Sceh.Code
 {
@@ -29,19 +30,22 @@ namespace s32.Sceh.Code
 
             foreach (var dt in steamApps)
             {
+                var mySet = new HashSet<string>();
+                var otherSet = new HashSet<string>();
+
                 foreach (var card in dt.MyCards)
                 {
-                    card.IsDuplicated = !dt.MySet.Add(card.MarketHashName);
+                    card.IsDuplicated = !mySet.Add(card.MarketHashName);
                     card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
                 }
 
                 foreach (var card in dt.OtherCards)
                 {
-                    card.IsDuplicated = !dt.OtherSet.Add(card.MarketHashName);
+                    card.IsDuplicated = !otherSet.Add(card.MarketHashName);
                     card.ThumbnailUrl = manager.GetCardThumbnailUrl(card.IconUrl);
                 }
 
-                dt.Hide = dt.MySet.Count == 0 || dt.OtherSet.Count == 0 || dt.MySet.SetEquals(dt.OtherSet);
+                dt.Hide = mySet.Count == 0 || otherSet.Count == 0 || mySet.SetEquals(otherSet);
             }
 
             var result = new TradeSuggestions();
@@ -68,7 +72,7 @@ namespace s32.Sceh.Code
                 {
                     if (it.Current.MarketFeeApp != current.Id)
                     {
-                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.DescriptionItem.Type);
+                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
                         steamApps.Add(current);
                     }
                     current.OtherCards.Add(it.Current);
@@ -77,7 +81,7 @@ namespace s32.Sceh.Code
 
                 if (card.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(card.MarketFeeApp, card.DescriptionItem.Type);
+                    current = new SteamApp(card.MarketFeeApp, card.Type);
                     steamApps.Add(current);
                 }
 
@@ -88,7 +92,7 @@ namespace s32.Sceh.Code
             {
                 if (it.Current.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.DescriptionItem.Type);
+                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
                     steamApps.Add(current);
                 }
                 current.OtherCards.Add(it.Current);

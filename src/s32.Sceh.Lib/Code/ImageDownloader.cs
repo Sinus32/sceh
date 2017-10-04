@@ -15,7 +15,8 @@ namespace s32.Sceh.Code
 {
     public class ImageDownloader
     {
-        public const int MINUTES_DELAY = 15;
+        private const int IMAGE_FILENAME_LENGTH = 8;
+        private const int MINUTES_DELAY = 15;
         private static readonly ConcurrentDictionary<ImageFile, int> _isInQueue;
         private static readonly ConcurrentQueue<ImageFile>[] _queue;
 
@@ -39,28 +40,48 @@ namespace s32.Sceh.Code
             return false;
         }
 
-        private static void TryDownloadFile(ImageFile image, string filePath, bool fileExists)
+        private static void TryDownloadFile(ImageFile image, ref string filePath, bool fileExists)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(image.ImageUrl);
             request.Method = "GET";
             request.Timeout = 10000;
-            request.Accept = "image/png,image/jpeg";
+            request.Accept = FileType.AcceptedImageTypes;
             request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
             request.Referer = "http://steamcommunity.com/";
 
             if (fileExists)
             {
-                if (image.LastUpdate.Year > 1900)
-                    request.IfModifiedSince = image.LastUpdate;
                 if (!String.IsNullOrEmpty(image.ETag))
                     request.Headers.Add(HttpRequestHeader.IfNoneMatch, image.ETag);
+                else if (image.LastUpdate.Year > 1900)
+                    request.IfModifiedSince = image.LastUpdate;
             }
 
             try
             {
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
+                    var fileType = FileType.FindByMimeType(response.ContentType);
+                    if (fileType == null)
+                        throw new NotSupportedException(String.Format("Files of type '{0}' are not supported", response.ContentType));
+
+                    if (String.IsNullOrEmpty(filePath))
+                    {
+                        image.Filename = RandomString.Generate(IMAGE_FILENAME_LENGTH) + fileType.Extension;
+                        filePath = DataManager.LocalFilePath(image);
+                    }
+                    else if (Path.GetExtension(image.Filename) != fileType.Extension)
+                    {
+                        if (fileExists)
+                            File.Delete(filePath);
+                        var baseFilename = Path.GetFileNameWithoutExtension(image.Filename);
+                        if (baseFilename.Length != IMAGE_FILENAME_LENGTH)
+                            baseFilename = RandomString.Generate(IMAGE_FILENAME_LENGTH);
+                        image.Filename = baseFilename + fileType.Extension;
+                        filePath = DataManager.LocalFilePath(image);
+                    }
+
                     Directory.CreateDirectory(Path.GetDirectoryName(filePath));
                     using (var fileStream = File.OpenWrite(filePath))
                     using (var sourceStream = response.GetResponseStream())
@@ -74,6 +95,7 @@ namespace s32.Sceh.Code
 
                     image.LastUpdate = DateTime.Now;
                     image.ETag = response.Headers[HttpResponseHeader.ETag];
+                    image.MimeType = fileType.MimeType;
                 }
             }
             catch (WebException ex)
@@ -111,14 +133,14 @@ namespace s32.Sceh.Code
                     _isInQueue.TryRemove(image, out dummy);
 
                     imagePath = DataManager.LocalFilePath(image);
-                    var fileExists = File.Exists(imagePath);
+                    var fileExists = imagePath != null && File.Exists(imagePath);
 
                     if (fileExists && image.LastUpdate > reqTime)
                         continue;
 
                     try
                     {
-                        TryDownloadFile(image, imagePath, fileExists);
+                        TryDownloadFile(image, ref imagePath, fileExists);
                         return true;
                     }
                     catch (Exception ex)
@@ -137,11 +159,11 @@ namespace s32.Sceh.Code
 
         public class Worker
         {
-            private Action<string> _callback;
+            private Action<ImageFile, string> _callback;
             private ManualResetEvent _terminateEvent;
             private Thread _thread;
 
-            public Worker(Action<string> fileDownloadedCallback)
+            public Worker(Action<ImageFile, string> fileDownloadedCallback)
             {
                 _callback = fileDownloadedCallback;
             }
@@ -183,7 +205,7 @@ namespace s32.Sceh.Code
                     if (ImageDownloader.TryDownloadNext(out image, out imagePath))
                     {
                         if (_callback != null)
-                            _callback(imagePath);
+                            _callback(image, imagePath);
                         threadWait = 50;
                     }
                     else

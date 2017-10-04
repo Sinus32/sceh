@@ -17,6 +17,9 @@ namespace s32.Sceh.DataStore
         [XmlAttribute]
         public string ETag { get; set; }
 
+        [XmlAttribute]
+        public string MimeType { get; set; }
+
         [XmlElement(Order = 0)]
         public string Filename { get; set; }
 

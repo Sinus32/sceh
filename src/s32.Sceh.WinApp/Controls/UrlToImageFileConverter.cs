@@ -54,9 +54,10 @@ namespace s32.Sceh.WinApp.Controls
                 return null;
 
             bool isNew;
-            ImageFile result = DataManager.GetOrCreateImageFileByUrl(imageUrl, Directory, out isNew);
+            ImageFile result = DataManager.GetOrCreateImageFile(imageUrl, Directory, out isNew);
 
-            var forceDownload = !File.Exists(DataManager.LocalFilePath(result));
+            var filePath = DataManager.LocalFilePath(result);
+            var forceDownload = filePath == null || !File.Exists(filePath);
             var priority = isNew || forceDownload ? NewFilePriority : OldFilePriority;
             if (priority != null)
                 ImageDownloader.EnqueueDownload(result, priority, forceDownload);

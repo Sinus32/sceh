@@ -36,6 +36,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,17 +47,20 @@
     <Compile Include="Code\DataManager.cs" />
     <Compile Include="Code\DownloadPriority.cs" />
     <Compile Include="Code\ImageDownloader.cs" />
+    <Compile Include="Code\FileType.cs" />
     <Compile Include="Code\ProfilePage.cs" />
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
+    <Compile Include="DataModel\Card.cs" />
+    <Compile Include="DataModel\SteamApp.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DataStore\ImageDirectory.cs" />
     <Compile Include="DataStore\ImageFile.cs" />
     <Compile Include="DataStore\ScehData.cs" />
     <Compile Include="DataStore\ScehDataFile.cs" />
     <Compile Include="DataStore\SteamProfile.cs" />
-    <Compile Include="LegacyClasses\Card.cs" />
     <Compile Include="LegacyClasses\Inventory.cs" />
-    <Compile Include="LegacyClasses\SteamApp.cs" />
     <Compile Include="LegacyClasses\SteamUser.cs" />
     <Compile Include="LegacyClasses\TradeSuggestions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
