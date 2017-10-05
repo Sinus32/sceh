@@ -119,19 +119,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Img\card.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Img\avatar.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Img\sceh.ico" />
+    <Resource Include="Img\avatar.jpg" />
+    <Resource Include="Img\card.png" />
+    <Resource Include="Img\selection1.png" />
+    <Resource Include="Img\selection2.png" />
+    <Resource Include="Img\selection3.png" />
+    <Resource Include="Img\selection4.png" />
+    <Resource Include="Img\selection5.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\s32.Sceh.Lib\s32.Sceh.Lib.csproj">
       <Project>{06f283d3-6627-454a-a9ef-9a91bc3d4d2c}</Project>
       <Name>s32.Sceh.Lib</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

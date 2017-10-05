@@ -123,6 +123,9 @@
   <data name="CheckButtonText" xml:space="preserve">
     <value>_Sprawdź</value>
   </data>
+  <data name="CompareButtonText" xml:space="preserve">
+    <value>_Porównaj</value>
+  </data>
   <data name="ErrorTitle" xml:space="preserve">
     <value>Błąd</value>
   </data>

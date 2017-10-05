@@ -56,5 +56,14 @@ namespace s32.Sceh.WinApp.Code
                 return null;
             }
         }
+
+        public static List<SteamProfile> LoadProfiles()
+        {
+            var profiles = DataManager.GetSteamProfiles();
+            var list = new List<SteamProfile>(profiles.Count);
+            list.AddRange(profiles);
+            list.Sort((a, b) => String.Compare(a.Name, b.Name));
+            return list;
+        }
     }
 }

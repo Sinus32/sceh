@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\CardEqualityKey.cs" />
     <Compile Include="Code\CardsCompareManager.cs" />
     <Compile Include="Code\DataManager.cs" />
     <Compile Include="Code\DownloadPriority.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="DataModel\SteamApp.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataModel\UserInventory.cs" />
     <Compile Include="DataStore\ImageDirectory.cs" />
     <Compile Include="DataStore\ImageFile.cs" />
     <Compile Include="DataStore\ScehData.cs" />

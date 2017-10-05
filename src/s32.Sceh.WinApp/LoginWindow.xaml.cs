@@ -39,7 +39,7 @@ namespace s32.Sceh.WinApp
         {
             InitializeComponent();
 
-            LoadProfiles();
+            SteamProfiles = ProfileHelper.LoadProfiles();
 
             DataContext = this;
         }
@@ -72,22 +72,13 @@ namespace s32.Sceh.WinApp
             }
             else if (steamProfile != null)
             {
-                LoadProfiles();
+                SteamProfiles = ProfileHelper.LoadProfiles();
                 cbProfile.SelectedItem = steamProfile;
 
                 var cmpWindow = new InvCompareWindow();
                 cmpWindow.OwnerProfile = steamProfile;
                 cmpWindow.Show();
             }
-        }
-
-        private void LoadProfiles()
-        {
-            var profiles = DataManager.GetSteamProfiles();
-            var list = new List<SteamProfile>(profiles.Count);
-            list.AddRange(profiles);
-            list.Sort((a, b) => String.Compare(a.Name, b.Name));
-            SteamProfiles = list;
         }
     }
 }

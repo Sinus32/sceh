@@ -79,6 +79,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Porównaj.
+        /// </summary>
+        public static string CompareButtonText {
+            get {
+                return ResourceManager.GetString("CompareButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Błąd.
         /// </summary>
         public static string ErrorTitle {

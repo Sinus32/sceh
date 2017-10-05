@@ -6,7 +6,10 @@
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
-    Title="InvCompareWindow" Height="300" Width="300">
+    Title="InvCompareWindow" Height="300" Width="500" Icon="Img/sceh.ico">
+  <Window.CommandBindings>
+    <CommandBinding Command="local:InvCompareWindow.CompareCommand" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed" />
+  </Window.CommandBindings>
   <DockPanel>
     <Menu DockPanel.Dock="Top">
       <MenuItem Header="{x:Static resx:Strings.MenuItem_MyProfile}">
@@ -25,11 +28,17 @@
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition />
+        <RowDefinition />
       </Grid.RowDefinitions>
-      <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="2">
+      <StackPanel Orientation="Horizontal" Margin="5,4,5,1">
         <ctl:LazyImage ImageFile="{Binding OwnerProfile.AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Margin="0,0,5,0" Stretch="None"
           Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}" />
         <TextBlock Text="{Binding OwnerProfile.Name}" VerticalAlignment="Center" />
+      </StackPanel>
+      <StackPanel Orientation="Horizontal" Margin="5,1,5,2" Grid.Row="1">
+        <ComboBox x:Name="cbOtherProfile" IsEditable="True" ItemsSource="{Binding SteamProfiles}"
+          VerticalAlignment="Center" TextSearch.TextPath="CustomUrlOrSteamId" Width="300" />
+        <Button x:Name="btnCompare" Command="local:InvCompareWindow.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}" HorizontalAlignment="Center" Margin="10,0,0,0" Padding="20,2" />
       </StackPanel>
     </Grid>
     <Grid>

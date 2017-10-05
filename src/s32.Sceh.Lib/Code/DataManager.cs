@@ -122,14 +122,14 @@ namespace s32.Sceh.Code
             return _currentData.DataFile.SteamProfiles;
         }
 
-        public static List<Card> GetSteamUserInventory(SteamProfile profile, bool forceRefresh, out string errorMessage)
+        public static UserInventory GetSteamUserInventory(SteamProfile profile, bool forceRefresh, out string errorMessage)
         {
-            List<Card> result;
+            UserInventory result;
             var key = String.Concat(INVENTORY_CACHE_KEY, profile.SteamId);
 
             if (!forceRefresh)
             {
-                result = MemoryCache.Default.Get(key) as List<Card>;
+                result = MemoryCache.Default.Get(key) as UserInventory;
                 if (result != null)
                 {
                     errorMessage = null;
@@ -143,9 +143,12 @@ namespace s32.Sceh.Code
                 errorMessage = "Invalid profile data";
                 return null;
             }
-            result = SteamDataDownloader.GetCards(apiUrl, out errorMessage);
-            if (errorMessage != null)
-                return null;
+
+            result = new UserInventory();
+            result.SteamId = profile.SteamId;
+            result.Cards = SteamDataDownloader.GetCards(apiUrl, out errorMessage);
+            result.ErrorMessage = errorMessage;
+            result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
 
             var policy = new CacheItemPolicy();
             policy.SlidingExpiration = new TimeSpan(0, 10, 0);

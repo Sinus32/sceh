@@ -14,11 +14,31 @@ namespace s32.Sceh.Code
         private List<SteamApp> _steamApps;
 
         public CardsCompareManager()
-        { }
+        {
+            _myCards = new List<Card>();
+            _otherCards = new List<Card>();
+            _steamApps = new List<SteamApp>();
+        }
 
         public CardsCompareManager(IReadOnlyCollection<Card> myCards, IReadOnlyCollection<Card> otherCards)
         {
             Fill(myCards, otherCards);
+        }
+
+        public IReadOnlyList<SteamApp> SteamApps
+        {
+            get { return _steamApps; }
+        }
+
+        public static List<SteamApp> Generate(List<Card> myCards, List<Card> otherCards, out string errorMessage)
+        {
+            var current = new SteamApp(-1, null);
+            var steamApps = new List<SteamApp>();
+
+            steamApps.Sort(SteamAppsComparison);
+
+            errorMessage = null;
+            return steamApps;
         }
 
         public void Fill(IReadOnlyCollection<Card> myCards, IReadOnlyCollection<Card> otherCards)
@@ -44,50 +64,127 @@ namespace s32.Sceh.Code
             }
 
             var current = new SteamApp(-1, null);
-            var dict = new Dictionary<long, SteamApp>();
+            _steamApps = new List<SteamApp>();
+            var it = _otherCards.GetEnumerator();
+            bool hasOther = it.MoveNext();
+
+            var mySet = new HashSet<CardEqualityKey>();
+            var otherSet = new HashSet<CardEqualityKey>();
 
             foreach (var card in _myCards)
             {
-                if (current.Id != card.MarketFeeApp && !dict.TryGetValue(card.MarketFeeApp, out current))
+                while (hasOther && it.Current.MarketFeeApp < card.MarketFeeApp)
+                {
+                    if (it.Current.MarketFeeApp != current.Id)
+                    {
+                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
+                        _steamApps.Add(current);
+                    }
+                    current.OtherCards.Add(it.Current);
+                    it.Current.IsDuplicated = !otherSet.Add(it.Current);
+                    hasOther = it.MoveNext();
+                }
+
+                if (card.MarketFeeApp != current.Id)
                 {
                     current = new SteamApp(card.MarketFeeApp, card.Type);
-                    dict.Add(current.Id, current);
+                    _steamApps.Add(current);
                 }
 
                 current.MyCards.Add(card);
+                card.IsDuplicated = !mySet.Add(card);
             }
+
+            while (hasOther)
+            {
+                if (it.Current.MarketFeeApp != current.Id)
+                {
+                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
+                    _steamApps.Add(current);
+                }
+                current.OtherCards.Add(it.Current);
+                it.Current.IsDuplicated = !otherSet.Add(it.Current);
+                hasOther = it.MoveNext();
+            }
+
+            foreach (var card in _myCards)
+                card.OtherHaveIt = otherSet.Contains(card);
 
             foreach (var card in _otherCards)
-            {
-                if (current.Id != card.MarketFeeApp && !dict.TryGetValue(card.MarketFeeApp, out current))
-                {
-                    current = new SteamApp(card.MarketFeeApp, card.Type);
-                    dict.Add(current.Id, current);
-                }
+                card.OtherHaveIt = mySet.Contains(card);
 
-                current.OtherCards.Add(card);
-            }
-
-            _steamApps = new List<SteamApp>(dict.Count);
-            _steamApps.AddRange(dict.Values);
-
-            //var mySet = new HashSet<Card>(CardEqualityComparer.Instance);
-            //var otherSet = new HashSet<Card>(CardEqualityComparer.Instance);
+            _steamApps.Sort(SteamAppsComparison);
         }
 
-        private class CardEqualityComparer : IEqualityComparer<Card>
+        public void ShowHideCards(Action<SteamApp> strategy)
         {
-            public static readonly CardEqualityComparer Instance = new CardEqualityComparer();
-
-            public bool Equals(Card x, Card y)
-            {
-                return x.ClassId == y.ClassId && x.InstanceId == y.InstanceId;
-            }
-
-            public int GetHashCode(Card obj)
-            {
-                return obj.ClassId.GetHashCode() ^ obj.InstanceId.GetHashCode();
-            }
+            foreach (var dt in _steamApps)
+                strategy(dt);
         }
+
+        private static int SteamAppsComparison(SteamApp x, SteamApp y)
+        {
+            return String.Compare(x.Name, y.Name, true);
+        }
+
+        #region Show card strategies
+
+        public static void ShowAllStrategy(SteamApp steamApp)
+        {
+            foreach (var dt in steamApp.MyCards)
+                dt.Hide = false;
+            foreach (var dt in steamApp.OtherCards)
+                dt.Hide = false;
+            steamApp.Hide = false;
+        }
+
+        public static void ShowMyCardsStrategy(SteamApp steamApp)
+        {
+            foreach (var dt in steamApp.MyCards)
+                dt.Hide = false;
+            foreach (var dt in steamApp.OtherCards)
+                dt.Hide = false;
+            steamApp.Hide = steamApp.OtherCards.Count > 0;
+        }
+
+        public static void ShowOtherCardsStrategy(SteamApp steamApp)
+        {
+            foreach (var dt in steamApp.MyCards)
+                dt.Hide = false;
+            foreach (var dt in steamApp.OtherCards)
+                dt.Hide = false;
+            steamApp.Hide = steamApp.MyCards.Count > 0;
+        }
+
+        public static void ShowSelectedStrategy(SteamApp steamApp)
+        {
+            var shouldHide = true;
+            foreach (var dt in steamApp.MyCards)
+            {
+                if (dt.IsSelected)
+                    dt.Hide = shouldHide = false;
+                else
+                    dt.Hide = true;
+            }
+            foreach (var dt in steamApp.OtherCards)
+            {
+                if (dt.IsSelected)
+                    dt.Hide = shouldHide = false;
+                else
+                    dt.Hide = true;
+            }
+            steamApp.Hide = shouldHide;
+        }
+
+        public static void ShowTradeSugestionsStrategy(SteamApp steamApp)
+        {
+            foreach (var dt in steamApp.MyCards)
+                dt.Hide = false;
+            foreach (var dt in steamApp.OtherCards)
+                dt.Hide = false;
+            steamApp.Hide = steamApp.MyCards.Count > 0 && steamApp.OtherCards.Count > 0;
+        }
+
+        #endregion Show card strategies
     }
 }

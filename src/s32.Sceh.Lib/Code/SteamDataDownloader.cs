@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -19,6 +20,8 @@ namespace s32.Sceh.Code
 {
     public static class SteamDataDownloader
     {
+        private const string SteamCommunityPageByCustomUrl = "http://steamcommunity.com/id/";
+        private const string SteamCommunityPageBySteamId = "http://steamcommunity.com/profiles/";
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,18}$", RegexOptions.None);
         private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
         private static DateTime _prevCall = DateTime.MinValue;
@@ -29,29 +32,6 @@ namespace s32.Sceh.Code
             WrongProfile,
             DeserializationError
         }
-
-        //public static List<Card> GetCards(SteamUser steamUser, out string errorMessage)
-        //{
-        //    if (steamUser == null || steamUser.Profile == null)
-        //    {
-        //        errorMessage = "Invalid profile data";
-        //        return null;
-        //    }
-
-        //    var url = GetProfileUri(steamUser.Profile.SteamId, steamUser.Profile.CustomURL, ProfilePage.API_GET_INVENTORY);
-
-        //    if (url == null)
-        //    {
-        //        errorMessage = "Invalid profile data";
-        //        return null;
-        //    }
-
-        //    var result = GetCards(url, out errorMessage);
-
-        //    result.Sort(CardComparison);
-
-        //    return result;
-        //}
 
         public static List<Card> GetCards(Uri inventoryUri, out string errorMessage)
         {
@@ -134,6 +114,8 @@ namespace s32.Sceh.Code
                 Load(result, ret);
             }
 
+            result.Sort(CardComparison);
+
             errorMessage = null;
             return result;
         }
@@ -151,8 +133,6 @@ namespace s32.Sceh.Code
 
             result.Link = GetProfileUri(idOrUrl).ToString();
             result.Cards = GetCards(uri, out errorMessage);
-
-            result.Cards.Sort(CardComparison);
 
             return result;
         }
@@ -214,6 +194,12 @@ namespace s32.Sceh.Code
             long steamId = 0L;
             string customUrl = null;
 
+            if (TryExtractSteamIdFromUrl(idOrUrl, out steamId))
+                return GetProfileUri(steamId, customUrl, page);
+
+            if (TryExtractCustomUrlFromUrl(idOrUrl, out customUrl))
+                return GetProfileUri(steamId, customUrl, page);
+
             if (_steamidRe.IsMatch(idOrUrl))
                 steamId = Int64.Parse(idOrUrl);
             else if (_userurlRe.IsMatch(idOrUrl))
@@ -228,9 +214,9 @@ namespace s32.Sceh.Code
         {
             string result;
             if (steamId > 0L)
-                result = String.Concat("http://steamcommunity.com/profiles/", steamId);
+                result = String.Concat(SteamCommunityPageBySteamId, steamId);
             else if (!String.IsNullOrEmpty(customUrl))
-                result = String.Concat("http://steamcommunity.com/id/", customUrl);
+                result = String.Concat(SteamCommunityPageByCustomUrl, customUrl);
             else
                 return null;
 
@@ -299,6 +285,47 @@ namespace s32.Sceh.Code
             {
                 _prevCall = now;
             }
+        }
+
+        private static bool TryExtractCustomUrlFromUrl(string idOrUrl, out string customUrl)
+        {
+            if (idOrUrl.StartsWith(SteamCommunityPageByCustomUrl))
+            {
+                var data = idOrUrl.Substring(SteamCommunityPageByCustomUrl.Length);
+                int i;
+                for (i = 0; i < data.Length; ++i)
+                    if (!Char.IsLetterOrDigit(data[i]))
+                        break;
+                if (i > 0)
+                {
+                    customUrl = data.Length > i ? data.Remove(i) : data;
+                    return true;
+                }
+            }
+
+            customUrl = null;
+            return false;
+        }
+
+        private static bool TryExtractSteamIdFromUrl(string idOrUrl, out long steamId)
+        {
+            if (idOrUrl.StartsWith(SteamCommunityPageBySteamId))
+            {
+                var data = idOrUrl.Substring(SteamCommunityPageBySteamId.Length);
+                int i;
+                for (i = 0; i < data.Length; ++i)
+                    if (!Char.IsDigit(data[i]))
+                        break;
+                if (i > 0)
+                {
+                    var number = data.Length > i ? data.Remove(i) : data;
+                    steamId = Int64.Parse(number, CultureInfo.InvariantCulture);
+                    return true;
+                }
+            }
+
+            steamId = 0L;
+            return false;
         }
     }
 }
