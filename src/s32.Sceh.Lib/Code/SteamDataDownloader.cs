@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -20,11 +21,17 @@ namespace s32.Sceh.Code
 {
     public static class SteamDataDownloader
     {
+        public static readonly DebugInfo Info = new DebugInfo();
+
         private const string SteamCommunityPageByCustomUrl = "http://steamcommunity.com/id/";
+
         private const string SteamCommunityPageBySteamId = "http://steamcommunity.com/profiles/";
+
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,18}$", RegexOptions.None);
+
         private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
-        private static DateTime _prevCall = DateTime.MinValue;
+
+        private static DateTime _nextCall = DateTime.MinValue;
 
         public enum GetProfileError
         {
@@ -35,7 +42,6 @@ namespace s32.Sceh.Code
 
         public static List<Card> GetCards(Uri inventoryUri, out string errorMessage)
         {
-            Delay();
             var request = (HttpWebRequest)HttpWebRequest.Create(inventoryUri);
             request.Method = "GET";
             request.Timeout = 10000;
@@ -46,6 +52,7 @@ namespace s32.Sceh.Code
 
             string rawJson;
 
+            Delay();
             using (var response = (HttpWebResponse)request.GetResponse())
             {
                 if (!response.ContentType.StartsWith("application/json"))
@@ -78,8 +85,6 @@ namespace s32.Sceh.Code
 
             while (ret.More)
             {
-                Delay();
-
                 var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "?start=", ret.MoreStart));
                 request = (HttpWebRequest)HttpWebRequest.Create(nextUri);
                 request.Method = "GET";
@@ -89,6 +94,7 @@ namespace s32.Sceh.Code
                 request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                 request.Referer = "http://steamcommunity.com/";
 
+                Delay();
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     if (!response.ContentType.StartsWith("application/json"))
@@ -139,8 +145,6 @@ namespace s32.Sceh.Code
 
         public static SteamProfileResp GetProfile(Uri profileUri, out GetProfileError error)
         {
-            Delay();
-
             var request = (HttpWebRequest)HttpWebRequest.Create(profileUri);
             request.Method = "GET";
             request.Timeout = 10000;
@@ -151,6 +155,7 @@ namespace s32.Sceh.Code
 
             string rawXml;
 
+            Delay();
             using (var response = (HttpWebResponse)request.GetResponse())
             {
                 if (!response.ContentType.StartsWith("text/xml"))
@@ -267,24 +272,14 @@ namespace s32.Sceh.Code
         private static void Delay()
         {
             var now = DateTime.Now;
-            if (_prevCall == DateTime.MinValue)
+            if (_nextCall > now)
             {
-                _prevCall = now;
-                return;
-            }
-
-            var nextCall = _prevCall.AddMilliseconds(200);
-
-            if (nextCall > now)
-            {
-                var diff = (int)(now - nextCall).TotalMilliseconds + 1;
+                var diff = (int)(_nextCall - now).TotalMilliseconds + 1;
                 Thread.Sleep(diff);
-                _prevCall = DateTime.Now;
             }
-            else
-            {
-                _prevCall = now;
-            }
+            
+            Info.RequestCount += 1;
+            _nextCall = DateTime.Now.AddSeconds(3);
         }
 
         private static bool TryExtractCustomUrlFromUrl(string idOrUrl, out string customUrl)
@@ -326,6 +321,32 @@ namespace s32.Sceh.Code
 
             steamId = 0L;
             return false;
+        }
+
+        public class DebugInfo : INotifyPropertyChanged
+        {
+            private int _requestCount;
+
+            public event PropertyChangedEventHandler PropertyChanged;
+
+            public int RequestCount
+            {
+                get { return _requestCount; }
+                set
+                {
+                    if (_requestCount != value)
+                    {
+                        _requestCount = value;
+                        NotifyPropertyChanged();
+                    }
+                }
+            }
+
+            private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] String propertyName = "")
+            {
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
     }
 }

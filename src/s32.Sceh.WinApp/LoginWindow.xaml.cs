@@ -72,12 +72,10 @@ namespace s32.Sceh.WinApp
             }
             else if (steamProfile != null)
             {
-                SteamProfiles = ProfileHelper.LoadProfiles();
-                cbProfile.SelectedItem = steamProfile;
-
                 var cmpWindow = new InvCompareWindow();
                 cmpWindow.OwnerProfile = steamProfile;
                 cmpWindow.Show();
+                this.Close();
             }
         }
     }

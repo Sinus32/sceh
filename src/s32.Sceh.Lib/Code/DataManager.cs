@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
@@ -122,7 +123,7 @@ namespace s32.Sceh.Code
             return _currentData.DataFile.SteamProfiles;
         }
 
-        public static UserInventory GetSteamUserInventory(SteamProfile profile, bool forceRefresh, out string errorMessage)
+        public static UserInventory GetSteamUserInventory(SteamProfile profile, bool forceRefresh)
         {
             UserInventory result;
             var key = String.Concat(INVENTORY_CACHE_KEY, profile.SteamId);
@@ -130,25 +131,26 @@ namespace s32.Sceh.Code
             if (!forceRefresh)
             {
                 result = MemoryCache.Default.Get(key) as UserInventory;
-                if (result != null)
-                {
-                    errorMessage = null;
+                if (result != null && result.IsInventoryAvailable && result.Cards != null)
                     return result;
-                }
             }
 
+            string errorMessage;
+            result = new UserInventory();
             var apiUrl = SteamDataDownloader.GetProfileUri(profile, ProfilePage.API_GET_INVENTORY);
             if (apiUrl == null)
             {
-                errorMessage = "Invalid profile data";
-                return null;
+                result.ErrorMessage = "Invalid profile data";
+                result.IsInventoryAvailable = false;
+                return result;
             }
-
-            result = new UserInventory();
-            result.SteamId = profile.SteamId;
-            result.Cards = SteamDataDownloader.GetCards(apiUrl, out errorMessage);
-            result.ErrorMessage = errorMessage;
-            result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
+            else
+            {
+                result.SteamId = profile.SteamId;
+                result.Cards = SteamDataDownloader.GetCards(apiUrl, out errorMessage);
+                result.ErrorMessage = errorMessage;
+                result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
+            }
 
             var policy = new CacheItemPolicy();
             policy.SlidingExpiration = new TimeSpan(0, 10, 0);
@@ -182,7 +184,7 @@ namespace s32.Sceh.Code
                 }
                 catch (Exception)
                 {
-                    _currentData.DataFile = new ScehDataFile();
+                    throw;
                 }
             }
             else
@@ -248,10 +250,11 @@ namespace s32.Sceh.Code
 
             lock (_currentData)
             {
-                using (var stream = File.OpenWrite(_currentData.DataFilePath))
+                using (var stream = File.Open(_currentData.DataFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 using (var writer = new StreamWriter(stream, Encoding.UTF8))
                 using (var xml = XmlWriter.Create(writer, settings))
                     ser.Serialize(xml, _currentData.DataFile, namespaces);
+                Thread.Sleep(16);
             }
         }
 

@@ -24,25 +24,26 @@
     </Menu>
     <Grid DockPanel.Dock="Top">
       <Grid.ColumnDefinitions>
-        <ColumnDefinition />
+        <ColumnDefinition Width="40" />
+        <ColumnDefinition Width="3*" />
+        <ColumnDefinition Width="2*" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition />
         <RowDefinition />
       </Grid.RowDefinitions>
-      <StackPanel Orientation="Horizontal" Margin="5,4,5,1">
-        <ctl:LazyImage ImageFile="{Binding OwnerProfile.AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Margin="0,0,5,0" Stretch="None"
-          Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}" />
-        <TextBlock Text="{Binding OwnerProfile.Name}" VerticalAlignment="Center" />
-      </StackPanel>
-      <StackPanel Orientation="Horizontal" Margin="5,1,5,2" Grid.Row="1">
-        <ComboBox x:Name="cbOtherProfile" IsEditable="True" ItemsSource="{Binding SteamProfiles}"
-          VerticalAlignment="Center" TextSearch.TextPath="CustomUrlOrSteamId" Width="300" />
-        <Button x:Name="btnCompare" Command="local:InvCompareWindow.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}" HorizontalAlignment="Center" Margin="10,0,0,0" Padding="20,2" />
-      </StackPanel>
-    </Grid>
+      <ctl:LazyImage ImageFile="{Binding OwnerProfile.AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="None"
+        Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}" Grid.RowSpan="2" />
+      <TextBlock Text="{Binding OwnerProfile.Name}" VerticalAlignment="Center" FontSize="16" Margin="2" Grid.Column="1" />
+      <TextBlock Text="{Binding RequestCount, Source={x:Static code:SteamDataDownloader.Info}, StringFormat=Requests: {0}}"
+        VerticalAlignment="Center" FontSize="16" Margin="2" Grid.Column="2" TextAlignment="Right" />
+      <ComboBox x:Name="cbOtherProfile" IsEditable="True" ItemsSource="{Binding SteamProfiles}"
+        VerticalAlignment="Center" TextSearch.TextPath="CustomUrlOrSteamId" Grid.Row="1" Grid.Column="1" />
+      <Button x:Name="btnCompare" Command="local:InvCompareWindow.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
+        HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" Margin="10,0,0,0" Padding="20,2" />
+    </Grid> 
     <Grid>
-
+      <TextBlock Text="{Binding SteamApps.Count, StringFormat=Ilość: {0}}" />
     </Grid>
   </DockPanel>
 </Window>
