@@ -5,8 +5,49 @@
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
+    xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
     xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
-    Title="InvCompareWindow" Height="300" Width="500" Icon="Img/sceh.ico">
+    Title="InvCompareWindow" Height="450" Width="970" Icon="Img/sceh.ico" ResizeMode="CanResizeWithGrip" WindowState="Maximized">
+  <Window.Resources>
+    <DataTemplate x:Key="steamAppTemplate" DataType="dm:SteamApp">
+      <Grid Visibility="{Binding Hide, Converter={StaticResource hideToVisibilityConv}}">
+        <Grid.Resources>
+          <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
+            <ToggleButton Margin="2" Visibility="{Binding Hide, Converter={StaticResource hideToVisibilityConv}}" IsChecked="{Binding IsSelected}">
+              <Grid Width="83" Height="96">
+                <Image Stretch="UniformToFill" Source="{StaticResource defaultCard}" />
+                <TextBlock Text="{Binding Name}" FontSize="11" Width="74" Height="60" Margin="0,12,0,0"
+                  TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" />
+              </Grid>
+            </ToggleButton>
+          </DataTemplate>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1*" />
+          <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition />
+          <RowDefinition />
+        </Grid.RowDefinitions>
+        <TextBlock Text="{Binding Name}" Grid.ColumnSpan="2" TextAlignment="Center" />
+        <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding MyCards}" ItemTemplate="{StaticResource cardTemplate}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal" FlowDirection="LeftToRight" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding OtherCards}" ItemTemplate="{StaticResource cardTemplate}">
+          <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+              <WrapPanel Orientation="Horizontal" FlowDirection="RightToLeft" />
+            </ItemsPanelTemplate>
+          </ItemsControl.ItemsPanel>
+        </ItemsControl>
+      </Grid>
+    </DataTemplate>
+  </Window.Resources>
   <Window.CommandBindings>
     <CommandBinding Command="local:InvCompareWindow.CompareCommand" CanExecute="CompareCommand_CanExecute" Executed="CompareCommand_Executed" />
     <CommandBinding Command="local:InvCompareWindow.ShowHideCards" CanExecute="ShowHideCards_CanExecute" Executed="ShowHideCards_Executed" />
@@ -57,20 +98,22 @@
         <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowOtherCardsStrategy}" Margin="2">
           <Image Source="Img/selection4.png" Stretch="None" />
         </Button>
-        <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowSelectedStrategy}" Margin="2">
+        <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowSelectedAppStrategy}" Margin="2">
           <Image Source="Img/selection5.png" Stretch="None" />
+        </Button>
+        <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowOnlySelectedStrategy}" Margin="2">
+          <Image Source="Img/selection6.png" Stretch="None" />
         </Button>
       </StackPanel>
     </Grid>
-
-    <ItemsControl ItemsSource="{Binding SteamApps}" VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True">
-      <ItemsControl.ItemTemplate>
-        <DataTemplate>
-          <Grid Visibility="{Binding Hide, Converter={StaticResource hideToVisibilityConv}}">
-            <TextBlock Text="{Binding Name}" />
-          </Grid>
-        </DataTemplate>
-      </ItemsControl.ItemTemplate>
+    <StatusBar DockPanel.Dock="Bottom">
+      <StatusBarItem>
+        <TextBlock />
+      </StatusBarItem>
+    </StatusBar>
+    <ItemsControl ItemsSource="{Binding SteamApps}" VirtualizingStackPanel.IsVirtualizing="True"
+        ScrollViewer.CanContentScroll="True" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
+        BorderThickness="0,1" ItemTemplate="{StaticResource steamAppTemplate}">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <VirtualizingStackPanel />
@@ -90,6 +133,5 @@
         </ControlTemplate>
       </ItemsControl.Template>
     </ItemsControl>
-
   </DockPanel>
 </Window>

@@ -14,7 +14,7 @@ namespace s32.Sceh.DataModel
         private int _amount, _pos, _contextId;
         private long _id, _appId, _classId, _instanceId, _marketFeeApp;
         private bool _isSelected, _tradable, _marketable, _isDuplicated, _otherHaveIt, _hide;
-        private string _marketHashName, _name, _type, _iconUrl, _thumbnailUrl;
+        private string _marketHashName, _marketName, _name, _type, _iconUrl, _thumbnailUrl;
 
         public Card()
         { }
@@ -28,6 +28,7 @@ namespace s32.Sceh.DataModel
             _amount = rgInvItem.Amount;
             _pos = rgInvItem.Pos;
             _marketHashName = rgDescItem.MarketHashName;
+            _marketName = rgDescItem.MarketName;
             _name = rgDescItem.Name;
             _type = rgDescItem.Type;
             _iconUrl = rgDescItem.IconUrl;
@@ -219,6 +220,19 @@ namespace s32.Sceh.DataModel
                 if (_marketHashName != value)
                 {
                     _marketHashName = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public string MarketName
+        {
+            get { return _marketName; }
+            set
+            {
+                if (_marketName != value)
+                {
+                    _marketName = value;
                     NotifyPropertyChanged();
                 }
             }

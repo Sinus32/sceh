@@ -9,6 +9,7 @@
     StartupUri="LoginWindow.xaml" Exit="Application_Exit" Startup="Application_Startup">
   <Application.Resources>
     <BitmapImage x:Key="defaultAvatar" UriSource="Img/avatar.jpg" />
+    <BitmapImage x:Key="defaultCard" UriSource="Img/card.png" />
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}"
       NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
     <ctl:BooleanToVisibilityConverter x:Key="booleanToVisibilityConv" />
