@@ -116,10 +116,10 @@ namespace s32.Sceh.Code
             _steamApps.Sort(SteamAppsComparison);
         }
 
-        public void ShowHideCards(Action<SteamApp> strategy)
+        public void ShowHideCards(ShowHideStrategy strategy)
         {
             foreach (var dt in _steamApps)
-                strategy(dt);
+                strategy.ShowHideCards(dt);
         }
 
         private static int SteamAppsComparison(SteamApp x, SteamApp y)
@@ -129,60 +129,86 @@ namespace s32.Sceh.Code
 
         #region Show card strategies
 
-        public static void ShowAllStrategy(SteamApp steamApp)
-        {
-            foreach (var dt in steamApp.MyCards)
-                dt.Hide = false;
-            foreach (var dt in steamApp.OtherCards)
-                dt.Hide = false;
-            steamApp.Hide = false;
-        }
+        public static readonly ShowHideStrategy ShowAllStrategy = new ShowHideStrategy.ShowAllStrategy();
+        public static readonly ShowHideStrategy ShowMyCardsStrategy = new ShowHideStrategy.ShowMyCardsStrategy();
+        public static readonly ShowHideStrategy ShowOtherCardsStrategy = new ShowHideStrategy.ShowOtherCardsStrategy();
+        public static readonly ShowHideStrategy ShowSelectedStrategy = new ShowHideStrategy.ShowSelectedStrategy();
+        public static readonly ShowHideStrategy ShowTradeSugestionsStrategy = new ShowHideStrategy.ShowTradeSugestionsStrategy();
 
-        public static void ShowMyCardsStrategy(SteamApp steamApp)
+        public abstract class ShowHideStrategy
         {
-            foreach (var dt in steamApp.MyCards)
-                dt.Hide = false;
-            foreach (var dt in steamApp.OtherCards)
-                dt.Hide = false;
-            steamApp.Hide = steamApp.OtherCards.Count > 0;
-        }
+            public abstract void ShowHideCards(SteamApp steamApp);
 
-        public static void ShowOtherCardsStrategy(SteamApp steamApp)
-        {
-            foreach (var dt in steamApp.MyCards)
-                dt.Hide = false;
-            foreach (var dt in steamApp.OtherCards)
-                dt.Hide = false;
-            steamApp.Hide = steamApp.MyCards.Count > 0;
-        }
-
-        public static void ShowSelectedStrategy(SteamApp steamApp)
-        {
-            var shouldHide = true;
-            foreach (var dt in steamApp.MyCards)
+            public class ShowAllStrategy : ShowHideStrategy
             {
-                if (dt.IsSelected)
-                    dt.Hide = shouldHide = false;
-                else
-                    dt.Hide = true;
+                public override void ShowHideCards(SteamApp steamApp)
+                {
+                    foreach (var dt in steamApp.MyCards)
+                        dt.Hide = false;
+                    foreach (var dt in steamApp.OtherCards)
+                        dt.Hide = false;
+                    steamApp.Hide = false;
+                }
             }
-            foreach (var dt in steamApp.OtherCards)
-            {
-                if (dt.IsSelected)
-                    dt.Hide = shouldHide = false;
-                else
-                    dt.Hide = true;
-            }
-            steamApp.Hide = shouldHide;
-        }
 
-        public static void ShowTradeSugestionsStrategy(SteamApp steamApp)
-        {
-            foreach (var dt in steamApp.MyCards)
-                dt.Hide = false;
-            foreach (var dt in steamApp.OtherCards)
-                dt.Hide = false;
-            steamApp.Hide = steamApp.MyCards.Count > 0 && steamApp.OtherCards.Count > 0;
+            public class ShowMyCardsStrategy : ShowHideStrategy
+            {
+                public override void ShowHideCards(SteamApp steamApp)
+                {
+                    foreach (var dt in steamApp.MyCards)
+                        dt.Hide = false;
+                    foreach (var dt in steamApp.OtherCards)
+                        dt.Hide = false;
+                    steamApp.Hide = steamApp.MyCards.Count == 0;
+                }
+            }
+
+            public class ShowOtherCardsStrategy : ShowHideStrategy
+            {
+                public override void ShowHideCards(SteamApp steamApp)
+                {
+                    foreach (var dt in steamApp.MyCards)
+                        dt.Hide = false;
+                    foreach (var dt in steamApp.OtherCards)
+                        dt.Hide = false;
+                    steamApp.Hide = steamApp.OtherCards.Count == 0;
+                }
+            }
+
+            public class ShowSelectedStrategy : ShowHideStrategy
+            {
+                public override void ShowHideCards(SteamApp steamApp)
+                {
+                    var shouldHide = true;
+                    foreach (var dt in steamApp.MyCards)
+                    {
+                        if (dt.IsSelected)
+                            dt.Hide = shouldHide = false;
+                        else
+                            dt.Hide = true;
+                    }
+                    foreach (var dt in steamApp.OtherCards)
+                    {
+                        if (dt.IsSelected)
+                            dt.Hide = shouldHide = false;
+                        else
+                            dt.Hide = true;
+                    }
+                    steamApp.Hide = shouldHide;
+                }
+            }
+
+            public class ShowTradeSugestionsStrategy : ShowHideStrategy
+            {
+                public override void ShowHideCards(SteamApp steamApp)
+                {
+                    foreach (var dt in steamApp.MyCards)
+                        dt.Hide = false;
+                    foreach (var dt in steamApp.OtherCards)
+                        dt.Hide = false;
+                    steamApp.Hide = steamApp.MyCards.Count == 0 || steamApp.OtherCards.Count == 0;
+                }
+            }
         }
 
         #endregion Show card strategies

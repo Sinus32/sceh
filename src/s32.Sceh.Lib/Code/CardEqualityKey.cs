@@ -26,14 +26,20 @@ namespace s32.Sceh.Code
             }
         }
 
-        public bool Equals(CardEqualityKey other)
+        public CardEqualityKey(long classId, long instanceId)
         {
-            return this.ClassId == other.ClassId && this.InstanceId == other.InstanceId;
+            ClassId = classId;
+            InstanceId = instanceId;
         }
 
         public static implicit operator CardEqualityKey(Card card)
         {
             return new CardEqualityKey(card);
+        }
+
+        public bool Equals(CardEqualityKey other)
+        {
+            return this.ClassId == other.ClassId && this.InstanceId == other.InstanceId;
         }
 
         public override bool Equals(object obj)
@@ -46,7 +52,7 @@ namespace s32.Sceh.Code
 
         public override int GetHashCode()
         {
-            return this.ClassId.GetHashCode() ^ this.InstanceId.GetHashCode();
+            return (int)ClassId ^ (int)InstanceId;
         }
 
         public override string ToString()

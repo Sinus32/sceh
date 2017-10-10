@@ -8,7 +8,8 @@
     xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
     Title="InvCompareWindow" Height="300" Width="500" Icon="Img/sceh.ico">
   <Window.CommandBindings>
-    <CommandBinding Command="local:InvCompareWindow.CompareCommand" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed" />
+    <CommandBinding Command="local:InvCompareWindow.CompareCommand" CanExecute="CompareCommand_CanExecute" Executed="CompareCommand_Executed" />
+    <CommandBinding Command="local:InvCompareWindow.ShowHideCards" CanExecute="ShowHideCards_CanExecute" Executed="ShowHideCards_Executed" />
   </Window.CommandBindings>
   <DockPanel>
     <Menu DockPanel.Dock="Top">
@@ -31,6 +32,7 @@
       <Grid.RowDefinitions>
         <RowDefinition />
         <RowDefinition />
+        <RowDefinition />
       </Grid.RowDefinitions>
       <ctl:LazyImage ImageFile="{Binding OwnerProfile.AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="None"
         Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}" Grid.RowSpan="2" />
@@ -41,9 +43,53 @@
         VerticalAlignment="Center" TextSearch.TextPath="CustomUrlOrSteamId" Grid.Row="1" Grid.Column="1" />
       <Button x:Name="btnCompare" Command="local:InvCompareWindow.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
         HorizontalAlignment="Left" Grid.Row="1" Grid.Column="2" Margin="10,0,0,0" Padding="20,2" />
-    </Grid> 
-    <Grid>
-      <TextBlock Text="{Binding SteamApps.Count, StringFormat=Ilość: {0}}" />
+      <StackPanel Grid.Row="2" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalAlignment="Right">
+        <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+        <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}" Margin="2">
+          <Image Source="Img/selection1.png" Stretch="None" />
+        </Button>
+        <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowMyCardsStrategy}" Margin="2">
+          <Image Source="Img/selection2.png" Stretch="None" />
+        </Button>
+        <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowAllStrategy}" Margin="2">
+          <Image Source="Img/selection3.png" Stretch="None" />
+        </Button>
+        <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowOtherCardsStrategy}" Margin="2">
+          <Image Source="Img/selection4.png" Stretch="None" />
+        </Button>
+        <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowSelectedStrategy}" Margin="2">
+          <Image Source="Img/selection5.png" Stretch="None" />
+        </Button>
+      </StackPanel>
     </Grid>
+
+    <ItemsControl ItemsSource="{Binding SteamApps}" VirtualizingStackPanel.IsVirtualizing="True" ScrollViewer.CanContentScroll="True">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <Grid Visibility="{Binding Hide, Converter={StaticResource hideToVisibilityConv}}">
+            <TextBlock Text="{Binding Name}" />
+          </Grid>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.Template>
+        <ControlTemplate>
+          <Border SnapsToDevicePixels="True"
+              BorderThickness="{TemplateBinding Border.BorderThickness}"
+              Padding="{TemplateBinding Control.Padding}"
+              BorderBrush="{TemplateBinding Border.BorderBrush}"
+              Background="{TemplateBinding Panel.Background}">
+            <ScrollViewer Focusable="False" Padding="{TemplateBinding Control.Padding}">
+              <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+            </ScrollViewer>
+          </Border>
+        </ControlTemplate>
+      </ItemsControl.Template>
+    </ItemsControl>
+
   </DockPanel>
 </Window>

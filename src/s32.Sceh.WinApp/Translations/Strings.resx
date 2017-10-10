@@ -162,8 +162,14 @@
   <data name="MenuItem_OthersProfile" xml:space="preserve">
     <value>Drugi profil</value>
   </data>
+  <data name="OwnerInvErrorMessage" xml:space="preserve">
+    <value>Nie można załadować twoich kart: {0}</value>
+  </data>
   <data name="ProfileDeserializationError" xml:space="preserve">
     <value>Błąd odczytu danych profilu</value>
+  </data>
+  <data name="SecondInvErrorMessage" xml:space="preserve">
+    <value>Nie można załadować kart użytkownika {0}: {1}</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Wystąpił nieznany błąd</value>

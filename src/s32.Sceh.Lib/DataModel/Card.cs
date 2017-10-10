@@ -11,7 +11,7 @@ namespace s32.Sceh.DataModel
 {
     public class Card : INotifyPropertyChanged
     {
-        private int _amount, _pos;
+        private int _amount, _pos, _contextId;
         private long _id, _appId, _classId, _instanceId, _marketFeeApp;
         private bool _isSelected, _tradable, _marketable, _isDuplicated, _otherHaveIt, _hide;
         private string _marketHashName, _name, _type, _iconUrl, _thumbnailUrl;
@@ -34,6 +34,23 @@ namespace s32.Sceh.DataModel
             _tradable = rgDescItem.Tradable;
             _marketable = rgDescItem.Marketable;
             _marketFeeApp = rgDescItem.MarketFeeApp;
+        }
+
+        public Card(ApiInventoryResp.Asset asset, ApiInventoryResp.Description desc)
+        {
+            _id = asset.AssetId;
+            _appId = asset.AppId;
+            _classId = asset.ClassId;
+            _instanceId = asset.InstanceId;
+            _amount = asset.Amount;
+            _contextId = asset.ContextId;
+            _marketHashName = desc.MarketHashName;
+            _name = desc.Name;
+            _type = desc.Type;
+            _iconUrl = desc.IconUrl;
+            _tradable = desc.Tradable;
+            _marketable = desc.Marketable;
+            _marketFeeApp = desc.MarketFeeApp;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -72,6 +89,19 @@ namespace s32.Sceh.DataModel
                 if (_classId != value)
                 {
                     _classId = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public int ContextId
+        {
+            get { return _contextId; }
+            set
+            {
+                if (_contextId != value)
+                {
+                    _contextId = value;
                     NotifyPropertyChanged();
                 }
             }

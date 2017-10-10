@@ -11,6 +11,8 @@
     <BitmapImage x:Key="defaultAvatar" UriSource="Img/avatar.jpg" />
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}"
       NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
+    <ctl:BooleanToVisibilityConverter x:Key="booleanToVisibilityConv" />
+    <ctl:BooleanToVisibilityConverter x:Key="hideToVisibilityConv" ValueForFalse="Visible" ValueForTrue="Collapsed" />
     <Style x:Key="urlOrSteamIdTextBlock" TargetType="TextBlock">
       <Setter Property="Foreground" Value="#FF8D8D8D" />
       <Style.Triggers>

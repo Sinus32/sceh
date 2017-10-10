@@ -196,11 +196,29 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nie można załadować twoich kart: {0}.
+        /// </summary>
+        public static string OwnerInvErrorMessage {
+            get {
+                return ResourceManager.GetString("OwnerInvErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Błąd odczytu danych profilu.
         /// </summary>
         public static string ProfileDeserializationError {
             get {
                 return ResourceManager.GetString("ProfileDeserializationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nie można załadować kart użytkownika {0}: {1}.
+        /// </summary>
+        public static string SecondInvErrorMessage {
+            get {
+                return ResourceManager.GetString("SecondInvErrorMessage", resourceCulture);
             }
         }
         

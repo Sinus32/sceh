@@ -137,20 +137,10 @@ namespace s32.Sceh.Code
 
             string errorMessage;
             result = new UserInventory();
-            var apiUrl = SteamDataDownloader.GetProfileUri(profile, ProfilePage.API_GET_INVENTORY);
-            if (apiUrl == null)
-            {
-                result.ErrorMessage = "Invalid profile data";
-                result.IsInventoryAvailable = false;
-                return result;
-            }
-            else
-            {
-                result.SteamId = profile.SteamId;
-                result.Cards = SteamDataDownloader.GetCards(apiUrl, out errorMessage);
-                result.ErrorMessage = errorMessage;
-                result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
-            }
+            result.SteamId = profile.SteamId;
+            result.Cards = SteamDataDownloader.GetCards2(profile, out errorMessage);
+            result.ErrorMessage = errorMessage;
+            result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
 
             var policy = new CacheItemPolicy();
             policy.SlidingExpiration = new TimeSpan(0, 10, 0);

@@ -25,6 +25,9 @@ namespace s32.Sceh.WinApp
     /// </summary>
     public partial class InvCompareWindow : Window
     {
+        public static readonly DependencyProperty ErrorMessageProperty =
+            DependencyProperty.Register("ErrorMessage", typeof(string), typeof(InvCompareWindow), new PropertyMetadata(null));
+
         public static readonly DependencyProperty OwnerInvErrorProperty =
             DependencyProperty.Register("OwnerInvError", typeof(string), typeof(InvCompareWindow), new PropertyMetadata(null));
 
@@ -43,7 +46,7 @@ namespace s32.Sceh.WinApp
         public static readonly DependencyProperty SteamProfilesProperty =
             DependencyProperty.Register("SteamProfiles", typeof(List<SteamProfile>), typeof(InvCompareWindow), new PropertyMetadata(null));
 
-        private static RoutedUICommand _compareCommand;
+        private static RoutedCommand _compareCommand, _showHideCards;
 
         private CardsCompareManager _cardsCompareManager;
 
@@ -51,7 +54,8 @@ namespace s32.Sceh.WinApp
 
         static InvCompareWindow()
         {
-            _compareCommand = new RoutedUICommand(Strings.CompareButtonText, "Compare", typeof(LoginWindow));
+            _compareCommand = new RoutedCommand("Compare", typeof(LoginWindow));
+            _showHideCards = new RoutedCommand("ShowHideCards", typeof(LoginWindow));
         }
 
         public InvCompareWindow()
@@ -68,9 +72,20 @@ namespace s32.Sceh.WinApp
             DataContext = this;
         }
 
-        public static RoutedUICommand CompareCommand
+        public static RoutedCommand CompareCommand
         {
             get { return _compareCommand; }
+        }
+
+        public static RoutedCommand ShowHideCards
+        {
+            get { return _showHideCards; }
+        }
+
+        public string ErrorMessage
+        {
+            get { return (string)GetValue(ErrorMessageProperty); }
+            set { SetValue(ErrorMessageProperty, value); }
         }
 
         public string OwnerInvError
@@ -126,13 +141,14 @@ namespace s32.Sceh.WinApp
             {
                 OwnerInvError = result.OwnerInv.ErrorMessage;
                 SecondInvError = result.SecondInv.ErrorMessage;
+                MakeErrorMessage();
                 var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
                 steamApps.AddRange(_cardsCompareManager.SteamApps);
                 SteamApps = steamApps;
             }
         }
 
-        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CompareCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (_inventoryLoadWorker == null || _inventoryLoadWorker.IsBusy)
                 e.CanExecute = false;
@@ -140,7 +156,7 @@ namespace s32.Sceh.WinApp
                 e.CanExecute = cbOtherProfile.SelectedItem != null || !String.IsNullOrWhiteSpace(cbOtherProfile.Text);
         }
 
-        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CompareCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string errorMessage;
             var steamProfile = ProfileHelper.GetSteamUser((SteamProfile)cbOtherProfile.SelectedItem, cbOtherProfile.Text, out errorMessage);
@@ -164,6 +180,32 @@ namespace s32.Sceh.WinApp
 
                 _inventoryLoadWorker.RunWorkerAsync(args);
             }
+        }
+
+        private void MakeErrorMessage()
+        {
+            if (OwnerInvError == null && SecondInvError == null)
+            {
+                ErrorMessage = null;
+                return;
+            }
+
+            var sb = new StringBuilder();
+            if (OwnerInvError != null)
+                sb.AppendFormat(Strings.OwnerInvErrorMessage, OwnerInvError).AppendLine();
+            if (SecondInvError != null)
+                sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, SecondInvError).AppendLine();
+            ErrorMessage = sb.ToString();
+        }
+
+        private void ShowHideCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is CardsCompareManager.ShowHideStrategy;
+        }
+
+        private void ShowHideCards_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            _cardsCompareManager.ShowHideCards((CardsCompareManager.ShowHideStrategy)e.Parameter);
         }
 
         private class InventoryLoadWorkerArgs

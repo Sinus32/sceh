@@ -50,7 +50,7 @@
     <Compile Include="Code\DownloadPriority.cs" />
     <Compile Include="Code\ImageDownloader.cs" />
     <Compile Include="Code\FileType.cs" />
-    <Compile Include="Code\ProfilePage.cs" />
+    <Compile Include="Code\SteamUrlPattern.cs" />
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
     <Compile Include="DataModel\Card.cs" />
@@ -67,6 +67,7 @@
     <Compile Include="LegacyClasses\SteamUser.cs" />
     <Compile Include="LegacyClasses\TradeSuggestions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SteamApi\ApiInventoryResp.cs" />
     <Compile Include="SteamApi\RgCurrencyItem.cs" />
     <Compile Include="SteamApi\RgDescriptionItem.cs" />
     <Compile Include="SteamApi\RgInventoryItem.cs" />
