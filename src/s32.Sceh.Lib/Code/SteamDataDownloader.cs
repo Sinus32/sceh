@@ -345,6 +345,7 @@ namespace s32.Sceh.Code
             {
                 while (true)
                 {
+                    Info.IsRepeating = delay > 1;
                     var now = DateTime.Now;
                     if (_nextCall > now)
                     {
@@ -387,10 +388,10 @@ namespace s32.Sceh.Code
                         }
                         else if (ex.Status == WebExceptionStatus.Timeout)
                         {
-                            if (delay < 5)
-                                delay = 5;
-                            else if (delay < 10)
-                                delay += 1;
+                            if (delay < 7)
+                                delay = 7;
+                            else if (delay < 15)
+                                delay += 2;
                             else
                                 throw;
                             continue;
@@ -406,6 +407,7 @@ namespace s32.Sceh.Code
             finally
             {
                 Info.IsInProgress = false;
+                Info.IsRepeating = false;
             }
         }
 
@@ -490,7 +492,7 @@ namespace s32.Sceh.Code
 
         public class DebugInfo : INotifyPropertyChanged
         {
-            private bool _isInProgress;
+            private bool _isInProgress, _isRepeating;
             private int _requestCount;
 
             public event PropertyChangedEventHandler PropertyChanged;
@@ -503,6 +505,19 @@ namespace s32.Sceh.Code
                     if (_isInProgress != value)
                     {
                         _isInProgress = value;
+                        NotifyPropertyChanged();
+                    }
+                }
+            }
+
+            public bool IsRepeating
+            {
+                get { return _isRepeating; }
+                set
+                {
+                    if (_isRepeating != value)
+                    {
+                        _isRepeating = value;
                         NotifyPropertyChanged();
                     }
                 }

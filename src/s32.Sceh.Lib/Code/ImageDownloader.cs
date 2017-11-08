@@ -16,7 +16,7 @@ namespace s32.Sceh.Code
     public class ImageDownloader
     {
         private const int IMAGE_FILENAME_LENGTH = 8;
-        private const int MINUTES_DELAY = 15;
+        private const int MINUTES_DELAY = 60 * 24 * 7;
         private static readonly ConcurrentDictionary<ImageFile, int> _isInQueue;
         private static readonly ConcurrentQueue<ImageFile>[] _queue;
 
@@ -45,6 +45,8 @@ namespace s32.Sceh.Code
             var request = (HttpWebRequest)HttpWebRequest.Create(image.ImageUrl);
             request.Method = "GET";
             request.Timeout = 10000;
+            request.ContinueTimeout = 10000;
+            request.ReadWriteTimeout = 10000;
             request.Accept = FileType.AcceptedImageTypes;
             request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
@@ -206,7 +208,7 @@ namespace s32.Sceh.Code
                     {
                         if (_callback != null)
                             _callback(image, imagePath);
-                        threadWait = 50;
+                        threadWait = 10;
                     }
                     else
                     {

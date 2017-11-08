@@ -61,6 +61,42 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Odznaka Steam.
+        /// </summary>
+        public static string CardContextMenu_BadgePage {
+            get {
+                return ResourceManager.GetString("CardContextMenu_BadgePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Kupno i sprzedaż.
+        /// </summary>
+        public static string CardContextMenu_MarketPage {
+            get {
+                return ResourceManager.GetString("CardContextMenu_MarketPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Strona sklepu.
+        /// </summary>
+        public static string CardContextMenu_StorePage {
+            get {
+                return ResourceManager.GetString("CardContextMenu_StorePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forum wymiany.
+        /// </summary>
+        public static string CardContextMenu_TradingForum {
+            get {
+                return ResourceManager.GetString("CardContextMenu_TradingForum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sprawdź.
         /// </summary>
         public static string CheckButtonCommand {
@@ -210,6 +246,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string ProfileDeserializationError {
             get {
                 return ResourceManager.GetString("ProfileDeserializationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Licznik zapytań: {0}.
+        /// </summary>
+        public static string RequestCountFormat {
+            get {
+                return ResourceManager.GetString("RequestCountFormat", resourceCulture);
             }
         }
         

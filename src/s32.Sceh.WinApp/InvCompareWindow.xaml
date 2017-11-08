@@ -9,15 +9,39 @@
     xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
     Title="InvCompareWindow" Height="450" Width="970" Icon="Img/sceh.ico" ResizeMode="CanResizeWithGrip" WindowState="Maximized">
   <Window.Resources>
+    <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
+    <ContextMenu x:Key="steamAppMenu" FlowDirection="LeftToRight" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="local:InvCompareWindow.OpenStorePageCommand"
+        CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="local:InvCompareWindow.OpenBadgePageCommand"
+        CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="local:InvCompareWindow.OpenTradingForumCommand"
+        CommandParameter="{Binding DataContext}" />
+    </ContextMenu>
+    <ContextMenu x:Key="cardMenu" FlowDirection="LeftToRight" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_MarketPage}" Command="local:InvCompareWindow.OpenMarketPageCommand"
+        CommandParameter="{Binding DataContext}" />
+      <Separator />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="local:InvCompareWindow.OpenStorePageCommand"
+        CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="local:InvCompareWindow.OpenBadgePageCommand"
+        CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="local:InvCompareWindow.OpenTradingForumCommand"
+        CommandParameter="{Binding DataContext}" />
+    </ContextMenu>
     <DataTemplate x:Key="steamAppTemplate" DataType="dm:SteamApp">
-      <Grid Visibility="{Binding Hide, Converter={StaticResource hideToVisibilityConv}}">
+      <Grid ContextMenu="{StaticResource steamAppMenu}">
         <Grid.Resources>
+          <CollectionViewSource x:Key="myCardsView" Source="{Binding MyCards}" Filter="CollectionViewSource_FilterByHideProp" />
+          <CollectionViewSource x:Key="otherCardsView" Source="{Binding OtherCards}" Filter="CollectionViewSource_FilterByHideProp" />
           <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
-            <ToggleButton Margin="2" Visibility="{Binding Hide, Converter={StaticResource hideToVisibilityConv}}" IsChecked="{Binding IsSelected}">
+            <ToggleButton Margin="2" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}">
               <Grid Width="83" Height="96">
-                <Image Stretch="UniformToFill" Source="{StaticResource defaultCard}" />
+                <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}" Stretch="UniformToFill"
+                  Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay}" />
                 <TextBlock Text="{Binding Name}" FontSize="11" Width="74" Height="60" Margin="0,12,0,0"
-                  TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWithOverflow" />
+                  TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWithOverflow"
+                  Visibility="{Binding IsReady, ElementName=CardImage, Converter={StaticResource hideToVisibilityConv}}" />
               </Grid>
             </ToggleButton>
           </DataTemplate>
@@ -31,14 +55,14 @@
           <RowDefinition />
         </Grid.RowDefinitions>
         <TextBlock Text="{Binding Name}" Grid.ColumnSpan="2" TextAlignment="Center" />
-        <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding MyCards}" ItemTemplate="{StaticResource cardTemplate}">
+        <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Source={StaticResource myCardsView}}" ItemTemplate="{StaticResource cardTemplate}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
               <WrapPanel Orientation="Horizontal" FlowDirection="LeftToRight" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding OtherCards}" ItemTemplate="{StaticResource cardTemplate}">
+        <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Source={StaticResource otherCardsView}}" ItemTemplate="{StaticResource cardTemplate}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
               <WrapPanel Orientation="Horizontal" FlowDirection="RightToLeft" />
@@ -50,7 +74,11 @@
   </Window.Resources>
   <Window.CommandBindings>
     <CommandBinding Command="local:InvCompareWindow.CompareCommand" CanExecute="CompareCommand_CanExecute" Executed="CompareCommand_Executed" />
-    <CommandBinding Command="local:InvCompareWindow.ShowHideCards" CanExecute="ShowHideCards_CanExecute" Executed="ShowHideCards_Executed" />
+    <CommandBinding Command="local:InvCompareWindow.ShowHideCardsCommand" CanExecute="ShowHideCardsCommand_CanExecute" Executed="ShowHideCardsCommand_Executed" />
+    <CommandBinding Command="local:InvCompareWindow.OpenMarketPageCommand" CanExecute="OpenMarketPageCommand_CanExecute" Executed="OpenMarketPageCommand_Executed" />
+    <CommandBinding Command="local:InvCompareWindow.OpenStorePageCommand" CanExecute="OpenStorePageCommand_CanExecute" Executed="OpenStorePageCommand_Executed" />
+    <CommandBinding Command="local:InvCompareWindow.OpenBadgePageCommand" CanExecute="OpenBadgePageCommand_CanExecute" Executed="OpenBadgePageCommand_Executed" />
+    <CommandBinding Command="local:InvCompareWindow.OpenTradingForumCommand" CanExecute="OpenTradingForumCommand_CanExecute" Executed="OpenTradingForumCommand_Executed" />
   </Window.CommandBindings>
   <Grid>
     <Grid.ColumnDefinitions>
@@ -81,8 +109,23 @@
         Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}"
         Grid.Row="1" Grid.RowSpan="2" />
     <TextBlock Text="{Binding OwnerProfile.Name}" VerticalAlignment="Center" FontSize="16" Margin="2" Grid.Row="1" Grid.Column="1" />
-    <TextBlock Text="{Binding RequestCount, Source={x:Static code:SteamDataDownloader.Info}, StringFormat=Requests: {0}}"
-        VerticalAlignment="Center" FontSize="16" Margin="2" Grid.Row="1" Grid.Column="2" TextAlignment="Right" />
+    <TextBlock Text="{Binding RequestCount, Source={x:Static code:SteamDataDownloader.Info}, StringFormat={x:Static resx:Strings.RequestCountFormat}}"
+        VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="2" Grid.Row="1" Grid.Column="2">
+      <TextBlock.Style>
+        <Style TargetType="TextBlock">
+          <Setter Property="Foreground" Value="#BACBD1" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsRepeating, Source={x:Static code:SteamDataDownloader.Info}}" Value="True">
+              <Setter Property="Foreground" Value="#DE4426" />
+              <Setter Property="FontWeight" Value="ExtraBold" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsInProgress, Source={x:Static code:SteamDataDownloader.Info}}" Value="True">
+              <Setter Property="Foreground" Value="#38A800" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </TextBlock.Style>
+    </TextBlock>
     <ComboBox x:Name="cbOtherProfile" IsEditable="True" ItemsSource="{Binding SteamProfiles}"
         VerticalAlignment="Center" TextSearch.TextPath="CustomUrlOrSteamId" Grid.Row="2" Grid.Column="1" />
     <Button x:Name="btnCompare" Command="local:InvCompareWindow.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
@@ -90,27 +133,27 @@
     <StackPanel Grid.Row="3" Grid.ColumnSpan="3"
         Orientation="Horizontal" HorizontalAlignment="Right">
       <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
-      <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}" Margin="2">
+      <Button Command="local:InvCompareWindow.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}" Margin="2">
         <Image Source="Img/selection1.png" Stretch="None" />
       </Button>
-      <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowMyCardsStrategy}" Margin="2">
+      <Button Command="local:InvCompareWindow.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowMyCardsStrategy}" Margin="2">
         <Image Source="Img/selection2.png" Stretch="None" />
       </Button>
-      <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowAllStrategy}" Margin="2">
+      <Button Command="local:InvCompareWindow.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowAllStrategy}" Margin="2">
         <Image Source="Img/selection3.png" Stretch="None" />
       </Button>
-      <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowOtherCardsStrategy}" Margin="2">
+      <Button Command="local:InvCompareWindow.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowOtherCardsStrategy}" Margin="2">
         <Image Source="Img/selection4.png" Stretch="None" />
       </Button>
-      <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowSelectedAppStrategy}" Margin="2">
+      <Button Command="local:InvCompareWindow.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowSelectedAppStrategy}" Margin="2">
         <Image Source="Img/selection5.png" Stretch="None" />
       </Button>
-      <Button Command="local:InvCompareWindow.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowOnlySelectedStrategy}" Margin="2">
+      <Button Command="local:InvCompareWindow.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowOnlySelectedStrategy}" Margin="2">
         <Image Source="Img/selection6.png" Stretch="None" />
       </Button>
     </StackPanel>
     <ItemsControl Grid.Row="4" Grid.ColumnSpan="3"
-        ItemsSource="{Binding SteamApps}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
+        ItemsSource="{Binding Source={StaticResource steamAppsView}}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
         ScrollViewer.CanContentScroll="True" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
         BorderThickness="0,1" ItemTemplate="{StaticResource steamAppTemplate}">
       <ItemsControl.ItemsPanel>

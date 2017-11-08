@@ -14,7 +14,7 @@
       NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
     <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}"
       NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
-    <ctl:BooleanToVisibilityConverter x:Key="booleanToVisibilityConv" />
+    <ctl:BooleanToVisibilityConverter x:Key="visibleToVisibilityConv" ValueForFalse="Collapsed" ValueForTrue="Visible" />
     <ctl:BooleanToVisibilityConverter x:Key="hideToVisibilityConv" ValueForFalse="Visible" ValueForTrue="Collapsed" />
     <Style x:Key="urlOrSteamIdTextBlock" TargetType="TextBlock">
       <Setter Property="Foreground" Value="#FF8D8D8D" />

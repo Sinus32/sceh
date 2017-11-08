@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using s32.Sceh.Code;
+using s32.Sceh.DataModel;
 using s32.Sceh.DataStore;
 
 namespace s32.Sceh.WinApp.Controls
@@ -46,15 +47,23 @@ namespace s32.Sceh.WinApp.Controls
             if (value == null)
                 return null;
 
-            var imageUrl = value as string;
-            if (String.IsNullOrEmpty(imageUrl) || !typeof(ImageFile).Equals(targetType))
+            if (!typeof(ImageFile).Equals(targetType))
                 throw new NotSupportedException();
-
+            
             if (Directory == null)
-                return null;
+                return DependencyProperty.UnsetValue;
 
             bool isNew;
-            ImageFile result = DataManager.GetOrCreateImageFile(imageUrl, Directory, out isNew);
+            ImageFile result;
+            if (value is Card)
+                result = DataManager.GetOrCreateImageFile((Card)value, Directory, out isNew);
+            else if (value is string)
+                result = DataManager.GetOrCreateImageFile((string)value, Directory, out isNew);
+            else
+                throw new NotSupportedException();
+
+            if (result == null)
+                return DependencyProperty.UnsetValue;
 
             var filePath = DataManager.LocalFilePath(result);
             var forceDownload = filePath == null || !File.Exists(filePath);

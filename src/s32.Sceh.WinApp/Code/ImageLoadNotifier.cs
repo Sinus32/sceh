@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -87,13 +88,31 @@ namespace s32.Sceh.WinApp.Code
 
             public void Action()
             {
+                for (int i = 0; i < 10; ++i)
+                {
+                    try
+                    {
+                        var bitmapImage = GetImage();
+                        _image.LazySource = bitmapImage;
+                        _image.IsReady = true;
+                        return;
+                    }
+                    catch (IOException)
+                    {
+                        Thread.Sleep(250);
+                    }
+                }
+            }
+
+            private BitmapImage GetImage()
+            {
                 var bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
                 bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
                 bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 bitmapImage.UriSource = _uri;
                 bitmapImage.EndInit();
-                _image.LazySource = bitmapImage;
+                return bitmapImage;
             }
         }
     }
