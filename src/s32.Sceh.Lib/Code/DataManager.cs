@@ -64,13 +64,20 @@ namespace s32.Sceh.Code
             var result = new SteamProfile();
             result.SteamId = resp.SteamId;
             result.Name = resp.Name;
-            result.CustomUrl = resp.CustomURL;
+            result.CustomUrl = String.IsNullOrEmpty(resp.CustomURL) ? null : resp.CustomURL;
             result.AvatarSmallUrl = resp.AvatarIcon;
             result.AvatarMediumUrl = resp.AvatarIconMedium;
             result.AvatarFullUrl = resp.AvatarIconFull;
             result.LastUpdate = DateTime.UtcNow;
 
             return AddOrUpdateSteamProfile(result);
+        }
+
+        public static SteamProfile GetLastSteamProfile()
+        {
+            if (_currentData != null && _currentData.DataFile.LastSteamProfileId > 0L)
+                return _currentData.DataFile.SteamProfiles.FirstOrDefault(q => q.SteamId == _currentData.DataFile.LastSteamProfileId);
+            return null;
         }
 
         public static ImageFile GetOrCreateImageFile(Card steamCard, ImageDirectory directory, out bool isNew)
@@ -113,6 +120,20 @@ namespace s32.Sceh.Code
 
             isNew = true;
             return result;
+        }
+
+        public static SteamProfile GetSteamProfile(SteamProfileKey profileKey)
+        {
+            if (profileKey == null)
+                return null;
+
+            if (profileKey.SteamId > 0L)
+                return _currentData.DataFile.SteamProfiles.FirstOrDefault(q => q.SteamId == profileKey.SteamId);
+
+            if (!String.IsNullOrEmpty(profileKey.CustomUrl))
+                return _currentData.DataFile.SteamProfiles.FirstOrDefault(q => String.Equals(q.CustomUrl, profileKey.CustomUrl, StringComparison.OrdinalIgnoreCase));
+
+            return null;
         }
 
         public static IReadOnlyList<SteamProfile> GetSteamProfiles()
@@ -168,6 +189,10 @@ namespace s32.Sceh.Code
                 try
                 {
                     var ser = new XmlSerializer(typeof(ScehDataFile));
+                    ser.UnknownAttribute += XmlSerializer_UnknownAttribute;
+                    ser.UnknownElement += XmlSerializer_UnknownElement;
+                    ser.UnknownNode += XmlSerializer_UnknownNode;
+                    ser.UnreferencedObject += XmlSerializer_UnreferencedObject;
                     using (var stream = File.OpenRead(_currentData.DataFilePath))
                     using (var reader = new StreamReader(stream, true))
                         _currentData.DataFile = (ScehDataFile)ser.Deserialize(stream);
@@ -248,6 +273,14 @@ namespace s32.Sceh.Code
             }
         }
 
+        public static void SetLastSteamProfile(SteamProfile profile)
+        {
+            if (profile == null)
+                _currentData.DataFile.LastSteamProfileId = 0L;
+            else
+                _currentData.DataFile.LastSteamProfileId = profile.SteamId;
+        }
+
         private static string LookupKey(ImageDirectory dir, ImageFile img)
         {
             return String.Concat(dir.RelativePath, '/', img.ImageUrl);
@@ -267,6 +300,26 @@ namespace s32.Sceh.Code
                 directories.Add(result);
             }
             return result;
+        }
+
+        private static void XmlSerializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void XmlSerializer_UnknownElement(object sender, XmlElementEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void XmlSerializer_UnknownNode(object sender, XmlNodeEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void XmlSerializer_UnreferencedObject(object sender, UnreferencedObjectEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

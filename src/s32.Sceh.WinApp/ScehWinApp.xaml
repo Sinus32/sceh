@@ -12,6 +12,8 @@
     <BitmapImage x:Key="defaultCard" UriSource="Img/card.png" />
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}"
       NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
+    <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}"
+      NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
     <ctl:BooleanToVisibilityConverter x:Key="booleanToVisibilityConv" />
     <ctl:BooleanToVisibilityConverter x:Key="hideToVisibilityConv" ValueForFalse="Visible" ValueForTrue="Collapsed" />
     <Style x:Key="urlOrSteamIdTextBlock" TargetType="TextBlock">

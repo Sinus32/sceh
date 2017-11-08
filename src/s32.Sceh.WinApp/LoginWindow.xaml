@@ -19,7 +19,7 @@
     </Style>
   </Window.Resources>
   <Window.CommandBindings>
-    <CommandBinding Command="local:LoginWindow.LoginCommand" Executed="CommandBinding_Executed" CanExecute="CommandBinding_CanExecute" />
+    <CommandBinding Command="local:LoginWindow.LoginCommand" Executed="LoginCommand_Executed" CanExecute="LoginCommand_CanExecute" />
   </Window.CommandBindings>
   <StackPanel Margin="60,0" VerticalAlignment="Center">
     <Label Target="{Binding ProfileComboBox, ElementName=spcbProfile}" Content="{x:Static resx:Strings.LoginProfileLabel}" />

@@ -42,6 +42,12 @@ namespace s32.Sceh.WinApp
             SteamProfiles = ProfileHelper.LoadProfiles();
 
             DataContext = this;
+
+            var profile = DataManager.GetLastSteamProfile();
+            if (profile != null)
+            {
+                cbProfile.SelectedItem = profile;
+            }
         }
 
         public static RoutedUICommand LoginCommand
@@ -55,13 +61,13 @@ namespace s32.Sceh.WinApp
             set { SetValue(SteamProfilesProperty, value); }
         }
 
-        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void LoginCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (cbProfile != null)
                 e.CanExecute = cbProfile.SelectedItem != null || !String.IsNullOrWhiteSpace(cbProfile.Text);
         }
 
-        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void LoginCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string errorMessage;
             var steamProfile = ProfileHelper.GetSteamUser((SteamProfile)cbProfile.SelectedItem, cbProfile.Text, out errorMessage);
@@ -73,6 +79,7 @@ namespace s32.Sceh.WinApp
             else if (steamProfile != null)
             {
                 var cmpWindow = new InvCompareWindow();
+                DataManager.SetLastSteamProfile(steamProfile);
                 cmpWindow.OwnerProfile = steamProfile;
                 cmpWindow.Show();
                 this.Close();

@@ -6,6 +6,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -21,12 +22,9 @@ namespace s32.Sceh.Code
 {
     public static class SteamDataDownloader
     {
-        public static readonly DebugInfo Info = new DebugInfo();
-
         public const string SteamCommunityPageByCustomUrl = "http://steamcommunity.com/id/";
-
         public const string SteamCommunityPageBySteamId = "http://steamcommunity.com/profiles/";
-
+        public static readonly DebugInfo Info = new DebugInfo();
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,18}$", RegexOptions.None);
 
         private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
@@ -42,17 +40,9 @@ namespace s32.Sceh.Code
 
         public static List<Card> GetCards(Uri inventoryUri, out string errorMessage)
         {
-            var request = (HttpWebRequest)HttpWebRequest.Create(inventoryUri);
-            request.Method = "GET";
-            request.Timeout = 10000;
-            request.Accept = "application/json";
-            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.Referer = "http://steamcommunity.com/";
-
             string rawJson;
             HttpStatusCode statusCode;
-            using (var response = DoRequest(request, out statusCode))
+            using (var response = DoRequest(() => PrepareRequest(inventoryUri, "application/json"), out statusCode))
             {
                 if (response == null)
                 {
@@ -91,15 +81,8 @@ namespace s32.Sceh.Code
             while (ret.More)
             {
                 var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "?start=", ret.MoreStart));
-                request = (HttpWebRequest)HttpWebRequest.Create(nextUri);
-                request.Method = "GET";
-                request.Timeout = 10000;
-                request.Accept = "application/json";
-                request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.Referer = "http://steamcommunity.com/";
 
-                using (var response = DoRequest(request, out statusCode))
+                using (var response = DoRequest(() => PrepareRequest(nextUri, "application/json"), out statusCode))
                 {
                     if (response == null)
                     {
@@ -145,17 +128,10 @@ namespace s32.Sceh.Code
                 return null;
             }
             var referer = GetProfileUri(profile, SteamUrlPattern.Inventory).ToString();
-            var request = (HttpWebRequest)HttpWebRequest.Create(inventoryUri);
-            request.Method = "GET";
-            request.Timeout = 10000;
-            request.Accept = "application/json";
-            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.Referer = referer;
 
             string rawJson;
             HttpStatusCode statusCode;
-            using (var response = DoRequest(request, out statusCode))
+            using (var response = DoRequest(() => PrepareRequest(inventoryUri, "application/json", referer: referer), out statusCode))
             {
                 if (response == null)
                 {
@@ -194,15 +170,8 @@ namespace s32.Sceh.Code
             while (ret.MoreItems)
             {
                 var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "&start_assetid=", ret.LastAssetId));
-                request = (HttpWebRequest)HttpWebRequest.Create(nextUri);
-                request.Method = "GET";
-                request.Timeout = 10000;
-                request.Accept = "application/json";
-                request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-                request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-                request.Referer = referer;
 
-                using (var response = DoRequest(request, out statusCode))
+                using (var response = DoRequest(() => PrepareRequest(nextUri, "application/json", referer: referer), out statusCode))
                 {
                     if (response == null)
                     {
@@ -258,17 +227,9 @@ namespace s32.Sceh.Code
 
         public static SteamProfileResp GetProfile(Uri profileUri, out GetProfileError error)
         {
-            var request = (HttpWebRequest)HttpWebRequest.Create(profileUri);
-            request.Method = "GET";
-            request.Timeout = 10000;
-            request.Accept = "text/xml";
-            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.Referer = "http://steamcommunity.com/";
-
             string rawXml;
             HttpStatusCode statusCode;
-            using (var response = DoRequest(request, out statusCode))
+            using (var response = DoRequest(() => PrepareRequest(profileUri, "text/xml"), out statusCode))
             {
                 if (response == null)
                 {
@@ -312,16 +273,16 @@ namespace s32.Sceh.Code
             return result;
         }
 
-        public static Uri GetProfileUri(string idOrUrl, SteamUrlPattern page)
+        public static SteamProfileKey GetProfileKey(string idOrUrl)
         {
             long steamId = 0L;
             string customUrl = null;
 
             if (TryExtractSteamIdFromUrl(idOrUrl, out steamId))
-                return GetProfileUri(steamId, customUrl, page);
+                return new SteamProfileKey(steamId, customUrl);
 
             if (TryExtractCustomUrlFromUrl(idOrUrl, out customUrl))
-                return GetProfileUri(steamId, customUrl, page);
+                return new SteamProfileKey(steamId, customUrl);
 
             if (_steamidRe.IsMatch(idOrUrl))
                 steamId = Int64.Parse(idOrUrl);
@@ -330,7 +291,12 @@ namespace s32.Sceh.Code
             else
                 return null;
 
-            return GetProfileUri(steamId, customUrl, page);
+            return new SteamProfileKey(steamId, customUrl);
+        }
+
+        public static Uri GetProfileUri(string idOrUrl, SteamUrlPattern page)
+        {
+            return GetProfileKey(idOrUrl).GetProfileUri(page);
         }
 
         public static Uri GetProfileUri(long steamId, string customUrl, SteamUrlPattern page)
@@ -343,36 +309,12 @@ namespace s32.Sceh.Code
                 return null;
         }
 
-        public static Uri GetProfileUri(this SteamProfile steamProfile, SteamUrlPattern page)
+        public static Uri GetProfileUri(this SteamProfileKey steamProfile, SteamUrlPattern page)
         {
             if (steamProfile == null)
                 return null;
 
             return GetProfileUri(steamProfile.SteamId, steamProfile.CustomUrl, page);
-        }
-
-        private static void Load(List<Card> result, RgInventoryResp ret)
-        {
-            foreach (var dt in ret.RgInventory.Values)
-            {
-                var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
-                var desc = ret.RgDescriptions[key];
-                if (desc.Tradable && desc.Marketable)
-                    result.Add(new Card(dt, desc));
-            }
-        }
-
-        private static void Load(List<Card> result, ApiInventoryResp ret)
-        {
-            var dict = new Dictionary<CardEqualityKey, ApiInventoryResp.Description>();
-            foreach (var dt in ret.Descriptions)
-                dict.Add(new CardEqualityKey(dt.ClassId, dt.InstanceId), dt);
-            foreach (var dt in ret.Assets)
-            {
-                var desc = dict[new CardEqualityKey(dt.ClassId, dt.InstanceId)];
-                if (desc.Tradable && desc.Marketable)
-                    result.Add(new Card(dt, desc));
-            }
         }
 
         private static int CardComparison(Card x, Card y)
@@ -395,7 +337,7 @@ namespace s32.Sceh.Code
             return 0;
         }
 
-        private static HttpWebResponse DoRequest(HttpWebRequest request, out HttpStatusCode statusCode)
+        private static HttpWebResponse DoRequest(Func<HttpWebRequest> makeRequestFunc, out HttpStatusCode statusCode)
         {
             var delay = 1;
             Info.IsInProgress = true;
@@ -412,6 +354,7 @@ namespace s32.Sceh.Code
 
                     try
                     {
+                        var request = makeRequestFunc();
                         Info.RequestCount += 1;
                         statusCode = HttpStatusCode.OK;
                         return (HttpWebResponse)request.GetResponse();
@@ -442,6 +385,16 @@ namespace s32.Sceh.Code
                                 response.Close();
                             }
                         }
+                        else if (ex.Status == WebExceptionStatus.Timeout)
+                        {
+                            if (delay < 5)
+                                delay = 5;
+                            else if (delay < 10)
+                                delay += 1;
+                            else
+                                throw;
+                            continue;
+                        }
                         throw;
                     }
                     finally
@@ -454,6 +407,44 @@ namespace s32.Sceh.Code
             {
                 Info.IsInProgress = false;
             }
+        }
+
+        private static void Load(List<Card> result, RgInventoryResp ret)
+        {
+            foreach (var dt in ret.RgInventory.Values)
+            {
+                var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
+                var desc = ret.RgDescriptions[key];
+                if (desc.Tradable && desc.Marketable)
+                    result.Add(new Card(dt, desc));
+            }
+        }
+
+        private static void Load(List<Card> result, ApiInventoryResp ret)
+        {
+            var dict = new Dictionary<CardEqualityKey, ApiInventoryResp.Description>();
+            foreach (var dt in ret.Descriptions)
+                dict.Add(new CardEqualityKey(dt.ClassId, dt.InstanceId), dt);
+            foreach (var dt in ret.Assets)
+            {
+                var desc = dict[new CardEqualityKey(dt.ClassId, dt.InstanceId)];
+                if (desc.Tradable && desc.Marketable)
+                    result.Add(new Card(dt, desc));
+            }
+        }
+
+        private static HttpWebRequest PrepareRequest(Uri uri, string accept, HttpMethod method = null, string referer = null)
+        {
+            var request = (HttpWebRequest)HttpWebRequest.Create(uri);
+            request.Method = (method ?? HttpMethod.Get).Method;
+            request.Timeout = 10000;
+            request.ContinueTimeout = 10000;
+            request.ReadWriteTimeout = 10000;
+            request.Accept = accept;
+            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.Referer = referer ?? "http://steamcommunity.com/";
+            return request;
         }
 
         private static bool TryExtractCustomUrlFromUrl(string idOrUrl, out string customUrl)
@@ -499,23 +490,10 @@ namespace s32.Sceh.Code
 
         public class DebugInfo : INotifyPropertyChanged
         {
+            private bool _isInProgress;
             private int _requestCount;
 
             public event PropertyChangedEventHandler PropertyChanged;
-            private bool _isInProgress;
-
-            public int RequestCount
-            {
-                get { return _requestCount; }
-                set
-                {
-                    if (_requestCount != value)
-                    {
-                        _requestCount = value;
-                        NotifyPropertyChanged();
-                    }
-                }
-            }
 
             public bool IsInProgress
             {
@@ -525,6 +503,19 @@ namespace s32.Sceh.Code
                     if (_isInProgress != value)
                     {
                         _isInProgress = value;
+                        NotifyPropertyChanged();
+                    }
+                }
+            }
+
+            public int RequestCount
+            {
+                get { return _requestCount; }
+                set
+                {
+                    if (_requestCount != value)
+                    {
+                        _requestCount = value;
                         NotifyPropertyChanged();
                     }
                 }

@@ -12,13 +12,46 @@ namespace s32.Sceh.WinApp.Code
 {
     public class ProfileHelper
     {
+        private const int MINUTES_DELAY = 60;
+
         public static SteamProfile GetSteamUser(SteamProfile steamProfile, string profileIdOrUrl, out string errorMessage)
         {
-            Uri profileUri = null;
+            SteamProfileKey profileKey = null;
             if (steamProfile != null)
-                profileUri = SteamDataDownloader.GetProfileUri(steamProfile, SteamUrlPattern.ApiGetProfile);
+            {
+                profileKey = steamProfile;
+            }
             else if (profileIdOrUrl != null)
+            {
+                profileKey = SteamDataDownloader.GetProfileKey(profileIdOrUrl);
+            }
+
+            if (profileKey == null)
+            {
+                errorMessage = Strings.InvalidProfileIdOrUrl;
+                return null;
+            }
+
+            var cached = DataManager.GetSteamProfile(profileKey);
+            if (cached != null)
+            {
+                var reqTime = DateTime.UtcNow.AddMinutes(-MINUTES_DELAY);
+                if (cached.LastUpdate > reqTime)
+                {
+                    errorMessage = null;
+                    return cached;
+                }
+            }
+
+            Uri profileUri = null;
+            if (cached != null)
+            {
+                profileUri = SteamDataDownloader.GetProfileUri(steamProfile, SteamUrlPattern.ApiGetProfile);
+            }
+            else if (profileIdOrUrl != null)
+            {
                 profileUri = SteamDataDownloader.GetProfileUri(profileIdOrUrl, SteamUrlPattern.ApiGetProfile);
+            }
 
             if (profileUri == null)
             {

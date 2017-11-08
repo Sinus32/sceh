@@ -9,19 +9,13 @@ namespace s32.Sceh.DataStore
 {
     [Serializable]
     [XmlRoot("SteamProfile", Namespace = ScehData.NS_SCEH)]
-    public class SteamProfile
+    public class SteamProfile : SteamProfileKey
     {
-        [XmlAttribute]
-        public long SteamId { get; set; }
-
         [XmlAttribute]
         public DateTime LastUpdate { get; set; }
 
-        [XmlElement(Order = 0)]
-        public string Name { get; set; }
-
         [XmlElement(Order = 1)]
-        public string CustomUrl { get; set; }
+        public string Name { get; set; }
 
         [XmlElement(Order = 2)]
         public string AvatarSmallUrl { get; set; }
@@ -31,16 +25,5 @@ namespace s32.Sceh.DataStore
 
         [XmlElement(Order = 4)]
         public string AvatarFullUrl { get; set; }
-
-        [XmlIgnore]
-        public string CustomUrlOrSteamId
-        {
-            get
-            {
-                return String.IsNullOrEmpty(CustomUrl)
-                    ? SteamId.ToString()
-                    : CustomUrl;
-            }
-        }
     }
 }
