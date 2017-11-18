@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using s32.Sceh.DataStore;
 using s32.Sceh.SteamApi;
 
 namespace s32.Sceh.DataModel
@@ -15,30 +16,33 @@ namespace s32.Sceh.DataModel
         private long _id, _appId, _classId, _instanceId, _marketFeeApp;
         private bool _isSelected, _tradable, _marketable, _isDuplicated, _otherHaveIt, _hide;
         private string _marketHashName, _marketName, _name, _type, _iconUrl, _thumbnailUrl;
+        private SteamProfileKey _owner;
 
         public Card()
         { }
 
-        public Card(RgInventoryItem rgInvItem, RgDescriptionItem rgDescItem)
-        {
-            _id = rgInvItem.Id;
-            _appId = rgDescItem.AppId;
-            _classId = rgDescItem.ClassId;
-            _instanceId = rgDescItem.InstanceId;
-            _amount = rgInvItem.Amount;
-            _pos = rgInvItem.Pos;
-            _marketHashName = rgDescItem.MarketHashName;
-            _marketName = rgDescItem.MarketName;
-            _name = rgDescItem.Name;
-            _type = rgDescItem.Type;
-            _iconUrl = rgDescItem.IconUrl;
-            _tradable = rgDescItem.Tradable;
-            _marketable = rgDescItem.Marketable;
-            _marketFeeApp = rgDescItem.MarketFeeApp;
-        }
+        //public Card(SteamProfileKey owner, RgInventoryItem rgInvItem, RgDescriptionItem rgDescItem)
+        //{
+        //    _owner = owner;
+        //    _id = rgInvItem.Id;
+        //    _appId = rgDescItem.AppId;
+        //    _classId = rgDescItem.ClassId;
+        //    _instanceId = rgDescItem.InstanceId;
+        //    _amount = rgInvItem.Amount;
+        //    _pos = rgInvItem.Pos;
+        //    _marketHashName = rgDescItem.MarketHashName;
+        //    _marketName = rgDescItem.MarketName;
+        //    _name = rgDescItem.Name;
+        //    _type = rgDescItem.Type;
+        //    _iconUrl = rgDescItem.IconUrl;
+        //    _tradable = rgDescItem.Tradable;
+        //    _marketable = rgDescItem.Marketable;
+        //    _marketFeeApp = rgDescItem.MarketFeeApp;
+        //}
 
-        public Card(ApiInventoryResp.Asset asset, ApiInventoryResp.Description desc)
+        public Card(SteamProfileKey owner, ApiInventoryResp.Asset asset, ApiInventoryResp.Description desc)
         {
+            _owner = owner;
             _id = asset.AssetId;
             _appId = asset.AppId;
             _classId = asset.ClassId;
@@ -262,6 +266,11 @@ namespace s32.Sceh.DataModel
                     NotifyPropertyChanged();
                 }
             }
+        }
+
+        public SteamProfileKey Owner
+        {
+            get { return _owner; }
         }
 
         public int Pos

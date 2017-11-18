@@ -245,17 +245,18 @@ namespace s32.Sceh.WinApp
         private void OpenBadgePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "{0}/gamecards/{1}/";
-            var myInvLink = SteamDataDownloader.GetProfileUri(OwnerProfile, SteamUrlPattern.CommunityPage);
             string url = null;
             if (e.Parameter is SteamApp)
             {
                 var steamApp = (SteamApp)e.Parameter;
-                url = String.Format(PATTERN, myInvLink, steamApp.Id);
+                var invLink = SteamDataDownloader.GetProfileUri(OwnerProfile, SteamUrlPattern.CommunityPage);
+                url = String.Format(PATTERN, invLink, steamApp.Id);
             }
             else if (e.Parameter is Card)
             {
                 var card = (Card)e.Parameter;
-                url = String.Format(PATTERN, myInvLink, card.MarketFeeApp);
+                var invLink = SteamDataDownloader.GetProfileUri(card.Owner, SteamUrlPattern.CommunityPage);
+                url = String.Format(PATTERN, invLink, card.MarketFeeApp);
             }
 
             if (url != null)

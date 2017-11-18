@@ -38,90 +38,90 @@ namespace s32.Sceh.Code
             DeserializationError
         }
 
-        public static List<Card> GetCards(Uri inventoryUri, out string errorMessage)
+        //public static List<Card> GetCards(Uri inventoryUri, out string errorMessage)
+        //{
+        //    string rawJson;
+        //    HttpStatusCode statusCode;
+        //    using (var response = DoRequest(() => PrepareRequest(inventoryUri, "application/json"), out statusCode))
+        //    {
+        //        if (response == null)
+        //        {
+        //            errorMessage = String.Format("Http error: {0} ({1})", (int)statusCode, statusCode);
+        //            return null;
+        //        }
+
+        //        if (!response.ContentType.StartsWith("application/json"))
+        //        {
+        //            errorMessage = "Wrong profile";
+        //            return null;
+        //        }
+
+        //        using (var reader = new StreamReader(response.GetResponseStream()))
+        //        {
+        //            rawJson = reader.ReadToEnd();
+        //        }
+        //    }
+
+        //    var jss = new JsonSerializerSettings();
+        //    jss.MissingMemberHandling = MissingMemberHandling.Ignore;
+        //    jss.NullValueHandling = NullValueHandling.Include;
+        //    jss.ObjectCreationHandling = ObjectCreationHandling.Replace;
+        //    var ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
+
+        //    if (!ret.Success)
+        //    {
+        //        errorMessage = ret.Error ?? "Wrong query";
+        //        return null;
+        //    }
+
+        //    var result = new List<Card>();
+
+        //    Load(result, ret);
+
+        //    while (ret.More)
+        //    {
+        //        var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "?start=", ret.MoreStart));
+
+        //        using (var response = DoRequest(() => PrepareRequest(nextUri, "application/json"), out statusCode))
+        //        {
+        //            if (response == null)
+        //            {
+        //                errorMessage = String.Format("Http error: {0} ({1})", (int)statusCode, statusCode);
+        //                return null;
+        //            }
+
+        //            if (!response.ContentType.StartsWith("application/json"))
+        //            {
+        //                errorMessage = "Wrong profile";
+        //                return null;
+        //            }
+
+        //            using (var reader = new StreamReader(response.GetResponseStream()))
+        //            {
+        //                rawJson = reader.ReadToEnd();
+        //            }
+        //        }
+
+        //        ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
+
+        //        if (!ret.Success)
+        //        {
+        //            errorMessage = ret.Error ?? "Wrong query";
+        //            return null;
+        //        }
+
+        //        Load(result, ret);
+        //    }
+
+        //    result.Sort(CardComparison);
+
+        //    errorMessage = null;
+        //    return result;
+        //}
+
+        public static List<Card> GetCards(SteamProfileKey profile, out string errorMessage)
         {
-            string rawJson;
-            HttpStatusCode statusCode;
-            using (var response = DoRequest(() => PrepareRequest(inventoryUri, "application/json"), out statusCode))
-            {
-                if (response == null)
-                {
-                    errorMessage = String.Format("Http error: {0} ({1})", (int)statusCode, statusCode);
-                    return null;
-                }
-
-                if (!response.ContentType.StartsWith("application/json"))
-                {
-                    errorMessage = "Wrong profile";
-                    return null;
-                }
-
-                using (var reader = new StreamReader(response.GetResponseStream()))
-                {
-                    rawJson = reader.ReadToEnd();
-                }
-            }
-
-            var jss = new JsonSerializerSettings();
-            jss.MissingMemberHandling = MissingMemberHandling.Ignore;
-            jss.NullValueHandling = NullValueHandling.Include;
-            jss.ObjectCreationHandling = ObjectCreationHandling.Replace;
-            var ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
-
-            if (!ret.Success)
-            {
-                errorMessage = ret.Error ?? "Wrong query";
-                return null;
-            }
-
-            var result = new List<Card>();
-
-            Load(result, ret);
-
-            while (ret.More)
-            {
-                var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "?start=", ret.MoreStart));
-
-                using (var response = DoRequest(() => PrepareRequest(nextUri, "application/json"), out statusCode))
-                {
-                    if (response == null)
-                    {
-                        errorMessage = String.Format("Http error: {0} ({1})", (int)statusCode, statusCode);
-                        return null;
-                    }
-
-                    if (!response.ContentType.StartsWith("application/json"))
-                    {
-                        errorMessage = "Wrong profile";
-                        return null;
-                    }
-
-                    using (var reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        rawJson = reader.ReadToEnd();
-                    }
-                }
-
-                ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
-
-                if (!ret.Success)
-                {
-                    errorMessage = ret.Error ?? "Wrong query";
-                    return null;
-                }
-
-                Load(result, ret);
-            }
-
-            result.Sort(CardComparison);
-
-            errorMessage = null;
-            return result;
-        }
-
-        public static List<Card> GetCards2(SteamProfile profile, out string errorMessage)
-        {
-            var inventoryUri = GetProfileUri(profile, SteamUrlPattern.Api2GetInventory);
+            var inventoryUri = GetProfileUri(profile, SteamUrlPattern.ApiGetInventory);
             if (inventoryUri == null)
             {
                 errorMessage = "Invalid profile data";
@@ -165,7 +165,7 @@ namespace s32.Sceh.Code
 
             var result = new List<Card>();
 
-            Load(result, ret);
+            Load(profile, result, ret);
 
             while (ret.MoreItems)
             {
@@ -199,29 +199,12 @@ namespace s32.Sceh.Code
                     return null;
                 }
 
-                Load(result, ret);
+                Load(profile, result, ret);
             }
 
             result.Sort(CardComparison);
 
             errorMessage = null;
-            return result;
-        }
-
-        public static Inventory GetInventory(string idOrUrl, out string errorMessage)
-        {
-            var result = new Inventory();
-            result.User = idOrUrl;
-            var uri = GetProfileUri(idOrUrl, SteamUrlPattern.ApiGetInventory);
-            if (uri == null)
-            {
-                errorMessage = "Invalid profile";
-                return null;
-            }
-
-            result.Link = GetProfileUri(idOrUrl, SteamUrlPattern.Inventory).ToString();
-            result.Cards = GetCards(uri, out errorMessage);
-
             return result;
         }
 
@@ -411,18 +394,18 @@ namespace s32.Sceh.Code
             }
         }
 
-        private static void Load(List<Card> result, RgInventoryResp ret)
-        {
-            foreach (var dt in ret.RgInventory.Values)
-            {
-                var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
-                var desc = ret.RgDescriptions[key];
-                if (desc.Tradable && desc.Marketable)
-                    result.Add(new Card(dt, desc));
-            }
-        }
+        //private static void Load(SteamProfileKey owner, List<Card> result, RgInventoryResp ret)
+        //{
+        //    foreach (var dt in ret.RgInventory.Values)
+        //    {
+        //        var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
+        //        var desc = ret.RgDescriptions[key];
+        //        if (desc.Tradable && desc.Marketable)
+        //            result.Add(new Card(owner, dt, desc));
+        //    }
+        //}
 
-        private static void Load(List<Card> result, ApiInventoryResp ret)
+        private static void Load(SteamProfileKey owner, List<Card> result, ApiInventoryResp ret)
         {
             var dict = new Dictionary<CardEqualityKey, ApiInventoryResp.Description>();
             foreach (var dt in ret.Descriptions)
@@ -431,7 +414,7 @@ namespace s32.Sceh.Code
             {
                 var desc = dict[new CardEqualityKey(dt.ClassId, dt.InstanceId)];
                 if (desc.Tradable && desc.Marketable)
-                    result.Add(new Card(dt, desc));
+                    result.Add(new Card(owner, dt, desc));
             }
         }
 
