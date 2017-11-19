@@ -61,7 +61,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Odznaka Steam.
+        ///   Looks up a localized string similar to _Odznaka Steam.
         /// </summary>
         public static string CardContextMenu_BadgePage {
             get {
@@ -70,7 +70,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kupno i sprzedaż.
+        ///   Looks up a localized string similar to _Kupno i sprzedaż.
         /// </summary>
         public static string CardContextMenu_MarketPage {
             get {
@@ -79,7 +79,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Strona sklepu.
+        ///   Looks up a localized string similar to _Strona sklepu.
         /// </summary>
         public static string CardContextMenu_StorePage {
             get {
@@ -88,29 +88,11 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Forum wymiany.
+        ///   Looks up a localized string similar to _Forum wymiany.
         /// </summary>
         public static string CardContextMenu_TradingForum {
             get {
                 return ResourceManager.GetString("CardContextMenu_TradingForum", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sprawdź.
-        /// </summary>
-        public static string CheckButtonCommand {
-            get {
-                return ResourceManager.GetString("CheckButtonCommand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Sprawdź.
-        /// </summary>
-        public static string CheckButtonText {
-            get {
-                return ResourceManager.GetString("CheckButtonText", resourceCulture);
             }
         }
         
@@ -223,11 +205,20 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drugi profil.
+        ///   Looks up a localized string similar to _Drugi profil.
         /// </summary>
         public static string MenuItem_OthersProfile {
             get {
                 return ResourceManager.GetString("MenuItem_OthersProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Strona profilu.
+        /// </summary>
+        public static string MenuItem_Profile {
+            get {
+                return ResourceManager.GetString("MenuItem_Profile", resourceCulture);
             }
         }
         

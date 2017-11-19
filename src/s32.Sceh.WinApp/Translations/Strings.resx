@@ -118,22 +118,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CardContextMenu_BadgePage" xml:space="preserve">
-    <value>Odznaka Steam</value>
+    <value>_Odznaka Steam</value>
   </data>
   <data name="CardContextMenu_MarketPage" xml:space="preserve">
-    <value>Kupno i sprzedaż</value>
+    <value>_Kupno i sprzedaż</value>
   </data>
   <data name="CardContextMenu_StorePage" xml:space="preserve">
-    <value>Strona sklepu</value>
+    <value>_Strona sklepu</value>
   </data>
   <data name="CardContextMenu_TradingForum" xml:space="preserve">
-    <value>Forum wymiany</value>
-  </data>
-  <data name="CheckButtonCommand" xml:space="preserve">
-    <value>Sprawdź</value>
-  </data>
-  <data name="CheckButtonText" xml:space="preserve">
-    <value>_Sprawdź</value>
+    <value>_Forum wymiany</value>
   </data>
   <data name="CompareButtonText" xml:space="preserve">
     <value>_Porównaj</value>
@@ -172,7 +166,10 @@
     <value>Mój _profil</value>
   </data>
   <data name="MenuItem_OthersProfile" xml:space="preserve">
-    <value>Drugi profil</value>
+    <value>_Drugi profil</value>
+  </data>
+  <data name="MenuItem_Profile" xml:space="preserve">
+    <value>_Strona profilu</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować twoich kart: {0}</value>

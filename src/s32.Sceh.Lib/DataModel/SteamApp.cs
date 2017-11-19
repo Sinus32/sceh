@@ -11,7 +11,7 @@ namespace s32.Sceh.DataModel
 {
     public class SteamApp : INotifyPropertyChanged
     {
-        private bool _hide;
+        private bool _hide, _myIsSelected, _otherIsSelected;
         private long _id;
         private ObservableCollection<Card> _myCards, _otherCards;
         private string _name;
@@ -79,6 +79,19 @@ namespace s32.Sceh.DataModel
             }
         }
 
+        public bool MyIsSelected
+        {
+            get { return _myIsSelected; }
+            set
+            {
+                if (_myIsSelected != value)
+                {
+                    _myIsSelected = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
         public string Name
         {
             get { return _name; }
@@ -100,6 +113,19 @@ namespace s32.Sceh.DataModel
                 if (_otherCards != value)
                 {
                     _otherCards = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public bool OtherIsSelected
+        {
+            get { return _otherIsSelected; }
+            set
+            {
+                if (_otherIsSelected != value)
+                {
+                    _otherIsSelected = value;
                     NotifyPropertyChanged();
                 }
             }

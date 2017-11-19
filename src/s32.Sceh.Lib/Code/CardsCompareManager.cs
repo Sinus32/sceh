@@ -81,6 +81,7 @@ namespace s32.Sceh.Code
                         _steamApps.Add(current);
                     }
                     current.OtherCards.Add(it.Current);
+                    it.Current.SteamAppOtherSide = new WeakReference<SteamApp>(current);
                     it.Current.IsDuplicated = !otherSet.Add(it.Current);
                     hasOther = it.MoveNext();
                 }
@@ -92,6 +93,7 @@ namespace s32.Sceh.Code
                 }
 
                 current.MyCards.Add(card);
+                card.SteamAppMySide = new WeakReference<SteamApp>(current);
                 card.IsDuplicated = !mySet.Add(card);
             }
 
@@ -103,15 +105,20 @@ namespace s32.Sceh.Code
                     _steamApps.Add(current);
                 }
                 current.OtherCards.Add(it.Current);
+                it.Current.SteamAppOtherSide = new WeakReference<SteamApp>(current);
                 it.Current.IsDuplicated = !otherSet.Add(it.Current);
                 hasOther = it.MoveNext();
             }
 
             foreach (var card in _myCards)
+            {
                 card.OtherHaveIt = otherSet.Contains(card);
+            }
 
             foreach (var card in _otherCards)
+            {
                 card.OtherHaveIt = mySet.Contains(card);
+            }
 
             _steamApps.Sort(SteamAppsComparison);
         }

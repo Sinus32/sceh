@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -51,16 +50,6 @@ namespace s32.Sceh.WinApp
         private CardsCompareManager _cardsCompareManager;
 
         private BackgroundWorker _inventoryLoadWorker;
-
-        static InvCompareWindow()
-        {
-            _compareCommand = new RoutedCommand("Compare", typeof(LoginWindow));
-            _showHideCardsCommand = new RoutedCommand("ShowHideCards", typeof(LoginWindow));
-            _openMarketPageCommand = new RoutedCommand("OpenMarketPage", typeof(LoginWindow));
-            _openStorePageCommand = new RoutedCommand("OpenStorePage", typeof(LoginWindow));
-            _openBadgePageCommand = new RoutedCommand("OpenBadgePage", typeof(LoginWindow));
-            _openTradingForumCommand = new RoutedCommand("OpenTradingForum", typeof(LoginWindow));
-        }
 
         public InvCompareWindow()
         {
@@ -118,6 +107,25 @@ namespace s32.Sceh.WinApp
             set { SetValue(SteamProfilesProperty, value); }
         }
 
+        private void CollectionViewSource_FilterByHideProp(object sender, FilterEventArgs e)
+        {
+            var steamApp = e.Item as SteamApp;
+            if (steamApp != null)
+            {
+                e.Accepted = !steamApp.Hide;
+                return;
+            }
+
+            var card = e.Item as Card;
+            if (card != null)
+            {
+                e.Accepted = !card.Hide;
+                return;
+            }
+
+            e.Accepted = true;
+        }
+
         private void InventoryLoadWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var args = (InventoryLoadWorkerArgs)e.Argument;
@@ -162,129 +170,28 @@ namespace s32.Sceh.WinApp
 
         #region Commands
 
-        private static RoutedCommand _compareCommand, _showHideCardsCommand, _openMarketPageCommand, _openStorePageCommand, _openBadgePageCommand, _openTradingForumCommand;
-
-        public static RoutedCommand CompareCommand
-        {
-            get { return _compareCommand; }
-        }
-
-        public static RoutedCommand ShowHideCardsCommand
-        {
-            get { return _showHideCardsCommand; }
-        }
-
-        public static RoutedCommand OpenMarketPageCommand
-        {
-            get { return _openMarketPageCommand; }
-        }
-
-        public static RoutedCommand OpenStorePageCommand
-        {
-            get { return _openStorePageCommand; }
-        }
-
-        public static RoutedCommand OpenBadgePageCommand
-        {
-            get { return _openBadgePageCommand; }
-        }
-
-        public static RoutedCommand OpenTradingForumCommand
-        {
-            get { return _openTradingForumCommand; }
-        }
-
-        private void OpenMarketPageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is Card;
-        }
-
-        private void OpenMarketPageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CardButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             const string PATTERN = "http://steamcommunity.com/market/listings/{0}/{1}";
-            string url = null;
-            if (e.Parameter is Card)
+            var card = ((FrameworkElement)sender).DataContext as Card;
+            if (card != null)
             {
-                var card = (Card)e.Parameter;
-                url = String.Format(PATTERN, card.AppId, card.MarketHashName);
+                var url = String.Format(PATTERN, card.AppId, card.MarketHashName);
+                if (url != null)
+                    System.Diagnostics.Process.Start(url);
             }
-
-            if (url != null)
-                System.Diagnostics.Process.Start(url);
         }
 
-        private void OpenStorePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ChangeProfileCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
+            e.CanExecute = !SteamDataDownloader.Info.IsInProgress;
         }
 
-        private void OpenStorePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ChangeProfileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            const string PATTERN = "http://store.steampowered.com/app/{0}/";
-            string url = null;
-            if (e.Parameter is SteamApp)
-            {
-                var steamApp = (SteamApp)e.Parameter;
-                url = String.Format(PATTERN, steamApp.Id);
-            }
-            else if (e.Parameter is Card)
-            {
-                var card = (Card)e.Parameter;
-                url = String.Format(PATTERN, card.MarketFeeApp);
-            }
-
-            if (url != null)
-                System.Diagnostics.Process.Start(url);
-        }
-
-        private void OpenBadgePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
-        }
-
-        private void OpenBadgePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            const string PATTERN = "{0}/gamecards/{1}/";
-            string url = null;
-            if (e.Parameter is SteamApp)
-            {
-                var steamApp = (SteamApp)e.Parameter;
-                var invLink = SteamDataDownloader.GetProfileUri(OwnerProfile, SteamUrlPattern.CommunityPage);
-                url = String.Format(PATTERN, invLink, steamApp.Id);
-            }
-            else if (e.Parameter is Card)
-            {
-                var card = (Card)e.Parameter;
-                var invLink = SteamDataDownloader.GetProfileUri(card.Owner, SteamUrlPattern.CommunityPage);
-                url = String.Format(PATTERN, invLink, card.MarketFeeApp);
-            }
-
-            if (url != null)
-                System.Diagnostics.Process.Start(url);
-        }
-
-        private void OpenTradingForumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
-        }
-
-        private void OpenTradingForumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            const string PATTERN = "http://steamcommunity.com/app/{0}/tradingforum/";
-            string url = null;
-            if (e.Parameter is SteamApp)
-            {
-                var steamApp = (SteamApp)e.Parameter;
-                url = String.Format(PATTERN, steamApp.Id);
-            }
-            else if (e.Parameter is Card)
-            {
-                var card = (Card)e.Parameter;
-                url = String.Format(PATTERN, card.MarketFeeApp);
-            }
-
-            if (url != null)
-                System.Diagnostics.Process.Start(url);
+            var loginWindow = new LoginWindow();
+            loginWindow.Show();
+            this.Close();
         }
 
         private void CompareCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -321,6 +228,151 @@ namespace s32.Sceh.WinApp
             }
         }
 
+        private void ExitAppCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void ExitAppCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void OpenBadgePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
+        }
+
+        private void OpenBadgePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            const string PATTERN = "{0}/gamecards/{1}/";
+            string url = null;
+            if (e.Parameter is SteamApp)
+            {
+                var steamApp = (SteamApp)e.Parameter;
+                var invLink = SteamDataDownloader.GetProfileUri(OwnerProfile, SteamUrlPattern.CommunityPage);
+                url = String.Format(PATTERN, invLink, steamApp.Id);
+            }
+            else if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                var invLink = SteamDataDownloader.GetProfileUri(card.Owner, SteamUrlPattern.CommunityPage);
+                url = String.Format(PATTERN, invLink, card.MarketFeeApp);
+            }
+
+            if (url != null)
+                System.Diagnostics.Process.Start(url);
+        }
+
+        private void OpenInventoryPageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenInventoryPageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.Inventory);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
+        private void OpenMarketPageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is Card;
+        }
+
+        private void OpenMarketPageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            const string PATTERN = "http://steamcommunity.com/market/listings/{0}/{1}";
+            string url = null;
+            if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                url = String.Format(PATTERN, card.AppId, card.MarketHashName);
+            }
+
+            if (url != null)
+                System.Diagnostics.Process.Start(url);
+        }
+
+        private void OpenProfilePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenProfilePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.CommunityPage);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
+        private void OpenStorePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
+        }
+
+        private void OpenStorePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            const string PATTERN = "http://store.steampowered.com/app/{0}/";
+            string url = null;
+            if (e.Parameter is SteamApp)
+            {
+                var steamApp = (SteamApp)e.Parameter;
+                url = String.Format(PATTERN, steamApp.Id);
+            }
+            else if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                url = String.Format(PATTERN, card.MarketFeeApp);
+            }
+
+            if (url != null)
+                System.Diagnostics.Process.Start(url);
+        }
+
+        private void OpenTradingForumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
+        }
+
+        private void OpenTradingForumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            const string PATTERN = "http://steamcommunity.com/app/{0}/tradingforum/";
+            string url = null;
+            if (e.Parameter is SteamApp)
+            {
+                var steamApp = (SteamApp)e.Parameter;
+                url = String.Format(PATTERN, steamApp.Id);
+            }
+            else if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                url = String.Format(PATTERN, card.MarketFeeApp);
+            }
+
+            if (url != null)
+                System.Diagnostics.Process.Start(url);
+        }
+
+        private void OpenUserBadgesCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenUserBadgesCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.Badges);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
         private void ShowHideCardsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is CardsCompareManager.ShowHideStrategy;
@@ -338,7 +390,7 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        #endregion
+        #endregion Commands
 
         private class InventoryLoadWorkerArgs
         {
@@ -351,25 +403,6 @@ namespace s32.Sceh.WinApp
         {
             public UserInventory OwnerInv;
             public UserInventory SecondInv;
-        }
-
-        private void CollectionViewSource_FilterByHideProp(object sender, FilterEventArgs e)
-        {
-            var steamApp = e.Item as SteamApp;
-            if (steamApp != null)
-            {
-                e.Accepted = !steamApp.Hide;
-                return;
-            }
-
-            var card = e.Item as Card;
-            if (card != null)
-            {
-                e.Accepted = !card.Hide;
-                return;
-            }
-
-            e.Accepted = true;
         }
     }
 }

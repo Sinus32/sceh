@@ -186,6 +186,7 @@ namespace s32.Sceh.DataModel
                 {
                     _isSelected = value;
                     NotifyPropertyChanged();
+                    UpdateSteamApp();
                 }
             }
         }
@@ -325,6 +326,10 @@ namespace s32.Sceh.DataModel
             }
         }
 
+        internal WeakReference<SteamApp> SteamAppMySide { get; set; }
+
+        internal WeakReference<SteamApp> SteamAppOtherSide { get; set; }
+
         public override string ToString()
         {
             return MarketHashName;
@@ -334,6 +339,17 @@ namespace s32.Sceh.DataModel
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void UpdateSteamApp()
+        {
+            SteamApp steamApp;
+
+            if (SteamAppMySide != null && SteamAppMySide.TryGetTarget(out steamApp))
+                steamApp.MyIsSelected = steamApp.MyCards.Any(q => q.IsSelected);
+
+            if (SteamAppOtherSide != null && SteamAppOtherSide.TryGetTarget(out steamApp))
+                steamApp.OtherIsSelected = steamApp.OtherCards.Any(q => q.IsSelected);
         }
     }
 }

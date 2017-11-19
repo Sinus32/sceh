@@ -62,6 +62,7 @@
     <Compile Include="Code\ProfileHelper.cs" />
     <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controls\LazyImage.cs" />
+    <Compile Include="Controls\ScehCommands.cs" />
     <Compile Include="Controls\UrlToImageFileConverter.cs" />
     <Compile Include="InvCompareWindow.xaml.cs">
       <DependentUpon>InvCompareWindow.xaml</DependentUpon>
