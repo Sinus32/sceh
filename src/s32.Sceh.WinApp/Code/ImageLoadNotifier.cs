@@ -17,11 +17,11 @@ namespace s32.Sceh.WinApp.Code
 {
     public class ImageLoadNotifier
     {
-        private static readonly ConcurrentDictionary<ImageFile, List<WeakReference>> _requests;
+        private static readonly ConcurrentDictionary<ImageFile, List<WeakReference<LazyImage>>> _requests;
 
         static ImageLoadNotifier()
         {
-            _requests = new ConcurrentDictionary<ImageFile, List<WeakReference>>();
+            _requests = new ConcurrentDictionary<ImageFile, List<WeakReference<LazyImage>>>();
         }
 
         public static void FileIsReady(ImageFile imageFile, string imagePath)
@@ -29,38 +29,34 @@ namespace s32.Sceh.WinApp.Code
             if (String.IsNullOrEmpty(imagePath) || !File.Exists(imagePath))
                 return;
 
-            List<WeakReference> targets;
+            List<WeakReference<LazyImage>> targets;
             if (_requests.TryRemove(imageFile, out targets))
             {
                 var set = new HashSet<object>();
                 foreach (var wr in targets)
                 {
-                    if (!wr.IsAlive)
-                        continue;
-
-                    if (set.Add(wr.Target))
+                    LazyImage imageCtl;
+                    if (wr.TryGetTarget(out imageCtl) && set.Add(imageCtl))
                     {
-                        var img = (LazyImage)wr.Target;
-                        var setter = new ImageSourceSetter(img, new Uri(imagePath));
-                        img.Dispatcher.Invoke(setter.Action);
+                        var setter = new ImageSourceSetter(imageCtl, new Uri(imagePath));
+                        imageCtl.Dispatcher.Invoke(setter.Action);
                     }
                 }
             }
         }
 
-        public static void OrderImage(ImageFile imageFile, DependencyObject imageCtl)
+        public static void OrderImage(ImageFile imageFile, LazyImage imageCtl)
         {
             var imagePath = DataManager.LocalFilePath(imageFile);
             if (imagePath != null && File.Exists(imagePath))
             {
-                var img = (LazyImage)imageCtl;
-                var setter = new ImageSourceSetter(img, new Uri(imagePath));
-                img.Dispatcher.Invoke(setter.Action);
+                var setter = new ImageSourceSetter(imageCtl, new Uri(imagePath));
+                imageCtl.Dispatcher.Invoke(setter.Action);
             }
             else
             {
-                List<WeakReference> targets;
-                var wr = new WeakReference(imageCtl);
+                List<WeakReference<LazyImage>> targets;
+                var wr = new WeakReference<LazyImage>(imageCtl);
                 if (_requests.TryGetValue(imageFile, out targets))
                 {
                     lock (targets)
@@ -68,7 +64,7 @@ namespace s32.Sceh.WinApp.Code
                 }
                 else
                 {
-                    targets = new List<WeakReference>();
+                    targets = new List<WeakReference<LazyImage>>();
                     targets.Add(wr);
                     _requests.TryAdd(imageFile, targets);
                 }

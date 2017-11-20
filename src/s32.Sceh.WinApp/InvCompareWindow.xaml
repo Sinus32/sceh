@@ -108,6 +108,8 @@
     </Style>
     <Style x:Key="cardBorderStyle" TargetType="Border">
       <Setter Property="BorderBrush" Value="{StaticResource cardNormalBrush}" />
+      <Setter Property="BorderThickness" Value="6,0,0,0" />
+      <Setter Property="CornerRadius" Value="2" />
       <Style.Triggers>
         <MultiDataTrigger>
           <MultiDataTrigger.Conditions>
@@ -184,7 +186,7 @@
         <Style TargetType="ctl:LazyImage">
           <Style.Triggers>
             <DataTrigger Binding="{Binding OtherHaveIt}" Value="True">
-              <Setter Property="Opacity" Value="0.35" />
+              <Setter Property="Opacity" Value="0.45" />
             </DataTrigger>
           </Style.Triggers>
         </Style>
@@ -203,18 +205,18 @@
       </Style.Triggers>
     </Style>
     <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
-    <ContextMenu x:Key="profileMenu" FlowDirection="LeftToRight" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+    <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
       <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePageCommand" CommandParameter="{Binding DataContext}" />
       <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding DataContext}" />
       <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding DataContext}" />
     </ContextMenu>
-    <ContextMenu x:Key="steamAppMenu" FlowDirection="LeftToRight" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+    <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding DataContext}" />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
       <Separator />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding DataContext}" />
     </ContextMenu>
-    <ContextMenu x:Key="cardMenu" FlowDirection="LeftToRight" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+    <ContextMenu x:Key="cardMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_MarketPage}" Command="ctl:ScehCommands.OpenMarketPageCommand" CommandParameter="{Binding DataContext}" />
       <Separator />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding DataContext}" />
@@ -225,8 +227,9 @@
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
       <ToggleButton Margin="2" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
         <Grid>
-          <Border BorderThickness="6,0,0,0" CornerRadius="1" Style="{StaticResource cardBorderStyle}">
-            <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}" Width="83" Height="96" Stretch="Uniform"
+          <Border Style="{StaticResource cardBorderStyle}">
+            <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
+                Width="83" Height="96" Stretch="Uniform"
                 Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay}" />
           </Border>
           <TextBlock Text="{Binding Name}" FontSize="11" Width="74" Height="60" Margin="0,12,0,0"
@@ -254,14 +257,14 @@
         <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Source={StaticResource myCardsView}}" ItemTemplate="{StaticResource cardTemplate}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <WrapPanel Orientation="Horizontal" FlowDirection="LeftToRight" />
+              <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
         </ItemsControl>
         <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Source={StaticResource otherCardsView}}" ItemTemplate="{StaticResource cardTemplate}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-              <WrapPanel Orientation="Horizontal" FlowDirection="RightToLeft" />
+              <WrapPanel Orientation="Horizontal" HorizontalAlignment="Right" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
         </ItemsControl>

@@ -14,6 +14,9 @@ namespace s32.Sceh.DataStore
         [XmlAttribute]
         public DateTime LastUpdate { get; set; }
 
+        [XmlElement(Order = 0)]
+        public DateTime LastUse { get; set; }
+
         [XmlElement(Order = 1)]
         public string Name { get; set; }
 

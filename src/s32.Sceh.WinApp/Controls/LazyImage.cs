@@ -49,7 +49,7 @@ namespace s32.Sceh.WinApp.Controls
         private static void ImageFileChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (e.NewValue != null)
-                ImageLoadNotifier.OrderImage((ImageFile)e.NewValue, d);
+                ImageLoadNotifier.OrderImage((ImageFile)e.NewValue, (LazyImage)d);
         }
     }
 }

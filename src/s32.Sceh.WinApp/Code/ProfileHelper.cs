@@ -95,8 +95,14 @@ namespace s32.Sceh.WinApp.Code
             var profiles = DataManager.GetSteamProfiles();
             var list = new List<SteamProfile>(profiles.Count);
             list.AddRange(profiles);
-            list.Sort((a, b) => String.Compare(a.Name, b.Name));
+            list.Sort(SteamProfileComparison);
             return list;
+        }
+
+        private static int SteamProfileComparison(SteamProfile x, SteamProfile y)
+        {
+            var ret = DateTime.Compare(y.LastUse, x.LastUse);
+            return ret != 0 ? ret : String.Compare(x.Name, y.Name);
         }
     }
 }

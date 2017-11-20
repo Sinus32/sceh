@@ -213,6 +213,7 @@ namespace s32.Sceh.WinApp
             }
             else if (steamProfile != null)
             {
+                steamProfile.LastUse = DateTime.UtcNow;
                 SteamProfiles = ProfileHelper.LoadProfiles();
                 cbOtherProfile.SelectedItem = steamProfile;
                 SecondProfile = steamProfile;
