@@ -21,24 +21,24 @@ namespace s32.Sceh.DataModel
         public Card()
         { }
 
-        //public Card(SteamProfileKey owner, RgInventoryItem rgInvItem, RgDescriptionItem rgDescItem)
-        //{
-        //    _owner = owner;
-        //    _id = rgInvItem.Id;
-        //    _appId = rgDescItem.AppId;
-        //    _classId = rgDescItem.ClassId;
-        //    _instanceId = rgDescItem.InstanceId;
-        //    _amount = rgInvItem.Amount;
-        //    _pos = rgInvItem.Pos;
-        //    _marketHashName = rgDescItem.MarketHashName;
-        //    _marketName = rgDescItem.MarketName;
-        //    _name = rgDescItem.Name;
-        //    _type = rgDescItem.Type;
-        //    _iconUrl = rgDescItem.IconUrl;
-        //    _tradable = rgDescItem.Tradable;
-        //    _marketable = rgDescItem.Marketable;
-        //    _marketFeeApp = rgDescItem.MarketFeeApp;
-        //}
+        public Card(SteamProfileKey owner, RgInventoryItem rgInvItem, RgDescriptionItem rgDescItem)
+        {
+            _owner = owner;
+            _id = rgInvItem.Id;
+            _appId = rgDescItem.AppId;
+            _classId = rgDescItem.ClassId;
+            _instanceId = rgDescItem.InstanceId;
+            _amount = rgInvItem.Amount;
+            _pos = rgInvItem.Pos;
+            _marketHashName = rgDescItem.MarketHashName;
+            _marketName = rgDescItem.MarketName;
+            _name = rgDescItem.Name;
+            _type = rgDescItem.Type;
+            _iconUrl = rgDescItem.IconUrl;
+            _tradable = rgDescItem.Tradable;
+            _marketable = rgDescItem.Marketable;
+            _marketFeeApp = rgDescItem.MarketFeeApp;
+        }
 
         public Card(SteamProfileKey owner, ApiInventoryResp.Asset asset, ApiInventoryResp.Description desc)
         {
@@ -50,6 +50,7 @@ namespace s32.Sceh.DataModel
             _amount = asset.Amount;
             _contextId = asset.ContextId;
             _marketHashName = desc.MarketHashName;
+            _marketName = desc.MarketName;
             _name = desc.Name;
             _type = desc.Type;
             _iconUrl = desc.IconUrl;

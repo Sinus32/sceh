@@ -28,5 +28,8 @@ namespace s32.Sceh.DataStore
 
         [XmlElement(Order = 4)]
         public string AvatarFullUrl { get; set; }
+
+        [XmlElement(Order = 5)]
+        public string Note { get; set; }
     }
 }

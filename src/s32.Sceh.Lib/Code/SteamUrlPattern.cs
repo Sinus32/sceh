@@ -8,19 +8,23 @@ namespace s32.Sceh.Code
 {
     public class SteamUrlPattern
     {
-        public static readonly SteamUrlPattern CommunityPage, ApiGetInventory, ApiGetProfile, Badges, Inventory;
+        public static readonly SteamUrlPattern CommunityPage, ApiGetInventoryA,
+            ApiGetProfile, ApiGetInventoryB, Badges, Inventory;
 
         static SteamUrlPattern()
         {
             CommunityPage = new SteamUrlPattern(
                 SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}",
                 SteamDataDownloader.SteamCommunityPageBySteamId + "{0}");
+            ApiGetInventoryA = new SteamUrlPattern(
+                SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}/inventory/json/753/6",
+                SteamDataDownloader.SteamCommunityPageBySteamId + "{0}/inventory/json/753/6");
+            ApiGetInventoryB = new SteamUrlPattern(
+                null,
+                "http://steamcommunity.com/inventory/{0}/753/6?l=polish&count=2000");
             ApiGetProfile = new SteamUrlPattern(
                 SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}?xml=1",
                 SteamDataDownloader.SteamCommunityPageBySteamId + "{0}?xml=1");
-            ApiGetInventory = new SteamUrlPattern(
-                null,
-                "http://steamcommunity.com/inventory/{0}/753/6?l=polish&count=2000");
             Badges = new SteamUrlPattern(
                 SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}/badges",
                 SteamDataDownloader.SteamCommunityPageBySteamId + "{0}/badges");

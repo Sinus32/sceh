@@ -232,6 +232,8 @@
                 Width="83" Height="96" Stretch="Uniform"
                 Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay}" />
           </Border>
+          <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
+              Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
           <TextBlock Text="{Binding Name}" FontSize="11" Width="74" Height="60" Margin="0,12,0,0"
               TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWithOverflow"
               Visibility="{Binding IsReady, ElementName=CardImage, Converter={StaticResource hideToVisibilityConv}}" />

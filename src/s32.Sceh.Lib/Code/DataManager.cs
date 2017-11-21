@@ -159,7 +159,7 @@ namespace s32.Sceh.Code
             string errorMessage;
             result = new UserInventory();
             result.SteamId = profile.SteamId;
-            result.Cards = SteamDataDownloader.GetCards(profile, out errorMessage);
+            result.Cards = SteamDataDownloader.GetCardsB(profile, out errorMessage);
             result.ErrorMessage = errorMessage;
             result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
 

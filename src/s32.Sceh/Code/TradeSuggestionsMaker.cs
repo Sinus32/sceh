@@ -61,7 +61,7 @@ namespace s32.Sceh.Code
             }
 
             result.Link = SteamDataDownloader.GetProfileUri(profileKey, SteamUrlPattern.Inventory).ToString();
-            result.Cards = SteamDataDownloader.GetCards(profileKey, out errorMessage);
+            result.Cards = SteamDataDownloader.GetCardsA(profileKey, out errorMessage);
 
             return result;
         }

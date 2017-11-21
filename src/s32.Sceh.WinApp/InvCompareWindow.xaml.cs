@@ -138,17 +138,29 @@ namespace s32.Sceh.WinApp
 
         private void InventoryLoadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            var result = (InventoryLoadWorkerResult)e.Result;
-            if (result != null)
+            try
             {
-                OwnerInvError = result.OwnerInv.ErrorMessage;
-                SecondInvError = result.SecondInv.ErrorMessage;
-                MakeErrorMessage();
+                var result = (InventoryLoadWorkerResult)e.Result;
+                if (result != null)
+                {
+                    OwnerInvError = result.OwnerInv.ErrorMessage;
+                    SecondInvError = result.SecondInv.ErrorMessage;
+                    MakeErrorMessage();
 
-                var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
-                steamApps.AddRange(_cardsCompareManager.SteamApps);
+                    var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
+                    steamApps.AddRange(_cardsCompareManager.SteamApps);
 
-                SteamApps = steamApps;
+                    SteamApps = steamApps;
+                }
+            }
+            catch (Exception ex)
+            {
+                var sb = new StringBuilder(ex.Message);
+                for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
+                    sb.AppendLine().Append(inner.Message);
+                MessageBox.Show(sb.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (Debugger.IsAttached)
+                    Debugger.Break();
             }
         }
 

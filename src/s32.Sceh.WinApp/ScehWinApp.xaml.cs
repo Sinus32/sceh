@@ -19,7 +19,7 @@ namespace s32.Sceh.WinApp
     /// </summary>
     public partial class ScehWinApp : Application
     {
-        private ImageDownloader.Worker _imageDownloaderWorker;
+        private ImageDownloader.Worker[] _imageDownloaderWorker;
         private DispatcherTimer _timer;
 
         private void _timer_Tick(object sender, EventArgs e)
@@ -37,7 +37,15 @@ namespace s32.Sceh.WinApp
             }
 
             if (_imageDownloaderWorker != null)
-                _imageDownloaderWorker.StopAndJoin(30000);
+            {
+                foreach (var wrk in _imageDownloaderWorker)
+                    if (wrk != null)
+                        wrk.Stop();
+
+                foreach (var wrk in _imageDownloaderWorker)
+                    if (wrk != null)
+                        wrk.StopAndJoin(30000);
+            }
 
             DataManager.SaveFile();
         }
@@ -45,8 +53,13 @@ namespace s32.Sceh.WinApp
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             DataManager.Initialize();
-            _imageDownloaderWorker = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
-            _imageDownloaderWorker.Start();
+            _imageDownloaderWorker = new ImageDownloader.Worker[3];
+            _imageDownloaderWorker[0] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
+            _imageDownloaderWorker[0].Start();
+            _imageDownloaderWorker[1] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
+            _imageDownloaderWorker[1].Start();
+            _imageDownloaderWorker[2] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
+            _imageDownloaderWorker[2].Start();
             _timer = new DispatcherTimer();
             _timer.Interval = new TimeSpan(0, 1, 0);
             _timer.Tick += _timer_Tick;

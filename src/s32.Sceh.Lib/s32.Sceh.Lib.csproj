@@ -49,6 +49,7 @@
     <Compile Include="Code\CardsCompareManager.cs" />
     <Compile Include="Code\DataManager.cs" />
     <Compile Include="Code\DownloadPriority.cs" />
+    <Compile Include="Code\FilenameGenerator.cs" />
     <Compile Include="Code\ImageDownloader.cs" />
     <Compile Include="Code\FileType.cs" />
     <Compile Include="Code\SteamUrlPattern.cs" />
@@ -70,6 +71,10 @@
     <Compile Include="LegacyClasses\TradeSuggestions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SteamApi\ApiInventoryResp.cs" />
+    <Compile Include="SteamApi\RgCurrencyItem.cs" />
+    <Compile Include="SteamApi\RgDescriptionItem.cs" />
+    <Compile Include="SteamApi\RgInventoryItem.cs" />
+    <Compile Include="SteamApi\RgInventoryResp.cs" />
     <Compile Include="SteamApi\SteamProfileResp.cs" />
   </ItemGroup>
   <ItemGroup />

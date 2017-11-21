@@ -11,6 +11,7 @@ namespace s32.Sceh.Code
     {
         public long ClassId;
         public long InstanceId;
+        public string MarketHashName;
 
         public CardEqualityKey(Card card)
         {
@@ -18,11 +19,13 @@ namespace s32.Sceh.Code
             {
                 ClassId = card.ClassId;
                 InstanceId = card.InstanceId;
+                MarketHashName = card.MarketHashName;
             }
             else
             {
                 ClassId = 0;
                 InstanceId = 0;
+                MarketHashName = null;
             }
         }
 
@@ -30,6 +33,7 @@ namespace s32.Sceh.Code
         {
             ClassId = classId;
             InstanceId = instanceId;
+            MarketHashName = null;
         }
 
         public static implicit operator CardEqualityKey(Card card)
@@ -39,7 +43,11 @@ namespace s32.Sceh.Code
 
         public bool Equals(CardEqualityKey other)
         {
-            return this.ClassId == other.ClassId && this.InstanceId == other.InstanceId;
+            if (this.ClassId != other.ClassId)
+                return false;
+            if (String.IsNullOrEmpty(this.MarketHashName) || String.IsNullOrEmpty(other.MarketHashName))
+                return this.InstanceId == other.InstanceId;
+            return String.Equals(this.MarketHashName, other.MarketHashName, StringComparison.Ordinal);
         }
 
         public override bool Equals(object obj)
@@ -52,12 +60,14 @@ namespace s32.Sceh.Code
 
         public override int GetHashCode()
         {
-            return (int)ClassId ^ (int)InstanceId;
+            return (int)ClassId;
         }
 
         public override string ToString()
         {
-            return String.Concat(ClassId, '_', InstanceId);
+            return String.IsNullOrEmpty(MarketHashName)
+                ? String.Concat(ClassId, '_', InstanceId)
+                : String.Concat(ClassId, '_', InstanceId, '_', MarketHashName);
         }
     }
 }

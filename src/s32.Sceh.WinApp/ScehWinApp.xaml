@@ -10,6 +10,7 @@
   <Application.Resources>
     <BitmapImage x:Key="defaultAvatar" UriSource="Img/avatar.jpg" />
     <BitmapImage x:Key="defaultCard" UriSource="Img/card.png" />
+    <BitmapImage x:Key="nonMarketable" UriSource="Img/nonMarketable.png" />
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}"
       NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
     <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}"

@@ -185,6 +185,15 @@ namespace s32.Sceh.Code
                 _thread.Start();
             }
 
+            public void Stop()
+            {
+                if (!IsWorking)
+                    return;
+
+                if (_terminateEvent != null)
+                    _terminateEvent.Set();
+            }
+
             public void StopAndJoin(int millisecondsTimeout)
             {
                 if (!IsWorking)
