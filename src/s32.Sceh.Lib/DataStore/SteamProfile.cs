@@ -31,5 +31,11 @@ namespace s32.Sceh.DataStore
 
         [XmlElement(Order = 5)]
         public string Note { get; set; }
+
+        [XmlIgnore]
+        public bool HasNote
+        {
+            get { return !String.IsNullOrEmpty(Note); }
+        }
     }
 }

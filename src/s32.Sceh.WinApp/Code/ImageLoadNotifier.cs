@@ -108,6 +108,7 @@ namespace s32.Sceh.WinApp.Code
                 bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
                 bitmapImage.UriSource = _uri;
                 bitmapImage.EndInit();
+                bitmapImage.Freeze();
                 return bitmapImage;
             }
         }

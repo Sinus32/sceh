@@ -24,7 +24,7 @@
   <StackPanel Margin="60,0" VerticalAlignment="Center">
     <Label Target="{Binding ProfileComboBox, ElementName=spcbProfile}" Content="{x:Static resx:Strings.LoginProfileLabel}" />
     <ComboBox x:Name="cbProfile" IsEditable="True" ItemsSource="{Binding SteamProfiles}"
-      VerticalAlignment="Center" TextSearch.TextPath="CustomUrlOrSteamId" />
+      VerticalAlignment="Center" Style="{StaticResource steamProfileComboBox}" />
     <Button x:Name="btnLogin" Command="local:LoginWindow.LoginCommand" Content="{x:Static resx:Strings.LoginButtonText}"
       HorizontalAlignment="Center" Margin="0,10" Padding="20,2" IsDefault="True" />
   </StackPanel>

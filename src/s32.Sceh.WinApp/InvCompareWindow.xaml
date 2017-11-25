@@ -225,11 +225,11 @@
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
     </ContextMenu>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
-      <ToggleButton Margin="2" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
+      <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
         <Grid>
           <Border Style="{StaticResource cardBorderStyle}">
             <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
-                Width="83" Height="96" Stretch="Uniform"
+                Width="77" Height="89" Stretch="Uniform"
                 Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay}" />
           </Border>
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
@@ -315,7 +315,11 @@
     <TextBlock Text="{Binding Name}" DataContext="{Binding SecondProfile}" VerticalAlignment="Center"
         ContextMenu="{StaticResource profileMenu}" FontSize="16" Margin="2" Grid.Row="3" Grid.Column="1" />
     <ComboBox x:Name="cbOtherProfile" IsEditable="True" ItemsSource="{Binding SteamProfiles}"
-        VerticalAlignment="Center" TextSearch.TextPath="CustomUrlOrSteamId" Grid.Row="2" Grid.Column="1" />
+        VerticalAlignment="Center" Style="{StaticResource steamProfileComboBox}" Grid.Row="2" Grid.Column="1">
+      <ComboBox.InputBindings>
+        <KeyBinding Command="ctl:ScehCommands.CompareCommand" Key="Return" />
+      </ComboBox.InputBindings>
+    </ComboBox>
     <Button x:Name="btnCompare" Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
         HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2" Margin="10,0,0,0" Padding="20,2" />
     <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
