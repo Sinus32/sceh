@@ -3,11 +3,13 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using s32.Sceh.Code;
 using s32.Sceh.DataStore;
@@ -38,8 +40,12 @@ namespace s32.Sceh.WinApp.Code
                     LazyImage imageCtl;
                     if (wr.TryGetTarget(out imageCtl) && set.Add(imageCtl))
                     {
-                        var setter = new ImageSourceSetter(imageCtl, new Uri(imagePath));
-                        imageCtl.Dispatcher.Invoke(setter.Action);
+                        var image = TryLoadOrGetFromCache(imagePath);
+                        if (image != null)
+                        {
+                            var setter = new ImageSourceSetter(imageCtl, image);
+                            imageCtl.Dispatcher.Invoke(setter.Action);
+                        }
                     }
                 }
             }
@@ -50,8 +56,12 @@ namespace s32.Sceh.WinApp.Code
             var imagePath = DataManager.LocalFilePath(imageFile);
             if (imagePath != null && File.Exists(imagePath))
             {
-                var setter = new ImageSourceSetter(imageCtl, new Uri(imagePath));
-                imageCtl.Dispatcher.Invoke(setter.Action);
+                var image = TryLoadOrGetFromCache(imagePath);
+                if (image != null)
+                {
+                    var setter = new ImageSourceSetter(imageCtl, image);
+                    imageCtl.Dispatcher.Invoke(setter.Action);
+                }
             }
             else
             {
@@ -71,27 +81,30 @@ namespace s32.Sceh.WinApp.Code
             }
         }
 
-        private class ImageSourceSetter
+        private static byte[] TryLoadOrGetFromCache(string imagePath)
         {
-            private LazyImage _image;
-            private Uri _uri;
-
-            public ImageSourceSetter(LazyImage image, Uri uri)
-            {
-                _image = image;
-                _uri = uri;
-            }
-
-            public void Action()
+            const int bufferSize = 256 * 1024;
+            var result = MemoryCache.Default.Get(imagePath) as byte[];
+            if (result == null)
             {
                 for (int i = 0; i < 10; ++i)
                 {
                     try
                     {
-                        var bitmapImage = GetImage();
-                        _image.LazySource = bitmapImage;
-                        _image.IsReady = true;
-                        return;
+                        using (var ms = new MemoryStream())
+                        using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize))
+                        {
+                            var buffer = new byte[bufferSize];
+                            int readed;
+                            while ((readed = stream.Read(buffer, 0, bufferSize)) != 0)
+                                ms.Write(buffer, 0, readed);
+                            ms.Flush();
+                            result = ms.ToArray();
+                        }
+                        var policy = new CacheItemPolicy();
+                        policy.SlidingExpiration = new TimeSpan(0, 6, 0);
+                        MemoryCache.Default.Set(imagePath, result, policy);
+                        return result;
                     }
                     catch (IOException)
                     {
@@ -99,14 +112,35 @@ namespace s32.Sceh.WinApp.Code
                     }
                 }
             }
+            return result;
+        }
+
+        private class ImageSourceSetter
+        {
+            private LazyImage _image;
+            private byte[] _source;
+
+            public ImageSourceSetter(LazyImage image, byte[] source)
+            {
+                _image = image;
+                _source = source;
+            }
+
+            public void Action()
+            {
+                _image.LazySource = GetImage();
+                _image.IsReady = true;
+                return;
+            }
 
             private BitmapImage GetImage()
             {
+                //double height = _image.Height;
                 var bitmapImage = new BitmapImage();
                 bitmapImage.BeginInit();
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
-                bitmapImage.UriSource = _uri;
+                bitmapImage.StreamSource = new MemoryStream(_source);
+                //if (height >= 1.0)
+                //    bitmapImage.DecodePixelHeight = (int)height;
                 bitmapImage.EndInit();
                 bitmapImage.Freeze();
                 return bitmapImage;

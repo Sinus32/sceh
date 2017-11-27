@@ -120,6 +120,9 @@
   <data name="CardContextMenu_BadgePage" xml:space="preserve">
     <value>_Odznaka Steam</value>
   </data>
+  <data name="CardContextMenu_CopyName" xml:space="preserve">
+    <value>Kopiuj nazwę</value>
+  </data>
   <data name="CardContextMenu_MarketPage" xml:space="preserve">
     <value>_Kupno i sprzedaż</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="MenuItem_ChangeProfile" xml:space="preserve">
     <value>Z_mień profil</value>
+  </data>
+  <data name="MenuItem_EditNote" xml:space="preserve">
+    <value>Notatki</value>
   </data>
   <data name="MenuItem_Exit" xml:space="preserve">
     <value>_Zakończ</value>

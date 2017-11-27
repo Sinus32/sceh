@@ -10,9 +10,15 @@ namespace s32.Sceh.WinApp.Controls
 {
     public class ScehCommands : DependencyObject
     {
+        private static RoutedCommand _compareCommand, _editNoteCommand, _showHideCardsCommand,
+            _openMarketPageCommand, _openStorePageCommand, _openBadgePageCommand, _openTradingForumCommand,
+            _openProfilePageCommand, _openInventoryPageCommand, _openUserBadgesCommand,
+            _copyNameCommand;
+
         static ScehCommands()
         {
             _compareCommand = new RoutedCommand("Compare", typeof(ScehCommands));
+            _editNoteCommand = new RoutedCommand("EditNote", typeof(ScehCommands));
             _showHideCardsCommand = new RoutedCommand("ShowHideCards", typeof(ScehCommands));
             _openMarketPageCommand = new RoutedCommand("OpenMarketPage", typeof(ScehCommands));
             _openStorePageCommand = new RoutedCommand("OpenStorePage", typeof(ScehCommands));
@@ -21,15 +27,22 @@ namespace s32.Sceh.WinApp.Controls
             _openProfilePageCommand = new RoutedCommand("OpenProfilePage", typeof(ScehCommands));
             _openInventoryPageCommand = new RoutedCommand("OpenInventoryPage", typeof(ScehCommands));
             _openUserBadgesCommand = new RoutedCommand("OpenUserBadges", typeof(ScehCommands));
+            _copyNameCommand = new RoutedCommand("CopyName", typeof(ScehCommands));
         }
-
-        private static RoutedCommand _compareCommand, _showHideCardsCommand,
-            _openMarketPageCommand, _openStorePageCommand, _openBadgePageCommand, _openTradingForumCommand,
-            _openProfilePageCommand, _openInventoryPageCommand, _openUserBadgesCommand;
 
         public static RoutedCommand CompareCommand
         {
             get { return _compareCommand; }
+        }
+
+        public static RoutedCommand CopyNameCommand
+        {
+            get { return _copyNameCommand; }
+        }
+
+        public static RoutedCommand EditNoteCommand
+        {
+            get { return _editNoteCommand; }
         }
 
         public static RoutedCommand OpenBadgePageCommand
@@ -71,6 +84,5 @@ namespace s32.Sceh.WinApp.Controls
         {
             get { return _showHideCardsCommand; }
         }
-
     }
 }

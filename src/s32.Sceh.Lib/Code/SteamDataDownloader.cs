@@ -445,7 +445,7 @@ namespace s32.Sceh.Code
                 var data = idOrUrl.Substring(SteamCommunityPageByCustomUrl.Length);
                 int i;
                 for (i = 0; i < data.Length; ++i)
-                    if (!Char.IsLetterOrDigit(data[i]))
+                    if (!Char.IsLetterOrDigit(data[i]) && data[i] != '_' && data[i] != '-')
                         break;
                 if (i > 0)
                 {

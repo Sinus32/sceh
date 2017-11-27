@@ -13,6 +13,7 @@
     <CommandBinding Command="ApplicationCommands.New" CanExecute="ChangeProfileCommand_CanExecute" Executed="ChangeProfileCommand_Executed" />
     <CommandBinding Command="ApplicationCommands.Close" CanExecute="ExitAppCommand_CanExecute" Executed="ExitAppCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.CompareCommand" CanExecute="CompareCommand_CanExecute" Executed="CompareCommand_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.EditNoteCommand" CanExecute="EditNoteCommand_CanExecute" Executed="EditNoteCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.ShowHideCardsCommand" CanExecute="ShowHideCardsCommand_CanExecute" Executed="ShowHideCardsCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenMarketPageCommand" CanExecute="OpenMarketPageCommand_CanExecute" Executed="OpenMarketPageCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenStorePageCommand" CanExecute="OpenStorePageCommand_CanExecute" Executed="OpenStorePageCommand_Executed" />
@@ -21,6 +22,7 @@
     <CommandBinding Command="ctl:ScehCommands.OpenProfilePageCommand" CanExecute="OpenProfilePageCommand_CanExecute" Executed="OpenProfilePageCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenInventoryPageCommand" CanExecute="OpenInventoryPageCommand_CanExecute" Executed="OpenInventoryPageCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenUserBadgesCommand" CanExecute="OpenUserBadgesCommand_CanExecute" Executed="OpenUserBadgesCommand_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.CopyNameCommand" CanExecute="CopyNameCommand_CanExecute" Executed="CopyNameCommand_Executed" />
   </Window.CommandBindings>
   <Window.Resources>
     <Color x:Key="steamAppNormalColor" A="255" R="238" G="225" B="242" />
@@ -211,6 +213,8 @@
       <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding DataContext}" />
     </ContextMenu>
     <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding DataContext}" />
+      <Separator />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding DataContext}" />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
       <Separator />
@@ -218,6 +222,7 @@
     </ContextMenu>
     <ContextMenu x:Key="cardMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_MarketPage}" Command="ctl:ScehCommands.OpenMarketPageCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding DataContext}" />
       <Separator />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding DataContext}" />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding DataContext}" />
@@ -230,11 +235,11 @@
           <Border Style="{StaticResource cardBorderStyle}">
             <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
                 Width="77" Height="89" Stretch="Uniform"
-                Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay}" />
+                Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True}" />
           </Border>
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
               Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-          <TextBlock Text="{Binding Name}" FontSize="11" Width="74" Height="60" Margin="0,12,0,0"
+          <TextBlock Text="{Binding Name}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0"
               TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWithOverflow"
               Visibility="{Binding IsReady, ElementName=CardImage, Converter={StaticResource hideToVisibilityConv}}" />
         </Grid>
@@ -300,6 +305,8 @@
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePageCommand" CommandParameter="{Binding SecondProfile}" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding SecondProfile}" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding SecondProfile}" />
+        <Separator />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding SecondProfile.Note}" />
       </MenuItem>
     </Menu>
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="None"
@@ -320,11 +327,17 @@
         <KeyBinding Command="ctl:ScehCommands.CompareCommand" Key="Return" />
       </ComboBox.InputBindings>
     </ComboBox>
-    <Button x:Name="btnCompare" Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
-        HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2" Margin="10,0,0,0" Padding="20,2" />
+    <Button Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
+        HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2" Margin="10,0" Padding="20,2" />
     <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
         Orientation="Horizontal" HorizontalAlignment="Right">
       <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+      <Button Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding Note}"
+          HorizontalAlignment="Right" DataContext="{Binding SecondProfile}"
+          Grid.Row="2" Grid.Column="2" Margin="2" Padding="2,0">
+        <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}" />
+      </Button>
+      <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="{x:Static SystemColors.ControlLightBrush}" />
       <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}" Margin="2">
         <Image Source="Img/selection1.png" Stretch="None" />
       </Button>
@@ -344,7 +357,7 @@
         <Image Source="Img/selection6.png" Stretch="None" />
       </Button>
     </StackPanel>
-    <ItemsControl Grid.Row="4" Grid.ColumnSpan="3"
+    <ItemsControl Grid.Row="4" Grid.ColumnSpan="3" VirtualizingPanel.CacheLength="3" VirtualizingPanel.CacheLengthUnit="Item"
         ItemsSource="{Binding Source={StaticResource steamAppsView}}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
         ScrollViewer.CanContentScroll="True" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
         BorderThickness="0,1" ItemTemplate="{StaticResource steamAppTemplate}">

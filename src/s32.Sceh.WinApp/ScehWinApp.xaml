@@ -27,6 +27,24 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
+    <Style x:Key="noteIconToolTip" TargetType="FrameworkElement">
+      <Setter Property="ToolTip">
+        <Setter.Value>
+          <ItemsControl ItemsSource="{Binding Note, Mode=OneWay}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Vertical" HorizontalAlignment="Left" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Mode=OneWay}" TextWrapping="Wrap" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </Setter.Value>
+      </Setter>
+    </Style>
     <Style x:Key="steamProfileComboBox" TargetType="ComboBox">
       <Setter Property="TextSearch.TextPath" Value="CustomUrlOrSteamId" />
       <Setter Property="ItemContainerStyle">
@@ -54,13 +72,12 @@
                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                 <TextBlock Text="{Binding CustomUrlOrSteamId, StringFormat={} ({0})}" Style="{StaticResource urlOrSteamIdTextBlock}" VerticalAlignment="Center" />
               </StackPanel>
-              <Image Source="{StaticResource noteIcon}" Stretch="None" ToolTip="{Binding Note, Mode=OneWay}"
+              <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}"
                   Visibility="{Binding HasNote, Converter={StaticResource visibleToVisibilityConv}}" Grid.Column="2" />
             </Grid>
           </DataTemplate>
         </Setter.Value>
       </Setter>
     </Style>
-    
   </Application.Resources>
 </Application>

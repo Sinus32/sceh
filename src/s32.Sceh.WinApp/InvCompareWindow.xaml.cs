@@ -206,6 +206,34 @@ namespace s32.Sceh.WinApp
             this.Close();
         }
 
+        private void EditNoteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is List<String>;
+        }
+
+        private void EditNoteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+        }
+
+        private void CopyNameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
+        }
+
+        private void CopyNameCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamApp)
+            {
+                var steamApp = (SteamApp)e.Parameter;
+                Clipboard.SetText(steamApp.Name);
+            }
+            else if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                Clipboard.SetText(card.Name);
+            }
+        }
+
         private void CompareCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (_inventoryLoadWorker == null || _inventoryLoadWorker.IsBusy)

@@ -70,6 +70,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Kopiuj nazwę.
+        /// </summary>
+        public static string CardContextMenu_CopyName {
+            get {
+                return ResourceManager.GetString("CardContextMenu_CopyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Kupno i sprzedaż.
         /// </summary>
         public static string CardContextMenu_MarketPage {
@@ -174,6 +183,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string MenuItem_ChangeProfile {
             get {
                 return ResourceManager.GetString("MenuItem_ChangeProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notatki.
+        /// </summary>
+        public static string MenuItem_EditNote {
+            get {
+                return ResourceManager.GetString("MenuItem_EditNote", resourceCulture);
             }
         }
         

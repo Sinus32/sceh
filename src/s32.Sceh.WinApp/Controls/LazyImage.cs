@@ -19,25 +19,22 @@ namespace s32.Sceh.WinApp.Controls
         public static readonly DependencyProperty ImageFileProperty =
             DependencyProperty.Register("ImageFile", typeof(ImageFile), typeof(LazyImage), new PropertyMetadata(null, ImageFileChanged));
 
-        public static readonly DependencyProperty LazySourceProperty =
-            DependencyProperty.Register("LazySource", typeof(ImageSource), typeof(LazyImage), new PropertyMetadata(null));
-
-
-        public bool IsReady
-        {
-            get { return (bool)GetValue(IsReadyProperty); }
-            set { SetValue(IsReadyProperty, value); }
-        }
-
         public static readonly DependencyProperty IsReadyProperty =
             DependencyProperty.Register("IsReady", typeof(bool), typeof(LazyImage), new PropertyMetadata(false));
 
-        
+        public static readonly DependencyProperty LazySourceProperty =
+            DependencyProperty.Register("LazySource", typeof(ImageSource), typeof(LazyImage), new PropertyMetadata(null));
 
         public ImageFile ImageFile
         {
             get { return (ImageFile)GetValue(ImageFileProperty); }
             set { SetValue(ImageFileProperty, value); }
+        }
+
+        public bool IsReady
+        {
+            get { return (bool)GetValue(IsReadyProperty); }
+            set { SetValue(IsReadyProperty, value); }
         }
 
         public ImageSource LazySource
