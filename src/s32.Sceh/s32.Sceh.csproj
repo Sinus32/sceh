@@ -136,6 +136,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -161,9 +165,6 @@
     <Reference Include="Microsoft.Web.Mvc.FixedDisplayModes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.FixedDisplayModes.1.0.0\lib\net40\Microsoft.Web.Mvc.FixedDisplayModes.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -219,7 +220,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Classes\OpenId\OpenIdUser.cs" />
+    <Compile Include="Code\Base32.cs" />
+    <Compile Include="Code\CardImageManager.cs" />
+    <Compile Include="Code\CardThumbnailRequest.cs" />
     <Compile Include="Code\OpenId\OpenIdMembershipService.cs" />
+    <Compile Include="Code\TradeSuggestionsMaker.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SteamController.cs" />
     <Compile Include="Global.asax.cs">
@@ -330,13 +335,9 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\s32.Sceh.Classes\s32.Sceh.Classes.csproj">
-      <Project>{95b9d584-2509-4a9b-b093-7360051f2e98}</Project>
-      <Name>s32.Sceh.Classes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\s32.Sceh.Code\s32.Sceh.Code.csproj">
-      <Project>{87b0720b-e836-4ecb-bf50-38300db7ecae}</Project>
-      <Name>s32.Sceh.Code</Name>
+    <ProjectReference Include="..\s32.Sceh.Lib\s32.Sceh.Lib.csproj">
+      <Project>{06f283d3-6627-454a-a9ef-9a91bc3d4d2c}</Project>
+      <Name>s32.Sceh.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

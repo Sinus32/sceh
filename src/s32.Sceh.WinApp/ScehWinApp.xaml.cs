@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using s32.Sceh.Code;
-using s32.Sceh.Data;
+using s32.Sceh.DataStore;
 using s32.Sceh.WinApp.Code;
 
 namespace s32.Sceh.WinApp
@@ -19,42 +19,12 @@ namespace s32.Sceh.WinApp
     /// </summary>
     public partial class ScehWinApp : Application
     {
-        private BackgroundWorker _imageDownloaderWorker;
-        private ManualResetEvent _terminateEvent = new ManualResetEvent(false);
+        private ImageDownloader.Worker[] _imageDownloaderWorker;
         private DispatcherTimer _timer;
-        private ManualResetEvent _workDoneEvent = new ManualResetEvent(false);
-
-        private void _imageDownloaderWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            _workDoneEvent.Reset();
-            var threadWait = 5000;
-
-            while (!_terminateEvent.WaitOne(threadWait))
-            {
-                ImageFile image;
-                string imagePath;
-                if (ImageDownloader.DownloadNext(out image, out imagePath))
-                {
-                    ((BackgroundWorker)sender).ReportProgress(0, imagePath);
-                    threadWait = 50;
-                }
-                else
-                {
-                    threadWait = 250;
-                }
-            }
-            _workDoneEvent.Set();
-        }
-
-        private void _imageDownloaderWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            var imagePath = (string)e.UserState;
-            ImageLoadNotifier.FileIsReady(imagePath);
-        }
 
         private void _timer_Tick(object sender, EventArgs e)
         {
-            ScehData.SaveFile();
+            DataManager.SaveFile();
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
@@ -66,22 +36,30 @@ namespace s32.Sceh.WinApp
                 _timer = null;
             }
 
-            _terminateEvent.Set();
+            if (_imageDownloaderWorker != null)
+            {
+                foreach (var wrk in _imageDownloaderWorker)
+                    if (wrk != null)
+                        wrk.Stop();
 
-            if (_imageDownloaderWorker != null && _imageDownloaderWorker.IsBusy)
-                _workDoneEvent.WaitOne(30000);
+                foreach (var wrk in _imageDownloaderWorker)
+                    if (wrk != null)
+                        wrk.StopAndJoin(30000);
+            }
 
-            ScehData.SaveFile();
+            DataManager.SaveFile();
         }
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            ScehData.Load();
-            _imageDownloaderWorker = new BackgroundWorker();
-            _imageDownloaderWorker.WorkerReportsProgress = true;
-            _imageDownloaderWorker.DoWork += _imageDownloaderWorker_DoWork;
-            _imageDownloaderWorker.ProgressChanged += _imageDownloaderWorker_ProgressChanged;
-            _imageDownloaderWorker.RunWorkerAsync();
+            DataManager.Initialize();
+            _imageDownloaderWorker = new ImageDownloader.Worker[3];
+            _imageDownloaderWorker[0] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
+            _imageDownloaderWorker[0].Start();
+            _imageDownloaderWorker[1] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
+            _imageDownloaderWorker[1].Start();
+            _imageDownloaderWorker[2] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
+            _imageDownloaderWorker[2].Start();
             _timer = new DispatcherTimer();
             _timer.Interval = new TimeSpan(0, 1, 0);
             _timer.Tick += _timer_Tick;

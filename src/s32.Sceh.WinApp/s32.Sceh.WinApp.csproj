@@ -33,9 +33,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Img\sceh.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,12 +61,22 @@
     </ApplicationDefinition>
     <Compile Include="Code\ImageLoadNotifier.cs" />
     <Compile Include="Code\ProfileHelper.cs" />
+    <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controls\LazyImage.cs" />
+    <Compile Include="Controls\ScehCommands.cs" />
+    <Compile Include="Controls\UrlToImageFileConverter.cs" />
+    <Compile Include="InvCompareWindow.xaml.cs">
+      <DependentUpon>InvCompareWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Translations\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Page Include="InvCompareWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -108,24 +124,29 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\s32.Sceh.Classes\s32.Sceh.Classes.csproj">
-      <Project>{95b9d584-2509-4a9b-b093-7360051f2e98}</Project>
-      <Name>s32.Sceh.Classes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\s32.Sceh.Code\s32.Sceh.Code.csproj">
-      <Project>{87b0720b-e836-4ecb-bf50-38300db7ecae}</Project>
-      <Name>s32.Sceh.Code</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\s32.Sceh.Data\s32.Sceh.Data.csproj">
-      <Project>{cee0f36f-6c3d-40dc-ab78-88f972dc543c}</Project>
-      <Name>s32.Sceh.Data</Name>
+    <Resource Include="Img\sceh.ico" />
+    <Resource Include="Img\avatar.jpg" />
+    <Resource Include="Img\card.png" />
+    <Resource Include="Img\selection1.png" />
+    <Resource Include="Img\selection2.png" />
+    <Resource Include="Img\selection3.png" />
+    <Resource Include="Img\selection4.png" />
+    <Resource Include="Img\selection5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\s32.Sceh.Lib\s32.Sceh.Lib.csproj">
+      <Project>{06f283d3-6627-454a-a9ef-9a91bc3d4d2c}</Project>
+      <Name>s32.Sceh.Lib</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="sceh.ico" />
+    <Resource Include="Img\selection6.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Img\" />
+    <Resource Include="Img\nonMarketable.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\note.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

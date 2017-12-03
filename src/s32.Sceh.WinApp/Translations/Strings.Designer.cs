@@ -61,20 +61,56 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sprawdź.
+        ///   Looks up a localized string similar to _Odznaka Steam.
         /// </summary>
-        public static string CheckButtonCommand {
+        public static string CardContextMenu_BadgePage {
             get {
-                return ResourceManager.GetString("CheckButtonCommand", resourceCulture);
+                return ResourceManager.GetString("CardContextMenu_BadgePage", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Sprawdź.
+        ///   Looks up a localized string similar to Kopiuj nazwę.
         /// </summary>
-        public static string CheckButtonText {
+        public static string CardContextMenu_CopyName {
             get {
-                return ResourceManager.GetString("CheckButtonText", resourceCulture);
+                return ResourceManager.GetString("CardContextMenu_CopyName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Kupno i sprzedaż.
+        /// </summary>
+        public static string CardContextMenu_MarketPage {
+            get {
+                return ResourceManager.GetString("CardContextMenu_MarketPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Strona sklepu.
+        /// </summary>
+        public static string CardContextMenu_StorePage {
+            get {
+                return ResourceManager.GetString("CardContextMenu_StorePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Forum wymiany.
+        /// </summary>
+        public static string CardContextMenu_TradingForum {
+            get {
+                return ResourceManager.GetString("CardContextMenu_TradingForum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Porównaj.
+        /// </summary>
+        public static string CompareButtonText {
+            get {
+                return ResourceManager.GetString("CompareButtonText", resourceCulture);
             }
         }
         
@@ -124,11 +160,119 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Steam cards exchange helper.
+        /// </summary>
+        public static string LoginWindowTitle {
+            get {
+                return ResourceManager.GetString("LoginWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Odznaki.
+        /// </summary>
+        public static string MenuItem_Badges {
+            get {
+                return ResourceManager.GetString("MenuItem_Badges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Z_mień profil.
+        /// </summary>
+        public static string MenuItem_ChangeProfile {
+            get {
+                return ResourceManager.GetString("MenuItem_ChangeProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notatki.
+        /// </summary>
+        public static string MenuItem_EditNote {
+            get {
+                return ResourceManager.GetString("MenuItem_EditNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Zakończ.
+        /// </summary>
+        public static string MenuItem_Exit {
+            get {
+                return ResourceManager.GetString("MenuItem_Exit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Ekwipunek.
+        /// </summary>
+        public static string MenuItem_Inventory {
+            get {
+                return ResourceManager.GetString("MenuItem_Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mój _profil.
+        /// </summary>
+        public static string MenuItem_MyProfile {
+            get {
+                return ResourceManager.GetString("MenuItem_MyProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Drugi profil.
+        /// </summary>
+        public static string MenuItem_OthersProfile {
+            get {
+                return ResourceManager.GetString("MenuItem_OthersProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Strona profilu.
+        /// </summary>
+        public static string MenuItem_Profile {
+            get {
+                return ResourceManager.GetString("MenuItem_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nie można załadować twoich kart: {0}.
+        /// </summary>
+        public static string OwnerInvErrorMessage {
+            get {
+                return ResourceManager.GetString("OwnerInvErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Błąd odczytu danych profilu.
         /// </summary>
         public static string ProfileDeserializationError {
             get {
                 return ResourceManager.GetString("ProfileDeserializationError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Licznik zapytań: {0}.
+        /// </summary>
+        public static string RequestCountFormat {
+            get {
+                return ResourceManager.GetString("RequestCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nie można załadować kart użytkownika {0}: {1}.
+        /// </summary>
+        public static string SecondInvErrorMessage {
+            get {
+                return ResourceManager.GetString("SecondInvErrorMessage", resourceCulture);
             }
         }
         

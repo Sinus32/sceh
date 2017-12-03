@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using s32.Sceh.Classes;
 using s32.Sceh.Code;
-using s32.Sceh.Data;
+using s32.Sceh.DataStore;
 using s32.Sceh.WinApp.Code;
 using s32.Sceh.WinApp.Translations;
 
@@ -39,9 +39,15 @@ namespace s32.Sceh.WinApp
         {
             InitializeComponent();
 
-            LoadProfiles();
+            SteamProfiles = ProfileHelper.LoadProfiles();
 
             DataContext = this;
+
+            var profile = DataManager.GetLastSteamProfile();
+            if (profile != null)
+            {
+                cbProfile.SelectedItem = profile;
+            }
         }
 
         public static RoutedUICommand LoginCommand
@@ -55,13 +61,13 @@ namespace s32.Sceh.WinApp
             set { SetValue(SteamProfilesProperty, value); }
         }
 
-        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void LoginCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (cbProfile != null)
                 e.CanExecute = cbProfile.SelectedItem != null || !String.IsNullOrWhiteSpace(cbProfile.Text);
         }
 
-        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void LoginCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string errorMessage;
             var steamProfile = ProfileHelper.GetSteamUser((SteamProfile)cbProfile.SelectedItem, cbProfile.Text, out errorMessage);
@@ -72,22 +78,12 @@ namespace s32.Sceh.WinApp
             }
             else if (steamProfile != null)
             {
-                LoadProfiles();
-                cbProfile.SelectedItem = steamProfile;
+                var cmpWindow = new InvCompareWindow();
+                DataManager.SetLastSteamProfile(steamProfile);
+                cmpWindow.OwnerProfile = steamProfile;
+                cmpWindow.Show();
+                this.Close();
             }
-        }
-
-        private void LoadProfiles()
-        {
-            if (ScehData.DataFile == null || ScehData.DataFile.SteamProfiles == null)
-            {
-                SteamProfiles = new List<SteamProfile>();
-                return;
-            }
-
-            var list = new List<SteamProfile>(ScehData.DataFile.SteamProfiles);
-            list.Sort((a, b) => String.Compare(a.Name, b.Name));
-            SteamProfiles = list;
         }
     }
 }

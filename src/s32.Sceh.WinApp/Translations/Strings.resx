@@ -117,11 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CheckButtonCommand" xml:space="preserve">
-    <value>Sprawdź</value>
+  <data name="CardContextMenu_BadgePage" xml:space="preserve">
+    <value>_Odznaka Steam</value>
   </data>
-  <data name="CheckButtonText" xml:space="preserve">
-    <value>_Sprawdź</value>
+  <data name="CardContextMenu_CopyName" xml:space="preserve">
+    <value>Kopiuj nazwę</value>
+  </data>
+  <data name="CardContextMenu_MarketPage" xml:space="preserve">
+    <value>_Kupno i sprzedaż</value>
+  </data>
+  <data name="CardContextMenu_StorePage" xml:space="preserve">
+    <value>_Strona sklepu</value>
+  </data>
+  <data name="CardContextMenu_TradingForum" xml:space="preserve">
+    <value>_Forum wymiany</value>
+  </data>
+  <data name="CompareButtonText" xml:space="preserve">
+    <value>_Porównaj</value>
   </data>
   <data name="ErrorTitle" xml:space="preserve">
     <value>Błąd</value>
@@ -138,8 +150,44 @@
   <data name="LoginProfileLabel" xml:space="preserve">
     <value>_Profil:</value>
   </data>
+  <data name="LoginWindowTitle" xml:space="preserve">
+    <value>Steam cards exchange helper</value>
+  </data>
+  <data name="MenuItem_Badges" xml:space="preserve">
+    <value>_Odznaki</value>
+  </data>
+  <data name="MenuItem_ChangeProfile" xml:space="preserve">
+    <value>Z_mień profil</value>
+  </data>
+  <data name="MenuItem_EditNote" xml:space="preserve">
+    <value>Notatki</value>
+  </data>
+  <data name="MenuItem_Exit" xml:space="preserve">
+    <value>_Zakończ</value>
+  </data>
+  <data name="MenuItem_Inventory" xml:space="preserve">
+    <value>_Ekwipunek</value>
+  </data>
+  <data name="MenuItem_MyProfile" xml:space="preserve">
+    <value>Mój _profil</value>
+  </data>
+  <data name="MenuItem_OthersProfile" xml:space="preserve">
+    <value>_Drugi profil</value>
+  </data>
+  <data name="MenuItem_Profile" xml:space="preserve">
+    <value>_Strona profilu</value>
+  </data>
+  <data name="OwnerInvErrorMessage" xml:space="preserve">
+    <value>Nie można załadować twoich kart: {0}</value>
+  </data>
   <data name="ProfileDeserializationError" xml:space="preserve">
     <value>Błąd odczytu danych profilu</value>
+  </data>
+  <data name="RequestCountFormat" xml:space="preserve">
+    <value>Licznik zapytań: {0}</value>
+  </data>
+  <data name="SecondInvErrorMessage" xml:space="preserve">
+    <value>Nie można załadować kart użytkownika {0}: {1}</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Wystąpił nieznany błąd</value>

@@ -5,20 +5,53 @@ using System.Text;
 using System.Threading.Tasks;
 using s32.Sceh.Classes;
 using s32.Sceh.Code;
-using s32.Sceh.Data;
+using s32.Sceh.DataStore;
 using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp.Code
 {
     public class ProfileHelper
     {
+        private const int MINUTES_DELAY = 60;
+
         public static SteamProfile GetSteamUser(SteamProfile steamProfile, string profileIdOrUrl, out string errorMessage)
         {
-            Uri profileUri = null;
+            SteamProfileKey profileKey = null;
             if (steamProfile != null)
-                profileUri = SteamDataDownloader.GetProfileUri(steamProfile.SteamId, steamProfile.CustomURL, ProfilePage.API_GET_PROFILE);
+            {
+                profileKey = steamProfile;
+            }
             else if (profileIdOrUrl != null)
-                profileUri = SteamDataDownloader.GetProfileUri(profileIdOrUrl, ProfilePage.API_GET_PROFILE);
+            {
+                profileKey = SteamDataDownloader.GetProfileKey(profileIdOrUrl);
+            }
+
+            if (profileKey == null)
+            {
+                errorMessage = Strings.InvalidProfileIdOrUrl;
+                return null;
+            }
+
+            var cached = DataManager.GetSteamProfile(profileKey);
+            if (cached != null)
+            {
+                var reqTime = DateTime.UtcNow.AddMinutes(-MINUTES_DELAY);
+                if (cached.LastUpdate > reqTime)
+                {
+                    errorMessage = null;
+                    return cached;
+                }
+            }
+
+            Uri profileUri = null;
+            if (cached != null)
+            {
+                profileUri = SteamDataDownloader.GetProfileUri(steamProfile, SteamUrlPattern.ApiGetProfile);
+            }
+            else if (profileIdOrUrl != null)
+            {
+                profileUri = SteamDataDownloader.GetProfileUri(profileIdOrUrl, SteamUrlPattern.ApiGetProfile);
+            }
 
             if (profileUri == null)
             {
@@ -33,7 +66,7 @@ namespace s32.Sceh.WinApp.Code
                 switch (error)
                 {
                     case SteamDataDownloader.GetProfileError.Success:
-                        SteamProfile profile = DataManager.ReadAndStoreProfile(resp);
+                        SteamProfile profile = DataManager.AddOrUpdateSteamProfile(resp);
                         errorMessage = null;
                         return profile;
 
@@ -55,6 +88,21 @@ namespace s32.Sceh.WinApp.Code
                 errorMessage = String.Format(Strings.ExceptionDuringDownloadingSteamProfile, ex.Message);
                 return null;
             }
+        }
+
+        public static List<SteamProfile> LoadProfiles()
+        {
+            var profiles = DataManager.GetSteamProfiles();
+            var list = new List<SteamProfile>(profiles.Count);
+            list.AddRange(profiles);
+            list.Sort(SteamProfileComparison);
+            return list;
+        }
+
+        private static int SteamProfileComparison(SteamProfile x, SteamProfile y)
+        {
+            var ret = DateTime.Compare(y.LastUse, x.LastUse);
+            return ret != 0 ? ret : String.Compare(x.Name, y.Name);
         }
     }
 }
