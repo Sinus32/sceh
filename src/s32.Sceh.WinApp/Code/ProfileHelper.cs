@@ -46,7 +46,7 @@ namespace s32.Sceh.WinApp.Code
             Uri profileUri = null;
             if (cached != null)
             {
-                profileUri = SteamDataDownloader.GetProfileUri(steamProfile, SteamUrlPattern.ApiGetProfile);
+                profileUri = SteamDataDownloader.GetProfileUri(cached, SteamUrlPattern.ApiGetProfile);
             }
             else if (profileIdOrUrl != null)
             {

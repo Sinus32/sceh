@@ -208,7 +208,7 @@ namespace s32.Sceh.WinApp
 
         private void EditNoteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = e.Parameter is List<String>;
+            e.CanExecute = e.Parameter is SteamProfile;
         }
 
         private void EditNoteCommand_Executed(object sender, ExecutedRoutedEventArgs e)

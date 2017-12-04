@@ -176,13 +176,15 @@ namespace s32.Sceh.Code
                 throw new InvalidOperationException("Data manager is already initialized");
 
             _currentData = new ScehData();
-            _imageUrlLookup = new Dictionary<string, ImageFile>();
-
             var dataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            var localDataLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             _currentData.AppDataPath = Path.Combine(dataLocation, "Sceh");
+            _currentData.LocalAppDataPath = Path.Combine(localDataLocation, "Sceh");
 
             Directory.CreateDirectory(_currentData.AppDataPath);
+            Directory.CreateDirectory(_currentData.LocalAppDataPath);
 
+            _imageUrlLookup = new Dictionary<string, ImageFile>();
             _currentData.DataFilePath = Path.Combine(_currentData.AppDataPath, "scehdata.xml");
             if (File.Exists(_currentData.DataFilePath))
             {
@@ -226,8 +228,8 @@ namespace s32.Sceh.Code
             _currentData.AvatarsDirectory = MatchImageDirectory(_currentData.DataFile.ImageDirectories, "Avatars");
             _currentData.CardsDirectory = MatchImageDirectory(_currentData.DataFile.ImageDirectories, "Cards");
 
-            _currentData.AvatarsDirectoryPath = Path.Combine(_currentData.AppDataPath, _currentData.AvatarsDirectory.RelativePath);
-            _currentData.CardsDirectoryPath = Path.Combine(_currentData.AppDataPath, _currentData.CardsDirectory.RelativePath);
+            _currentData.AvatarsDirectoryPath = Path.Combine(_currentData.LocalAppDataPath, _currentData.AvatarsDirectory.RelativePath);
+            _currentData.CardsDirectoryPath = Path.Combine(_currentData.LocalAppDataPath, _currentData.CardsDirectory.RelativePath);
 
             Directory.CreateDirectory(_currentData.AvatarsDirectoryPath);
             Directory.CreateDirectory(_currentData.CardsDirectoryPath);
@@ -247,7 +249,7 @@ namespace s32.Sceh.Code
             if (String.IsNullOrEmpty(image.Filename) || image.Filename.Length < 2)
                 return null;
 
-            return Path.Combine(_currentData.AppDataPath, image.Directory.RelativePath, image.Filename.Remove(2), image.Filename);
+            return Path.Combine(_currentData.LocalAppDataPath, image.Directory.RelativePath, image.Filename.Remove(2), image.Filename);
         }
 
         public static void SaveFile()
@@ -270,6 +272,10 @@ namespace s32.Sceh.Code
                 using (var xml = XmlWriter.Create(writer, settings))
                     ser.Serialize(xml, _currentData.DataFile, namespaces);
                 Thread.Sleep(16);
+
+                var dataSerializer = new DataSerializer();
+                var backupsPath = Path.Combine(_currentData.AppDataPath, "Backups");
+                dataSerializer.SaveFiles(_currentData.DataFile, _currentData.AppDataPath, backupsPath);
             }
         }
 

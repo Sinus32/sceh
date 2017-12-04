@@ -48,6 +48,7 @@
     <Compile Include="Code\CardEqualityKey.cs" />
     <Compile Include="Code\CardsCompareManager.cs" />
     <Compile Include="Code\DataManager.cs" />
+    <Compile Include="Code\DataSerializer.cs" />
     <Compile Include="Code\DownloadPriority.cs" />
     <Compile Include="Code\FilenameGenerator.cs" />
     <Compile Include="Code\ImageDownloader.cs" />

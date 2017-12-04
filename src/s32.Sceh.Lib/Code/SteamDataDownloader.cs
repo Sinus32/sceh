@@ -22,8 +22,6 @@ namespace s32.Sceh.Code
 {
     public static class SteamDataDownloader
     {
-        public const string SteamCommunityPageByCustomUrl = "http://steamcommunity.com/id/";
-        public const string SteamCommunityPageBySteamId = "http://steamcommunity.com/profiles/";
         public static readonly DebugInfo Info = new DebugInfo();
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,18}$", RegexOptions.None);
 
@@ -440,9 +438,12 @@ namespace s32.Sceh.Code
 
         private static bool TryExtractCustomUrlFromUrl(string idOrUrl, out string customUrl)
         {
-            if (idOrUrl.StartsWith(SteamCommunityPageByCustomUrl))
+            const string urlPart = "steamcommunity.com/id/";
+
+            var pos = idOrUrl.IndexOf(urlPart);
+            if (pos >= 0)
             {
-                var data = idOrUrl.Substring(SteamCommunityPageByCustomUrl.Length);
+                var data = idOrUrl.Substring(pos + urlPart.Length);
                 int i;
                 for (i = 0; i < data.Length; ++i)
                     if (!Char.IsLetterOrDigit(data[i]) && data[i] != '_' && data[i] != '-')
@@ -460,9 +461,12 @@ namespace s32.Sceh.Code
 
         private static bool TryExtractSteamIdFromUrl(string idOrUrl, out long steamId)
         {
-            if (idOrUrl.StartsWith(SteamCommunityPageBySteamId))
+            const string urlPart = "steamcommunity.com/profiles/";
+
+            var pos = idOrUrl.IndexOf(urlPart);
+            if (pos >= 0)
             {
-                var data = idOrUrl.Substring(SteamCommunityPageBySteamId.Length);
+                var data = idOrUrl.Substring(pos + urlPart.Length);
                 int i;
                 for (i = 0; i < data.Length; ++i)
                     if (!Char.IsDigit(data[i]))

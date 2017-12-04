@@ -327,16 +327,17 @@
         <KeyBinding Command="ctl:ScehCommands.CompareCommand" Key="Return" />
       </ComboBox.InputBindings>
     </ComboBox>
-    <Button Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
-        HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2" Margin="10,0" Padding="20,2" />
+    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+      <Button HorizontalAlignment="Left" Margin="2" Padding="2,0" DataContext="{Binding SelectedItem, ElementName=cbOtherProfile}"
+          Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding}">
+        <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}" />
+      </Button>
+      <Button Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
+        HorizontalAlignment="Left" Margin="2" Padding="20,2" />
+    </StackPanel>
     <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
         Orientation="Horizontal" HorizontalAlignment="Right">
       <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
-      <Button Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding Note}"
-          HorizontalAlignment="Right" DataContext="{Binding SecondProfile}"
-          Grid.Row="2" Grid.Column="2" Margin="2" Padding="2,0">
-        <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}" />
-      </Button>
       <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="{x:Static SystemColors.ControlLightBrush}" />
       <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}" Margin="2">
         <Image Source="Img/selection1.png" Stretch="None" />

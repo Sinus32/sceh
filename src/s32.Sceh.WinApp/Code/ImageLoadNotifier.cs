@@ -128,22 +128,33 @@ namespace s32.Sceh.WinApp.Code
 
             public void Action()
             {
-                _image.LazySource = GetImage();
-                _image.IsReady = true;
+                var bitmapImage = GetImage();
+                if (bitmapImage != null)
+                {
+                    _image.LazySource = bitmapImage;
+                    _image.IsReady = true;
+                }
                 return;
             }
 
             private BitmapImage GetImage()
             {
-                //double height = _image.Height;
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = new MemoryStream(_source);
-                //if (height >= 1.0)
-                //    bitmapImage.DecodePixelHeight = (int)height;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-                return bitmapImage;
+                try
+                {
+                    var bitmapImage = new BitmapImage();
+                    bitmapImage.BeginInit();
+                    bitmapImage.StreamSource = new MemoryStream(_source);
+                    //double height = _image.Height;
+                    //if (height >= 1.0)
+                    //    bitmapImage.DecodePixelHeight = (int)height;
+                    bitmapImage.EndInit();
+                    bitmapImage.Freeze();
+                    return bitmapImage;
+                }
+                catch (ArgumentException)
+                {
+                    return null;
+                }
             }
         }
     }
