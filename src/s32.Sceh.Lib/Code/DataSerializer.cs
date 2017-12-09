@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
-using s32.Sceh.DataStore;
+using s32.Sceh.DataModel;
 
 namespace s32.Sceh.Code
 {
@@ -16,7 +16,6 @@ namespace s32.Sceh.Code
         private string _imageDirectoryFilePattern = "images{0}.xml";
         private int _maxBackups = 8;
         private string _steamProfilesFileName = "steamProfiles.xml";
-        private XmlWriterSettings _xmlSettings;
 
         public DataSerializer()
         {
@@ -81,19 +80,222 @@ namespace s32.Sceh.Code
             File.Move(filePath, backupFilePath);
         }
 
-        public void SaveFiles(ScehDataFile scehDataFile, string directoryPath, string backupsPath)
+        public void SaveFiles(ScehData scehData)
         {
-            var steamProfilesFilePath = Path.Combine(directoryPath, _steamProfilesFileName);
-            MakeBackup(steamProfilesFilePath, backupsPath);
-            SaveSteamProfilesFile(steamProfilesFilePath, scehDataFile.SteamProfiles);
+            var steamProfilesFilePath = Path.Combine(scehData.Paths.AppDataPath, _steamProfilesFileName);
+            MakeBackup(steamProfilesFilePath, scehData.Paths.BackupsPath);
+            SaveSteamProfilesFile(steamProfilesFilePath, scehData.Profiles);
 
-            foreach (var imageDirectory in scehDataFile.ImageDirectories)
+            foreach (var imageDirectory in scehData.ImageDirectories)
             {
                 var imageDirectoryFileName = String.Format(_imageDirectoryFilePattern, imageDirectory.RelativePath);
-                var imageDirectoryFilePath = Path.Combine(directoryPath, imageDirectoryFileName);
-                MakeBackup(imageDirectoryFilePath, backupsPath);
+                var imageDirectoryFilePath = Path.Combine(scehData.Paths.AppDataPath, imageDirectoryFileName);
+                MakeBackup(imageDirectoryFilePath, scehData.Paths.BackupsPath);
                 SaveImageDirectoryFile(imageDirectoryFilePath, imageDirectory);
             }
+        }
+
+        public void LoadFiles(ScehData scehData)
+        {
+            var steamProfilesFilePath = Path.Combine(scehData.Paths.AppDataPath, _steamProfilesFileName);
+            LoadSteamProfilesFile(steamProfilesFilePath, scehData.Profiles);
+
+            foreach (var imageDirectory in scehData.ImageDirectories)
+            {
+                var imageDirectoryFileName = String.Format(_imageDirectoryFilePattern, imageDirectory.RelativePath);
+                var imageDirectoryFilePath = Path.Combine(scehData.Paths.AppDataPath, imageDirectoryFileName);
+                LoadImageDirectoryFile(imageDirectoryFilePath, imageDirectory);
+            }
+        }
+
+        private void LoadSteamProfilesFile(string filePath, ProfilesData profiles)
+        {
+            if (!File.Exists(filePath))
+                return;
+
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var reader = XmlReader.Create(stream, MakeXmlReaderSettings()))
+            {
+                const int IGNORE = -1, BEGINNING = 0, PROFILES = 1, LAST_PROFILE = 2, STEAM_PROFILE = 3,
+                    NAME = 4, LAST_USE = 5, AVATAR_URL = 6, SMALL = 7, MEDIUM = 8, FULL = 9, NOTE = 10;
+
+                var state = BEGINNING;
+                var stack = new Stack<int>(5);
+                SteamProfile steamProfile = null;
+
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            int nextState = IGNORE;
+
+                            switch (state)
+                            {
+                                case BEGINNING:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "Profiles":
+                                            profiles.SteamProfiles.Clear();
+                                            nextState = PROFILES;
+                                            break;
+                                    }
+                                    break;
+
+                                case PROFILES:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "LastSteamProfileId":
+                                            nextState = LAST_PROFILE;
+                                            break;
+
+                                        case "SteamProfile":
+                                            steamProfile = new SteamProfile(0, null);
+                                            nextState = STEAM_PROFILE;
+                                            break;
+                                    }
+                                    break;
+
+                                case STEAM_PROFILE:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "Name":
+                                            nextState = NAME;
+                                            break;
+
+                                        case "LastUse":
+                                            nextState = LAST_USE;
+                                            break;
+
+                                        case "AvatarUrl":
+                                            nextState = AVATAR_URL;
+                                            break;
+
+                                        case "Note":
+                                            nextState = NOTE;
+                                            break;
+                                    }
+                                    break;
+
+                                case AVATAR_URL:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "Small":
+                                            nextState = SMALL;
+                                            break;
+
+                                        case "Medium":
+                                            nextState = MEDIUM;
+                                            break;
+
+                                        case "Full":
+                                            nextState = FULL;
+                                            break;
+                                    }
+                                    break;
+                            }
+
+                            if (!reader.IsEmptyElement)
+                            {
+                                stack.Push(state);
+                                state = nextState;
+                            }
+
+                            while (reader.MoveToNextAttribute())
+                            {
+                                var attributeName = reader.LocalName;
+
+                                if (!reader.ReadAttributeValue())
+                                    continue;
+
+                                switch (state)
+                                {
+                                    case LAST_PROFILE:
+                                        switch (attributeName)
+                                        {
+                                            case "autoLogIn":
+                                                profiles.AutoLogIn = reader.ReadContentAsBoolean();
+                                                break;
+                                        }
+                                        break;
+
+                                    case STEAM_PROFILE:
+                                        switch (attributeName)
+                                        {
+                                            case "steamId":
+                                                steamProfile.SteamId = reader.ReadContentAsLong();
+                                                break;
+
+                                            case "customUrl":
+                                                steamProfile.CustomUrl = reader.ReadContentAsString();
+                                                break;
+
+                                            case "lastUpdate":
+                                                steamProfile.LastUpdate = reader.ReadContentAsDateTime();
+                                                break;
+                                        }
+                                        break;
+                                }
+                            }
+
+                            break;
+
+                        case XmlNodeType.EndElement:
+                            switch (state)
+                            {
+                                case STEAM_PROFILE:
+                                    if (steamProfile.SteamId > 0L)
+                                        profiles.SteamProfiles.Add(steamProfile);
+                                    break;
+                            }
+
+                            if (stack.Count > 0)
+                                state = stack.Pop();
+                            else
+                                return;
+                            break;
+
+                        case XmlNodeType.Text:
+                            switch (state)
+                            {
+                                case NAME:
+                                    steamProfile.Name = reader.ReadContentAsString();
+                                    break;
+
+                                case LAST_USE:
+                                    steamProfile.LastUse = reader.ReadContentAsDateTime();
+                                    break;
+
+                                case SMALL:
+                                    steamProfile.AvatarSmallUrl = new Uri(reader.ReadContentAsString());
+                                    break;
+
+                                case MEDIUM:
+                                    steamProfile.AvatarMediumUrl = new Uri(reader.ReadContentAsString());
+                                    break;
+
+                                case FULL:
+                                    steamProfile.AvatarFullUrl = new Uri(reader.ReadContentAsString());
+                                    break;
+
+                                case NOTE:
+                                    if (steamProfile.Note == null)
+                                        steamProfile.Note = new List<string>();
+                                    steamProfile.Note.Add(reader.ReadContentAsString());
+                                    break;
+                            }
+
+                            if (reader.NodeType == XmlNodeType.EndElement)
+                                goto case XmlNodeType.EndElement;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void LoadImageDirectoryFile(string filePath, ImageDirectory imageDirectory)
+        {
+            throw new NotImplementedException();
         }
 
         public void SaveImageDirectoryFile(string filePath, ImageDirectory imageDirectory)
@@ -105,8 +307,9 @@ namespace s32.Sceh.Code
                 writer.WriteStartDocument();
 
                 writer.WriteStartElement("ImageDirectory", ScehData.NS_SCEH);
+                writer.WriteAttributeString("xmlns", "xsi", null, ScehData.NS_XSI);
 
-                writer.WriteStartAttribute("RelativePath");
+                writer.WriteStartAttribute("relativePath");
                 writer.WriteValue(imageDirectory.RelativePath);
 
                 foreach (var image in imageDirectory.Images)
@@ -115,17 +318,17 @@ namespace s32.Sceh.Code
 
                     if (!String.IsNullOrEmpty(image.MimeType))
                     {
-                        writer.WriteStartAttribute("MimeType");
+                        writer.WriteStartAttribute("mimeType");
                         writer.WriteValue(image.MimeType);
                     }
 
                     if (!String.IsNullOrEmpty(image.ETag))
                     {
-                        writer.WriteStartAttribute("ETag");
+                        writer.WriteStartAttribute("eTag");
                         writer.WriteValue(image.ETag);
                     }
 
-                    writer.WriteStartAttribute("LastUpdate");
+                    writer.WriteStartAttribute("lastUpdate");
                     writer.WriteValue(image.LastUpdate);
 
                     writer.WriteStartElement("Filename");
@@ -133,7 +336,7 @@ namespace s32.Sceh.Code
                     writer.WriteEndElement();
 
                     writer.WriteStartElement("ImageUrl");
-                    writer.WriteValue(image.ImageUrl);
+                    writer.WriteValue(image.ImageUrl.ToString());
                     writer.WriteEndElement();
 
                     writer.WriteEndElement();
@@ -144,7 +347,7 @@ namespace s32.Sceh.Code
             File.Move(tmpFilePath, filePath);
         }
 
-        public void SaveSteamProfilesFile(string filePath, List<SteamProfile> steamProfiles)
+        public void SaveSteamProfilesFile(string filePath, ProfilesData profiles)
         {
             var tmpFilePath = filePath + ".tmp";
             using (var stream = new FileStream(tmpFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -152,22 +355,35 @@ namespace s32.Sceh.Code
             {
                 writer.WriteStartDocument();
 
-                writer.WriteStartElement("SteamProfiles", ScehData.NS_SCEH);
+                writer.WriteStartElement("Profiles", ScehData.NS_SCEH);
+                writer.WriteAttributeString("xmlns", "xsi", null, ScehData.NS_XSI);
 
-                foreach (var profile in steamProfiles)
+                if (profiles.LastSteamProfileId > 0L)
+                {
+                    writer.WriteStartElement("LastSteamProfileId");
+
+                    writer.WriteStartAttribute("autoLogIn");
+                    writer.WriteValue(profiles.AutoLogIn);
+
+                    writer.WriteValue(profiles.LastSteamProfileId);
+
+                    writer.WriteEndElement();
+                }
+
+                foreach (var profile in profiles.SteamProfiles)
                 {
                     writer.WriteStartElement("SteamProfile");
 
-                    writer.WriteStartAttribute("SteamId");
+                    writer.WriteStartAttribute("steamId");
                     writer.WriteValue(profile.SteamId);
 
                     if (!String.IsNullOrEmpty(profile.CustomUrl))
                     {
-                        writer.WriteStartAttribute("CustomUrl");
+                        writer.WriteStartAttribute("customUrl");
                         writer.WriteValue(profile.CustomUrl);
                     }
 
-                    writer.WriteStartAttribute("LastUpdate");
+                    writer.WriteStartAttribute("lastUpdate");
                     writer.WriteValue(profile.LastUpdate);
 
                     writer.WriteStartElement("Name");
@@ -179,9 +395,9 @@ namespace s32.Sceh.Code
                     writer.WriteEndElement();
 
                     writer.WriteStartElement("AvatarUrl");
-                    writer.WriteElementString("Small", profile.AvatarSmallUrl);
-                    writer.WriteElementString("Medium", profile.AvatarMediumUrl);
-                    writer.WriteElementString("Full", profile.AvatarFullUrl);
+                    writer.WriteElementString("Small", profile.AvatarSmallUrl.ToString());
+                    writer.WriteElementString("Medium", profile.AvatarMediumUrl.ToString());
+                    writer.WriteElementString("Full", profile.AvatarFullUrl.ToString());
                     writer.WriteEndElement();
 
                     if (profile.Note != null)
@@ -200,6 +416,17 @@ namespace s32.Sceh.Code
                 writer.WriteEndElement();
             }
             File.Move(tmpFilePath, filePath);
+        }
+
+        private XmlReaderSettings MakeXmlReaderSettings()
+        {
+            var result = new XmlReaderSettings();
+            result.ConformanceLevel = ConformanceLevel.Document;
+            result.DtdProcessing = DtdProcessing.Prohibit;
+            result.IgnoreComments = true;
+            result.IgnoreProcessingInstructions = true;
+            result.IgnoreWhitespace = true;
+            return result;
         }
 
         private XmlWriterSettings MakeXmlWriterSettings()

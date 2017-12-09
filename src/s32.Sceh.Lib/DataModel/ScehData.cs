@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace s32.Sceh.DataStore
+namespace s32.Sceh.DataModel
 {
     public class ScehData
     {
@@ -17,13 +17,15 @@ namespace s32.Sceh.DataStore
         public const string NS_XS = "http://www.w3.org/2001/XMLSchema";
         public const string NS_XSI = "http://www.w3.org/2001/XMLSchema-instance";
 
-        public string AppDataPath { get; set; }
         public ImageDirectory AvatarsDirectory { get; set; }
-        public string AvatarsDirectoryPath { get; set; }
         public ImageDirectory CardsDirectory { get; set; }
-        public string CardsDirectoryPath { get; set; }
-        public ScehDataFile DataFile { get; set; }
-        public string DataFilePath { get; set; }
-        public string LocalAppDataPath { get; set; }
+
+        public IEnumerable<ImageDirectory> ImageDirectories
+        {
+            get { return new ImageDirectory[] { AvatarsDirectory, CardsDirectory }; }
+        }
+
+        public PathConfig Paths { get; set; }
+        public ProfilesData Profiles { get; set; }
     }
 }

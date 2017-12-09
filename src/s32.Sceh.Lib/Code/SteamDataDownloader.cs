@@ -15,7 +15,6 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using s32.Sceh.Classes;
 using s32.Sceh.DataModel;
-using s32.Sceh.DataStore;
 using s32.Sceh.SteamApi;
 
 namespace s32.Sceh.Code

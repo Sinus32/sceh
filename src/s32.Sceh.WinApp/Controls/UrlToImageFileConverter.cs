@@ -9,7 +9,6 @@ using System.Windows;
 using System.Windows.Data;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
-using s32.Sceh.DataStore;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -57,8 +56,8 @@ namespace s32.Sceh.WinApp.Controls
             ImageFile result;
             if (value is Card)
                 result = DataManager.GetOrCreateImageFile((Card)value, Directory, out isNew);
-            else if (value is string)
-                result = DataManager.GetOrCreateImageFile((string)value, Directory, out isNew);
+            else if (value is Uri)
+                result = DataManager.GetOrCreateImageFile((Uri)value, Directory, out isNew);
             else
                 throw new NotSupportedException();
 

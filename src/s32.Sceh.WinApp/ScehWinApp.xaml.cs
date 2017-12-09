@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using s32.Sceh.Code;
-using s32.Sceh.DataStore;
 using s32.Sceh.WinApp.Code;
 
 namespace s32.Sceh.WinApp

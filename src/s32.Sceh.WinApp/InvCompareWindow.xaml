@@ -7,7 +7,6 @@
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
     Title="InvCompareWindow" Height="450" Width="970" Icon="Img/sceh.ico" ResizeMode="CanResizeWithGrip" WindowState="Maximized">
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.New" CanExecute="ChangeProfileCommand_CanExecute" Executed="ChangeProfileCommand_Executed" />

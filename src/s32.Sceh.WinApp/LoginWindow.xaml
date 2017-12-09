@@ -5,7 +5,7 @@
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
-    xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
+    xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
     Title="{x:Static resx:Strings.LoginWindowTitle}" Height="180" Width="470" Icon="Img/sceh.ico">
   <Window.Resources>
     <Style TargetType="Label">

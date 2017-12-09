@@ -12,7 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using s32.Sceh.Code;
-using s32.Sceh.DataStore;
+using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Controls;
 
 namespace s32.Sceh.WinApp.Code

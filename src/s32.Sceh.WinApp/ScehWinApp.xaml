@@ -6,7 +6,7 @@
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
-    xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
+    xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
     StartupUri="LoginWindow.xaml" Exit="Application_Exit" Startup="Application_Startup">
   <Application.Resources>
     <BitmapImage x:Key="defaultAvatar" ice:Freeze="True" UriSource="Img/avatar.jpg" />
@@ -56,7 +56,7 @@
       </Setter>
       <Setter Property="ItemTemplate">
         <Setter.Value>
-          <DataTemplate DataType="{x:Type ds:SteamProfile}">
+          <DataTemplate DataType="{x:Type dm:SteamProfile}">
             <Grid HorizontalAlignment="Stretch" Margin="0,1,0,1" >
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

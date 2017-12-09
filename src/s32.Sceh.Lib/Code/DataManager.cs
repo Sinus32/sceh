@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using s32.Sceh.DataModel;
-using s32.Sceh.DataStore;
 using s32.Sceh.SteamApi;
 
 namespace s32.Sceh.Code
@@ -37,7 +36,7 @@ namespace s32.Sceh.Code
 
             lock (_currentData)
             {
-                foreach (var dt in _currentData.DataFile.SteamProfiles)
+                foreach (var dt in _currentData.Profiles.SteamProfiles)
                 {
                     if (dt.SteamId == profile.SteamId)
                     {
@@ -51,7 +50,7 @@ namespace s32.Sceh.Code
                     }
                 }
 
-                _currentData.DataFile.SteamProfiles.Add(profile);
+                _currentData.Profiles.SteamProfiles.Add(profile);
                 return profile;
             }
         }
@@ -61,13 +60,11 @@ namespace s32.Sceh.Code
             if (resp == null)
                 return null;
 
-            var result = new SteamProfile();
-            result.SteamId = resp.SteamId;
+            var result = new SteamProfile(resp.SteamId, String.IsNullOrEmpty(resp.CustomURL) ? null : resp.CustomURL);
             result.Name = resp.Name;
-            result.CustomUrl = String.IsNullOrEmpty(resp.CustomURL) ? null : resp.CustomURL;
-            result.AvatarSmallUrl = resp.AvatarIcon;
-            result.AvatarMediumUrl = resp.AvatarIconMedium;
-            result.AvatarFullUrl = resp.AvatarIconFull;
+            result.AvatarSmallUrl = new Uri(resp.AvatarIcon);
+            result.AvatarMediumUrl = new Uri(resp.AvatarIconMedium);
+            result.AvatarFullUrl = new Uri(resp.AvatarIconFull);
             result.LastUpdate = DateTime.UtcNow;
 
             return AddOrUpdateSteamProfile(result);
@@ -75,8 +72,8 @@ namespace s32.Sceh.Code
 
         public static SteamProfile GetLastSteamProfile()
         {
-            if (_currentData != null && _currentData.DataFile.LastSteamProfileId > 0L)
-                return _currentData.DataFile.SteamProfiles.FirstOrDefault(q => q.SteamId == _currentData.DataFile.LastSteamProfileId);
+            if (_currentData != null && _currentData.Profiles.LastSteamProfileId > 0L)
+                return _currentData.Profiles.SteamProfiles.FirstOrDefault(q => q.SteamId == _currentData.Profiles.LastSteamProfileId);
             return null;
         }
 
@@ -90,12 +87,13 @@ namespace s32.Sceh.Code
                 return null;
             }
 
-            return GetOrCreateImageFile(String.Concat(CARD_IMAGE_SOURCE, steamCard.IconUrl), directory, out isNew);
+            var imageUrl = new Uri(String.Concat(CARD_IMAGE_SOURCE, steamCard.IconUrl));
+            return GetOrCreateImageFile(imageUrl, directory, out isNew);
         }
 
-        public static ImageFile GetOrCreateImageFile(string imageUrl, ImageDirectory directory, out bool isNew)
+        public static ImageFile GetOrCreateImageFile(Uri imageUrl, ImageDirectory directory, out bool isNew)
         {
-            if (String.IsNullOrEmpty(imageUrl))
+            if (imageUrl == null)
             {
                 isNew = false;
                 return null;
@@ -128,10 +126,10 @@ namespace s32.Sceh.Code
                 return null;
 
             if (profileKey.SteamId > 0L)
-                return _currentData.DataFile.SteamProfiles.FirstOrDefault(q => q.SteamId == profileKey.SteamId);
+                return _currentData.Profiles.SteamProfiles.FirstOrDefault(q => q.SteamId == profileKey.SteamId);
 
             if (!String.IsNullOrEmpty(profileKey.CustomUrl))
-                return _currentData.DataFile.SteamProfiles.FirstOrDefault(q => String.Equals(q.CustomUrl, profileKey.CustomUrl, StringComparison.OrdinalIgnoreCase));
+                return _currentData.Profiles.SteamProfiles.FirstOrDefault(q => String.Equals(q.CustomUrl, profileKey.CustomUrl, StringComparison.OrdinalIgnoreCase));
 
             return null;
         }
@@ -141,7 +139,7 @@ namespace s32.Sceh.Code
             if (_currentData == null)
                 return new SteamProfile[0];
 
-            return _currentData.DataFile.SteamProfiles;
+            return _currentData.Profiles.SteamProfiles;
         }
 
         public static UserInventory GetSteamUserInventory(SteamProfile profile, bool forceRefresh)
@@ -176,66 +174,38 @@ namespace s32.Sceh.Code
                 throw new InvalidOperationException("Data manager is already initialized");
 
             _currentData = new ScehData();
+            _currentData.Profiles = new ProfilesData();
+            _currentData.AvatarsDirectory = new ImageDirectory("Avatars");
+            _currentData.CardsDirectory = new ImageDirectory("Cards");
+
+            _currentData.Paths = new PathConfig();
+
             var dataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var localDataLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            _currentData.AppDataPath = Path.Combine(dataLocation, "Sceh");
-            _currentData.LocalAppDataPath = Path.Combine(localDataLocation, "Sceh");
 
-            Directory.CreateDirectory(_currentData.AppDataPath);
-            Directory.CreateDirectory(_currentData.LocalAppDataPath);
+            _currentData.Paths.AppDataPath = Path.Combine(dataLocation, "Sceh");
+            _currentData.Paths.LocalAppDataPath = Path.Combine(localDataLocation, "Sceh");
+            _currentData.Paths.BackupsPath = Path.Combine(_currentData.Paths.AppDataPath, "Backups");
+            _currentData.Paths.AvatarsDirectoryPath = Path.Combine(_currentData.Paths.LocalAppDataPath, _currentData.AvatarsDirectory.RelativePath);
+            _currentData.Paths.CardsDirectoryPath = Path.Combine(_currentData.Paths.LocalAppDataPath, _currentData.CardsDirectory.RelativePath);
+
+            Directory.CreateDirectory(_currentData.Paths.AppDataPath);
+            Directory.CreateDirectory(_currentData.Paths.LocalAppDataPath);
+            Directory.CreateDirectory(_currentData.Paths.AvatarsDirectoryPath);
+            Directory.CreateDirectory(_currentData.Paths.CardsDirectoryPath);
+
+            var dataSerializer = new DataSerializer();
+            dataSerializer.LoadFiles(_currentData);
 
             _imageUrlLookup = new Dictionary<string, ImageFile>();
-            _currentData.DataFilePath = Path.Combine(_currentData.AppDataPath, "scehdata.xml");
-            if (File.Exists(_currentData.DataFilePath))
+            foreach (var dir in _currentData.ImageDirectories)
             {
-                try
+                foreach (var img in dir.Images)
                 {
-                    var ser = new XmlSerializer(typeof(ScehDataFile));
-                    ser.UnknownAttribute += XmlSerializer_UnknownAttribute;
-                    ser.UnknownElement += XmlSerializer_UnknownElement;
-                    ser.UnknownNode += XmlSerializer_UnknownNode;
-                    ser.UnreferencedObject += XmlSerializer_UnreferencedObject;
-                    using (var stream = File.OpenRead(_currentData.DataFilePath))
-                    using (var reader = new StreamReader(stream, true))
-                        _currentData.DataFile = (ScehDataFile)ser.Deserialize(stream);
-                }
-                catch (Exception)
-                {
-                    throw;
+                    img.Directory = dir;
+                    _imageUrlLookup[LookupKey(dir, img)] = img;
                 }
             }
-            else
-            {
-                _currentData.DataFile = new ScehDataFile();
-            }
-
-            if (_currentData.DataFile.ImageDirectories == null)
-            {
-                _currentData.DataFile.ImageDirectories = new List<ImageDirectory>();
-            }
-            else
-            {
-                foreach (var dir in _currentData.DataFile.ImageDirectories)
-                {
-                    foreach (var img in dir.Images)
-                    {
-                        img.Directory = dir;
-                        _imageUrlLookup[LookupKey(dir, img)] = img;
-                    }
-                }
-            }
-
-            _currentData.AvatarsDirectory = MatchImageDirectory(_currentData.DataFile.ImageDirectories, "Avatars");
-            _currentData.CardsDirectory = MatchImageDirectory(_currentData.DataFile.ImageDirectories, "Cards");
-
-            _currentData.AvatarsDirectoryPath = Path.Combine(_currentData.LocalAppDataPath, _currentData.AvatarsDirectory.RelativePath);
-            _currentData.CardsDirectoryPath = Path.Combine(_currentData.LocalAppDataPath, _currentData.CardsDirectory.RelativePath);
-
-            Directory.CreateDirectory(_currentData.AvatarsDirectoryPath);
-            Directory.CreateDirectory(_currentData.CardsDirectoryPath);
-
-            if (_currentData.DataFile.SteamProfiles == null)
-                _currentData.DataFile.SteamProfiles = new List<SteamProfile>();
         }
 
         public static string LocalFilePath(ImageFile image)
@@ -249,52 +219,37 @@ namespace s32.Sceh.Code
             if (String.IsNullOrEmpty(image.Filename) || image.Filename.Length < 2)
                 return null;
 
-            return Path.Combine(_currentData.LocalAppDataPath, image.Directory.RelativePath, image.Filename.Remove(2), image.Filename);
+            return Path.Combine(_currentData.Paths.LocalAppDataPath, image.Directory.RelativePath, image.Filename.Remove(2), image.Filename);
         }
 
         public static void SaveFile()
         {
-            if (_currentData.DataFile == null || _currentData.DataFilePath == null)
+            //if (_currentData == null || _currentData.Paths == null)
                 return;
 
-            var ser = new XmlSerializer(typeof(ScehDataFile));
-            var settings = new XmlWriterSettings();
-            settings.Indent = true;
-            settings.Encoding = Encoding.UTF8;
-            settings.OmitXmlDeclaration = false;
-            var namespaces = new XmlSerializerNamespaces();
-            namespaces.Add(String.Empty, ScehData.NS_SCEH);
-
-            lock (_currentData)
-            {
-                using (var stream = File.Open(_currentData.DataFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                using (var writer = new StreamWriter(stream, Encoding.UTF8))
-                using (var xml = XmlWriter.Create(writer, settings))
-                    ser.Serialize(xml, _currentData.DataFile, namespaces);
-                Thread.Sleep(16);
-
-                var dataSerializer = new DataSerializer();
-                var backupsPath = Path.Combine(_currentData.AppDataPath, "Backups");
-                dataSerializer.SaveFiles(_currentData.DataFile, _currentData.AppDataPath, backupsPath);
-            }
+            //lock (_currentData)
+            //{
+            //    var dataSerializer = new DataSerializer();
+            //    dataSerializer.SaveFiles(_currentData);
+            //}
         }
 
         public static void SetLastSteamProfile(SteamProfile profile)
         {
             if (profile == null)
-                _currentData.DataFile.LastSteamProfileId = 0L;
+                _currentData.Profiles.LastSteamProfileId = 0L;
             else
-                _currentData.DataFile.LastSteamProfileId = profile.SteamId;
+                _currentData.Profiles.LastSteamProfileId = profile.SteamId;
         }
 
         private static string LookupKey(ImageDirectory dir, ImageFile img)
         {
-            return String.Concat(dir.RelativePath, '/', img.ImageUrl);
+            return LookupKey(dir, img.ImageUrl);
         }
 
-        private static string LookupKey(ImageDirectory dir, string imageUrl)
+        private static string LookupKey(ImageDirectory dir, Uri imageUrl)
         {
-            return String.Concat(dir.RelativePath, '/', imageUrl);
+            return String.Concat(dir.RelativePath, '/', imageUrl.ToString());
         }
 
         private static ImageDirectory MatchImageDirectory(List<ImageDirectory> directories, string relativePath)
@@ -306,26 +261,6 @@ namespace s32.Sceh.Code
                 directories.Add(result);
             }
             return result;
-        }
-
-        private static void XmlSerializer_UnknownAttribute(object sender, XmlAttributeEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void XmlSerializer_UnknownElement(object sender, XmlElementEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void XmlSerializer_UnknownNode(object sender, XmlNodeEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static void XmlSerializer_UnreferencedObject(object sender, UnreferencedObjectEventArgs e)
-        {
-            throw new NotImplementedException();
         }
     }
 }

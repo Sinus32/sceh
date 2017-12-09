@@ -5,34 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace s32.Sceh.DataStore
+namespace s32.Sceh.DataModel
 {
-    [Serializable]
-    [XmlRoot("SteamProfile", Namespace = ScehData.NS_SCEH)]
     public class SteamProfile : SteamProfileKey
     {
-        [XmlAttribute]
+        public SteamProfile(long steamId, string customUrl)
+            : base(steamId, customUrl)
+        { }
+
         public DateTime LastUpdate { get; set; }
 
-        [XmlElement(Order = 0)]
         public DateTime LastUse { get; set; }
 
-        [XmlElement(Order = 1)]
         public string Name { get; set; }
 
-        [XmlElement(Order = 2)]
-        public string AvatarSmallUrl { get; set; }
+        public Uri AvatarSmallUrl { get; set; }
 
-        [XmlElement(Order = 3)]
-        public string AvatarMediumUrl { get; set; }
+        public Uri AvatarMediumUrl { get; set; }
 
-        [XmlElement(Order = 4)]
-        public string AvatarFullUrl { get; set; }
+        public Uri AvatarFullUrl { get; set; }
 
-        [XmlElement(Order = 5)]
         public List<string> Note { get; set; }
 
-        [XmlIgnore]
         public bool HasNote
         {
             get { return Note != null && Note.Count > 0; }

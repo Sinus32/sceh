@@ -6,27 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace s32.Sceh.DataStore
+namespace s32.Sceh.DataModel
 {
-    [Serializable]
-    [XmlRoot("Directory", Namespace = ScehData.NS_SCEH)]
     public class ImageDirectory
     {
-        public ImageDirectory()
+        public ImageDirectory(string relativePath)
         {
             Images = new List<ImageFile>();
-        }
-
-        public ImageDirectory(string relativePath)
-            : this()
-        {
             RelativePath = relativePath;
         }
 
-        [XmlElement("Image")]
         public List<ImageFile> Images { get; set; }
 
-        [XmlAttribute]
         public string RelativePath { get; set; }
     }
 }

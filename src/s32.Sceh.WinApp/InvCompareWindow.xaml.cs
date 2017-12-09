@@ -15,7 +15,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
-using s32.Sceh.DataStore;
 using s32.Sceh.WinApp.Code;
 using s32.Sceh.WinApp.Translations;
 
