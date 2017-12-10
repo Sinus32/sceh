@@ -11,7 +11,9 @@ namespace s32.Sceh.DataModel
     {
         public SteamProfile(long steamId, string customUrl)
             : base(steamId, customUrl)
-        { }
+        {
+            Notes = new UserNotes();
+        }
 
         public DateTime LastUpdate { get; set; }
 
@@ -25,11 +27,6 @@ namespace s32.Sceh.DataModel
 
         public Uri AvatarFullUrl { get; set; }
 
-        public List<string> Note { get; set; }
-
-        public bool HasNote
-        {
-            get { return Note != null && Note.Count > 0; }
-        }
+        public UserNotes Notes { get; set; }
     }
 }

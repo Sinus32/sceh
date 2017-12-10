@@ -30,7 +30,7 @@
     <Style x:Key="noteIconToolTip" TargetType="FrameworkElement">
       <Setter Property="ToolTip">
         <Setter.Value>
-          <ItemsControl ItemsSource="{Binding Note, Mode=OneWay}">
+          <ItemsControl ItemsSource="{Binding Notes.AllTexts, Mode=OneWay}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Vertical" HorizontalAlignment="Left" />
@@ -73,7 +73,7 @@
                 <TextBlock Text="{Binding CustomUrlOrSteamId, StringFormat={} ({0})}" Style="{StaticResource urlOrSteamIdTextBlock}" VerticalAlignment="Center" />
               </StackPanel>
               <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}"
-                  Visibility="{Binding HasNote, Converter={StaticResource visibleToVisibilityConv}}" Grid.Column="2" />
+                  Visibility="{Binding Notes.HasNote, Converter={StaticResource visibleToVisibilityConv}}" Grid.Column="2" />
             </Grid>
           </DataTemplate>
         </Setter.Value>

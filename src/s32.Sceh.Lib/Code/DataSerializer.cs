@@ -122,6 +122,7 @@ namespace s32.Sceh.Code
                 var state = BEGINNING;
                 var stack = new Stack<int>(5);
                 SteamProfile steamProfile = null;
+                UserNote userNote = null;
 
                 while (reader.Read())
                 {
@@ -172,6 +173,7 @@ namespace s32.Sceh.Code
                                             break;
 
                                         case "Note":
+                                            userNote = new UserNote();
                                             nextState = NOTE;
                                             break;
                                     }
@@ -235,6 +237,15 @@ namespace s32.Sceh.Code
                                                 break;
                                         }
                                         break;
+
+                                    case NOTE:
+                                        switch (attributeName)
+                                        {
+                                            case "score":
+                                                userNote.Score = reader.ReadContentAsInt();
+                                                break;
+                                        }
+                                        break;
                                 }
                             }
 
@@ -246,6 +257,11 @@ namespace s32.Sceh.Code
                                 case STEAM_PROFILE:
                                     if (steamProfile.SteamId > 0L)
                                         profiles.SteamProfiles.Add(steamProfile);
+                                    break;
+
+                                case NOTE:
+                                    if (userNote.Score != 0 || userNote.Text != null)
+                                        steamProfile.Notes.Add(userNote);
                                     break;
                             }
 
@@ -283,9 +299,7 @@ namespace s32.Sceh.Code
                                     break;
 
                                 case NOTE:
-                                    if (steamProfile.Note == null)
-                                        steamProfile.Note = new List<string>();
-                                    steamProfile.Note.Add(reader.ReadContentAsString());
+                                    userNote.Text = reader.ReadContentAsString();
                                     break;
                             }
 
@@ -538,14 +552,20 @@ namespace s32.Sceh.Code
                     writer.WriteElementString("Full", profile.AvatarFullUrl.ToString());
                     writer.WriteEndElement();
 
-                    if (profile.Note != null)
+                    foreach (var note in profile.Notes)
                     {
-                        foreach (var note in profile.Note)
+                        writer.WriteStartElement("Note");
+
+                        if (note.Score != 0)
                         {
-                            writer.WriteStartElement("Note");
-                            writer.WriteValue(note);
-                            writer.WriteEndElement();
+                            writer.WriteStartAttribute("score");
+                            writer.WriteValue(note.Score);
+                            writer.WriteEndAttribute();
                         }
+
+                        writer.WriteValue(note.Text);
+
+                        writer.WriteEndElement();
                     }
 
                     writer.WriteEndElement();

@@ -228,6 +228,9 @@
       <Separator />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
     </ContextMenu>
+    <Popup x:Key="noteEditPopup">
+      
+    </Popup>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
       <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
         <Grid>
@@ -305,7 +308,7 @@
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding SecondProfile}" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding SecondProfile}" />
         <Separator />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding SecondProfile.Note}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding SecondProfile.Notes}" />
       </MenuItem>
     </Menu>
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="None"
@@ -328,7 +331,7 @@
     </ComboBox>
     <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
       <Button HorizontalAlignment="Left" Margin="2" Padding="2,0" DataContext="{Binding SelectedItem, ElementName=cbOtherProfile}"
-          Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding}">
+          Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding Notes}">
         <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}" />
       </Button>
       <Button Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
