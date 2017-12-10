@@ -19,6 +19,21 @@ namespace s32.Sceh.Code
         private static ScehData _currentData;
         private static Dictionary<string, ImageFile> _imageUrlLookup;
 
+        public static bool AutoLogIn
+        {
+            get
+            {
+                if (_currentData != null)
+                    return _currentData.Profiles.AutoLogIn;
+                return false;
+            }
+            set
+            {
+                if (_currentData != null)
+                    _currentData.Profiles.AutoLogIn = value;
+            }
+        }
+
         public static ImageDirectory AvatarsDirectory
         {
             get { return _currentData != null ? _currentData.AvatarsDirectory : null; }
@@ -27,6 +42,23 @@ namespace s32.Sceh.Code
         public static ImageDirectory CardsDirectory
         {
             get { return _currentData != null ? _currentData.CardsDirectory : null; }
+        }
+
+        public static SteamProfile LastSteamProfile
+        {
+            get
+            {
+                if (_currentData != null && _currentData.Profiles.LastSteamProfileId > 0L)
+                    return _currentData.Profiles.SteamProfiles.FirstOrDefault(q => q.SteamId == _currentData.Profiles.LastSteamProfileId);
+                return null;
+            }
+            set
+            {
+                if (value == null)
+                    _currentData.Profiles.LastSteamProfileId = 0L;
+                else
+                    _currentData.Profiles.LastSteamProfileId = value.SteamId;
+            }
         }
 
         public static SteamProfile AddOrUpdateSteamProfile(SteamProfile profile)
@@ -68,13 +100,6 @@ namespace s32.Sceh.Code
             result.LastUpdate = DateTime.UtcNow;
 
             return AddOrUpdateSteamProfile(result);
-        }
-
-        public static SteamProfile GetLastSteamProfile()
-        {
-            if (_currentData != null && _currentData.Profiles.LastSteamProfileId > 0L)
-                return _currentData.Profiles.SteamProfiles.FirstOrDefault(q => q.SteamId == _currentData.Profiles.LastSteamProfileId);
-            return null;
         }
 
         public static ImageFile GetOrCreateImageFile(Card steamCard, ImageDirectory directory, out bool isNew)
@@ -231,14 +256,6 @@ namespace s32.Sceh.Code
                 var dataSerializer = new DataSerializer();
                 dataSerializer.SaveFiles(_currentData);
             }
-        }
-
-        public static void SetLastSteamProfile(SteamProfile profile)
-        {
-            if (profile == null)
-                _currentData.Profiles.LastSteamProfileId = 0L;
-            else
-                _currentData.Profiles.LastSteamProfileId = profile.SteamId;
         }
 
         private static string LookupKey(ImageDirectory dir, ImageFile img)

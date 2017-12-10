@@ -7,7 +7,7 @@
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    StartupUri="LoginWindow.xaml" Exit="Application_Exit" Startup="Application_Startup">
+    Startup="Application_Startup" Exit="Application_Exit">
   <Application.Resources>
     <BitmapImage x:Key="defaultAvatar" ice:Freeze="True" UriSource="Img/avatar.jpg" />
     <BitmapImage x:Key="defaultCard" ice:Freeze="True" UriSource="Img/card.png" />

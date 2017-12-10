@@ -25,34 +25,32 @@ namespace s32.Sceh.WinApp
     /// </summary>
     public partial class LoginWindow : Window
     {
+        public static readonly DependencyProperty AutoLogInProperty =
+            DependencyProperty.Register("AutoLogIn", typeof(bool), typeof(LoginWindow), new PropertyMetadata(false));
+
         public static readonly DependencyProperty SteamProfilesProperty =
             DependencyProperty.Register("SteamProfiles", typeof(List<SteamProfile>), typeof(LoginWindow), new PropertyMetadata(null));
-
-        private static RoutedUICommand _loginCommand;
-
-        static LoginWindow()
-        {
-            _loginCommand = new RoutedUICommand(Strings.LoginButtonText, "Login", typeof(LoginWindow));
-        }
 
         public LoginWindow()
         {
             InitializeComponent();
 
             SteamProfiles = ProfileHelper.LoadProfiles();
+            AutoLogIn = DataManager.AutoLogIn;
 
             DataContext = this;
 
-            var profile = DataManager.GetLastSteamProfile();
+            var profile = DataManager.LastSteamProfile;
             if (profile != null)
             {
                 cbProfile.SelectedItem = profile;
             }
         }
 
-        public static RoutedUICommand LoginCommand
+        public bool AutoLogIn
         {
-            get { return _loginCommand; }
+            get { return (bool)GetValue(AutoLogInProperty); }
+            set { SetValue(AutoLogInProperty, value); }
         }
 
         public List<SteamProfile> SteamProfiles
@@ -78,8 +76,10 @@ namespace s32.Sceh.WinApp
             }
             else if (steamProfile != null)
             {
+                DataManager.LastSteamProfile = steamProfile;
+                DataManager.AutoLogIn = AutoLogIn;
+
                 var cmpWindow = new InvCompareWindow();
-                DataManager.SetLastSteamProfile(steamProfile);
                 cmpWindow.OwnerProfile = steamProfile;
                 cmpWindow.Show();
                 this.Close();

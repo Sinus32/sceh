@@ -63,6 +63,25 @@ namespace s32.Sceh.WinApp
             _timer.Interval = new TimeSpan(0, 1, 0);
             _timer.Tick += _timer_Tick;
             _timer.Start();
+
+            bool openLoginWindow = true;
+            if (DataManager.AutoLogIn)
+            {
+                var lastProfile = DataManager.LastSteamProfile;
+                if (lastProfile != null && lastProfile.SteamId > 0L)
+                {
+                    var cmpWindow = new InvCompareWindow();
+                    cmpWindow.OwnerProfile = lastProfile;
+                    cmpWindow.Show();
+                    openLoginWindow = false;
+                }
+            }
+
+            if (openLoginWindow)
+            {
+                var loginWindow = new LoginWindow();
+                loginWindow.Show();
+            }
         }
     }
 }
