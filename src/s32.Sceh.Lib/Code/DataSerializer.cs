@@ -258,6 +258,10 @@ namespace s32.Sceh.Code
                         case XmlNodeType.Text:
                             switch (state)
                             {
+                                case LAST_PROFILE:
+                                    profiles.LastSteamProfileId = reader.ReadContentAsLong();
+                                    break;
+
                                 case NAME:
                                     steamProfile.Name = reader.ReadContentAsString();
                                     break;
@@ -295,7 +299,130 @@ namespace s32.Sceh.Code
 
         private void LoadImageDirectoryFile(string filePath, ImageDirectory imageDirectory)
         {
-            throw new NotImplementedException();
+            if (!File.Exists(filePath))
+                return;
+
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var reader = XmlReader.Create(stream, MakeXmlReaderSettings()))
+            {
+                const int IGNORE = -1, BEGINNING = 0, IMAGE_DIRECTORY = 1, IMAGE = 2, FILENAME = 3, IMAGE_URL = 4;
+
+                var state = BEGINNING;
+                var stack = new Stack<int>(5);
+                ImageFile imageFile = null;
+
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            int nextState = IGNORE;
+
+                            switch (state)
+                            {
+                                case BEGINNING:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "ImageDirectory":
+                                            imageDirectory.Images.Clear();
+                                            nextState = IMAGE_DIRECTORY;
+                                            break;
+                                    }
+                                    break;
+
+                                case IMAGE_DIRECTORY:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "Image":
+                                            imageFile = new ImageFile(imageDirectory);
+                                            nextState = IMAGE;
+                                            break;
+                                    }
+                                    break;
+
+                                case IMAGE:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "Filename":
+                                            nextState = FILENAME;
+                                            break;
+
+                                        case "ImageUrl":
+                                            nextState = IMAGE_URL;
+                                            break;
+                                    }
+                                    break;
+                            }
+
+                            if (!reader.IsEmptyElement)
+                            {
+                                stack.Push(state);
+                                state = nextState;
+                            }
+
+                            while (reader.MoveToNextAttribute())
+                            {
+                                var attributeName = reader.LocalName;
+
+                                if (!reader.ReadAttributeValue())
+                                    continue;
+
+                                switch (state)
+                                {
+                                    case IMAGE:
+                                        switch (attributeName)
+                                        {
+                                            case "mimeType":
+                                                imageFile.MimeType = reader.ReadContentAsString();
+                                                break;
+
+                                            case "eTag":
+                                                imageFile.ETag = reader.ReadContentAsString();
+                                                break;
+
+                                            case "lastUpdate":
+                                                imageFile.LastUpdate = reader.ReadContentAsDateTime();
+                                                break;
+                                        }
+                                        break;
+                                }
+                            }
+
+                            break;
+
+                        case XmlNodeType.EndElement:
+                            switch (state)
+                            {
+                                case IMAGE:
+                                    if (imageFile.ImageUrl != null)
+                                        imageDirectory.Images.Add(imageFile);
+                                    break;
+                            }
+
+                            if (stack.Count > 0)
+                                state = stack.Pop();
+                            else
+                                return;
+                            break;
+
+                        case XmlNodeType.Text:
+                            switch (state)
+                            {
+                                case FILENAME:
+                                    imageFile.Filename = reader.ReadContentAsString();
+                                    break;
+
+                                case IMAGE_URL:
+                                    imageFile.ImageUrl = new Uri(reader.ReadContentAsString());
+                                    break;
+                            }
+
+                            if (reader.NodeType == XmlNodeType.EndElement)
+                                goto case XmlNodeType.EndElement;
+                            break;
+                    }
+                }
+            }
         }
 
         public void SaveImageDirectoryFile(string filePath, ImageDirectory imageDirectory)
@@ -307,10 +434,15 @@ namespace s32.Sceh.Code
                 writer.WriteStartDocument();
 
                 writer.WriteStartElement("ImageDirectory", ScehData.NS_SCEH);
-                writer.WriteAttributeString("xmlns", "xsi", null, ScehData.NS_XSI);
 
                 writer.WriteStartAttribute("relativePath");
                 writer.WriteValue(imageDirectory.RelativePath);
+
+                writer.WriteStartAttribute("xmlns");
+                writer.WriteValue(ScehData.NS_SCEH);
+
+                writer.WriteStartAttribute("xmlns", "xsi", null);
+                writer.WriteValue(ScehData.NS_XSI);
 
                 foreach (var image in imageDirectory.Images)
                 {
@@ -356,7 +488,12 @@ namespace s32.Sceh.Code
                 writer.WriteStartDocument();
 
                 writer.WriteStartElement("Profiles", ScehData.NS_SCEH);
-                writer.WriteAttributeString("xmlns", "xsi", null, ScehData.NS_XSI);
+
+                writer.WriteStartAttribute("xmlns");
+                writer.WriteValue(ScehData.NS_SCEH);
+
+                writer.WriteStartAttribute("xmlns", "xsi", null);
+                writer.WriteValue(ScehData.NS_XSI);
 
                 if (profiles.LastSteamProfileId > 0L)
                 {
@@ -364,6 +501,7 @@ namespace s32.Sceh.Code
 
                     writer.WriteStartAttribute("autoLogIn");
                     writer.WriteValue(profiles.AutoLogIn);
+                    writer.WriteEndAttribute();
 
                     writer.WriteValue(profiles.LastSteamProfileId);
 

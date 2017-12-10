@@ -61,6 +61,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loguj _automatycznie.
+        /// </summary>
+        public static string AutoLoginCheckBoxText {
+            get {
+                return ResourceManager.GetString("AutoLoginCheckBoxText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Odznaka Steam.
         /// </summary>
         public static string CardContextMenu_BadgePage {

@@ -109,9 +109,8 @@ namespace s32.Sceh.Code
 
             lock (_currentData)
             {
-                result = new ImageFile();
+                result = new ImageFile(directory);
                 result.ImageUrl = imageUrl;
-                result.Directory = directory;
                 directory.Images.Add(result);
                 _imageUrlLookup[key] = result;
             }
@@ -224,14 +223,14 @@ namespace s32.Sceh.Code
 
         public static void SaveFile()
         {
-            //if (_currentData == null || _currentData.Paths == null)
+            if (_currentData == null || _currentData.Paths == null)
                 return;
 
-            //lock (_currentData)
-            //{
-            //    var dataSerializer = new DataSerializer();
-            //    dataSerializer.SaveFiles(_currentData);
-            //}
+            lock (_currentData)
+            {
+                var dataSerializer = new DataSerializer();
+                dataSerializer.SaveFiles(_currentData);
+            }
         }
 
         public static void SetLastSteamProfile(SteamProfile profile)

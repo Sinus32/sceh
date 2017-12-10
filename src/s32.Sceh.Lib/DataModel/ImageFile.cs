@@ -9,6 +9,11 @@ namespace s32.Sceh.DataModel
 {
     public class ImageFile
     {
+        public ImageFile(ImageDirectory directory)
+        {
+            Directory = directory;
+        }
+
         public DateTime LastUpdate { get; set; }
 
         public string ETag { get; set; }
