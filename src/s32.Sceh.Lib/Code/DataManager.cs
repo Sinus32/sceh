@@ -102,35 +102,26 @@ namespace s32.Sceh.Code
             return AddOrUpdateSteamProfile(result);
         }
 
-        public static ImageFile GetOrCreateImageFile(Card steamCard, ImageDirectory directory, out bool isNew)
+        public static ImageFile GetOrCreateImageFile(Card steamCard, ImageDirectory directory)
         {
             const string CARD_IMAGE_SOURCE = "http://steamcommunity-a.akamaihd.net/economy/image/";
 
             if (steamCard == null || String.IsNullOrEmpty(steamCard.IconUrl))
-            {
-                isNew = false;
                 return null;
-            }
 
             var imageUrl = new Uri(String.Concat(CARD_IMAGE_SOURCE, steamCard.IconUrl));
-            return GetOrCreateImageFile(imageUrl, directory, out isNew);
+            return GetOrCreateImageFile(imageUrl, directory);
         }
 
-        public static ImageFile GetOrCreateImageFile(Uri imageUrl, ImageDirectory directory, out bool isNew)
+        public static ImageFile GetOrCreateImageFile(Uri imageUrl, ImageDirectory directory)
         {
             if (imageUrl == null)
-            {
-                isNew = false;
                 return null;
-            }
 
             ImageFile result;
             var key = LookupKey(directory, imageUrl);
             if (_imageUrlLookup.TryGetValue(key, out result))
-            {
-                isNew = false;
                 return result;
-            }
 
             lock (_currentData)
             {
@@ -140,7 +131,6 @@ namespace s32.Sceh.Code
                 _imageUrlLookup[key] = result;
             }
 
-            isNew = true;
             return result;
         }
 

@@ -40,121 +40,68 @@ namespace s32.Sceh.WinApp.Code
                     LazyImage imageCtl;
                     if (wr.TryGetTarget(out imageCtl) && set.Add(imageCtl))
                     {
-                        var image = TryLoadOrGetFromCache(imagePath);
-                        if (image != null)
-                        {
-                            var setter = new ImageSourceSetter(imageCtl, image);
-                            imageCtl.Dispatcher.Invoke(setter.Action);
-                        }
+                        var setter = new ImageSourceSetter(imageCtl, imagePath);
+                        imageCtl.Dispatcher.Invoke(setter.Action);
                     }
                 }
             }
         }
 
-        public static void OrderImage(ImageFile imageFile, LazyImage imageCtl)
+        public static void OrderImage(ImageFile imageFile, LazyImage imageCtl, DownloadPriority newFilePriority, DownloadPriority oldFilePriority)
         {
-            var imagePath = DataManager.LocalFilePath(imageFile);
-            if (imagePath != null && File.Exists(imagePath))
+            var localFilePath = DataManager.LocalFilePath(imageFile);
+
+            if (localFilePath != null && File.Exists(localFilePath))
             {
-                var image = TryLoadOrGetFromCache(imagePath);
-                if (image != null)
-                {
-                    var setter = new ImageSourceSetter(imageCtl, image);
-                    imageCtl.Dispatcher.Invoke(setter.Action);
-                }
+                var setter = new ImageSourceSetter(imageCtl, localFilePath);
+                imageCtl.Dispatcher.Invoke(setter.Action);
+                ImageDownloader.EnqueueDownload(imageFile, oldFilePriority, false);
             }
             else
             {
                 List<WeakReference<LazyImage>> targets;
-                var wr = new WeakReference<LazyImage>(imageCtl);
                 if (_requests.TryGetValue(imageFile, out targets))
                 {
                     lock (targets)
+                    {
+                        for (int i = 0; i < targets.Count; ++i)
+                        {
+                            LazyImage tmp;
+                            if (!targets[i].TryGetTarget(out tmp))
+                            {
+                                targets[i].SetTarget(imageCtl);
+                                return;
+                            }
+                        }
+                        var wr = new WeakReference<LazyImage>(imageCtl);
                         targets.Add(wr);
+                    }
                 }
                 else
                 {
                     targets = new List<WeakReference<LazyImage>>();
+                    var wr = new WeakReference<LazyImage>(imageCtl);
                     targets.Add(wr);
                     _requests.TryAdd(imageFile, targets);
                 }
+                ImageDownloader.EnqueueDownload(imageFile, newFilePriority, true);
             }
-        }
-
-        private static byte[] TryLoadOrGetFromCache(string imagePath)
-        {
-            const int bufferSize = 256 * 1024;
-            var result = MemoryCache.Default.Get(imagePath) as byte[];
-            if (result == null)
-            {
-                for (int i = 0; i < 10; ++i)
-                {
-                    try
-                    {
-                        using (var ms = new MemoryStream())
-                        using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize))
-                        {
-                            var buffer = new byte[bufferSize];
-                            int readed;
-                            while ((readed = stream.Read(buffer, 0, bufferSize)) != 0)
-                                ms.Write(buffer, 0, readed);
-                            ms.Flush();
-                            result = ms.ToArray();
-                        }
-                        var policy = new CacheItemPolicy();
-                        policy.SlidingExpiration = new TimeSpan(0, 6, 0);
-                        MemoryCache.Default.Set(imagePath, result, policy);
-                        return result;
-                    }
-                    catch (IOException)
-                    {
-                        Thread.Sleep(250);
-                    }
-                }
-            }
-            return result;
         }
 
         private class ImageSourceSetter
         {
             private LazyImage _image;
-            private byte[] _source;
+            private string _localFilePath;
 
-            public ImageSourceSetter(LazyImage image, byte[] source)
+            public ImageSourceSetter(LazyImage image, string localFilePath)
             {
                 _image = image;
-                _source = source;
+                _localFilePath = localFilePath;
             }
 
             public void Action()
             {
-                var bitmapImage = GetImage();
-                if (bitmapImage != null)
-                {
-                    _image.LazySource = bitmapImage;
-                    _image.IsReady = true;
-                }
-                return;
-            }
-
-            private BitmapImage GetImage()
-            {
-                try
-                {
-                    var bitmapImage = new BitmapImage();
-                    bitmapImage.BeginInit();
-                    bitmapImage.StreamSource = new MemoryStream(_source);
-                    //double height = _image.Height;
-                    //if (height >= 1.0)
-                    //    bitmapImage.DecodePixelHeight = (int)height;
-                    bitmapImage.EndInit();
-                    bitmapImage.Freeze();
-                    return bitmapImage;
-                }
-                catch (ArgumentException)
-                {
-                    return null;
-                }
+                _image.LocalFilePath = _localFilePath;
             }
         }
     }

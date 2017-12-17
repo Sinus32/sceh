@@ -13,10 +13,9 @@
     <BitmapImage x:Key="defaultCard" ice:Freeze="True" UriSource="Img/card.png" />
     <BitmapImage x:Key="noteIcon" ice:Freeze="True" UriSource="Img/note.png" />
     <BitmapImage x:Key="nonMarketable" ice:Freeze="True" UriSource="Img/nonMarketable.png" />
-    <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}"
-        NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
-    <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}"
-        NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}" />
+    <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}" />
+    <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}" />
+    <ctl:ImageLoader x:Key="imageLoader" />
     <ctl:BooleanToVisibilityConverter x:Key="visibleToVisibilityConv" ValueForFalse="Collapsed" ValueForTrue="Visible" />
     <ctl:BooleanToVisibilityConverter x:Key="hideToVisibilityConv" ValueForFalse="Visible" ValueForTrue="Collapsed" />
     <Style x:Key="urlOrSteamIdTextBlock" TargetType="TextBlock">
@@ -30,7 +29,7 @@
     <Style x:Key="noteIconToolTip" TargetType="FrameworkElement">
       <Setter Property="ToolTip">
         <Setter.Value>
-          <ItemsControl ItemsSource="{Binding Notes.AllTexts, Mode=OneWay}">
+          <ItemsControl ItemsSource="{Binding Notes, Mode=OneWay}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
                 <WrapPanel Orientation="Vertical" HorizontalAlignment="Left" />
@@ -38,7 +37,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Mode=OneWay}" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Text, Mode=OneWay}" TextWrapping="Wrap" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
@@ -67,7 +66,8 @@
                 <RowDefinition />
               </Grid.RowDefinitions>
               <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Height="24"
-                  Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}" />
+                  NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
+                  Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
               <StackPanel Orientation="Horizontal" Margin="2,0,2,0" Grid.Column="1">
                 <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
                 <TextBlock Text="{Binding CustomUrlOrSteamId, StringFormat={} ({0})}" Style="{StaticResource urlOrSteamIdTextBlock}" VerticalAlignment="Center" />

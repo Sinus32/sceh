@@ -21,17 +21,6 @@ namespace s32.Sceh.DataModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IEnumerable<string> AllTexts
-        {
-            get
-            {
-                var result = new string[_notes.Count];
-                for (int i = 0; i < _notes.Count; ++i)
-                    result[i] = _notes[i].Text;
-                return result;
-            }
-        }
-
         public int Count
         {
             get { return _notes.Count; }

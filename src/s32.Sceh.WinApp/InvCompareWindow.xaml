@@ -205,6 +205,14 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
+    <Style x:Key="cardAlternateText" TargetType="TextBlock">
+      <Setter Property="Visibility" Value="Collapsed" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding LocalFilePath, ElementName=CardImage}" Value="{x:Null}">
+          <Setter Property="Visibility" Value="Visible" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
     <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
     <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
       <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePageCommand" CommandParameter="{Binding DataContext}" />
@@ -228,22 +236,37 @@
       <Separator />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
     </ContextMenu>
-    <Popup x:Key="noteEditPopup">
-      
+    <Popup x:Key="noteEditPopup" Placement="Center" StaysOpen="False" PlacementTarget="{Binding ElementName=mainGrid}">
+      <Popup.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close" CanExecute="NoteEditPopup_Close_CanExecute" Executed="NoteEditPopup_Close_Executed" />
+      </Popup.CommandBindings>
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+          <Button Command="ApplicationCommands.Save" Content="Save" />
+          <Button Command="ApplicationCommands.Close" Content="Close" />
+        </StackPanel>
+      </Grid>
     </Popup>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
       <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
         <Grid>
           <Border Style="{StaticResource cardBorderStyle}">
             <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
+                NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
                 Width="77" Height="89" Stretch="Uniform"
-                Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True}" />
+                Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
           </Border>
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
               Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-          <TextBlock Text="{Binding Name}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0"
-              TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWithOverflow"
-              Visibility="{Binding IsReady, ElementName=CardImage, Converter={StaticResource hideToVisibilityConv}}" />
+          <TextBlock Text="{Binding Name}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0" TextAlignment="Center"
+              VerticalAlignment="Top" TextWrapping="WrapWithOverflow" Style="{StaticResource cardAlternateText}" />
         </Grid>
       </ToggleButton>
     </DataTemplate>
@@ -280,7 +303,7 @@
       </Grid>
     </DataTemplate>
   </Window.Resources>
-  <Grid>
+  <Grid Name="mainGrid">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="40" />
       <ColumnDefinition Width="3*" />
@@ -312,14 +335,16 @@
       </MenuItem>
     </Menu>
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="None"
-        Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}"
+        NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
+        Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}"
         ContextMenu="{StaticResource profileMenu}" DataContext="{Binding OwnerProfile}" Grid.Row="1" Grid.RowSpan="2" />
     <TextBlock Text="{Binding Name}" DataContext="{Binding OwnerProfile}" VerticalAlignment="Center"
         ContextMenu="{StaticResource profileMenu}" FontSize="16" Margin="2" Grid.Row="1" Grid.Column="1" />
     <TextBlock Text="{Binding RequestCount, Source={x:Static code:SteamDataDownloader.Info}, StringFormat={x:Static resx:Strings.RequestCountFormat}}"
-        VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="2" Grid.Row="1" Grid.Column="2" Style="{StaticResource requestCountStyle}" />
+        VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="4,2" Grid.Row="1" Grid.Column="2" Style="{StaticResource requestCountStyle}" />
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="Uniform"
-        Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}"
+        NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
+        Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}"
         ContextMenu="{StaticResource profileMenu}" DataContext="{Binding SecondProfile}" Grid.Row="3" Height="26" />
     <TextBlock Text="{Binding Name}" DataContext="{Binding SecondProfile}" VerticalAlignment="Center"
         ContextMenu="{StaticResource profileMenu}" FontSize="16" Margin="2" Grid.Row="3" Grid.Column="1" />
@@ -329,16 +354,15 @@
         <KeyBinding Command="ctl:ScehCommands.CompareCommand" Key="Return" />
       </ComboBox.InputBindings>
     </ComboBox>
-    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Margin="2,0">
       <Button HorizontalAlignment="Left" Margin="2" Padding="2,0" DataContext="{Binding SelectedItem, ElementName=cbOtherProfile}"
           Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding Notes}">
         <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}" />
       </Button>
       <Button Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
-        HorizontalAlignment="Left" Margin="2" Padding="20,2" />
+          HorizontalAlignment="Left" Margin="2" Padding="20,2" />
     </StackPanel>
-    <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
-        Orientation="Horizontal" HorizontalAlignment="Right">
+    <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
       <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
       <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="{x:Static SystemColors.ControlLightBrush}" />
       <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}" Margin="2">

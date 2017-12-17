@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -207,11 +208,25 @@ namespace s32.Sceh.WinApp
 
         private void EditNoteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = e.Parameter is SteamProfile;
+            e.CanExecute = e.Parameter is UserNotes;
         }
 
         private void EditNoteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            var popup = (Popup)FindResource("noteEditPopup");
+            popup.IsOpen = true;
+        }
+
+        private void NoteEditPopup_Close_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void NoteEditPopup_Close_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Debugger.Break();
+            var popup = (Popup)FindResource("noteEditPopup");
+            popup.IsOpen = false;
         }
 
         private void CopyNameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
