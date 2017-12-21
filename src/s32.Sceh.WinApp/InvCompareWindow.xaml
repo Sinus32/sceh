@@ -236,24 +236,6 @@
       <Separator />
       <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
     </ContextMenu>
-    <Popup x:Key="noteEditPopup" Placement="Center" StaysOpen="False" PlacementTarget="{Binding ElementName=mainGrid}">
-      <Popup.CommandBindings>
-        <CommandBinding Command="ApplicationCommands.Close" CanExecute="NoteEditPopup_Close_CanExecute" Executed="NoteEditPopup_Close_Executed" />
-      </Popup.CommandBindings>
-      <Grid>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition Height="*" />
-          <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-          <Button Command="ApplicationCommands.Save" Content="Save" />
-          <Button Command="ApplicationCommands.Close" Content="Close" />
-        </StackPanel>
-      </Grid>
-    </Popup>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
       <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
         <Grid>
@@ -412,5 +394,42 @@
         <TextBlock />
       </StatusBarItem>
     </StatusBar>
+    <Grid Name="noteEditForm" Grid.ColumnSpan="3" Grid.RowSpan="6" Visibility="Collapsed">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="10*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="3*" />
+        <RowDefinition Height="11*" />
+        <RowDefinition Height="2*" />
+      </Grid.RowDefinitions>
+      <Grid.Resources>
+        <Color x:Key="overlayColor" A="64" R="96" G="96" B="96" />
+        <SolidColorBrush x:Key="overlayColorBrush" ice:Freeze="True" Color="{StaticResource overlayColor}" />
+        <Color x:Key="formColor" A="255" R="255" G="255" B="212" />
+        <SolidColorBrush x:Key="formColorBrush" ice:Freeze="True" Color="{StaticResource formColor}" />
+      </Grid.Resources>
+      <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="3" Fill="{StaticResource overlayColorBrush}" />
+      <Border Grid.Column="1" Grid.Row="1" BorderThickness="1"
+          BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <Rectangle Grid.ColumnSpan="1" Grid.RowSpan="2" Fill="{StaticResource formColorBrush}" />
+          <TextBox Name="tbMultiLine" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Margin="2" />
+          <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+            <Button Command="ApplicationCommands.Save" Content="Save" Margin="5" Padding="20,2" />
+            <Button Command="ApplicationCommands.Close" Content="Close" Margin="5" Padding="20,2" />
+          </StackPanel>
+        </Grid>
+      </Border>
+    </Grid>
   </Grid>
 </Window>

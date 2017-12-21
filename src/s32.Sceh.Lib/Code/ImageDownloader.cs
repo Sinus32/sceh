@@ -147,10 +147,7 @@ namespace s32.Sceh.Code
                     }
                     catch (Exception ex)
                     {
-                        if (Debugger.IsAttached)
-                            Debugger.Break();
-                        else
-                            Debug.WriteLine("Error while downloading file: {0}", ex.Message);
+                        Debug.WriteLine("Error while downloading file: {0}; {1}", ex.Message, image.ImageUrl);
                         return false;
                     }
                 }

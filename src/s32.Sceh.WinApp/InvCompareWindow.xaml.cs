@@ -164,6 +164,11 @@ namespace s32.Sceh.WinApp
             }
         }
 
+        private void NoteEditPopup_Opened(object sender, EventArgs e)
+        {
+            //noteEditPopup.
+        }
+
         private void MakeErrorMessage()
         {
             if (OwnerInvError == null && SecondInvError == null)
@@ -206,48 +211,6 @@ namespace s32.Sceh.WinApp
             this.Close();
         }
 
-        private void EditNoteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is UserNotes;
-        }
-
-        private void EditNoteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            var popup = (Popup)FindResource("noteEditPopup");
-            popup.IsOpen = true;
-        }
-
-        private void NoteEditPopup_Close_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void NoteEditPopup_Close_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            Debugger.Break();
-            var popup = (Popup)FindResource("noteEditPopup");
-            popup.IsOpen = false;
-        }
-
-        private void CopyNameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
-        }
-
-        private void CopyNameCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Parameter is SteamApp)
-            {
-                var steamApp = (SteamApp)e.Parameter;
-                Clipboard.SetText(steamApp.Name);
-            }
-            else if (e.Parameter is Card)
-            {
-                var card = (Card)e.Parameter;
-                Clipboard.SetText(card.Name);
-            }
-        }
-
         private void CompareCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (_inventoryLoadWorker == null || _inventoryLoadWorker.IsBusy)
@@ -283,6 +246,35 @@ namespace s32.Sceh.WinApp
             }
         }
 
+        private void CopyNameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
+        }
+
+        private void CopyNameCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamApp)
+            {
+                var steamApp = (SteamApp)e.Parameter;
+                Clipboard.SetText(steamApp.Name);
+            }
+            else if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                Clipboard.SetText(card.Name);
+            }
+        }
+
+        private void EditNoteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is UserNotes;
+        }
+
+        private void EditNoteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            //noteEditPopup.IsOpen = true;
+        }
+
         private void ExitAppCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -291,6 +283,16 @@ namespace s32.Sceh.WinApp
         private void ExitAppCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
+        }
+
+        private void NoteEditPopup_Close_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void NoteEditPopup_Close_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            //noteEditPopup.IsOpen = false;
         }
 
         private void OpenBadgePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
