@@ -164,11 +164,6 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void NoteEditPopup_Opened(object sender, EventArgs e)
-        {
-            //noteEditPopup.
-        }
-
         private void MakeErrorMessage()
         {
             if (OwnerInvError == null && SecondInvError == null)
@@ -183,6 +178,11 @@ namespace s32.Sceh.WinApp
             if (SecondInvError != null)
                 sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, SecondInvError).AppendLine();
             ErrorMessage = sb.ToString();
+        }
+
+        private void NoteEditPopup_Opened(object sender, EventArgs e)
+        {
+            //noteEditPopup.
         }
 
         #region Commands
@@ -354,6 +354,20 @@ namespace s32.Sceh.WinApp
                 System.Diagnostics.Process.Start(url);
         }
 
+        private void OpenPostHistoryCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenPostHistoryCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.PostHistory);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
         private void OpenProfilePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
@@ -390,6 +404,34 @@ namespace s32.Sceh.WinApp
 
             if (url != null)
                 System.Diagnostics.Process.Start(url);
+        }
+
+        private void OpenTradeOffersCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenTradeOffersCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.TradeOffers);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
+        private void OpenTradeTopicsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenTradeTopicsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.TradeTopics);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
         }
 
         private void OpenTradingForumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)

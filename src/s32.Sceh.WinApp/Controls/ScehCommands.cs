@@ -13,6 +13,7 @@ namespace s32.Sceh.WinApp.Controls
         private static RoutedCommand _compareCommand, _editNoteCommand, _showHideCardsCommand,
             _openMarketPageCommand, _openStorePageCommand, _openBadgePageCommand, _openTradingForumCommand,
             _openProfilePageCommand, _openInventoryPageCommand, _openUserBadgesCommand,
+            _openTradeOffersCommand, _openTradeTopicsCommand, _openPostHistoryCommand,
             _copyNameCommand, _loginCommand;
 
         static ScehCommands()
@@ -28,6 +29,9 @@ namespace s32.Sceh.WinApp.Controls
             _openProfilePageCommand = new RoutedCommand("OpenProfilePage", typeof(ScehCommands));
             _openInventoryPageCommand = new RoutedCommand("OpenInventoryPage", typeof(ScehCommands));
             _openUserBadgesCommand = new RoutedCommand("OpenUserBadges", typeof(ScehCommands));
+            _openTradeOffersCommand = new RoutedCommand("OpenTradeOffers", typeof(ScehCommands));
+            _openTradeTopicsCommand = new RoutedCommand("OpenTradeTopics", typeof(ScehCommands));
+            _openPostHistoryCommand = new RoutedCommand("OpenPostHistory", typeof(ScehCommands));
             _copyNameCommand = new RoutedCommand("CopyName", typeof(ScehCommands));
         }
 
@@ -66,6 +70,11 @@ namespace s32.Sceh.WinApp.Controls
             get { return _openMarketPageCommand; }
         }
 
+        public static RoutedCommand OpenPostHistoryCommand
+        {
+            get { return _openPostHistoryCommand; }
+        }
+
         public static RoutedCommand OpenProfilePageCommand
         {
             get { return _openProfilePageCommand; }
@@ -74,6 +83,16 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand OpenStorePageCommand
         {
             get { return _openStorePageCommand; }
+        }
+
+        public static RoutedCommand OpenTradeOffersCommand
+        {
+            get { return _openTradeOffersCommand; }
+        }
+
+        public static RoutedCommand OpenTradeTopicsCommand
+        {
+            get { return _openTradeTopicsCommand; }
         }
 
         public static RoutedCommand OpenTradingForumCommand

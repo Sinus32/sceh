@@ -241,11 +241,38 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Historia postów.
+        /// </summary>
+        public static string MenuItem_PostHistory {
+            get {
+                return ResourceManager.GetString("MenuItem_PostHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Strona profilu.
         /// </summary>
         public static string MenuItem_Profile {
             get {
                 return ResourceManager.GetString("MenuItem_Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Oferty wymiany.
+        /// </summary>
+        public static string MenuItem_TradeOffers {
+            get {
+                return ResourceManager.GetString("MenuItem_TradeOffers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tematy dot. wymiany.
+        /// </summary>
+        public static string MenuItem_TradeTopics {
+            get {
+                return ResourceManager.GetString("MenuItem_TradeTopics", resourceCulture);
             }
         }
         

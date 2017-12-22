@@ -177,8 +177,17 @@
   <data name="MenuItem_OthersProfile" xml:space="preserve">
     <value>_Drugi profil</value>
   </data>
+  <data name="MenuItem_PostHistory" xml:space="preserve">
+    <value>Historia postów</value>
+  </data>
   <data name="MenuItem_Profile" xml:space="preserve">
     <value>_Strona profilu</value>
+  </data>
+  <data name="MenuItem_TradeOffers" xml:space="preserve">
+    <value>Oferty wymiany</value>
+  </data>
+  <data name="MenuItem_TradeTopics" xml:space="preserve">
+    <value>Tematy dot. wymiany</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować twoich kart: {0}</value>

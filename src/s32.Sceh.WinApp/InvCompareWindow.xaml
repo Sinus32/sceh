@@ -21,6 +21,9 @@
     <CommandBinding Command="ctl:ScehCommands.OpenProfilePageCommand" CanExecute="OpenProfilePageCommand_CanExecute" Executed="OpenProfilePageCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenInventoryPageCommand" CanExecute="OpenInventoryPageCommand_CanExecute" Executed="OpenInventoryPageCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenUserBadgesCommand" CanExecute="OpenUserBadgesCommand_CanExecute" Executed="OpenUserBadgesCommand_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenTradeOffersCommand" CanExecute="OpenTradeOffersCommand_CanExecute" Executed="OpenTradeOffersCommand_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenTradeTopicsCommand" CanExecute="OpenTradeTopicsCommand_CanExecute" Executed="OpenTradeTopicsCommand_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenPostHistoryCommand" CanExecute="OpenPostHistoryCommand_CanExecute" Executed="OpenPostHistoryCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.CopyNameCommand" CanExecute="CopyNameCommand_CanExecute" Executed="CopyNameCommand_Executed" />
   </Window.CommandBindings>
   <Window.Resources>
@@ -214,27 +217,28 @@
       </Style.Triggers>
     </Style>
     <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
-    <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding DataContext}" />
+    <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistoryCommand" CommandParameter="{Binding}" />
     </ContextMenu>
-    <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding DataContext}" />
+    <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding}" />
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding}" />
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding}" />
     </ContextMenu>
-    <ContextMenu x:Key="cardMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_MarketPage}" Command="ctl:ScehCommands.OpenMarketPageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding DataContext}" />
+    <ContextMenu x:Key="cardMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_MarketPage}" Command="ctl:ScehCommands.OpenMarketPageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding}" />
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding}" />
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding}" />
     </ContextMenu>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
       <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
@@ -305,6 +309,10 @@
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding OwnerProfile}" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding OwnerProfile}" />
         <Separator />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_TradeOffers}" Command="ctl:ScehCommands.OpenTradeOffersCommand" CommandParameter="{Binding OwnerProfile}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_TradeTopics}" Command="ctl:ScehCommands.OpenTradeTopicsCommand" CommandParameter="{Binding OwnerProfile}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistoryCommand" CommandParameter="{Binding OwnerProfile}" />
+        <Separator />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_ChangeProfile}" Command="ApplicationCommands.New" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Exit}" Command="ApplicationCommands.Close" />
       </MenuItem>
@@ -312,6 +320,8 @@
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePageCommand" CommandParameter="{Binding SecondProfile}" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding SecondProfile}" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding SecondProfile}" />
+        <Separator />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistoryCommand" CommandParameter="{Binding SecondProfile}" />
         <Separator />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding SecondProfile.Notes}" />
       </MenuItem>
