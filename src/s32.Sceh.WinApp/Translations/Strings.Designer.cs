@@ -20,7 +20,7 @@ namespace s32.Sceh.WinApp.Translations {
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
         
@@ -61,7 +61,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loguj _automatycznie.
+        ///   Looks up a localized string similar to _Auto login.
         /// </summary>
         public static string AutoLoginCheckBoxText {
             get {
@@ -70,7 +70,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Odznaka Steam.
+        ///   Looks up a localized string similar to _Badge page.
         /// </summary>
         public static string CardContextMenu_BadgePage {
             get {
@@ -79,7 +79,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Kopiuj nazwę.
+        ///   Looks up a localized string similar to Copy _name.
         /// </summary>
         public static string CardContextMenu_CopyName {
             get {
@@ -88,7 +88,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Kupno i sprzedaż.
+        ///   Looks up a localized string similar to _Market page.
         /// </summary>
         public static string CardContextMenu_MarketPage {
             get {
@@ -97,7 +97,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Strona sklepu.
+        ///   Looks up a localized string similar to _Store page.
         /// </summary>
         public static string CardContextMenu_StorePage {
             get {
@@ -106,7 +106,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Forum wymiany.
+        ///   Looks up a localized string similar to _Trade forum.
         /// </summary>
         public static string CardContextMenu_TradingForum {
             get {
@@ -115,7 +115,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Porównaj.
+        ///   Looks up a localized string similar to _Compare.
         /// </summary>
         public static string CompareButtonText {
             get {
@@ -124,7 +124,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Błąd.
+        ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string ErrorTitle {
             get {
@@ -133,7 +133,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Podczas ściągania danych profilu wystąpił wyjątek: {0}.
+        ///   Looks up a localized string similar to An exception occurred while downloading the profile data: {0}.
         /// </summary>
         public static string ExceptionDuringDownloadingSteamProfile {
             get {
@@ -142,7 +142,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Błędny identyfikator lub własny url profilu.
+        ///   Looks up a localized string similar to Invalid id or own profile url.
         /// </summary>
         public static string InvalidProfileIdOrUrl {
             get {
@@ -151,7 +151,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Zaloguj.
+        ///   Looks up a localized string similar to _Login.
         /// </summary>
         public static string LoginButtonText {
             get {
@@ -160,7 +160,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Profil:.
+        ///   Looks up a localized string similar to _Profile:.
         /// </summary>
         public static string LoginProfileLabel {
             get {
@@ -178,7 +178,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Odznaki.
+        ///   Looks up a localized string similar to _Badges.
         /// </summary>
         public static string MenuItem_Badges {
             get {
@@ -187,7 +187,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Z_mień profil.
+        ///   Looks up a localized string similar to _Change profile.
         /// </summary>
         public static string MenuItem_ChangeProfile {
             get {
@@ -196,7 +196,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notatki.
+        ///   Looks up a localized string similar to _Notes.
         /// </summary>
         public static string MenuItem_EditNote {
             get {
@@ -205,7 +205,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Zakończ.
+        ///   Looks up a localized string similar to _Exit.
         /// </summary>
         public static string MenuItem_Exit {
             get {
@@ -214,7 +214,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Ekwipunek.
+        ///   Looks up a localized string similar to _Inventory.
         /// </summary>
         public static string MenuItem_Inventory {
             get {
@@ -223,7 +223,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Mój _profil.
+        ///   Looks up a localized string similar to _My profile.
         /// </summary>
         public static string MenuItem_MyProfile {
             get {
@@ -232,7 +232,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Drugi profil.
+        ///   Looks up a localized string similar to _Other profile.
         /// </summary>
         public static string MenuItem_OthersProfile {
             get {
@@ -241,7 +241,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Historia postów.
+        ///   Looks up a localized string similar to Post _history.
         /// </summary>
         public static string MenuItem_PostHistory {
             get {
@@ -250,7 +250,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Strona profilu.
+        ///   Looks up a localized string similar to _Profile page.
         /// </summary>
         public static string MenuItem_Profile {
             get {
@@ -259,7 +259,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Oferty wymiany.
+        ///   Looks up a localized string similar to Trade _offers.
         /// </summary>
         public static string MenuItem_TradeOffers {
             get {
@@ -268,7 +268,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tematy dot. wymiany.
+        ///   Looks up a localized string similar to Trading _topics.
         /// </summary>
         public static string MenuItem_TradeTopics {
             get {
@@ -277,7 +277,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nie można załadować twoich kart: {0}.
+        ///   Looks up a localized string similar to Cannot load your cards: {0}.
         /// </summary>
         public static string OwnerInvErrorMessage {
             get {
@@ -286,7 +286,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Błąd odczytu danych profilu.
+        ///   Looks up a localized string similar to Error reading profile data.
         /// </summary>
         public static string ProfileDeserializationError {
             get {
@@ -295,7 +295,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Licznik zapytań: {0}.
+        ///   Looks up a localized string similar to Request counter: {0}.
         /// </summary>
         public static string RequestCountFormat {
             get {
@@ -304,7 +304,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nie można załadować kart użytkownika {0}: {1}.
+        ///   Looks up a localized string similar to Cannot load cards of user {0}: {1}.
         /// </summary>
         public static string SecondInvErrorMessage {
             get {
@@ -313,7 +313,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Wystąpił nieznany błąd.
+        ///   Looks up a localized string similar to Unknown error occurred.
         /// </summary>
         public static string UnknownErrorOccured {
             get {
@@ -322,7 +322,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nie znaleziono profilu.
+        ///   Looks up a localized string similar to Profile not found.
         /// </summary>
         public static string WrongProfileIdOrUrl {
             get {
