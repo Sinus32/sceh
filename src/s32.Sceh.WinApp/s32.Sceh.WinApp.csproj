@@ -64,6 +64,9 @@
     <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controls\ImageLoader.cs" />
     <Compile Include="Controls\LazyImage.cs" />
+    <Compile Include="Controls\ProfileNoteEditor.xaml.cs">
+      <DependentUpon>ProfileNoteEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ScehCommands.cs" />
     <Compile Include="Controls\UrlToImageFileConverter.cs" />
     <Compile Include="InvCompareWindow.xaml.cs">
@@ -74,6 +77,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Page Include="Controls\ProfileNoteEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="InvCompareWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -19,7 +19,7 @@
     </Style>
   </Window.Resources>
   <Window.CommandBindings>
-    <CommandBinding Command="ctl:ScehCommands.LoginCommand" Executed="LoginCommand_Executed" CanExecute="LoginCommand_CanExecute" />
+    <CommandBinding Command="ctl:ScehCommands.OkCommand" Executed="LoginCommand_Executed" CanExecute="LoginCommand_CanExecute" />
   </Window.CommandBindings>
   <StackPanel Margin="60,0" VerticalAlignment="Center">
     <Label Target="{Binding ElementName=cbProfile}" Content="{x:Static resx:Strings.LoginProfileLabel}" />
@@ -28,7 +28,7 @@
     <CheckBox IsChecked="{Binding AutoLogIn}" Margin="2,4">
       <AccessText Text="{x:Static resx:Strings.AutoLoginCheckBoxText}" />
     </CheckBox>
-    <Button x:Name="btnLogin" Command="ctl:ScehCommands.LoginCommand" Content="{x:Static resx:Strings.LoginButtonText}"
+    <Button x:Name="btnLogin" Command="ctl:ScehCommands.OkCommand" Content="{x:Static resx:Strings.LoginButtonText}"
       HorizontalAlignment="Center" Margin="0,10" Padding="20,2" IsDefault="True" />
   </StackPanel>
 </Window>

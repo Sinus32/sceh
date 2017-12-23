@@ -18,6 +18,7 @@ using s32.Sceh.Code;
 using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Code;
 using s32.Sceh.WinApp.Translations;
+using s32.Sceh.WinApp.Controls;
 
 namespace s32.Sceh.WinApp
 {
@@ -180,11 +181,6 @@ namespace s32.Sceh.WinApp
             ErrorMessage = sb.ToString();
         }
 
-        private void NoteEditPopup_Opened(object sender, EventArgs e)
-        {
-            //noteEditPopup.
-        }
-
         #region Commands
 
         private void CardButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -272,7 +268,13 @@ namespace s32.Sceh.WinApp
 
         private void EditNoteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //noteEditPopup.IsOpen = true;
+            var editor = new ProfileNoteEditor();
+            Grid.SetRowSpan(editor, mainGrid.RowDefinitions.Count);
+            Grid.SetColumnSpan(editor, mainGrid.ColumnDefinitions.Count);
+            mainGrid.Children.Add(editor);
+            editor.SteamApps = SteamApps;
+            editor.DataContext = e.Parameter;
+            editor.AutoFocus = true;
         }
 
         private void ExitAppCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -283,16 +285,6 @@ namespace s32.Sceh.WinApp
         private void ExitAppCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
-        }
-
-        private void NoteEditPopup_Close_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void NoteEditPopup_Close_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            //noteEditPopup.IsOpen = false;
         }
 
         private void OpenBadgePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)

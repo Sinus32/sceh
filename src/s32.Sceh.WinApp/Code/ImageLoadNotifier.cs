@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Controls;
+using System.Diagnostics;
 
 namespace s32.Sceh.WinApp.Code
 {
@@ -101,8 +102,61 @@ namespace s32.Sceh.WinApp.Code
 
             public void Action()
             {
-                _image.LocalFilePath = _localFilePath;
+                var dc = _image.DataContext;
+                string title = "Image";
+                
+                if (dc is Card)
+                    title = ((Card)dc).Name;
+                else if (dc is SteamProfile)
+                    title = ((SteamProfile)dc).Name;
+
+                //if (IsInView(_image))
+                //{
+                //    Debug.WriteLine(title, "Image in view");
+                    _image.LocalFilePath = _localFilePath;
+                //}
+                //else
+                //{
+                //    Debug.WriteLine(title, "Image NOT in view");
+                //}
             }
+
+            //private bool IsInView(FrameworkElement reference)
+            //{
+            //    try
+            //    {
+            //        var parent = VisualTreeHelper.GetParent(reference);
+
+            //        while (parent != null)
+            //        {
+            //            if (parent is FrameworkElement)
+            //            {
+            //                var fe = (FrameworkElement)parent;
+            //                if (fe.Visibility != Visibility.Visible)
+            //                    return false;
+
+            //                if (fe is ScrollViewer)
+            //                {
+            //                    var sv = (ScrollViewer)fe;
+            //                    GeneralTransform childTransform = reference.TransformToAncestor(sv);
+            //                    Rect rectangle = childTransform.TransformBounds(new Rect(new Point(0, 0), reference.RenderSize));
+            //                    Rect intersection = Rect.Intersect(new Rect(new Point(0, 0), sv.RenderSize), rectangle);
+            //                    if (intersection == Rect.Empty)
+            //                        return false;
+            //                    return IsInView(sv);
+            //                }
+            //            }
+
+            //            parent = VisualTreeHelper.GetParent(parent) ?? LogicalTreeHelper.GetParent(parent);
+            //        }
+            //        return true;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Debug.WriteLine(ex.Message);
+            //        return false;
+            //    }
+            //}
         }
     }
 }

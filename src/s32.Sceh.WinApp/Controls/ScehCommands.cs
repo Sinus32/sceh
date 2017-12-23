@@ -14,11 +14,12 @@ namespace s32.Sceh.WinApp.Controls
             _openMarketPageCommand, _openStorePageCommand, _openBadgePageCommand, _openTradingForumCommand,
             _openProfilePageCommand, _openInventoryPageCommand, _openUserBadgesCommand,
             _openTradeOffersCommand, _openTradeTopicsCommand, _openPostHistoryCommand,
-            _copyNameCommand, _loginCommand;
+            _copyNameCommand, _okCommand, _cancelCommand;
 
         static ScehCommands()
         {
-            _loginCommand = new RoutedCommand("Login", typeof(ScehCommands));
+            _okCommand = new RoutedCommand("Ok", typeof(ScehCommands));
+            _cancelCommand = new RoutedCommand("Cancel", typeof(ScehCommands));
             _compareCommand = new RoutedCommand("Compare", typeof(ScehCommands));
             _editNoteCommand = new RoutedCommand("EditNote", typeof(ScehCommands));
             _showHideCardsCommand = new RoutedCommand("ShowHideCards", typeof(ScehCommands));
@@ -35,6 +36,16 @@ namespace s32.Sceh.WinApp.Controls
             _copyNameCommand = new RoutedCommand("CopyName", typeof(ScehCommands));
         }
 
+        public static RoutedCommand OkCommand
+        {
+            get { return _okCommand; }
+        }
+
+        public static RoutedCommand CancelCommand
+        {
+            get { return _cancelCommand; }
+        }
+
         public static RoutedCommand CompareCommand
         {
             get { return _compareCommand; }
@@ -48,11 +59,6 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand EditNoteCommand
         {
             get { return _editNoteCommand; }
-        }
-
-        public static RoutedCommand LoginCommand
-        {
-            get { return _loginCommand; }
         }
 
         public static RoutedCommand OpenBadgePageCommand
