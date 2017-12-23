@@ -211,7 +211,7 @@
     <Style x:Key="cardAlternateText" TargetType="TextBlock">
       <Setter Property="Visibility" Value="Collapsed" />
       <Style.Triggers>
-        <DataTrigger Binding="{Binding LocalFilePath, ElementName=CardImage}" Value="{x:Null}">
+        <DataTrigger Binding="{Binding DelayedLocalFilePath, ElementName=CardImage}" Value="{x:Null}">
           <Setter Property="Visibility" Value="Visible" />
         </DataTrigger>
       </Style.Triggers>
@@ -246,8 +246,8 @@
           <Border Style="{StaticResource cardBorderStyle}">
             <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
                 NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
-                Width="77" Height="89" Stretch="Uniform"
-                Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
+                Width="77" Height="89" Stretch="Uniform" Delay="200"
+                Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
           </Border>
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
               Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
