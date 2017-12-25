@@ -15,16 +15,12 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using s32.Sceh.Classes;
 using s32.Sceh.DataModel;
-using s32.Sceh.DataStore;
 using s32.Sceh.SteamApi;
 
 namespace s32.Sceh.Code
 {
     public static class SteamDataDownloader
     {
-        public const string SteamCommunityPageByCustomUrl = "http://steamcommunity.com/id/";
-        public const string SteamCommunityPageBySteamId = "http://steamcommunity.com/profiles/";
-        public static readonly DebugInfo Info = new DebugInfo();
         private static readonly Regex _steamidRe = new Regex("^[0-9]{3,18}$", RegexOptions.None);
 
         private static readonly Regex _userurlRe = new Regex("^[0-9a-zA-Z_-]{3,20}$", RegexOptions.None);
@@ -329,12 +325,12 @@ namespace s32.Sceh.Code
         private static HttpWebResponse DoRequest(Func<HttpWebRequest> makeRequestFunc, out HttpStatusCode statusCode)
         {
             var delay = 1;
-            Info.IsInProgress = true;
+            CommunicationState.Instance.IsInProgress = true;
             try
             {
                 while (true)
                 {
-                    Info.IsRepeating = delay > 1;
+                    CommunicationState.Instance.IsRepeating = delay > 1;
                     var now = DateTime.Now;
                     if (_nextCall > now)
                     {
@@ -345,7 +341,7 @@ namespace s32.Sceh.Code
                     try
                     {
                         var request = makeRequestFunc();
-                        Info.RequestCount += 1;
+                        CommunicationState.Instance.RequestCount += 1;
                         statusCode = HttpStatusCode.OK;
                         return (HttpWebResponse)request.GetResponse();
                     }
@@ -395,8 +391,8 @@ namespace s32.Sceh.Code
             }
             finally
             {
-                Info.IsInProgress = false;
-                Info.IsRepeating = false;
+                CommunicationState.Instance.IsInProgress = false;
+                CommunicationState.Instance.IsRepeating = false;
             }
         }
 
@@ -440,9 +436,12 @@ namespace s32.Sceh.Code
 
         private static bool TryExtractCustomUrlFromUrl(string idOrUrl, out string customUrl)
         {
-            if (idOrUrl.StartsWith(SteamCommunityPageByCustomUrl))
+            const string urlPart = "steamcommunity.com/id/";
+
+            var pos = idOrUrl.IndexOf(urlPart);
+            if (pos >= 0)
             {
-                var data = idOrUrl.Substring(SteamCommunityPageByCustomUrl.Length);
+                var data = idOrUrl.Substring(pos + urlPart.Length);
                 int i;
                 for (i = 0; i < data.Length; ++i)
                     if (!Char.IsLetterOrDigit(data[i]) && data[i] != '_' && data[i] != '-')
@@ -460,9 +459,12 @@ namespace s32.Sceh.Code
 
         private static bool TryExtractSteamIdFromUrl(string idOrUrl, out long steamId)
         {
-            if (idOrUrl.StartsWith(SteamCommunityPageBySteamId))
+            const string urlPart = "steamcommunity.com/profiles/";
+
+            var pos = idOrUrl.IndexOf(urlPart);
+            if (pos >= 0)
             {
-                var data = idOrUrl.Substring(SteamCommunityPageBySteamId.Length);
+                var data = idOrUrl.Substring(pos + urlPart.Length);
                 int i;
                 for (i = 0; i < data.Length; ++i)
                     if (!Char.IsDigit(data[i]))
@@ -477,59 +479,6 @@ namespace s32.Sceh.Code
 
             steamId = 0L;
             return false;
-        }
-
-        public class DebugInfo : INotifyPropertyChanged
-        {
-            private bool _isInProgress, _isRepeating;
-            private int _requestCount;
-
-            public event PropertyChangedEventHandler PropertyChanged;
-
-            public bool IsInProgress
-            {
-                get { return _isInProgress; }
-                set
-                {
-                    if (_isInProgress != value)
-                    {
-                        _isInProgress = value;
-                        NotifyPropertyChanged();
-                    }
-                }
-            }
-
-            public bool IsRepeating
-            {
-                get { return _isRepeating; }
-                set
-                {
-                    if (_isRepeating != value)
-                    {
-                        _isRepeating = value;
-                        NotifyPropertyChanged();
-                    }
-                }
-            }
-
-            public int RequestCount
-            {
-                get { return _requestCount; }
-                set
-                {
-                    if (_requestCount != value)
-                    {
-                        _requestCount = value;
-                        NotifyPropertyChanged();
-                    }
-                }
-            }
-
-            private void NotifyPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] String propertyName = "")
-            {
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
         }
     }
 }

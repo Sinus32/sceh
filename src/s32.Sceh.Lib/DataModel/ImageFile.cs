@@ -5,28 +5,25 @@ using System.Text;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 
-namespace s32.Sceh.DataStore
+namespace s32.Sceh.DataModel
 {
-    [Serializable]
-    [XmlRoot("Image", Namespace = ScehData.NS_SCEH)]
     public class ImageFile
     {
-        [XmlAttribute]
+        public ImageFile(ImageDirectory directory)
+        {
+            Directory = directory;
+        }
+
         public DateTime LastUpdate { get; set; }
 
-        [XmlAttribute]
         public string ETag { get; set; }
 
-        [XmlAttribute]
         public string MimeType { get; set; }
 
-        [XmlElement(Order = 0)]
         public string Filename { get; set; }
 
-        [XmlElement(Order = 1)]
-        public string ImageUrl { get; set; }
+        public Uri ImageUrl { get; set; }
 
-        [XmlIgnore]
         public ImageDirectory Directory { get; set; }
     }
 }

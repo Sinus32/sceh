@@ -12,8 +12,9 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using s32.Sceh.Code;
-using s32.Sceh.DataStore;
+using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Controls;
+using System.Diagnostics;
 
 namespace s32.Sceh.WinApp.Code
 {
@@ -40,111 +41,111 @@ namespace s32.Sceh.WinApp.Code
                     LazyImage imageCtl;
                     if (wr.TryGetTarget(out imageCtl) && set.Add(imageCtl))
                     {
-                        var image = TryLoadOrGetFromCache(imagePath);
-                        if (image != null)
-                        {
-                            var setter = new ImageSourceSetter(imageCtl, image);
-                            imageCtl.Dispatcher.Invoke(setter.Action);
-                        }
+                        var setter = new ImageSourceSetter(imageCtl, imagePath);
+                        imageCtl.Dispatcher.Invoke(setter.Action);
                     }
                 }
             }
         }
 
-        public static void OrderImage(ImageFile imageFile, LazyImage imageCtl)
+        public static void OrderImage(ImageFile imageFile, LazyImage imageCtl, DownloadPriority newFilePriority, DownloadPriority oldFilePriority)
         {
-            var imagePath = DataManager.LocalFilePath(imageFile);
-            if (imagePath != null && File.Exists(imagePath))
+            var localFilePath = DataManager.LocalFilePath(imageFile);
+
+            if (localFilePath != null && File.Exists(localFilePath))
             {
-                var image = TryLoadOrGetFromCache(imagePath);
-                if (image != null)
-                {
-                    var setter = new ImageSourceSetter(imageCtl, image);
-                    imageCtl.Dispatcher.Invoke(setter.Action);
-                }
+                var setter = new ImageSourceSetter(imageCtl, localFilePath);
+                imageCtl.Dispatcher.Invoke(setter.Action);
+                ImageDownloader.EnqueueDownload(imageFile, oldFilePriority, false);
             }
             else
             {
-                List<WeakReference<LazyImage>> targets;
-                var wr = new WeakReference<LazyImage>(imageCtl);
-                if (_requests.TryGetValue(imageFile, out targets))
+                var targets = _requests.GetOrAdd(imageFile, key => new List<WeakReference<LazyImage>>());
+                lock (targets)
                 {
-                    lock (targets)
-                        targets.Add(wr);
-                }
-                else
-                {
-                    targets = new List<WeakReference<LazyImage>>();
-                    targets.Add(wr);
-                    _requests.TryAdd(imageFile, targets);
-                }
-            }
-        }
+                    int i;
+                    LazyImage tmp;
+                    for (i = 0; i < targets.Count; ++i)
+                        if (!targets[i].TryGetTarget(out tmp))
+                            break;
 
-        private static byte[] TryLoadOrGetFromCache(string imagePath)
-        {
-            const int bufferSize = 256 * 1024;
-            var result = MemoryCache.Default.Get(imagePath) as byte[];
-            if (result == null)
-            {
-                for (int i = 0; i < 10; ++i)
-                {
-                    try
-                    {
-                        using (var ms = new MemoryStream())
-                        using (var stream = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite, bufferSize))
-                        {
-                            var buffer = new byte[bufferSize];
-                            int readed;
-                            while ((readed = stream.Read(buffer, 0, bufferSize)) != 0)
-                                ms.Write(buffer, 0, readed);
-                            ms.Flush();
-                            result = ms.ToArray();
-                        }
-                        var policy = new CacheItemPolicy();
-                        policy.SlidingExpiration = new TimeSpan(0, 6, 0);
-                        MemoryCache.Default.Set(imagePath, result, policy);
-                        return result;
-                    }
-                    catch (IOException)
-                    {
-                        Thread.Sleep(250);
-                    }
+                    if (i < targets.Count)
+                        targets[i].SetTarget(imageCtl);
+                    else
+                        targets.Add(new WeakReference<LazyImage>(imageCtl));
                 }
+                ImageDownloader.EnqueueDownload(imageFile, newFilePriority, true);
             }
-            return result;
         }
 
         private class ImageSourceSetter
         {
             private LazyImage _image;
-            private byte[] _source;
+            private string _localFilePath;
 
-            public ImageSourceSetter(LazyImage image, byte[] source)
+            public ImageSourceSetter(LazyImage image, string localFilePath)
             {
                 _image = image;
-                _source = source;
+                _localFilePath = localFilePath;
             }
 
             public void Action()
             {
-                _image.LazySource = GetImage();
-                _image.IsReady = true;
-                return;
+                //var dc = _image.DataContext;
+                //string title = "Image";
+
+                //if (dc is Card)
+                //    title = ((Card)dc).Name;
+                //else if (dc is SteamProfile)
+                //    title = ((SteamProfile)dc).Name;
+
+                //if (IsInView(_image))
+                //{
+                //    Debug.WriteLine(title, "Image in view");
+                _image.LocalFilePath = _localFilePath;
+                //}
+                //else
+                //{
+                //    Debug.WriteLine(title, "Image NOT in view");
+                //}
             }
 
-            private BitmapImage GetImage()
-            {
-                //double height = _image.Height;
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = new MemoryStream(_source);
-                //if (height >= 1.0)
-                //    bitmapImage.DecodePixelHeight = (int)height;
-                bitmapImage.EndInit();
-                bitmapImage.Freeze();
-                return bitmapImage;
-            }
+            //private bool IsInView(FrameworkElement reference)
+            //{
+            //    try
+            //    {
+            //        var parent = VisualTreeHelper.GetParent(reference);
+
+            //        while (parent != null)
+            //        {
+            //            if (parent is FrameworkElement)
+            //            {
+            //                var fe = (FrameworkElement)parent;
+            //                if (fe.Visibility != Visibility.Visible)
+            //                    return false;
+
+            //                if (fe is ScrollViewer)
+            //                {
+            //                    var sv = (ScrollViewer)fe;
+            //                    GeneralTransform childTransform = reference.TransformToAncestor(sv);
+            //                    Rect rectangle = childTransform.TransformBounds(new Rect(new Point(0, 0), reference.RenderSize));
+            //                    Rect intersection = Rect.Intersect(new Rect(new Point(0, 0), sv.RenderSize), rectangle);
+            //                    if (intersection == Rect.Empty)
+            //                        return false;
+            //                    return IsInView(sv);
+            //                }
+            //            }
+
+            //            parent = VisualTreeHelper.GetParent(parent) ?? LogicalTreeHelper.GetParent(parent);
+            //        }
+            //        return true;
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        Debug.WriteLine(ex.Message);
+            //        return false;
+            //    }
+            //}
         }
     }
 }

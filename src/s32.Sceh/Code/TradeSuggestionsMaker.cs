@@ -10,7 +10,6 @@ using System.IO.Compression;
 using s32.Sceh.Classes;
 using System.Threading;
 using s32.Sceh.DataModel;
-using s32.Sceh.DataStore;
 
 namespace s32.Sceh.Code
 {

@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using s32.Sceh.Code;
-using s32.Sceh.DataStore;
 using s32.Sceh.WinApp.Code;
 
 namespace s32.Sceh.WinApp
@@ -52,6 +53,33 @@ namespace s32.Sceh.WinApp
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            //var cc = CultureInfo.CurrentCulture;
+            //ResourceContext context = ResourceManager.Current.DefaultContext;
+            //Translations.Strings.Culture = new CultureInfo("pl-PL");
+
+            //List<CultureInfo> result = new List<CultureInfo>();
+
+            //ResourceManager rm = Translations.Strings.ResourceManager;
+
+            //CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+            //foreach (CultureInfo culture in cultures)
+            //{
+            //    try
+            //    {
+            //        if (culture.Equals(CultureInfo.InvariantCulture)) continue; //do not use "==", won't work
+
+            //        ResourceSet rs = rm.GetResourceSet(culture, true, false);
+            //        if (rs != null)
+            //            result.Add(culture);
+            //    }
+            //    catch (CultureNotFoundException)
+            //    {
+            //        //NOP
+            //    }
+            //}
+
+            //var ddd = rm.GetString("CompareButtonText", CultureInfo.CurrentCulture);
+
             DataManager.Initialize();
             _imageDownloaderWorker = new ImageDownloader.Worker[3];
             _imageDownloaderWorker[0] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
@@ -64,6 +92,25 @@ namespace s32.Sceh.WinApp
             _timer.Interval = new TimeSpan(0, 1, 0);
             _timer.Tick += _timer_Tick;
             _timer.Start();
+
+            bool openLoginWindow = true;
+            if (DataManager.AutoLogIn)
+            {
+                var lastProfile = DataManager.LastSteamProfile;
+                if (lastProfile != null && lastProfile.SteamId > 0L)
+                {
+                    var cmpWindow = new InvCompareWindow();
+                    cmpWindow.OwnerProfile = lastProfile;
+                    cmpWindow.Show();
+                    openLoginWindow = false;
+                }
+            }
+
+            if (openLoginWindow)
+            {
+                var loginWindow = new LoginWindow();
+                loginWindow.Show();
+            }
         }
     }
 }

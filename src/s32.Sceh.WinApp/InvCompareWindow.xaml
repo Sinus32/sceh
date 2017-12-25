@@ -7,7 +7,6 @@
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    xmlns:ds="clr-namespace:s32.Sceh.DataStore;assembly=ScehLib"
     Title="InvCompareWindow" Height="450" Width="970" Icon="Img/sceh.ico" ResizeMode="CanResizeWithGrip" WindowState="Maximized">
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.New" CanExecute="ChangeProfileCommand_CanExecute" Executed="ChangeProfileCommand_Executed" />
@@ -22,6 +21,9 @@
     <CommandBinding Command="ctl:ScehCommands.OpenProfilePageCommand" CanExecute="OpenProfilePageCommand_CanExecute" Executed="OpenProfilePageCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenInventoryPageCommand" CanExecute="OpenInventoryPageCommand_CanExecute" Executed="OpenInventoryPageCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenUserBadgesCommand" CanExecute="OpenUserBadgesCommand_CanExecute" Executed="OpenUserBadgesCommand_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenTradeOffersCommand" CanExecute="OpenTradeOffersCommand_CanExecute" Executed="OpenTradeOffersCommand_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenTradeTopicsCommand" CanExecute="OpenTradeTopicsCommand_CanExecute" Executed="OpenTradeTopicsCommand_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenPostHistoryCommand" CanExecute="OpenPostHistoryCommand_CanExecute" Executed="OpenPostHistoryCommand_Executed" />
     <CommandBinding Command="ctl:ScehCommands.CopyNameCommand" CanExecute="CopyNameCommand_CanExecute" Executed="CopyNameCommand_Executed" />
   </Window.CommandBindings>
   <Window.Resources>
@@ -194,54 +196,51 @@
         </Style>
       </Style.Resources>
     </Style>
-    <Style x:Key="requestCountStyle" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#BACBD1" />
+    <Style x:Key="cardAlternateText" TargetType="TextBlock">
+      <Setter Property="Visibility" Value="Collapsed" />
       <Style.Triggers>
-        <DataTrigger Binding="{Binding IsInProgress, Source={x:Static code:SteamDataDownloader.Info}}" Value="True">
-          <Setter Property="Foreground" Value="#38A800" />
-        </DataTrigger>
-        <DataTrigger Binding="{Binding IsRepeating, Source={x:Static code:SteamDataDownloader.Info}}" Value="True">
-          <Setter Property="Foreground" Value="#DE4426" />
-          <Setter Property="FontWeight" Value="ExtraBold" />
+        <DataTrigger Binding="{Binding DelayedLocalFilePath, ElementName=CardImage}" Value="{x:Null}">
+          <Setter Property="Visibility" Value="Visible" />
         </DataTrigger>
       </Style.Triggers>
     </Style>
     <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
-    <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding DataContext}" />
+    <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistoryCommand" CommandParameter="{Binding}" />
     </ContextMenu>
-    <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding DataContext}" />
+    <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding}" />
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding}" />
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding}" />
     </ContextMenu>
-    <ContextMenu x:Key="cardMenu" DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_MarketPage}" Command="ctl:ScehCommands.OpenMarketPageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding DataContext}" />
+    <ContextMenu x:Key="cardMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_MarketPage}" Command="ctl:ScehCommands.OpenMarketPageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyNameCommand" CommandParameter="{Binding}" />
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding DataContext}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePageCommand" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePageCommand" CommandParameter="{Binding}" />
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding DataContext}" />
+      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForumCommand" CommandParameter="{Binding}" />
     </ContextMenu>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
       <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
         <Grid>
           <Border Style="{StaticResource cardBorderStyle}">
             <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
-                Width="77" Height="89" Stretch="Uniform"
-                Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True}" />
+                NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
+                Width="77" Height="89" Stretch="Uniform" Delay="300"
+                Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
           </Border>
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
               Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-          <TextBlock Text="{Binding Name}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0"
-              TextAlignment="Center" VerticalAlignment="Top" TextWrapping="WrapWithOverflow"
-              Visibility="{Binding IsReady, ElementName=CardImage, Converter={StaticResource hideToVisibilityConv}}" />
+          <TextBlock Text="{Binding Name}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0" TextAlignment="Center"
+              VerticalAlignment="Top" TextWrapping="WrapWithOverflow" Style="{StaticResource cardAlternateText}" />
         </Grid>
       </ToggleButton>
     </DataTemplate>
@@ -278,7 +277,7 @@
       </Grid>
     </DataTemplate>
   </Window.Resources>
-  <Grid>
+  <Grid Name="mainGrid">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="40" />
       <ColumnDefinition Width="3*" />
@@ -298,6 +297,10 @@
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding OwnerProfile}" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding OwnerProfile}" />
         <Separator />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_TradeOffers}" Command="ctl:ScehCommands.OpenTradeOffersCommand" CommandParameter="{Binding OwnerProfile}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_TradeTopics}" Command="ctl:ScehCommands.OpenTradeTopicsCommand" CommandParameter="{Binding OwnerProfile}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistoryCommand" CommandParameter="{Binding OwnerProfile}" />
+        <Separator />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_ChangeProfile}" Command="ApplicationCommands.New" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Exit}" Command="ApplicationCommands.Close" />
       </MenuItem>
@@ -306,18 +309,20 @@
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPageCommand" CommandParameter="{Binding SecondProfile}" />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadgesCommand" CommandParameter="{Binding SecondProfile}" />
         <Separator />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding SecondProfile.Note}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistoryCommand" CommandParameter="{Binding SecondProfile}" />
+        <Separator />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding SecondProfile.Notes}" />
       </MenuItem>
     </Menu>
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="None"
-        Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}"
+        NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
+        Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}"
         ContextMenu="{StaticResource profileMenu}" DataContext="{Binding OwnerProfile}" Grid.Row="1" Grid.RowSpan="2" />
     <TextBlock Text="{Binding Name}" DataContext="{Binding OwnerProfile}" VerticalAlignment="Center"
         ContextMenu="{StaticResource profileMenu}" FontSize="16" Margin="2" Grid.Row="1" Grid.Column="1" />
-    <TextBlock Text="{Binding RequestCount, Source={x:Static code:SteamDataDownloader.Info}, StringFormat={x:Static resx:Strings.RequestCountFormat}}"
-        VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="2" Grid.Row="1" Grid.Column="2" Style="{StaticResource requestCountStyle}" />
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="Uniform"
-        Source="{Binding LazySource, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay}"
+        NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
+        Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}"
         ContextMenu="{StaticResource profileMenu}" DataContext="{Binding SecondProfile}" Grid.Row="3" Height="26" />
     <TextBlock Text="{Binding Name}" DataContext="{Binding SecondProfile}" VerticalAlignment="Center"
         ContextMenu="{StaticResource profileMenu}" FontSize="16" Margin="2" Grid.Row="3" Grid.Column="1" />
@@ -327,16 +332,16 @@
         <KeyBinding Command="ctl:ScehCommands.CompareCommand" Key="Return" />
       </ComboBox.InputBindings>
     </ComboBox>
-    <Button Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
-        HorizontalAlignment="Left" Grid.Row="2" Grid.Column="2" Margin="10,0" Padding="20,2" />
-    <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
-        Orientation="Horizontal" HorizontalAlignment="Right">
-      <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
-      <Button Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding Note}"
-          HorizontalAlignment="Right" DataContext="{Binding SecondProfile}"
-          Grid.Row="2" Grid.Column="2" Margin="2" Padding="2,0">
+    <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Margin="2,0">
+      <Button HorizontalAlignment="Left" Margin="2" Padding="2,0" DataContext="{Binding SelectedItem, ElementName=cbOtherProfile}"
+          Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding Notes}">
         <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}" />
       </Button>
+      <Button Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
+          HorizontalAlignment="Left" Margin="2" Padding="20,2" />
+    </StackPanel>
+    <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
+      <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
       <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="{x:Static SystemColors.ControlLightBrush}" />
       <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}" Margin="2">
         <Image Source="Img/selection1.png" Stretch="None" />
@@ -381,8 +386,54 @@
       </ItemsControl.Template>
     </ItemsControl>
     <StatusBar Grid.Row="5" Grid.ColumnSpan="3">
-      <StatusBarItem>
-        <TextBlock />
+      <StatusBar.Resources>
+        <BitmapImage x:Key="transfer0" ice:Freeze="True" UriSource="Img/transfer0.png" />
+        <BitmapImage x:Key="transfer1" ice:Freeze="True" UriSource="Img/transfer1.png" />
+        <BitmapImage x:Key="alert0" ice:Freeze="True" UriSource="Img/alert0.png" />
+        <BitmapImage x:Key="alert1" ice:Freeze="True" UriSource="Img/alert1.png" />
+      </StatusBar.Resources>
+      <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
+        <TextBlock Text="{Binding RequestCount, StringFormat={x:Static resx:Strings.RequestCountFormat}}" />
+      </StatusBarItem>
+      <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
+        <Image Height="16">
+          <Image.Style>
+            <Style TargetType="Image">
+              <Setter Property="Source" Value="{StaticResource transfer0}" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInProgress}" Value="True">
+                  <Setter Property="Source" Value="{StaticResource transfer1}" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Image.Style>
+        </Image>
+      </StatusBarItem>
+      <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
+        <Image Height="16">
+          <Image.Style>
+            <Style TargetType="Image">
+              <Setter Property="Source" Value="{StaticResource alert0}" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsRepeating}" Value="True">
+                  <Setter Property="Source" Value="{StaticResource alert1}" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Image.Style>
+        </Image>
+      </StatusBarItem>
+      <Separator />
+      <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
+        <TextBlock>
+          <TextBlock.Text>
+            <MultiBinding StringFormat="{x:Static resx:Strings.ImagesToDownloadFormat}">
+              <Binding Path="ImagesToDownload" />
+              <Binding Path="ImagesNotModified" />
+              <Binding Path="ImagesDownloaded" />
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
       </StatusBarItem>
     </StatusBar>
   </Grid>

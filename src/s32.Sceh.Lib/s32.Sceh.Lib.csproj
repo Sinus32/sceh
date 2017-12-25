@@ -47,7 +47,9 @@
   <ItemGroup>
     <Compile Include="Code\CardEqualityKey.cs" />
     <Compile Include="Code\CardsCompareManager.cs" />
+    <Compile Include="Code\CommunicationState.cs" />
     <Compile Include="Code\DataManager.cs" />
+    <Compile Include="Code\DataSerializer.cs" />
     <Compile Include="Code\DownloadPriority.cs" />
     <Compile Include="Code\FilenameGenerator.cs" />
     <Compile Include="Code\ImageDownloader.cs" />
@@ -56,16 +58,19 @@
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
     <Compile Include="DataModel\Card.cs" />
+    <Compile Include="DataModel\PathConfig.cs" />
+    <Compile Include="DataModel\UserNote.cs" />
+    <Compile Include="DataModel\ProfilesData.cs" />
     <Compile Include="DataModel\SteamApp.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataModel\UserInventory.cs" />
-    <Compile Include="DataStore\ImageDirectory.cs" />
-    <Compile Include="DataStore\ImageFile.cs" />
-    <Compile Include="DataStore\ScehData.cs" />
-    <Compile Include="DataStore\ScehDataFile.cs" />
-    <Compile Include="DataStore\SteamProfile.cs" />
-    <Compile Include="DataStore\SteamProfileKey.cs" />
+    <Compile Include="DataModel\ImageDirectory.cs" />
+    <Compile Include="DataModel\ImageFile.cs" />
+    <Compile Include="DataModel\ScehData.cs" />
+    <Compile Include="DataModel\SteamProfile.cs" />
+    <Compile Include="DataModel\SteamProfileKey.cs" />
+    <Compile Include="DataModel\UserNotes.cs" />
     <Compile Include="LegacyClasses\Inventory.cs" />
     <Compile Include="LegacyClasses\SteamUser.cs" />
     <Compile Include="LegacyClasses\TradeSuggestions.cs" />

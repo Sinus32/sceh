@@ -9,7 +9,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using s32.Sceh.DataStore;
+using s32.Sceh.DataModel;
 
 namespace s32.Sceh.Code
 {
@@ -18,13 +18,13 @@ namespace s32.Sceh.Code
         private const int IMAGE_FILENAME_LENGTH = 8;
         private const int MINUTES_DELAY = 60 * 24 * 7;
         private static readonly ConcurrentDictionary<ImageFile, int> _isInQueue;
-        private static readonly ConcurrentQueue<ImageFile>[] _queue;
+        private static readonly ConcurrentStack<ImageFile>[] _queue;
 
         static ImageDownloader()
         {
-            _queue = new ConcurrentQueue<ImageFile>[DownloadPriority.Order.Count];
+            _queue = new ConcurrentStack<ImageFile>[DownloadPriority.Order.Count];
             foreach (var priority in DownloadPriority.Order)
-                _queue[priority.OrderIndex] = new ConcurrentQueue<ImageFile>();
+                _queue[priority.OrderIndex] = new ConcurrentStack<ImageFile>();
             _isInQueue = new ConcurrentDictionary<ImageFile, int>();
         }
 
@@ -34,7 +34,10 @@ namespace s32.Sceh.Code
             if (forceDownload || image.LastUpdate < reqTime)
             {
                 if (_isInQueue.TryAdd(image, priority.OrderIndex))
-                    _queue[priority.OrderIndex].Enqueue(image);
+                {
+                    CommunicationState.Instance.ImagesToDownload = _isInQueue.Count;
+                    _queue[priority.OrderIndex].Push(image);
+                }
                 return true;
             }
             return false;
@@ -98,6 +101,8 @@ namespace s32.Sceh.Code
                     image.LastUpdate = DateTime.Now;
                     image.ETag = response.Headers[HttpResponseHeader.ETag];
                     image.MimeType = fileType.MimeType;
+
+                    CommunicationState.Instance.ImagesDownloaded += 1;
                 }
             }
             catch (WebException ex)
@@ -105,7 +110,12 @@ namespace s32.Sceh.Code
                 if (ex.Status == WebExceptionStatus.ProtocolError)
                 {
                     var response = ex.Response as HttpWebResponse;
-                    if (response == null || response.StatusCode != HttpStatusCode.NotModified)
+                    if (response != null && response.StatusCode == HttpStatusCode.NotModified)
+                    {
+                        image.LastUpdate = DateTime.Now;
+                        CommunicationState.Instance.ImagesNotModified += 1;
+                    }
+                    else
                     {
                         if (response != null)
                             Debug.WriteLine("Cannot download file - http status: {0}", response.StatusCode);
@@ -129,29 +139,32 @@ namespace s32.Sceh.Code
 
             foreach (var priority in DownloadPriority.Order)
             {
-                while (_queue[priority.OrderIndex].TryDequeue(out image))
+                while (_queue[priority.OrderIndex].TryPop(out image))
                 {
-                    int dummy;
-                    _isInQueue.TryRemove(image, out dummy);
-
-                    imagePath = DataManager.LocalFilePath(image);
-                    var fileExists = imagePath != null && File.Exists(imagePath);
-
-                    if (fileExists && image.LastUpdate > reqTime)
-                        continue;
-
                     try
                     {
-                        TryDownloadFile(image, ref imagePath, fileExists);
-                        return true;
+                        imagePath = DataManager.LocalFilePath(image);
+                        var fileExists = imagePath != null && File.Exists(imagePath);
+
+                        if (fileExists && image.LastUpdate > reqTime)
+                            continue;
+
+                        try
+                        {
+                            TryDownloadFile(image, ref imagePath, fileExists);
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("Error while downloading file: {0}; {1}", ex.Message, image.ImageUrl);
+                            return false;
+                        }
                     }
-                    catch (Exception ex)
+                    finally
                     {
-                        if (Debugger.IsAttached)
-                            Debugger.Break();
-                        else
-                            Debug.WriteLine("Error while downloading file: {0}", ex.Message);
-                        return false;
+                        int dummy;
+                        _isInQueue.TryRemove(image, out dummy);
+                        CommunicationState.Instance.ImagesToDownload = _isInQueue.Count;
                     }
                 }
             }

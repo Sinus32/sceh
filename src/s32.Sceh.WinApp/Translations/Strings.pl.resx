@@ -118,96 +118,96 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
-    <value>_Auto login</value>
+    <value>Loguj _automatycznie</value>
   </data>
   <data name="CardContextMenu_BadgePage" xml:space="preserve">
-    <value>_Badge page</value>
+    <value>_Odznaka Steam</value>
   </data>
   <data name="CardContextMenu_CopyName" xml:space="preserve">
-    <value>Copy _name</value>
+    <value>Kopiuj _nazwę</value>
   </data>
   <data name="CardContextMenu_MarketPage" xml:space="preserve">
-    <value>_Market page</value>
+    <value>_Kupno i sprzedaż</value>
   </data>
   <data name="CardContextMenu_StorePage" xml:space="preserve">
-    <value>_Store page</value>
+    <value>_Strona sklepu</value>
   </data>
   <data name="CardContextMenu_TradingForum" xml:space="preserve">
-    <value>_Trade forum</value>
+    <value>_Forum wymiany</value>
   </data>
   <data name="CompareButtonText" xml:space="preserve">
-    <value>_Compare</value>
+    <value>_Porównaj</value>
   </data>
   <data name="ErrorTitle" xml:space="preserve">
-    <value>Error</value>
+    <value>Błąd</value>
   </data>
   <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
-    <value>An exception occurred while downloading the profile data: {0}</value>
+    <value>Podczas ściągania danych profilu wystąpił wyjątek: {0}</value>
   </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
-    <value>Images downloading: {0}/{1}/{2}</value>
+    <value>Pobieranie obrazów: {0}/{1}/{2}</value>
   </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
-    <value>Invalid id or own profile url</value>
+    <value>Błędny identyfikator lub własny url profilu</value>
   </data>
   <data name="LoginButtonText" xml:space="preserve">
-    <value>_Login</value>
+    <value>_Zaloguj</value>
   </data>
   <data name="LoginProfileLabel" xml:space="preserve">
-    <value>_Profile:</value>
+    <value>_Profil:</value>
   </data>
   <data name="LoginWindowTitle" xml:space="preserve">
     <value>Steam cards exchange helper</value>
   </data>
   <data name="MenuItem_Badges" xml:space="preserve">
-    <value>_Badges</value>
+    <value>_Odznaki</value>
   </data>
   <data name="MenuItem_ChangeProfile" xml:space="preserve">
-    <value>_Change profile</value>
+    <value>Z_mień profil</value>
   </data>
   <data name="MenuItem_EditNote" xml:space="preserve">
-    <value>_Notes</value>
+    <value>_Notatki</value>
   </data>
   <data name="MenuItem_Exit" xml:space="preserve">
-    <value>_Exit</value>
+    <value>_Zakończ</value>
   </data>
   <data name="MenuItem_Inventory" xml:space="preserve">
-    <value>_Inventory</value>
+    <value>_Ekwipunek</value>
   </data>
   <data name="MenuItem_MyProfile" xml:space="preserve">
-    <value>_My profile</value>
+    <value>_Mój profil</value>
   </data>
   <data name="MenuItem_OthersProfile" xml:space="preserve">
-    <value>_Other profile</value>
+    <value>_Drugi profil</value>
   </data>
   <data name="MenuItem_PostHistory" xml:space="preserve">
-    <value>Post _history</value>
+    <value>_Historia postów</value>
   </data>
   <data name="MenuItem_Profile" xml:space="preserve">
-    <value>_Profile page</value>
+    <value>_Strona profilu</value>
   </data>
   <data name="MenuItem_TradeOffers" xml:space="preserve">
-    <value>Trade _offers</value>
+    <value>Oferty _wymiany</value>
   </data>
   <data name="MenuItem_TradeTopics" xml:space="preserve">
-    <value>Trading _topics</value>
+    <value>_Tematy dot. wymiany</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
-    <value>Cannot load your cards: {0}</value>
+    <value>Nie można załadować twoich kart: {0}</value>
   </data>
   <data name="ProfileDeserializationError" xml:space="preserve">
-    <value>Error reading profile data</value>
+    <value>Błąd odczytu danych profilu</value>
   </data>
   <data name="RequestCountFormat" xml:space="preserve">
-    <value>Request counter: {0}</value>
+    <value>Licznik zapytań: {0}</value>
   </data>
   <data name="SecondInvErrorMessage" xml:space="preserve">
-    <value>Cannot load cards of user {0}: {1}</value>
+    <value>Nie można załadować kart użytkownika {0}: {1}</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
-    <value>Unknown error occurred</value>
+    <value>Wystąpił nieznany błąd</value>
   </data>
   <data name="WrongProfileIdOrUrl" xml:space="preserve">
-    <value>Profile not found</value>
+    <value>Nie znaleziono profilu</value>
   </data>
 </root>

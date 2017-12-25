@@ -8,29 +8,42 @@ namespace s32.Sceh.Code
 {
     public class SteamUrlPattern
     {
+        public const string SteamCommunityPageByCustomUrl = "http://steamcommunity.com/id/";
+        public const string SteamCommunityPageBySteamId = "http://steamcommunity.com/profiles/";
+
         public static readonly SteamUrlPattern CommunityPage, ApiGetInventoryA,
-            ApiGetProfile, ApiGetInventoryB, Badges, Inventory;
+            ApiGetProfile, ApiGetInventoryB, Badges, Inventory,
+            TradeOffers, TradeTopics, PostHistory;
 
         static SteamUrlPattern()
         {
             CommunityPage = new SteamUrlPattern(
-                SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}",
-                SteamDataDownloader.SteamCommunityPageBySteamId + "{0}");
+                SteamCommunityPageByCustomUrl + "{0}",
+                SteamCommunityPageBySteamId + "{0}");
             ApiGetInventoryA = new SteamUrlPattern(
-                SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}/inventory/json/753/6",
-                SteamDataDownloader.SteamCommunityPageBySteamId + "{0}/inventory/json/753/6");
+                SteamCommunityPageByCustomUrl + "{0}/inventory/json/753/6",
+                SteamCommunityPageBySteamId + "{0}/inventory/json/753/6");
             ApiGetInventoryB = new SteamUrlPattern(
                 null,
                 "http://steamcommunity.com/inventory/{0}/753/6?l=polish&count=2000");
             ApiGetProfile = new SteamUrlPattern(
-                SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}?xml=1",
-                SteamDataDownloader.SteamCommunityPageBySteamId + "{0}?xml=1");
+                SteamCommunityPageByCustomUrl + "{0}?xml=1",
+                SteamCommunityPageBySteamId + "{0}?xml=1");
             Badges = new SteamUrlPattern(
-                SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}/badges",
-                SteamDataDownloader.SteamCommunityPageBySteamId + "{0}/badges");
+                SteamCommunityPageByCustomUrl + "{0}/badges",
+                SteamCommunityPageBySteamId + "{0}/badges");
             Inventory = new SteamUrlPattern(
-                SteamDataDownloader.SteamCommunityPageByCustomUrl + "{0}/inventory",
-                SteamDataDownloader.SteamCommunityPageBySteamId + "{0}/inventory");
+                SteamCommunityPageByCustomUrl + "{0}/inventory",
+                SteamCommunityPageBySteamId + "{0}/inventory");
+            TradeOffers = new SteamUrlPattern(
+                SteamCommunityPageByCustomUrl + "{0}/tradeoffers",
+                SteamCommunityPageBySteamId + "{0}/tradeoffers");
+            TradeTopics = new SteamUrlPattern(
+                SteamCommunityPageByCustomUrl + "{0}/tradeoffers/tradetopics",
+                SteamCommunityPageBySteamId + "{0}/tradeoffers/tradetopics");
+            PostHistory = new SteamUrlPattern(
+                SteamCommunityPageByCustomUrl + "{0}/posthistory",
+                SteamCommunityPageBySteamId + "{0}/posthistory");
         }
 
         private string _patternByCustomUrl, _patternBySteamId;
