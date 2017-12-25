@@ -192,6 +192,9 @@
   <data name="MenuItem_TradeTopics" xml:space="preserve">
     <value>Trading _topics</value>
   </data>
+  <data name="NotesButtonText" xml:space="preserve">
+    <value>Notes</value>
+  </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Cannot load your cards: {0}</value>
   </data>
@@ -203,6 +206,24 @@
   </data>
   <data name="SecondInvErrorMessage" xml:space="preserve">
     <value>Cannot load cards of user {0}: {1}</value>
+  </data>
+  <data name="ShowAllButtonText" xml:space="preserve">
+    <value>Show all cards</value>
+  </data>
+  <data name="ShowMyCardsButtonText" xml:space="preserve">
+    <value>Show my cards</value>
+  </data>
+  <data name="ShowOnlySelectedButtonText" xml:space="preserve">
+    <value>Show only selected cards</value>
+  </data>
+  <data name="ShowOtherCardsButtonText" xml:space="preserve">
+    <value>Show his cards</value>
+  </data>
+  <data name="ShowSelectedAppButtonText" xml:space="preserve">
+    <value>Show selected games</value>
+  </data>
+  <data name="ShowTradeSugestionsButtonText" xml:space="preserve">
+    <value>Show common cards</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Unknown error occurred</value>

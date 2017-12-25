@@ -333,33 +333,45 @@
       </ComboBox.InputBindings>
     </ComboBox>
     <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Horizontal" Margin="2,0">
-      <Button HorizontalAlignment="Left" Margin="2" Padding="2,0" DataContext="{Binding SelectedItem, ElementName=cbOtherProfile}"
+      <Button Margin="2,0" Padding="2" DataContext="{Binding SelectedItem, ElementName=cbOtherProfile}"
           Command="ctl:ScehCommands.EditNoteCommand" CommandParameter="{Binding Notes}">
-        <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}" />
+        <StackPanel Orientation="Horizontal" Style="{DynamicResource noteIconToolTip}">
+          <Image Source="{StaticResource noteIcon}" Stretch="None" />
+          <AccessText Text="{x:Static resx:Strings.NotesButtonText}" Margin="6,0" VerticalAlignment="Center" />
+        </StackPanel>
       </Button>
-      <Button Command="ctl:ScehCommands.CompareCommand" Content="{x:Static resx:Strings.CompareButtonText}"
-          HorizontalAlignment="Left" Margin="2" Padding="20,2" />
+      <Button Margin="2,0" Padding="2" Command="ctl:ScehCommands.CompareCommand">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="{StaticResource compareIcon}" Stretch="None" />
+          <AccessText Text="{x:Static resx:Strings.CompareButtonText}" Margin="6,0" VerticalAlignment="Center" />
+        </StackPanel>
+      </Button>
     </StackPanel>
     <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
       <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
-      <Rectangle VerticalAlignment="Stretch" Width="1" Margin="2" Stroke="{x:Static SystemColors.ControlLightBrush}" />
-      <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}" Margin="2">
-        <Image Source="Img/selection1.png" Stretch="None" />
+      <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowTradeSugestionsButtonText}"
+          Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}">
+        <Image Source="{StaticResource selection1}" Stretch="None" />
       </Button>
-      <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowMyCardsStrategy}" Margin="2">
-        <Image Source="Img/selection2.png" Stretch="None" />
+      <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowMyCardsButtonText}"
+          Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowMyCardsStrategy}">
+        <Image Source="{StaticResource selection2}" Stretch="None" />
       </Button>
-      <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowAllStrategy}" Margin="2">
-        <Image Source="Img/selection3.png" Stretch="None" />
+      <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowAllButtonText}"
+          Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowAllStrategy}">
+        <Image Source="{StaticResource selection3}" Stretch="None" />
       </Button>
-      <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowOtherCardsStrategy}" Margin="2">
-        <Image Source="Img/selection4.png" Stretch="None" />
+      <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowOtherCardsButtonText}"
+          Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowOtherCardsStrategy}">
+        <Image Source="{StaticResource selection4}" Stretch="None" />
       </Button>
-      <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowSelectedAppStrategy}" Margin="2">
-        <Image Source="Img/selection5.png" Stretch="None" />
+      <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowSelectedAppButtonText}"
+          Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowSelectedAppStrategy}">
+        <Image Source="{StaticResource selection5}" Stretch="None" />
       </Button>
-      <Button Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowOnlySelectedStrategy}" Margin="2">
-        <Image Source="Img/selection6.png" Stretch="None" />
+      <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowOnlySelectedButtonText}"
+          Command="ctl:ScehCommands.ShowHideCardsCommand" CommandParameter="{x:Static code:CardsCompareManager.ShowOnlySelectedStrategy}">
+        <Image Source="{StaticResource selection6}" Stretch="None" />
       </Button>
     </StackPanel>
     <ItemsControl Grid.Row="4" Grid.ColumnSpan="3" VirtualizingPanel.CacheLength="3" VirtualizingPanel.CacheLengthUnit="Item"
@@ -386,23 +398,30 @@
       </ItemsControl.Template>
     </ItemsControl>
     <StatusBar Grid.Row="5" Grid.ColumnSpan="3">
-      <StatusBar.Resources>
-        <BitmapImage x:Key="transfer0" ice:Freeze="True" UriSource="Img/transfer0.png" />
-        <BitmapImage x:Key="transfer1" ice:Freeze="True" UriSource="Img/transfer1.png" />
-        <BitmapImage x:Key="alert0" ice:Freeze="True" UriSource="Img/alert0.png" />
-        <BitmapImage x:Key="alert1" ice:Freeze="True" UriSource="Img/alert1.png" />
-      </StatusBar.Resources>
       <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
-        <TextBlock Text="{Binding RequestCount, StringFormat={x:Static resx:Strings.RequestCountFormat}}" />
+        <TextBlock Text="{Binding RequestCount, StringFormat={x:Static resx:Strings.RequestCountFormat}}">
+          <TextBlock.Style>
+            <Style TargetType="TextBlock">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInProgress}" Value="True">
+                  <Setter Property="Foreground" Value="#2B8004" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsRepeating}" Value="True">
+                  <Setter Property="Foreground" Value="#C4391D" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </TextBlock.Style>
+        </TextBlock>
       </StatusBarItem>
       <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
         <Image Height="16">
           <Image.Style>
             <Style TargetType="Image">
-              <Setter Property="Source" Value="{StaticResource transfer0}" />
+              <Setter Property="Source" Value="{StaticResource transferOff}" />
               <Style.Triggers>
                 <DataTrigger Binding="{Binding IsInProgress}" Value="True">
-                  <Setter Property="Source" Value="{StaticResource transfer1}" />
+                  <Setter Property="Source" Value="{StaticResource transferOn}" />
                 </DataTrigger>
               </Style.Triggers>
             </Style>
@@ -413,10 +432,10 @@
         <Image Height="16">
           <Image.Style>
             <Style TargetType="Image">
-              <Setter Property="Source" Value="{StaticResource alert0}" />
+              <Setter Property="Source" Value="{StaticResource alertOff}" />
               <Style.Triggers>
                 <DataTrigger Binding="{Binding IsRepeating}" Value="True">
-                  <Setter Property="Source" Value="{StaticResource alert1}" />
+                  <Setter Property="Source" Value="{StaticResource alertOn}" />
                 </DataTrigger>
               </Style.Triggers>
             </Style>

@@ -192,6 +192,9 @@
   <data name="MenuItem_TradeTopics" xml:space="preserve">
     <value>_Tematy dot. wymiany</value>
   </data>
+  <data name="NotesButtonText" xml:space="preserve">
+    <value>Notatki</value>
+  </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować twoich kart: {0}</value>
   </data>
@@ -203,6 +206,24 @@
   </data>
   <data name="SecondInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować kart użytkownika {0}: {1}</value>
+  </data>
+  <data name="ShowAllButtonText" xml:space="preserve">
+    <value>Pokaż wszystkie karty</value>
+  </data>
+  <data name="ShowMyCardsButtonText" xml:space="preserve">
+    <value>Pokaż moje karty</value>
+  </data>
+  <data name="ShowOnlySelectedButtonText" xml:space="preserve">
+    <value>Pokaż tylko zaznaczone karty</value>
+  </data>
+  <data name="ShowOtherCardsButtonText" xml:space="preserve">
+    <value>Pokaż jego karty</value>
+  </data>
+  <data name="ShowSelectedAppButtonText" xml:space="preserve">
+    <value>Pokaż zaznaczone gry</value>
+  </data>
+  <data name="ShowTradeSugestionsButtonText" xml:space="preserve">
+    <value>Pokaż wspólne karty</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Wystąpił nieznany błąd</value>

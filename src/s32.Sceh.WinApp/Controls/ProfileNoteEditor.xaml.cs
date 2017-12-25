@@ -54,14 +54,7 @@ namespace s32.Sceh.WinApp.Controls
             set { SetValue(SteamAppsProperty, value); }
         }
 
-        private void noteEditForm_Loaded(object sender, RoutedEventArgs e)
-        {
-            Load(Source);
-            if (AutoFocus)
-                Keyboard.Focus(tbEditor);
-        }
-
-        private void Load(UserNotes notes)
+        public void Load(UserNotes notes)
         {
             if (notes == null)
                 return;
@@ -79,6 +72,18 @@ namespace s32.Sceh.WinApp.Controls
 
             tbEditor.Text = sb.ToString();
             tbEditor.CaretIndex = sb.Length;
+        }
+
+        public bool Save(UserNotes Source)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void noteEditForm_Loaded(object sender, RoutedEventArgs e)
+        {
+            Load(Source);
+            if (AutoFocus)
+                Keyboard.Focus(tbEditor);
         }
 
         #region Commands
@@ -103,16 +108,6 @@ namespace s32.Sceh.WinApp.Controls
             }
         }
 
-        private void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
-
-        private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            Dispatcher.Invoke(RaiseCancelCommand, DispatcherPriority.Background);
-        }
-
         private void RaiseCancelCommand()
         {
             RoutedCommand routed = ScehCommands.CancelCommand;
@@ -121,6 +116,17 @@ namespace s32.Sceh.WinApp.Controls
 
             if (routed.CanExecute(parameter, target))
                 routed.Execute(parameter, target);
+        }
+
+        private void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (Save(Source))
+                Dispatcher.Invoke(RaiseCancelCommand, DispatcherPriority.Background);
         }
 
         #endregion Commands

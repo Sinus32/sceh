@@ -286,6 +286,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notes.
+        /// </summary>
+        public static string NotesButtonText {
+            get {
+                return ResourceManager.GetString("NotesButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot load your cards: {0}.
         /// </summary>
         public static string OwnerInvErrorMessage {
@@ -318,6 +327,60 @@ namespace s32.Sceh.WinApp.Translations {
         public static string SecondInvErrorMessage {
             get {
                 return ResourceManager.GetString("SecondInvErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show all cards.
+        /// </summary>
+        public static string ShowAllButtonText {
+            get {
+                return ResourceManager.GetString("ShowAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show my cards.
+        /// </summary>
+        public static string ShowMyCardsButtonText {
+            get {
+                return ResourceManager.GetString("ShowMyCardsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show only selected cards.
+        /// </summary>
+        public static string ShowOnlySelectedButtonText {
+            get {
+                return ResourceManager.GetString("ShowOnlySelectedButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show his cards.
+        /// </summary>
+        public static string ShowOtherCardsButtonText {
+            get {
+                return ResourceManager.GetString("ShowOtherCardsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show selected games.
+        /// </summary>
+        public static string ShowSelectedAppButtonText {
+            get {
+                return ResourceManager.GetString("ShowSelectedAppButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show common cards.
+        /// </summary>
+        public static string ShowTradeSugestionsButtonText {
+            get {
+                return ResourceManager.GetString("ShowTradeSugestionsButtonText", resourceCulture);
             }
         }
         
