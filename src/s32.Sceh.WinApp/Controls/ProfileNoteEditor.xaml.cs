@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -23,6 +24,12 @@ namespace s32.Sceh.WinApp.Controls
     {
         public static readonly DependencyProperty AutoFocusProperty =
             DependencyProperty.Register("AutoFocus", typeof(bool), typeof(ProfileNoteEditor), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty SourceProperty =
+            DependencyProperty.Register("Source", typeof(UserNotes), typeof(ProfileNoteEditor), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty SteamAppsProperty =
+            DependencyProperty.Register("SteamApps", typeof(List<SteamApp>), typeof(ProfileNoteEditor), new PropertyMetadata(null));
 
         public ProfileNoteEditor()
         {
@@ -35,12 +42,43 @@ namespace s32.Sceh.WinApp.Controls
             set { SetValue(AutoFocusProperty, value); }
         }
 
-        public List<SteamApp> SteamApps { get; set; }
+        public UserNotes Source
+        {
+            get { return (UserNotes)GetValue(SourceProperty); }
+            set { SetValue(SourceProperty, value); }
+        }
+
+        public List<SteamApp> SteamApps
+        {
+            get { return (List<SteamApp>)GetValue(SteamAppsProperty); }
+            set { SetValue(SteamAppsProperty, value); }
+        }
 
         private void noteEditForm_Loaded(object sender, RoutedEventArgs e)
         {
+            Load(Source);
             if (AutoFocus)
                 Keyboard.Focus(tbEditor);
+        }
+
+        private void Load(UserNotes notes)
+        {
+            if (notes == null)
+                return;
+
+            tbEditor.Clear();
+
+            var sb = new StringBuilder();
+
+            foreach (var note in notes)
+            {
+                if (note.Score != 0)
+                    sb.AppendFormat("[{0:+0;-0}] ", note.Score);
+                sb.AppendLine(note.Text);
+            }
+
+            tbEditor.Text = sb.ToString();
+            tbEditor.CaretIndex = sb.Length;
         }
 
         #region Commands
@@ -72,7 +110,17 @@ namespace s32.Sceh.WinApp.Controls
 
         private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //noteEditPopup.IsOpen = false;
+            Dispatcher.Invoke(RaiseCancelCommand, DispatcherPriority.Background);
+        }
+
+        private void RaiseCancelCommand()
+        {
+            RoutedCommand routed = ScehCommands.CancelCommand;
+            IInputElement target = this;
+            object parameter = null;
+
+            if (routed.CanExecute(parameter, target))
+                routed.Execute(parameter, target);
         }
 
         #endregion Commands

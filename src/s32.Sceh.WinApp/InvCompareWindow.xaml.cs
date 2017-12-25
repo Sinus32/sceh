@@ -197,7 +197,7 @@ namespace s32.Sceh.WinApp
 
         private void ChangeProfileCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = !SteamDataDownloader.Info.IsInProgress;
+            e.CanExecute = !CommunicationState.Instance.IsInProgress;
         }
 
         private void ChangeProfileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -273,7 +273,7 @@ namespace s32.Sceh.WinApp
             Grid.SetColumnSpan(editor, mainGrid.ColumnDefinitions.Count);
             mainGrid.Children.Add(editor);
             editor.SteamApps = SteamApps;
-            editor.DataContext = e.Parameter;
+            editor.Source = (UserNotes)e.Parameter;
             editor.AutoFocus = true;
         }
 

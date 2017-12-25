@@ -196,18 +196,6 @@
         </Style>
       </Style.Resources>
     </Style>
-    <Style x:Key="requestCountStyle" TargetType="TextBlock">
-      <Setter Property="Foreground" Value="#BACBD1" />
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding IsInProgress, Source={x:Static code:SteamDataDownloader.Info}}" Value="True">
-          <Setter Property="Foreground" Value="#38A800" />
-        </DataTrigger>
-        <DataTrigger Binding="{Binding IsRepeating, Source={x:Static code:SteamDataDownloader.Info}}" Value="True">
-          <Setter Property="Foreground" Value="#DE4426" />
-          <Setter Property="FontWeight" Value="ExtraBold" />
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
     <Style x:Key="cardAlternateText" TargetType="TextBlock">
       <Setter Property="Visibility" Value="Collapsed" />
       <Style.Triggers>
@@ -246,7 +234,7 @@
           <Border Style="{StaticResource cardBorderStyle}">
             <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
                 NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
-                Width="77" Height="89" Stretch="Uniform" Delay="200"
+                Width="77" Height="89" Stretch="Uniform" Delay="300"
                 Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
           </Border>
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
@@ -332,8 +320,6 @@
         ContextMenu="{StaticResource profileMenu}" DataContext="{Binding OwnerProfile}" Grid.Row="1" Grid.RowSpan="2" />
     <TextBlock Text="{Binding Name}" DataContext="{Binding OwnerProfile}" VerticalAlignment="Center"
         ContextMenu="{StaticResource profileMenu}" FontSize="16" Margin="2" Grid.Row="1" Grid.Column="1" />
-    <TextBlock Text="{Binding RequestCount, Source={x:Static code:SteamDataDownloader.Info}, StringFormat={x:Static resx:Strings.RequestCountFormat}}"
-        VerticalAlignment="Center" FontSize="16" TextAlignment="Right" Margin="4,2" Grid.Row="1" Grid.Column="2" Style="{StaticResource requestCountStyle}" />
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="Uniform"
         NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
         Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}"
@@ -400,46 +386,55 @@
       </ItemsControl.Template>
     </ItemsControl>
     <StatusBar Grid.Row="5" Grid.ColumnSpan="3">
-      <StatusBarItem>
-        <TextBlock />
+      <StatusBar.Resources>
+        <BitmapImage x:Key="transfer0" ice:Freeze="True" UriSource="Img/transfer0.png" />
+        <BitmapImage x:Key="transfer1" ice:Freeze="True" UriSource="Img/transfer1.png" />
+        <BitmapImage x:Key="alert0" ice:Freeze="True" UriSource="Img/alert0.png" />
+        <BitmapImage x:Key="alert1" ice:Freeze="True" UriSource="Img/alert1.png" />
+      </StatusBar.Resources>
+      <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
+        <TextBlock Text="{Binding RequestCount, StringFormat={x:Static resx:Strings.RequestCountFormat}}" />
+      </StatusBarItem>
+      <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
+        <Image Height="16">
+          <Image.Style>
+            <Style TargetType="Image">
+              <Setter Property="Source" Value="{StaticResource transfer0}" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsInProgress}" Value="True">
+                  <Setter Property="Source" Value="{StaticResource transfer1}" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Image.Style>
+        </Image>
+      </StatusBarItem>
+      <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
+        <Image Height="16">
+          <Image.Style>
+            <Style TargetType="Image">
+              <Setter Property="Source" Value="{StaticResource alert0}" />
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsRepeating}" Value="True">
+                  <Setter Property="Source" Value="{StaticResource alert1}" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Image.Style>
+        </Image>
+      </StatusBarItem>
+      <Separator />
+      <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
+        <TextBlock>
+          <TextBlock.Text>
+            <MultiBinding StringFormat="{x:Static resx:Strings.ImagesToDownloadFormat}">
+              <Binding Path="ImagesToDownload" />
+              <Binding Path="ImagesNotModified" />
+              <Binding Path="ImagesDownloaded" />
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
       </StatusBarItem>
     </StatusBar>
-    <!--<Grid Name="noteEditForm" Grid.ColumnSpan="3" Grid.RowSpan="6" Visibility="Collapsed">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="10*" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="3*" />
-        <RowDefinition Height="11*" />
-        <RowDefinition Height="2*" />
-      </Grid.RowDefinitions>
-      <Grid.Resources>
-        <Color x:Key="overlayColor" A="64" R="96" G="96" B="96" />
-        <SolidColorBrush x:Key="overlayColorBrush" ice:Freeze="True" Color="{StaticResource overlayColor}" />
-        <Color x:Key="formColor" A="255" R="255" G="255" B="212" />
-        <SolidColorBrush x:Key="formColorBrush" ice:Freeze="True" Color="{StaticResource formColor}" />
-      </Grid.Resources>
-      <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="3" Fill="{StaticResource overlayColorBrush}" />
-      <Border Grid.Column="1" Grid.Row="1" BorderThickness="1"
-          BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}">
-        <Grid>
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-          </Grid.ColumnDefinitions>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-          </Grid.RowDefinitions>
-          <Rectangle Grid.ColumnSpan="1" Grid.RowSpan="2" Fill="{StaticResource formColorBrush}" />
-          <TextBox Name="tbMultiLine" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible" Margin="2" />
-          <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
-            <Button Command="ApplicationCommands.Save" Content="Save" Margin="5" Padding="20,2" />
-            <Button Command="ApplicationCommands.Close" Content="Close" Margin="5" Padding="20,2" />
-          </StackPanel>
-        </Grid>
-      </Border>
-    </Grid>-->
   </Grid>
 </Window>

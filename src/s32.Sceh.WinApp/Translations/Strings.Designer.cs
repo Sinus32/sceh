@@ -20,7 +20,7 @@ namespace s32.Sceh.WinApp.Translations {
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
-    //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
         
@@ -138,6 +138,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string ExceptionDuringDownloadingSteamProfile {
             get {
                 return ResourceManager.GetString("ExceptionDuringDownloadingSteamProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images downloading: {0}/{1}/{2}.
+        /// </summary>
+        public static string ImagesToDownloadFormat {
+            get {
+                return ResourceManager.GetString("ImagesToDownloadFormat", resourceCulture);
             }
         }
         

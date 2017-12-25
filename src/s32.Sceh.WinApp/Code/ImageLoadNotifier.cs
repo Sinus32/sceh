@@ -60,30 +60,19 @@ namespace s32.Sceh.WinApp.Code
             }
             else
             {
-                List<WeakReference<LazyImage>> targets;
-                if (_requests.TryGetValue(imageFile, out targets))
+                var targets = _requests.GetOrAdd(imageFile, key => new List<WeakReference<LazyImage>>());
+                lock (targets)
                 {
-                    lock (targets)
-                    {
-                        for (int i = 0; i < targets.Count; ++i)
-                        {
-                            LazyImage tmp;
-                            if (!targets[i].TryGetTarget(out tmp))
-                            {
-                                targets[i].SetTarget(imageCtl);
-                                return;
-                            }
-                        }
-                        var wr = new WeakReference<LazyImage>(imageCtl);
-                        targets.Add(wr);
-                    }
-                }
-                else
-                {
-                    targets = new List<WeakReference<LazyImage>>();
-                    var wr = new WeakReference<LazyImage>(imageCtl);
-                    targets.Add(wr);
-                    _requests.TryAdd(imageFile, targets);
+                    int i;
+                    LazyImage tmp;
+                    for (i = 0; i < targets.Count; ++i)
+                        if (!targets[i].TryGetTarget(out tmp))
+                            break;
+
+                    if (i < targets.Count)
+                        targets[i].SetTarget(imageCtl);
+                    else
+                        targets.Add(new WeakReference<LazyImage>(imageCtl));
                 }
                 ImageDownloader.EnqueueDownload(imageFile, newFilePriority, true);
             }
@@ -102,18 +91,18 @@ namespace s32.Sceh.WinApp.Code
 
             public void Action()
             {
-                var dc = _image.DataContext;
-                string title = "Image";
-                
-                if (dc is Card)
-                    title = ((Card)dc).Name;
-                else if (dc is SteamProfile)
-                    title = ((SteamProfile)dc).Name;
+                //var dc = _image.DataContext;
+                //string title = "Image";
+
+                //if (dc is Card)
+                //    title = ((Card)dc).Name;
+                //else if (dc is SteamProfile)
+                //    title = ((SteamProfile)dc).Name;
 
                 //if (IsInView(_image))
                 //{
                 //    Debug.WriteLine(title, "Image in view");
-                    _image.LocalFilePath = _localFilePath;
+                _image.LocalFilePath = _localFilePath;
                 //}
                 //else
                 //{

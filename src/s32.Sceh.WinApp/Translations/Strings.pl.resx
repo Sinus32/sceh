@@ -144,6 +144,9 @@
   <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
     <value>Podczas ściągania danych profilu wystąpił wyjątek: {0}</value>
   </data>
+  <data name="ImagesToDownloadFormat" xml:space="preserve">
+    <value>Pobieranie obrazów: {0}/{1}/{2}</value>
+  </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
     <value>Błędny identyfikator lub własny url profilu</value>
   </data>
