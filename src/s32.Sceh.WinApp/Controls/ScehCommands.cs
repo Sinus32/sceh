@@ -10,110 +10,131 @@ namespace s32.Sceh.WinApp.Controls
 {
     public class ScehCommands : DependencyObject
     {
-        private static RoutedCommand _compareCommand, _editNoteCommand, _showHideCardsCommand,
-            _openMarketPageCommand, _openStorePageCommand, _openBadgePageCommand, _openTradingForumCommand,
-            _openProfilePageCommand, _openInventoryPageCommand, _openUserBadgesCommand,
-            _openTradeOffersCommand, _openTradeTopicsCommand, _openPostHistoryCommand,
-            _copyNameCommand, _okCommand, _cancelCommand;
+        private static RoutedCommand _ok, _cancel, _compare, _editNote, _showHideCards,
+            _openMarketPage, _openStorePage, _openBadgePage, _openTradingForum,
+            _openProfilePage, _openInventoryPage, _openUserBadges,
+            _openTradeOffers, _openTradeTopics, _openPostHistory,
+            _copyName, _scoreUpDown, _pasteCards;
 
         static ScehCommands()
         {
-            _okCommand = new RoutedCommand("Ok", typeof(ScehCommands));
-            _cancelCommand = new RoutedCommand("Cancel", typeof(ScehCommands));
-            _compareCommand = new RoutedCommand("Compare", typeof(ScehCommands));
-            _editNoteCommand = new RoutedCommand("EditNote", typeof(ScehCommands));
-            _showHideCardsCommand = new RoutedCommand("ShowHideCards", typeof(ScehCommands));
-            _openMarketPageCommand = new RoutedCommand("OpenMarketPage", typeof(ScehCommands));
-            _openStorePageCommand = new RoutedCommand("OpenStorePage", typeof(ScehCommands));
-            _openBadgePageCommand = new RoutedCommand("OpenBadgePage", typeof(ScehCommands));
-            _openTradingForumCommand = new RoutedCommand("OpenTradingForum", typeof(ScehCommands));
-            _openProfilePageCommand = new RoutedCommand("OpenProfilePage", typeof(ScehCommands));
-            _openInventoryPageCommand = new RoutedCommand("OpenInventoryPage", typeof(ScehCommands));
-            _openUserBadgesCommand = new RoutedCommand("OpenUserBadges", typeof(ScehCommands));
-            _openTradeOffersCommand = new RoutedCommand("OpenTradeOffers", typeof(ScehCommands));
-            _openTradeTopicsCommand = new RoutedCommand("OpenTradeTopics", typeof(ScehCommands));
-            _openPostHistoryCommand = new RoutedCommand("OpenPostHistory", typeof(ScehCommands));
-            _copyNameCommand = new RoutedCommand("CopyName", typeof(ScehCommands));
+            _ok = new RoutedCommand("Ok", typeof(ScehCommands));
+            _cancel = new RoutedCommand("Cancel", typeof(ScehCommands));
+            _compare = new RoutedCommand("Compare", typeof(ScehCommands));
+            _editNote = new RoutedCommand("EditNote", typeof(ScehCommands));
+            _showHideCards = new RoutedCommand("ShowHideCards", typeof(ScehCommands));
+            _openMarketPage = new RoutedCommand("OpenMarketPage", typeof(ScehCommands));
+            _openStorePage = new RoutedCommand("OpenStorePage", typeof(ScehCommands));
+            _openBadgePage = new RoutedCommand("OpenBadgePage", typeof(ScehCommands));
+            _openTradingForum = new RoutedCommand("OpenTradingForum", typeof(ScehCommands));
+            _openProfilePage = new RoutedCommand("OpenProfilePage", typeof(ScehCommands));
+            _openInventoryPage = new RoutedCommand("OpenInventoryPage", typeof(ScehCommands));
+            _openUserBadges = new RoutedCommand("OpenUserBadges", typeof(ScehCommands));
+            _openTradeOffers = new RoutedCommand("OpenTradeOffers", typeof(ScehCommands));
+            _openTradeTopics = new RoutedCommand("OpenTradeTopics", typeof(ScehCommands));
+            _openPostHistory = new RoutedCommand("OpenPostHistory", typeof(ScehCommands));
+            _copyName = new RoutedCommand("CopyName", typeof(ScehCommands));
+            _scoreUpDown = new RoutedCommand("ScoreUpDown", typeof(ScehCommands));
+            _pasteCards = new RoutedCommand("PasteCards", typeof(ScehCommands));
         }
 
-        public static RoutedCommand OkCommand
+        public enum CardSelection
         {
-            get { return _okCommand; }
+            None,
+
+            MyCards,
+
+            OtherCards,
         }
 
-        public static RoutedCommand CancelCommand
+        public static RoutedCommand Cancel
         {
-            get { return _cancelCommand; }
+            get { return _cancel; }
         }
 
-        public static RoutedCommand CompareCommand
+        public static RoutedCommand Compare
         {
-            get { return _compareCommand; }
+            get { return _compare; }
         }
 
-        public static RoutedCommand CopyNameCommand
+        public static RoutedCommand CopyName
         {
-            get { return _copyNameCommand; }
+            get { return _copyName; }
         }
 
-        public static RoutedCommand EditNoteCommand
+        public static RoutedCommand EditNote
         {
-            get { return _editNoteCommand; }
+            get { return _editNote; }
         }
 
-        public static RoutedCommand OpenBadgePageCommand
+        public static RoutedCommand Ok
         {
-            get { return _openBadgePageCommand; }
+            get { return _ok; }
         }
 
-        public static RoutedCommand OpenInventoryPageCommand
+        public static RoutedCommand OpenBadgePage
         {
-            get { return _openInventoryPageCommand; }
+            get { return _openBadgePage; }
         }
 
-        public static RoutedCommand OpenMarketPageCommand
+        public static RoutedCommand OpenInventoryPage
         {
-            get { return _openMarketPageCommand; }
+            get { return _openInventoryPage; }
         }
 
-        public static RoutedCommand OpenPostHistoryCommand
+        public static RoutedCommand OpenMarketPage
         {
-            get { return _openPostHistoryCommand; }
+            get { return _openMarketPage; }
         }
 
-        public static RoutedCommand OpenProfilePageCommand
+        public static RoutedCommand OpenPostHistory
         {
-            get { return _openProfilePageCommand; }
+            get { return _openPostHistory; }
         }
 
-        public static RoutedCommand OpenStorePageCommand
+        public static RoutedCommand OpenProfilePage
         {
-            get { return _openStorePageCommand; }
+            get { return _openProfilePage; }
         }
 
-        public static RoutedCommand OpenTradeOffersCommand
+        public static RoutedCommand OpenStorePage
         {
-            get { return _openTradeOffersCommand; }
+            get { return _openStorePage; }
         }
 
-        public static RoutedCommand OpenTradeTopicsCommand
+        public static RoutedCommand OpenTradeOffers
         {
-            get { return _openTradeTopicsCommand; }
+            get { return _openTradeOffers; }
         }
 
-        public static RoutedCommand OpenTradingForumCommand
+        public static RoutedCommand OpenTradeTopics
         {
-            get { return _openTradingForumCommand; }
+            get { return _openTradeTopics; }
         }
 
-        public static RoutedCommand OpenUserBadgesCommand
+        public static RoutedCommand OpenTradingForum
         {
-            get { return _openUserBadgesCommand; }
+            get { return _openTradingForum; }
         }
 
-        public static RoutedCommand ShowHideCardsCommand
+        public static RoutedCommand OpenUserBadges
         {
-            get { return _showHideCardsCommand; }
+            get { return _openUserBadges; }
+        }
+
+        public static RoutedCommand PasteCards
+        {
+            get { return _pasteCards; }
+        }
+
+        public static RoutedCommand ScoreUpDown
+        {
+            get { return _scoreUpDown; }
+        }
+
+        public static RoutedCommand ShowHideCards
+        {
+            get { return _showHideCards; }
         }
     }
 }

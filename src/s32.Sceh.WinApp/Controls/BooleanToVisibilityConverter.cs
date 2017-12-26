@@ -34,10 +34,20 @@ namespace s32.Sceh.WinApp.Controls
             if (value == null)
                 return DependencyProperty.UnsetValue;
 
-            if (!(value is bool) || !typeof(Visibility).Equals(targetType))
+            if (!typeof(Visibility).Equals(targetType))
                 throw new NotSupportedException();
 
-            return ((bool)value) ? ValueForTrue : ValueForFalse;
+            bool val;
+            if (value is bool)
+                val = (bool)value;
+            else if (value is int)
+                val = ((int)value) != 0;
+            else if (value is long)
+                val = ((long)value) != 0;
+            else
+                throw new NotSupportedException();
+
+            return val ? ValueForTrue : ValueForFalse;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

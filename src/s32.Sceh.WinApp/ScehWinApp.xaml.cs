@@ -53,33 +53,6 @@ namespace s32.Sceh.WinApp
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            //var cc = CultureInfo.CurrentCulture;
-            //ResourceContext context = ResourceManager.Current.DefaultContext;
-            //Translations.Strings.Culture = new CultureInfo("pl-PL");
-
-            //List<CultureInfo> result = new List<CultureInfo>();
-
-            //ResourceManager rm = Translations.Strings.ResourceManager;
-
-            //CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
-            //foreach (CultureInfo culture in cultures)
-            //{
-            //    try
-            //    {
-            //        if (culture.Equals(CultureInfo.InvariantCulture)) continue; //do not use "==", won't work
-
-            //        ResourceSet rs = rm.GetResourceSet(culture, true, false);
-            //        if (rs != null)
-            //            result.Add(culture);
-            //    }
-            //    catch (CultureNotFoundException)
-            //    {
-            //        //NOP
-            //    }
-            //}
-
-            //var ddd = rm.GetString("CompareButtonText", CultureInfo.CurrentCulture);
-
             DataManager.Initialize();
             _imageDownloaderWorker = new ImageDownloader.Worker[3];
             _imageDownloaderWorker[0] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);

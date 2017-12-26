@@ -9,10 +9,27 @@
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
     Startup="Application_Startup" Exit="Application_Exit">
   <Application.Resources>
+    <Color x:Key="foregroundGreenColor" A="255" R="43" G="128" B="4" />
+    <Color x:Key="foregroundRedColor" A="255" R="196" G="57" B="29" />
+    <SolidColorBrush x:Key="foregroundGreenBrush" ice:Freeze="True" Color="{StaticResource foregroundGreenColor}" />
+    <SolidColorBrush x:Key="foregroundRedBrush" ice:Freeze="True" Color="{StaticResource foregroundRedColor}" />
     <BitmapImage x:Key="defaultAvatar" ice:Freeze="True" UriSource="Img/avatar.jpg" />
     <BitmapImage x:Key="defaultCard" ice:Freeze="True" UriSource="Img/card.png" />
+    <BitmapImage x:Key="compareIcon" ice:Freeze="True" UriSource="Img/compare.png" />
     <BitmapImage x:Key="noteIcon" ice:Freeze="True" UriSource="Img/note.png" />
+    <BitmapImage x:Key="scoreDownIcon" ice:Freeze="True" UriSource="Img/scoreDown.png" />
+    <BitmapImage x:Key="scoreUpIcon" ice:Freeze="True" UriSource="Img/scoreUp.png" />
     <BitmapImage x:Key="nonMarketable" ice:Freeze="True" UriSource="Img/nonMarketable.png" />
+    <BitmapImage x:Key="transferOff" ice:Freeze="True" UriSource="Img/transfer0.png" />
+    <BitmapImage x:Key="transferOn" ice:Freeze="True" UriSource="Img/transfer1.png" />
+    <BitmapImage x:Key="alertOff" ice:Freeze="True" UriSource="Img/alert0.png" />
+    <BitmapImage x:Key="alertOn" ice:Freeze="True" UriSource="Img/alert1.png" />
+    <BitmapImage x:Key="selection1" ice:Freeze="True" UriSource="Img/selection1.png" />
+    <BitmapImage x:Key="selection2" ice:Freeze="True" UriSource="Img/selection2.png" />
+    <BitmapImage x:Key="selection3" ice:Freeze="True" UriSource="Img/selection3.png" />
+    <BitmapImage x:Key="selection4" ice:Freeze="True" UriSource="Img/selection4.png" />
+    <BitmapImage x:Key="selection5" ice:Freeze="True" UriSource="Img/selection5.png" />
+    <BitmapImage x:Key="selection6" ice:Freeze="True" UriSource="Img/selection6.png" />
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}" />
     <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}" />
     <ctl:ImageLoader x:Key="imageLoader" />
@@ -59,6 +76,7 @@
             <Grid HorizontalAlignment="Stretch" Margin="0,1,0,1" >
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
               </Grid.ColumnDefinitions>
@@ -68,12 +86,24 @@
               <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Height="24"
                   NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
                   Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
-              <StackPanel Orientation="Horizontal" Margin="2,0,2,0" Grid.Column="1">
-                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-                <TextBlock Text="{Binding CustomUrlOrSteamId, StringFormat={} ({0})}" Style="{StaticResource urlOrSteamIdTextBlock}" VerticalAlignment="Center" />
+              <TextBlock Text="{Binding Name}" Grid.Column="1"
+                  VerticalAlignment="Center" Margin="2,0" />
+              <TextBlock Text="{Binding CustomUrlOrSteamId, StringFormat=({0})}" Grid.Column="2"
+                  VerticalAlignment="Center" Margin="2,0" Style="{StaticResource urlOrSteamIdTextBlock}" />
+              <StackPanel Orientation="Horizontal" Style="{DynamicResource noteIconToolTip}" Grid.Column="3">
+                <TextBlock Text="{Binding Notes.PositiveScore, StringFormat={}{0:+0;-0}}" Foreground="{StaticResource foregroundGreenBrush}"
+                    Visibility="{Binding Notes.PositiveScore, Converter={StaticResource visibleToVisibilityConv}}"
+                    VerticalAlignment="Center" FontWeight="Bold" Margin="2,0" />
+                <Image Source="{StaticResource scoreUpIcon}" Stretch="None" Margin="2,0"
+                    Visibility="{Binding Notes.PositiveScore, Converter={StaticResource visibleToVisibilityConv}}" />
+                <TextBlock Text="{Binding Notes.NegativeScore, StringFormat={}{0:+0;-0}}" Foreground="{StaticResource foregroundRedBrush}"
+                    Visibility="{Binding Notes.NegativeScore, Converter={StaticResource visibleToVisibilityConv}}"
+                    VerticalAlignment="Center" FontWeight="Bold" Margin="2,0" />
+                <Image Source="{StaticResource scoreDownIcon}" Stretch="None" Margin="2,0"
+                    Visibility="{Binding Notes.NegativeScore, Converter={StaticResource visibleToVisibilityConv}}" />
+                <Image Source="{StaticResource noteIcon}" Stretch="None" Margin="2,0,0,0"
+                    Visibility="{Binding Notes.HasNote, Converter={StaticResource visibleToVisibilityConv}}" />
               </StackPanel>
-              <Image Source="{StaticResource noteIcon}" Stretch="None" Style="{DynamicResource noteIconToolTip}"
-                  Visibility="{Binding Notes.HasNote, Converter={StaticResource visibleToVisibilityConv}}" Grid.Column="2" />
             </Grid>
           </DataTemplate>
         </Setter.Value>
