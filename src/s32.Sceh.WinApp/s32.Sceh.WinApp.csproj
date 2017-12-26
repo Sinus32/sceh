@@ -168,6 +168,13 @@
   <ItemGroup>
     <Resource Include="Img\compare.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\scoreDown.png" />
+    <Resource Include="Img\scoreUp.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UserNoteTags\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

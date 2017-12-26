@@ -42,7 +42,8 @@ namespace s32.Sceh.DataModel
             {
                 var result = 0;
                 foreach (var note in _notes)
-                    result += note.Score;
+                    if (note.Score < 0)
+                        result += note.Score;
                 return result;
             }
         }
@@ -53,7 +54,8 @@ namespace s32.Sceh.DataModel
             {
                 var result = 0;
                 foreach (var note in _notes)
-                    result += note.Score;
+                    if (note.Score > 0)
+                        result += note.Score;
                 return result;
             }
         }
