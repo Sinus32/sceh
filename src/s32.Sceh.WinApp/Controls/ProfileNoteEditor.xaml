@@ -15,7 +15,7 @@
     <CommandBinding Command="ctl:ScehCommands.Ok" CanExecute="Save_CanExecute" Executed="Save_Executed" />
     <CommandBinding Command="ctl:ScehCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed" />
     <CommandBinding Command="ctl:ScehCommands.ScoreUpDown" CanExecute="ScoreUpDown_CanExecute" Executed="ScoreUpDown_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.PasteCards" CanExecute="PasteCards_CanExecute" Executed="PasteCards_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.PasteTag" CanExecute="PasteTag_CanExecute" Executed="PasteTag_Executed" />
   </UserControl.CommandBindings>
   <Grid Name="noteEditForm" FocusManager.FocusedElement="{Binding ElementName=tbEditor}" Loaded="noteEditForm_Loaded">
     <Grid.ColumnDefinitions>
@@ -49,10 +49,22 @@
             <sys:Int32>-1</sys:Int32>
           </Button.CommandParameter>
         </Button>
-        <Button Command="ctl:ScehCommands.PasteCards" Content="Left"
-            CommandParameter="ctl:ScehCommands.CardSelection.MyCards" />
-        <Button Command="ctl:ScehCommands.PasteCards" Content="Right"
-            CommandParameter="ctl:ScehCommands.CardSelection.OtherCards" />
+        <Separator />
+        <Button Command="ctl:ScehCommands.PasteTag" Content="Date">
+          <Button.CommandParameter>
+            <ctl:TagSelection>Date</ctl:TagSelection>
+          </Button.CommandParameter>
+        </Button>
+        <Button Command="ctl:ScehCommands.PasteTag" Content="MyCards">
+          <Button.CommandParameter>
+            <ctl:TagSelection>MyCards</ctl:TagSelection>
+          </Button.CommandParameter>
+        </Button>
+        <Button Command="ctl:ScehCommands.PasteTag" Content="OtherCards">
+          <Button.CommandParameter>
+            <ctl:TagSelection>OtherCards</ctl:TagSelection>
+          </Button.CommandParameter>
+        </Button>
       </ToolBar>
     </ToolBarTray>
     <TextBox Name="tbEditor" Grid.Row="2" Grid.Column="1"

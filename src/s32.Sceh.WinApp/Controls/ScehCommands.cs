@@ -14,7 +14,7 @@ namespace s32.Sceh.WinApp.Controls
             _openMarketPage, _openStorePage, _openBadgePage, _openTradingForum,
             _openProfilePage, _openInventoryPage, _openUserBadges,
             _openTradeOffers, _openTradeTopics, _openPostHistory,
-            _copyName, _scoreUpDown, _pasteCards;
+            _copyName, _scoreUpDown, _pasteTag;
 
         static ScehCommands()
         {
@@ -35,16 +35,7 @@ namespace s32.Sceh.WinApp.Controls
             _openPostHistory = new RoutedCommand("OpenPostHistory", typeof(ScehCommands));
             _copyName = new RoutedCommand("CopyName", typeof(ScehCommands));
             _scoreUpDown = new RoutedCommand("ScoreUpDown", typeof(ScehCommands));
-            _pasteCards = new RoutedCommand("PasteCards", typeof(ScehCommands));
-        }
-
-        public enum CardSelection
-        {
-            None,
-
-            MyCards,
-
-            OtherCards,
+            _pasteTag = new RoutedCommand("PasteTag", typeof(ScehCommands));
         }
 
         public static RoutedCommand Cancel
@@ -122,9 +113,9 @@ namespace s32.Sceh.WinApp.Controls
             get { return _openUserBadges; }
         }
 
-        public static RoutedCommand PasteCards
+        public static RoutedCommand PasteTag
         {
-            get { return _pasteCards; }
+            get { return _pasteTag; }
         }
 
         public static RoutedCommand ScoreUpDown

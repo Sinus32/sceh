@@ -68,6 +68,7 @@
       <DependentUpon>ProfileNoteEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScehCommands.cs" />
+    <Compile Include="Controls\TagSelection.cs" />
     <Compile Include="Controls\UrlToImageFileConverter.cs" />
     <Compile Include="InvCompareWindow.xaml.cs">
       <DependentUpon>InvCompareWindow.xaml</DependentUpon>
@@ -77,6 +78,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="UserNoteTags\DateTimeTag.cs" />
+    <Compile Include="UserNoteTags\IUserNoteTag.cs" />
+    <Compile Include="UserNoteTags\SteamAppTag.cs" />
+    <Compile Include="UserNoteTags\SteamCardTag.cs" />
     <Page Include="Controls\ProfileNoteEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -172,9 +177,7 @@
     <Resource Include="Img\scoreDown.png" />
     <Resource Include="Img\scoreUp.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UserNoteTags\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

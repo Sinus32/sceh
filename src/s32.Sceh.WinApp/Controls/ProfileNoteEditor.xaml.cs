@@ -1,4 +1,5 @@
 ﻿using s32.Sceh.DataModel;
+using s32.Sceh.WinApp.UserNoteTags;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -118,6 +119,33 @@ namespace s32.Sceh.WinApp.Controls
 
         #region Commands
 
+        private string BuildCardsTags(Func<SteamApp, bool> getIsSelected, Func<SteamApp, IEnumerable<Card>> getCards)
+        {
+            var sb = new StringBuilder();
+
+            foreach (var app in SteamApps)
+            {
+                if (!getIsSelected(app))
+                    continue;
+
+                if (sb.Length > 0)
+                    sb.Append(' ');
+                sb.Append(new SteamAppTag(app));
+
+                foreach (var card in getCards(app))
+                {
+                    if (!card.IsSelected)
+                        continue;
+
+                    if (sb.Length > 0)
+                        sb.Append(' ');
+                    sb.Append(new SteamCardTag(card));
+                }
+            }
+
+            return sb.ToString();
+        }
+
         private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -138,53 +166,59 @@ namespace s32.Sceh.WinApp.Controls
             }
         }
 
-        private void PasteCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void PasteTag_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = SteamApps != null && e.Parameter is ScehCommands.CardSelection;
+            if (!(e.Parameter is TagSelection))
+            {
+                e.CanExecute = false;
+                return;
+            }
+
+            switch ((TagSelection)e.Parameter)
+            {
+                case TagSelection.Date:
+                    e.CanExecute = true;
+                    return;
+
+                case TagSelection.MyCards:
+                    e.CanExecute = SteamApps != null && SteamApps.Any(steamApp => steamApp.MyIsSelected);
+                    return;
+
+                case TagSelection.OtherCards:
+                    e.CanExecute = SteamApps != null && SteamApps.Any(steamApp => steamApp.OtherIsSelected);
+                    return;
+
+                default:
+                    e.CanExecute = false;
+                    return;
+            }
         }
 
-        private void PasteCards_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void PasteTag_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (SteamApps == null || !(e.Parameter is ScehCommands.CardSelection))
+            if (!(e.Parameter is TagSelection))
                 return;
 
-            var cardSelection = (ScehCommands.CardSelection)e.Parameter;
-
-            var sb = new StringBuilder();
-
-            foreach (var app in SteamApps)
+            string text = null;
+            switch ((TagSelection)e.Parameter)
             {
-                bool flag = true;
+                case TagSelection.Date:
+                    text = new DateTimeTag(DateTime.Today).BuildTag();
+                    break;
 
-                IEnumerable<Card> cards;
-                switch (cardSelection)
-                {
-                    case ScehCommands.CardSelection.MyCards:
-                        cards = app.MyCards;
-                        break;
+                case TagSelection.MyCards:
+                    if (SteamApps != null)
+                        text = BuildCardsTags(steamApp => steamApp.MyIsSelected, steamApp => steamApp.MyCards);
+                    break;
 
-                    case ScehCommands.CardSelection.OtherCards:
-                        cards = app.OtherCards;
-                        break;
-
-                    default:
-                        return;
-                }
-
-                foreach (var card in cards)
-                {
-                    if (!card.IsSelected)
-                        continue;
-
-                    if (flag)
-                    {
-                        sb.Append(' ').Append(app.Name);
-                        flag = false;
-                    }
-
-                    sb.Append(' ').Append(card.Name);
-                }
+                case TagSelection.OtherCards:
+                    if (SteamApps != null)
+                        text = BuildCardsTags(steamApp => steamApp.OtherIsSelected, steamApp => steamApp.OtherCards);
+                    break;
             }
+
+            if (!String.IsNullOrEmpty(text))
+                tbEditor.SelectedText = text;
         }
 
         private void RaiseCancelCommand()
