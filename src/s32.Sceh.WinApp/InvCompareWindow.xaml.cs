@@ -156,12 +156,7 @@ namespace s32.Sceh.WinApp
             }
             catch (Exception ex)
             {
-                var sb = new StringBuilder(ex.Message);
-                for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
-                    sb.AppendLine().Append(inner.Message);
-                MessageBox.Show(sb.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-                if (Debugger.IsAttached)
-                    Debugger.Break();
+                ShowException(ex);
             }
         }
 
@@ -179,6 +174,16 @@ namespace s32.Sceh.WinApp
             if (SecondInvError != null)
                 sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, SecondInvError).AppendLine();
             ErrorMessage = sb.ToString();
+        }
+
+        private void ShowException(Exception ex)
+        {
+            var sb = new StringBuilder(ex.Message);
+            for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
+                sb.AppendLine().Append(inner.Message);
+            MessageBox.Show(sb.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            if (Debugger.IsAttached)
+                Debugger.Break();
         }
 
         #region Commands
@@ -343,7 +348,17 @@ namespace s32.Sceh.WinApp
             }
 
             if (url != null)
-                System.Diagnostics.Process.Start(url);
+            {
+                try
+                {
+                    var escaped = url.Replace(" ", "%20");
+                    System.Diagnostics.Process.Start(escaped);
+                }
+                catch (Exception ex)
+                {
+                    ShowException(ex);
+                }
+            }
         }
 
         private void OpenPostHistoryCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -177,7 +177,15 @@
     <Resource Include="Img\scoreDown.png" />
     <Resource Include="Img\scoreUp.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Img\badge.png" />
+    <Resource Include="Img\copy.png" />
+    <Resource Include="Img\forum.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\game.png" />
+    <Resource Include="Img\market.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

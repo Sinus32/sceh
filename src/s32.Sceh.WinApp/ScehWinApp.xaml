@@ -16,7 +16,12 @@
     <BitmapImage x:Key="defaultAvatar" ice:Freeze="True" UriSource="Img/avatar.jpg" />
     <BitmapImage x:Key="defaultCard" ice:Freeze="True" UriSource="Img/card.png" />
     <BitmapImage x:Key="compareIcon" ice:Freeze="True" UriSource="Img/compare.png" />
+    <BitmapImage x:Key="copyIcon" ice:Freeze="True" UriSource="Img/copy.png" />
     <BitmapImage x:Key="noteIcon" ice:Freeze="True" UriSource="Img/note.png" />
+    <BitmapImage x:Key="badgeIcon" ice:Freeze="True" UriSource="Img/badge.png" />
+    <BitmapImage x:Key="gameIcon" ice:Freeze="True" UriSource="Img/game.png" />
+    <BitmapImage x:Key="marketIcon" ice:Freeze="True" UriSource="Img/market.png" />
+    <BitmapImage x:Key="forumIcon" ice:Freeze="True" UriSource="Img/forum.png" />
     <BitmapImage x:Key="scoreDownIcon" ice:Freeze="True" UriSource="Img/scoreDown.png" />
     <BitmapImage x:Key="scoreUpIcon" ice:Freeze="True" UriSource="Img/scoreUp.png" />
     <BitmapImage x:Key="nonMarketable" ice:Freeze="True" UriSource="Img/nonMarketable.png" />
