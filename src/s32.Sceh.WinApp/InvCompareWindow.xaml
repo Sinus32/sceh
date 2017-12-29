@@ -230,7 +230,7 @@
       </MenuItem>
       <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding}">
         <MenuItem.Icon>
-          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource postHistoryMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
     </ContextMenu>
@@ -385,23 +385,23 @@
         </MenuItem>
         <MenuItem Header="{x:Static resx:Strings.MenuItem_TradeTopics}" Command="ctl:ScehCommands.OpenTradeTopics" CommandParameter="{Binding OwnerProfile}">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource dealMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding OwnerProfile}">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource postHistoryMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
         <Separator />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_ChangeProfile}" Command="ApplicationCommands.New">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource changeMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="{x:Static resx:Strings.MenuItem_Exit}" Command="ApplicationCommands.Close">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource exitMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
       </MenuItem>
@@ -429,7 +429,7 @@
         <Separator />
         <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding SecondProfile}">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource postHistoryMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
         <Separator />
