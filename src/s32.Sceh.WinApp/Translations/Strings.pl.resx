@@ -120,21 +120,6 @@
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>Loguj _automatycznie</value>
   </data>
-  <data name="CardContextMenu_BadgePage" xml:space="preserve">
-    <value>_Odznaka Steam</value>
-  </data>
-  <data name="CardContextMenu_CopyName" xml:space="preserve">
-    <value>Kopiuj _nazwę</value>
-  </data>
-  <data name="CardContextMenu_MarketPage" xml:space="preserve">
-    <value>_Kupno i sprzedaż</value>
-  </data>
-  <data name="CardContextMenu_StorePage" xml:space="preserve">
-    <value>_Strona sklepu</value>
-  </data>
-  <data name="CardContextMenu_TradingForum" xml:space="preserve">
-    <value>_Forum wymiany</value>
-  </data>
   <data name="CompareButtonText" xml:space="preserve">
     <value>_Porównaj</value>
   </data>
@@ -159,11 +144,17 @@
   <data name="LoginWindowTitle" xml:space="preserve">
     <value>Steam cards exchange helper</value>
   </data>
+  <data name="MenuItem_BadgePage" xml:space="preserve">
+    <value>_Odznaka Steam</value>
+  </data>
   <data name="MenuItem_Badges" xml:space="preserve">
     <value>_Odznaki</value>
   </data>
   <data name="MenuItem_ChangeProfile" xml:space="preserve">
     <value>Z_mień profil</value>
+  </data>
+  <data name="MenuItem_CopyName" xml:space="preserve">
+    <value>Kopiuj _nazwę</value>
   </data>
   <data name="MenuItem_EditNote" xml:space="preserve">
     <value>_Notatki</value>
@@ -171,8 +162,14 @@
   <data name="MenuItem_Exit" xml:space="preserve">
     <value>_Zakończ</value>
   </data>
+  <data name="MenuItem_IncomingOffers" xml:space="preserve">
+    <value>_Oferty przychodzące</value>
+  </data>
   <data name="MenuItem_Inventory" xml:space="preserve">
     <value>_Ekwipunek</value>
+  </data>
+  <data name="MenuItem_MarketPage" xml:space="preserve">
+    <value>_Kupno i sprzedaż</value>
   </data>
   <data name="MenuItem_MyProfile" xml:space="preserve">
     <value>_Mój profil</value>
@@ -186,11 +183,17 @@
   <data name="MenuItem_Profile" xml:space="preserve">
     <value>_Strona profilu</value>
   </data>
-  <data name="MenuItem_TradeOffers" xml:space="preserve">
-    <value>Oferty _wymiany</value>
+  <data name="MenuItem_SentOffers" xml:space="preserve">
+    <value>Oferty _wysłane</value>
+  </data>
+  <data name="MenuItem_StorePage" xml:space="preserve">
+    <value>_Strona sklepu</value>
   </data>
   <data name="MenuItem_TradeTopics" xml:space="preserve">
     <value>_Tematy dot. wymiany</value>
+  </data>
+  <data name="MenuItem_TradingForum" xml:space="preserve">
+    <value>_Forum wymiany</value>
   </data>
   <data name="NotesButtonText" xml:space="preserve">
     <value>Notatki</value>

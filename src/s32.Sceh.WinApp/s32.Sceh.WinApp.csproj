@@ -178,13 +178,24 @@
     <Resource Include="Img\scoreUp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Img\badge.png" />
-    <Resource Include="Img\copy.png" />
-    <Resource Include="Img\forum.png" />
+    <Resource Include="Img\MenuIcons\note20.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Img\game.png" />
-    <Resource Include="Img\market.png" />
+    <Resource Include="Img\MenuIcons\badge.png" />
+    <Resource Include="Img\MenuIcons\copy.png" />
+    <Resource Include="Img\MenuIcons\forum.png" />
+    <Resource Include="Img\MenuIcons\game.png" />
+    <Resource Include="Img\MenuIcons\market.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\profile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\backpack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\received.png" />
+    <Resource Include="Img\MenuIcons\sent.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

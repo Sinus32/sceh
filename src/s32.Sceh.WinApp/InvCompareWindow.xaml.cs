@@ -200,19 +200,19 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void ChangeProfileCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ChangeProfile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = !CommunicationState.Instance.IsInProgress;
         }
 
-        private void ChangeProfileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ChangeProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var loginWindow = new LoginWindow();
             loginWindow.Show();
             this.Close();
         }
 
-        private void CompareCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void Compare_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (_inventoryLoadWorker == null || _inventoryLoadWorker.IsBusy)
                 e.CanExecute = false;
@@ -220,7 +220,7 @@ namespace s32.Sceh.WinApp
                 e.CanExecute = cbOtherProfile.SelectedItem != null || !String.IsNullOrWhiteSpace(cbOtherProfile.Text);
         }
 
-        private void CompareCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void Compare_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string errorMessage;
             var steamProfile = ProfileHelper.GetSteamUser((SteamProfile)cbOtherProfile.SelectedItem, cbOtherProfile.Text, out errorMessage);
@@ -247,12 +247,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void CopyNameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CopyName_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
+            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card || e.Parameter is SteamProfile;
         }
 
-        private void CopyNameCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CopyName_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamApp)
             {
@@ -264,14 +264,19 @@ namespace s32.Sceh.WinApp
                 var card = (Card)e.Parameter;
                 Clipboard.SetText(card.Name);
             }
+            else if (e.Parameter is SteamProfile)
+            {
+                var profile = (SteamProfile)e.Parameter;
+                Clipboard.SetText(profile.Name);
+            }
         }
 
-        private void EditNoteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void EditNote_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is UserNotes;
         }
 
-        private void EditNoteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void EditNote_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var editor = new ProfileNoteEditor();
             Grid.SetRowSpan(editor, mainGrid.RowDefinitions.Count);
@@ -282,22 +287,22 @@ namespace s32.Sceh.WinApp
             editor.AutoFocus = true;
         }
 
-        private void ExitAppCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ExitApp_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        private void ExitAppCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ExitApp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void OpenBadgePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenBadgePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
         }
 
-        private void OpenBadgePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenBadgePage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "{0}/gamecards/{1}/";
             string url = null;
@@ -318,12 +323,12 @@ namespace s32.Sceh.WinApp
                 System.Diagnostics.Process.Start(url);
         }
 
-        private void OpenInventoryPageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenInventoryPage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenInventoryPageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenInventoryPage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -332,12 +337,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenMarketPageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenMarketPage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is Card;
         }
 
-        private void OpenMarketPageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenMarketPage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "http://steamcommunity.com/market/listings/{0}/{1}";
             string url = null;
@@ -361,12 +366,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenPostHistoryCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenPostHistory_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenPostHistoryCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenPostHistory_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -375,12 +380,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenProfilePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenProfilePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenProfilePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenProfilePage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -389,12 +394,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenStorePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenStorePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
         }
 
-        private void OpenStorePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenStorePage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "http://store.steampowered.com/app/{0}/";
             string url = null;
@@ -413,26 +418,40 @@ namespace s32.Sceh.WinApp
                 System.Diagnostics.Process.Start(url);
         }
 
-        private void OpenTradeOffersCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenIncomingOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenTradeOffersCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenIncomingOffers_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
-                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.TradeOffers);
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.IncomingOffers);
                 System.Diagnostics.Process.Start(url.ToString());
             }
         }
 
-        private void OpenTradeTopicsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenSentOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenTradeTopicsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenSentOffers_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.SentOffers);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
+        private void OpenTradeTopics_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenTradeTopics_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -441,12 +460,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenTradingForumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenTradingForum_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
         }
 
-        private void OpenTradingForumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenTradingForum_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "http://steamcommunity.com/app/{0}/tradingforum/";
             string url = null;
@@ -465,12 +484,12 @@ namespace s32.Sceh.WinApp
                 System.Diagnostics.Process.Start(url);
         }
 
-        private void OpenUserBadgesCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenUserBadges_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenUserBadgesCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenUserBadges_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -479,12 +498,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void ShowHideCardsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ShowHideCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is CardsCompareManager.ShowHideStrategy;
         }
 
-        private void ShowHideCardsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ShowHideCards_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var steamApps = SteamApps;
             if (steamApps != null && steamApps.Count > 0)

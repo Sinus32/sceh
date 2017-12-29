@@ -120,21 +120,6 @@
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>_Auto login</value>
   </data>
-  <data name="CardContextMenu_BadgePage" xml:space="preserve">
-    <value>_Badge page</value>
-  </data>
-  <data name="CardContextMenu_CopyName" xml:space="preserve">
-    <value>Copy _name</value>
-  </data>
-  <data name="CardContextMenu_MarketPage" xml:space="preserve">
-    <value>_Market page</value>
-  </data>
-  <data name="CardContextMenu_StorePage" xml:space="preserve">
-    <value>_Store page</value>
-  </data>
-  <data name="CardContextMenu_TradingForum" xml:space="preserve">
-    <value>_Trade forum</value>
-  </data>
   <data name="CompareButtonText" xml:space="preserve">
     <value>_Compare</value>
   </data>
@@ -159,11 +144,17 @@
   <data name="LoginWindowTitle" xml:space="preserve">
     <value>Steam cards exchange helper</value>
   </data>
+  <data name="MenuItem_BadgePage" xml:space="preserve">
+    <value>_Badge page</value>
+  </data>
   <data name="MenuItem_Badges" xml:space="preserve">
     <value>_Badges</value>
   </data>
   <data name="MenuItem_ChangeProfile" xml:space="preserve">
     <value>_Change profile</value>
+  </data>
+  <data name="MenuItem_CopyName" xml:space="preserve">
+    <value>Copy _name</value>
   </data>
   <data name="MenuItem_EditNote" xml:space="preserve">
     <value>_Notes</value>
@@ -171,8 +162,14 @@
   <data name="MenuItem_Exit" xml:space="preserve">
     <value>_Exit</value>
   </data>
+  <data name="MenuItem_IncomingOffers" xml:space="preserve">
+    <value>_Incoming offers</value>
+  </data>
   <data name="MenuItem_Inventory" xml:space="preserve">
     <value>_Inventory</value>
+  </data>
+  <data name="MenuItem_MarketPage" xml:space="preserve">
+    <value>_Market page</value>
   </data>
   <data name="MenuItem_MyProfile" xml:space="preserve">
     <value>_My profile</value>
@@ -186,11 +183,17 @@
   <data name="MenuItem_Profile" xml:space="preserve">
     <value>_Profile page</value>
   </data>
-  <data name="MenuItem_TradeOffers" xml:space="preserve">
-    <value>Trade _offers</value>
+  <data name="MenuItem_SentOffers" xml:space="preserve">
+    <value>_Sent offers</value>
+  </data>
+  <data name="MenuItem_StorePage" xml:space="preserve">
+    <value>_Store page</value>
   </data>
   <data name="MenuItem_TradeTopics" xml:space="preserve">
     <value>Trading _topics</value>
+  </data>
+  <data name="MenuItem_TradingForum" xml:space="preserve">
+    <value>_Trade forum</value>
   </data>
   <data name="NotesButtonText" xml:space="preserve">
     <value>Notes</value>

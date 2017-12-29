@@ -13,7 +13,7 @@ namespace s32.Sceh.Code
 
         public static readonly SteamUrlPattern CommunityPage, ApiGetInventoryA,
             ApiGetProfile, ApiGetInventoryB, Badges, Inventory,
-            TradeOffers, TradeTopics, PostHistory;
+            IncomingOffers, SentOffers, TradeTopics, PostHistory;
 
         static SteamUrlPattern()
         {
@@ -35,9 +35,12 @@ namespace s32.Sceh.Code
             Inventory = new SteamUrlPattern(
                 SteamCommunityPageByCustomUrl + "{0}/inventory",
                 SteamCommunityPageBySteamId + "{0}/inventory");
-            TradeOffers = new SteamUrlPattern(
+            IncomingOffers = new SteamUrlPattern(
                 SteamCommunityPageByCustomUrl + "{0}/tradeoffers",
                 SteamCommunityPageBySteamId + "{0}/tradeoffers");
+            SentOffers = new SteamUrlPattern(
+                SteamCommunityPageByCustomUrl + "{0}/tradeoffers/sent",
+                SteamCommunityPageBySteamId + "{0}/tradeoffers/sent");
             TradeTopics = new SteamUrlPattern(
                 SteamCommunityPageByCustomUrl + "{0}/tradeoffers/tradetopics",
                 SteamCommunityPageBySteamId + "{0}/tradeoffers/tradetopics");

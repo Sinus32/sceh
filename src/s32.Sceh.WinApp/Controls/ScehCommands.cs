@@ -13,7 +13,7 @@ namespace s32.Sceh.WinApp.Controls
         private static RoutedCommand _ok, _cancel, _compare, _editNote, _showHideCards,
             _openMarketPage, _openStorePage, _openBadgePage, _openTradingForum,
             _openProfilePage, _openInventoryPage, _openUserBadges,
-            _openTradeOffers, _openTradeTopics, _openPostHistory,
+            _openIncomingOffers, _openSentOffers, _openTradeTopics, _openPostHistory,
             _copyName, _scoreUpDown, _pasteTag;
 
         static ScehCommands()
@@ -30,7 +30,8 @@ namespace s32.Sceh.WinApp.Controls
             _openProfilePage = new RoutedCommand("OpenProfilePage", typeof(ScehCommands));
             _openInventoryPage = new RoutedCommand("OpenInventoryPage", typeof(ScehCommands));
             _openUserBadges = new RoutedCommand("OpenUserBadges", typeof(ScehCommands));
-            _openTradeOffers = new RoutedCommand("OpenTradeOffers", typeof(ScehCommands));
+            _openIncomingOffers = new RoutedCommand("OpenIncomingOffers", typeof(ScehCommands));
+            _openSentOffers = new RoutedCommand("OpenSentOffers", typeof(ScehCommands));
             _openTradeTopics = new RoutedCommand("OpenTradeTopics", typeof(ScehCommands));
             _openPostHistory = new RoutedCommand("OpenPostHistory", typeof(ScehCommands));
             _copyName = new RoutedCommand("CopyName", typeof(ScehCommands));
@@ -68,6 +69,11 @@ namespace s32.Sceh.WinApp.Controls
             get { return _openBadgePage; }
         }
 
+        public static RoutedCommand OpenIncomingOffers
+        {
+            get { return _openIncomingOffers; }
+        }
+
         public static RoutedCommand OpenInventoryPage
         {
             get { return _openInventoryPage; }
@@ -88,14 +94,14 @@ namespace s32.Sceh.WinApp.Controls
             get { return _openProfilePage; }
         }
 
+        public static RoutedCommand OpenSentOffers
+        {
+            get { return _openSentOffers; }
+        }
+
         public static RoutedCommand OpenStorePage
         {
             get { return _openStorePage; }
-        }
-
-        public static RoutedCommand OpenTradeOffers
-        {
-            get { return _openTradeOffers; }
         }
 
         public static RoutedCommand OpenTradeTopics
