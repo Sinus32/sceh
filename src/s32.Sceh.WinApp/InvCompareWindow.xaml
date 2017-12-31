@@ -288,7 +288,14 @@
       </MenuItem>
     </ContextMenu>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
-      <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
+      <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
+        <ToggleButton.ToolTip>
+          <TextBlock>
+            <Run Text="{Binding ItemClassName}" FontStyle="Italic" />: <Run Text="{Binding Name}" FontWeight="Bold" /><LineBreak />
+            <Run Text="{Binding MarketHashName}" /><LineBreak />
+            <Run Text="{Binding DroprateName}" />
+          </TextBlock>
+        </ToggleButton.ToolTip>
         <Grid>
           <Border Style="{StaticResource cardBorderStyle}">
             <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"

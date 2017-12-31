@@ -17,7 +17,7 @@ namespace s32.Sceh.WinApp.UserNoteTags
             if (steamApp != null)
             {
                 Id = steamApp.Id;
-                SetName(steamApp.Name);
+                Name = steamApp.Name;
             }
         }
 
@@ -28,21 +28,6 @@ namespace s32.Sceh.WinApp.UserNoteTags
         public string BuildTag()
         {
             return String.Concat("[app=", Id, ']', Name, "[/app]");
-        }
-
-        public void SetName(string steamAppName)
-        {
-            if (String.IsNullOrEmpty(steamAppName))
-            {
-                Name = String.Empty;
-                return;
-            }
-
-            var pos = steamAppName.LastIndexOf(" - ");
-            if (pos > 0)
-                Name = steamAppName.Remove(pos);
-            else
-                Name = steamAppName;
         }
 
         public override string ToString()

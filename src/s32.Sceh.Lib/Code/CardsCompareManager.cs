@@ -30,17 +30,6 @@ namespace s32.Sceh.Code
             get { return _steamApps; }
         }
 
-        public static List<SteamApp> Generate(List<Card> myCards, List<Card> otherCards, out string errorMessage)
-        {
-            var current = new SteamApp(-1, null);
-            var steamApps = new List<SteamApp>();
-
-            steamApps.Sort(SteamAppsComparison);
-
-            errorMessage = null;
-            return steamApps;
-        }
-
         public void Fill(IReadOnlyCollection<Card> myCards, IReadOnlyCollection<Card> otherCards)
         {
             if (myCards == null)
@@ -77,7 +66,7 @@ namespace s32.Sceh.Code
                 {
                     if (it.Current.MarketFeeApp != current.Id)
                     {
-                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
+                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.GetMarketFeeAppName());
                         _steamApps.Add(current);
                     }
                     current.OtherCards.Add(it.Current);
@@ -88,7 +77,7 @@ namespace s32.Sceh.Code
 
                 if (card.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(card.MarketFeeApp, card.Type);
+                    current = new SteamApp(card.MarketFeeApp, card.GetMarketFeeAppName());
                     _steamApps.Add(current);
                 }
 
@@ -101,7 +90,7 @@ namespace s32.Sceh.Code
             {
                 if (it.Current.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
+                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.GetMarketFeeAppName());
                     _steamApps.Add(current);
                 }
                 current.OtherCards.Add(it.Current);

@@ -58,6 +58,7 @@
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
     <Compile Include="DataModel\Card.cs" />
+    <Compile Include="DataModel\ItemClass.cs" />
     <Compile Include="DataModel\PathConfig.cs" />
     <Compile Include="DataModel\UserNote.cs" />
     <Compile Include="DataModel\ProfilesData.cs" />

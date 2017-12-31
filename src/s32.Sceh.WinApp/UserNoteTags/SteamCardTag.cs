@@ -17,7 +17,7 @@ namespace s32.Sceh.WinApp.UserNoteTags
             if (card != null)
             {
                 MarketHashName = card.MarketHashName;
-                SetName(card.Name, card.MarketHashName.EndsWith("(trading card)", StringComparison.CurrentCultureIgnoreCase));
+                Name = card.Name;
             }
         }
 
@@ -28,28 +28,6 @@ namespace s32.Sceh.WinApp.UserNoteTags
         public string BuildTag()
         {
             return String.Concat("[card=", MarketHashName, ']', Name, "[/card]");
-        }
-
-        public void SetName(string steamAppName, bool excludeBrackets)
-        {
-            if (String.IsNullOrEmpty(steamAppName))
-            {
-                Name = String.Empty;
-                return;
-            }
-
-            if (excludeBrackets)
-            {
-                var pos = steamAppName.LastIndexOf('(');
-                if (pos > 0)
-                    Name = steamAppName.Remove(pos).Trim();
-                else
-                    Name = steamAppName;
-            }
-            else
-            {
-                Name = steamAppName;
-            }
         }
 
         public override string ToString()

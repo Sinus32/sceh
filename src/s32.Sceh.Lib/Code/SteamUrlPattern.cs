@@ -11,8 +11,8 @@ namespace s32.Sceh.Code
         public const string SteamCommunityPageByCustomUrl = "http://steamcommunity.com/id/";
         public const string SteamCommunityPageBySteamId = "http://steamcommunity.com/profiles/";
 
-        public static readonly SteamUrlPattern CommunityPage, ApiGetInventoryA,
-            ApiGetProfile, ApiGetInventoryB, Badges, Inventory,
+        public static readonly SteamUrlPattern CommunityPage, /*ApiGetInventoryA,*/
+            ApiGetProfile, Badges, Inventory,
             IncomingOffers, SentOffers, TradeTopics, PostHistory;
 
         static SteamUrlPattern()
@@ -20,12 +20,9 @@ namespace s32.Sceh.Code
             CommunityPage = new SteamUrlPattern(
                 SteamCommunityPageByCustomUrl + "{0}",
                 SteamCommunityPageBySteamId + "{0}");
-            ApiGetInventoryA = new SteamUrlPattern(
-                SteamCommunityPageByCustomUrl + "{0}/inventory/json/753/6",
-                SteamCommunityPageBySteamId + "{0}/inventory/json/753/6");
-            ApiGetInventoryB = new SteamUrlPattern(
-                null,
-                "http://steamcommunity.com/inventory/{0}/753/6?l=polish&count=2000");
+            //ApiGetInventoryA = new SteamUrlPattern(
+            //    SteamCommunityPageByCustomUrl + "{0}/inventory/json/753/6",
+            //    SteamCommunityPageBySteamId + "{0}/inventory/json/753/6");
             ApiGetProfile = new SteamUrlPattern(
                 SteamCommunityPageByCustomUrl + "{0}?xml=1",
                 SteamCommunityPageBySteamId + "{0}?xml=1");

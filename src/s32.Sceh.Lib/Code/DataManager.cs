@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using s32.Sceh.DataModel;
 using s32.Sceh.SteamApi;
+using System.Globalization;
 
 namespace s32.Sceh.Code
 {
@@ -171,7 +172,7 @@ namespace s32.Sceh.Code
             string errorMessage;
             result = new UserInventory();
             result.SteamId = profile.SteamId;
-            result.Cards = SteamDataDownloader.GetCardsB(profile, out errorMessage);
+            result.Cards = SteamDataDownloader.GetCards(profile, CultureInfo.CurrentCulture, out errorMessage);
             result.ErrorMessage = errorMessage;
             result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
 

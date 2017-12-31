@@ -15,56 +15,6 @@ namespace s32.Sceh.Code
 {
     public class TradeSuggestionsMaker
     {
-        public static Inventory GetInventory(string idOrUrl, out string errorMessage)
-        {
-            var result = new Inventory();
-            result.User = idOrUrl;
-
-            var profileKey = SteamDataDownloader.GetProfileKey(idOrUrl);
-            var cached = DataManager.GetSteamProfile(profileKey);
-            if (cached == null)
-            {
-                var profileUri = SteamDataDownloader.GetProfileUri(profileKey, SteamUrlPattern.ApiGetProfile);
-                try
-                {
-                    SteamDataDownloader.GetProfileError error;
-                    var resp = SteamDataDownloader.GetProfile(profileUri, out error);
-                    switch (error)
-                    {
-                        case SteamDataDownloader.GetProfileError.Success:
-                            profileKey = DataManager.AddOrUpdateSteamProfile(resp);
-                            break;
-
-                        case SteamDataDownloader.GetProfileError.WrongProfile:
-                            errorMessage = "WrongProfileIdOrUrl";
-                            return null;
-
-                        case SteamDataDownloader.GetProfileError.DeserializationError:
-                            errorMessage = "ProfileDeserializationError";
-                            return null;
-
-                        default:
-                            errorMessage = "UnknownErrorOccured";
-                            return null;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    errorMessage = String.Format("ExceptionDuringDownloadingSteamProfile {0}", ex.Message);
-                    return null;
-                }
-            }
-            else
-            {
-                profileKey = cached;
-            }
-
-            result.Link = SteamDataDownloader.GetProfileUri(profileKey, SteamUrlPattern.Inventory).ToString();
-            result.Cards = SteamDataDownloader.GetCardsA(profileKey, out errorMessage);
-
-            return result;
-        }
-
         public static TradeSuggestions Generate(string myProfile, string otherProfile, out string errorMessage)
         {
             var myInv = GetInventory(myProfile, out errorMessage);
@@ -122,7 +72,7 @@ namespace s32.Sceh.Code
                 {
                     if (it.Current.MarketFeeApp != current.Id)
                     {
-                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
+                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.GetMarketFeeAppName());
                         steamApps.Add(current);
                     }
                     current.OtherCards.Add(it.Current);
@@ -131,7 +81,7 @@ namespace s32.Sceh.Code
 
                 if (card.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(card.MarketFeeApp, card.Type);
+                    current = new SteamApp(card.MarketFeeApp, card.GetMarketFeeAppName());
                     steamApps.Add(current);
                 }
 
@@ -142,7 +92,7 @@ namespace s32.Sceh.Code
             {
                 if (it.Current.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
+                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.GetMarketFeeAppName());
                     steamApps.Add(current);
                 }
                 current.OtherCards.Add(it.Current);
@@ -153,6 +103,56 @@ namespace s32.Sceh.Code
 
             errorMessage = null;
             return steamApps;
+        }
+
+        public static Inventory GetInventory(string idOrUrl, out string errorMessage)
+        {
+            var result = new Inventory();
+            result.User = idOrUrl;
+
+            var profileKey = SteamDataDownloader.GetProfileKey(idOrUrl);
+            var cached = DataManager.GetSteamProfile(profileKey);
+            if (cached == null)
+            {
+                var profileUri = SteamDataDownloader.GetProfileUri(profileKey, SteamUrlPattern.ApiGetProfile);
+                try
+                {
+                    SteamDataDownloader.GetProfileError error;
+                    var resp = SteamDataDownloader.GetProfile(profileUri, out error);
+                    switch (error)
+                    {
+                        case SteamDataDownloader.GetProfileError.Success:
+                            profileKey = DataManager.AddOrUpdateSteamProfile(resp);
+                            break;
+
+                        case SteamDataDownloader.GetProfileError.WrongProfile:
+                            errorMessage = "WrongProfileIdOrUrl";
+                            return null;
+
+                        case SteamDataDownloader.GetProfileError.DeserializationError:
+                            errorMessage = "ProfileDeserializationError";
+                            return null;
+
+                        default:
+                            errorMessage = "UnknownErrorOccured";
+                            return null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = String.Format("ExceptionDuringDownloadingSteamProfile {0}", ex.Message);
+                    return null;
+                }
+            }
+            else
+            {
+                profileKey = cached;
+            }
+
+            result.Link = SteamDataDownloader.GetProfileUri(profileKey, SteamUrlPattern.Inventory).ToString();
+            result.Cards = SteamDataDownloader.GetCards(profileKey, "polish", out errorMessage);
+
+            return result;
         }
 
         private static int SteamAppsComparison(SteamApp x, SteamApp y)
