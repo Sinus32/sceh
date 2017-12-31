@@ -129,6 +129,9 @@
   <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
     <value>Podczas ściągania danych profilu wystąpił wyjątek: {0}</value>
   </data>
+  <data name="FindCardsButtonText" xml:space="preserve">
+    <value>Znajdź karty lub gry</value>
+  </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
     <value>Pobieranie obrazów: {0}/{1}/{2}</value>
   </data>
@@ -212,6 +215,9 @@
   </data>
   <data name="ShowAllButtonText" xml:space="preserve">
     <value>Pokaż wszystkie karty</value>
+  </data>
+  <data name="ShowDuplicatesButtonText" xml:space="preserve">
+    <value>Pokaż zduplikowane karty</value>
   </data>
   <data name="ShowMyCardsButtonText" xml:space="preserve">
     <value>Pokaż moje karty</value>

@@ -126,6 +126,7 @@ namespace s32.Sceh.Code
         #region Show card strategies
 
         public static readonly ShowHideStrategy ShowAllStrategy = new ShowHideStrategy.ShowAllStrategy();
+        public static readonly ShowHideStrategy ShowDuplicatesStrategy = new ShowHideStrategy.ShowDuplicatesStrategy();
         public static readonly ShowHideStrategy ShowMyCardsStrategy = new ShowHideStrategy.ShowMyCardsStrategy();
         public static readonly ShowHideStrategy ShowOnlySelectedStrategy = new ShowHideStrategy.ShowOnlySelectedStrategy();
         public static readonly ShowHideStrategy ShowOtherCardsStrategy = new ShowHideStrategy.ShowOtherCardsStrategy();
@@ -145,6 +146,29 @@ namespace s32.Sceh.Code
                     foreach (var dt in steamApp.OtherCards)
                         dt.Hide = false;
                     steamApp.Hide = false;
+                }
+            }
+
+            public class ShowDuplicatesStrategy : ShowHideStrategy
+            {
+                public override void ShowHideCards(SteamApp steamApp)
+                {
+                    bool iHaveDuplicate = false, otherHaveDuplicate = false;
+
+                    foreach (var dt in steamApp.MyCards)
+                    {
+                        dt.Hide = false;
+                        if (dt.IsDuplicated && !dt.OtherHaveIt)
+                            iHaveDuplicate = true;
+                    }
+                    foreach (var dt in steamApp.OtherCards)
+                    {
+                        dt.Hide = false;
+                        if (dt.IsDuplicated && !dt.OtherHaveIt)
+                            otherHaveDuplicate = true;
+                    }
+
+                    steamApp.Hide = !(iHaveDuplicate && otherHaveDuplicate);
                 }
             }
 

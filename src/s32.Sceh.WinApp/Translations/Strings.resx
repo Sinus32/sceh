@@ -129,6 +129,9 @@
   <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
     <value>An exception occurred while downloading the profile data: {0}</value>
   </data>
+  <data name="FindCardsButtonText" xml:space="preserve">
+    <value>Find cards or games</value>
+  </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
     <value>Images downloading: {0}/{1}/{2}</value>
   </data>
@@ -212,6 +215,9 @@
   </data>
   <data name="ShowAllButtonText" xml:space="preserve">
     <value>Show all cards</value>
+  </data>
+  <data name="ShowDuplicatesButtonText" xml:space="preserve">
+    <value>Show duplicated cards</value>
   </data>
   <data name="ShowMyCardsButtonText" xml:space="preserve">
     <value>Show my cards</value>

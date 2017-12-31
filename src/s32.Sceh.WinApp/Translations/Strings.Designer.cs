@@ -97,6 +97,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find cards or games.
+        /// </summary>
+        public static string FindCardsButtonText {
+            get {
+                return ResourceManager.GetString("FindCardsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Images downloading: {0}/{1}/{2}.
         /// </summary>
         public static string ImagesToDownloadFormat {
@@ -345,6 +354,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string ShowAllButtonText {
             get {
                 return ResourceManager.GetString("ShowAllButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Show duplicated cards.
+        /// </summary>
+        public static string ShowDuplicatesButtonText {
+            get {
+                return ResourceManager.GetString("ShowDuplicatesButtonText", resourceCulture);
             }
         }
         
