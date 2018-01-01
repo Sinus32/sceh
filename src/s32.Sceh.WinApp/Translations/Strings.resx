@@ -160,7 +160,7 @@
     <value>The provided trade URL have to use https scheme</value>
   </data>
   <data name="LoginButtonText" xml:space="preserve">
-    <value>_Login</value>
+    <value>_Enter</value>
   </data>
   <data name="LoginProfileLabel" xml:space="preserve">
     <value>_Profile:</value>
@@ -191,6 +191,9 @@
   </data>
   <data name="MenuItem_Inventory" xml:space="preserve">
     <value>_Inventory</value>
+  </data>
+  <data name="MenuItem_MakeOffer" xml:space="preserve">
+    <value>Make offer</value>
   </data>
   <data name="MenuItem_MarketPage" xml:space="preserve">
     <value>_Market page</value>
@@ -262,7 +265,10 @@
     <value>The provided trade URL doesn't match the pattern. Are you sure you want to use it?</value>
   </data>
   <data name="TradeLinkLabel" xml:space="preserve">
-    <value>Trade link:</value>
+    <value>Trade URL:</value>
+  </data>
+  <data name="TradeUrlSeemsToBeInvalid" xml:space="preserve">
+    <value>Stored trade URL seems to be invalid and cannot be used. Please correct the url on user notes screen.</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Unknown error occurred</value>

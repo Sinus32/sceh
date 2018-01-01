@@ -44,6 +44,7 @@
     <BitmapImage x:Key="receivedMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/received.png" />
     <BitmapImage x:Key="dealMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deal.png" />
     <BitmapImage x:Key="postHistoryMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/postHistory.png" />
+    <BitmapImage x:Key="tradeLinkMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/tradeLink.png" />
     <BitmapImage x:Key="changeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/change.png" />
     <BitmapImage x:Key="exitMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/exit.png" />
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}" />
@@ -76,6 +77,8 @@
           </ItemsControl>
         </Setter.Value>
       </Setter>
+      <Setter Property="ToolTipService.InitialShowDelay" Value="100" />
+      <Setter Property="ToolTipService.ShowDuration" Value="180000" />
     </Style>
     <Style x:Key="steamProfileComboBox" TargetType="ComboBox">
       <Setter Property="TextSearch.TextPath" Value="CustomUrlOrSteamId" />

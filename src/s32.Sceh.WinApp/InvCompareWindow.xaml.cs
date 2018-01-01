@@ -266,6 +266,31 @@ namespace s32.Sceh.WinApp
             Application.Current.Shutdown();
         }
 
+        private void MakeOffer_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is UserNotes && ((UserNotes)e.Parameter).TradeUrl != null;
+        }
+
+        private void MakeOffer_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var tradeUrl = ((UserNotes)e.Parameter).TradeUrl;
+            if (!tradeUrl.IsAbsoluteUri || tradeUrl.Scheme != "https")
+            {
+                MessageBox.Show(Strings.TradeUrlSeemsToBeInvalid, Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            try
+            {
+                var escaped = tradeUrl.ToString().Replace(" ", "%20");
+                System.Diagnostics.Process.Start(escaped);
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex);
+            }
+        }
+
         private void OpenBadgePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
@@ -290,6 +315,20 @@ namespace s32.Sceh.WinApp
 
             if (url != null)
                 System.Diagnostics.Process.Start(url);
+        }
+
+        private void OpenIncomingOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenIncomingOffers_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.IncomingOffers);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
         }
 
         private void OpenInventoryPage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -363,6 +402,20 @@ namespace s32.Sceh.WinApp
             }
         }
 
+        private void OpenSentOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenSentOffers_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.SentOffers);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
         private void OpenStorePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
@@ -385,34 +438,6 @@ namespace s32.Sceh.WinApp
 
             if (url != null)
                 System.Diagnostics.Process.Start(url);
-        }
-
-        private void OpenIncomingOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is SteamProfileKey;
-        }
-
-        private void OpenIncomingOffers_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Parameter is SteamProfileKey)
-            {
-                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.IncomingOffers);
-                System.Diagnostics.Process.Start(url.ToString());
-            }
-        }
-
-        private void OpenSentOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is SteamProfileKey;
-        }
-
-        private void OpenSentOffers_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Parameter is SteamProfileKey)
-            {
-                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.SentOffers);
-                System.Diagnostics.Process.Start(url.ToString());
-            }
         }
 
         private void OpenTradeTopics_CanExecute(object sender, CanExecuteRoutedEventArgs e)

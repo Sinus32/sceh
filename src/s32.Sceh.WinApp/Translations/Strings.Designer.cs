@@ -187,7 +187,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Login.
+        ///   Looks up a localized string similar to _Enter.
         /// </summary>
         public static string LoginButtonText {
             get {
@@ -282,6 +282,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string MenuItem_Inventory {
             get {
                 return ResourceManager.GetString("MenuItem_Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make offer.
+        /// </summary>
+        public static string MenuItem_MakeOffer {
+            get {
+                return ResourceManager.GetString("MenuItem_MakeOffer", resourceCulture);
             }
         }
         
@@ -493,11 +502,20 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trade link:.
+        ///   Looks up a localized string similar to Trade URL:.
         /// </summary>
         public static string TradeLinkLabel {
             get {
                 return ResourceManager.GetString("TradeLinkLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stored trade URL seems to be invalid and cannot be used. Please correct the url on user notes screen..
+        /// </summary>
+        public static string TradeUrlSeemsToBeInvalid {
+            get {
+                return ResourceManager.GetString("TradeUrlSeemsToBeInvalid", resourceCulture);
             }
         }
         

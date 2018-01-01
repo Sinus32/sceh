@@ -45,7 +45,8 @@
       <Rectangle Fill="{x:Static SystemColors.ControlLightBrush}" />
     </Border>
     <Label Grid.Row="1" Grid.Column="1" Target="{Binding ElementName=tbTradeLink}" Content="{x:Static resx:Strings.TradeLinkLabel}" />
-    <TextBox Grid.Row="2" Grid.Column="1" Name="tbTradeLink" ToolTip="{x:Static resx:Strings.ValidTradeUrlToolTip}">
+    <TextBox Grid.Row="2" Grid.Column="1" Name="tbTradeLink" ToolTip="{x:Static resx:Strings.ValidTradeUrlToolTip}"
+        ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
       <TextBox.InputBindings>
         <KeyBinding Command="ctl:ScehCommands.Cancel" Key="Escape" />
       </TextBox.InputBindings>

@@ -160,7 +160,7 @@
     <value>Wprowadzony adres URL wymiany musi korzystać ze schematu https</value>
   </data>
   <data name="LoginButtonText" xml:space="preserve">
-    <value>_Zaloguj</value>
+    <value>_Wejdź</value>
   </data>
   <data name="LoginProfileLabel" xml:space="preserve">
     <value>_Profil:</value>
@@ -191,6 +191,9 @@
   </data>
   <data name="MenuItem_Inventory" xml:space="preserve">
     <value>_Ekwipunek</value>
+  </data>
+  <data name="MenuItem_MakeOffer" xml:space="preserve">
+    <value>Wyślij ofertę</value>
   </data>
   <data name="MenuItem_MarketPage" xml:space="preserve">
     <value>_Kupno i sprzedaż</value>
@@ -263,6 +266,9 @@
   </data>
   <data name="TradeLinkLabel" xml:space="preserve">
     <value>Adres URL wymiany:</value>
+  </data>
+  <data name="TradeUrlSeemsToBeInvalid" xml:space="preserve">
+    <value>Zapisany adres URL wymiany wydaje się być nieprawidłowy i nie można go użyć. Popraw adres na ekranie notatek użytkownika.</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Wystąpił nieznany błąd</value>
