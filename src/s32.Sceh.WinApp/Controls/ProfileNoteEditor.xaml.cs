@@ -1,6 +1,4 @@
-﻿using s32.Sceh.DataModel;
-using s32.Sceh.WinApp.UserNoteTags;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using s32.Sceh.DataModel;
+using s32.Sceh.WinApp.Translations;
+using s32.Sceh.WinApp.UserNoteTags;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -34,6 +35,7 @@ namespace s32.Sceh.WinApp.Controls
             DependencyProperty.Register("SteamApps", typeof(List<SteamApp>), typeof(ProfileNoteEditor), new PropertyMetadata(null));
 
         private static readonly Regex ScoreRe = new Regex(@"^\[([+-]?[0-9]+)\]", RegexOptions.None);
+        private static readonly Regex ValidTradeUrlRe = new Regex(@"^https://steamcommunity.com/tradeoffer/new/\?partner=[0-9]{5,10}&token=[a-zA-Z0-9]{5,12}$", RegexOptions.None);
 
         public ProfileNoteEditor()
         {
@@ -63,6 +65,11 @@ namespace s32.Sceh.WinApp.Controls
             if (notes == null)
                 return;
 
+            if (notes.TradeUrl != null)
+                tbTradeLink.Text = notes.TradeUrl.ToString();
+            else
+                tbTradeLink.Clear();
+
             tbEditor.Clear();
 
             var sb = new StringBuilder();
@@ -82,6 +89,37 @@ namespace s32.Sceh.WinApp.Controls
         {
             if (notes == null)
                 return false;
+
+            var tradeUrl = tbTradeLink.Text;
+            if (String.IsNullOrEmpty(tradeUrl))
+            {
+                notes.TradeUrl = null;
+            }
+            else
+            {
+                Uri url;
+                if (Uri.TryCreate(tradeUrl, UriKind.Absolute, out url))
+                {
+                    if (url.Scheme != "https")
+                    {
+                        MessageBox.Show(Strings.InvalidTradeUrlScheme, Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        return false;
+                    }
+
+                    if (!ValidTradeUrlRe.IsMatch(url.ToString()))
+                    {
+                        var resp = MessageBox.Show(Strings.StrangeTradeUrl, Strings.WarningTitle, MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (resp != MessageBoxResult.Yes)
+                            return false;
+                    }
+                    notes.TradeUrl = url;
+                }
+                else
+                {
+                    MessageBox.Show(Strings.InvalidTradeUrl, Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    return false;
+                }
+            }
 
             notes.Clear();
 

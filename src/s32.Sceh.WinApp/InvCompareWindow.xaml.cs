@@ -17,8 +17,8 @@ using System.Windows.Shapes;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Code;
-using s32.Sceh.WinApp.Translations;
 using s32.Sceh.WinApp.Controls;
+using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp
 {
@@ -27,17 +27,8 @@ namespace s32.Sceh.WinApp
     /// </summary>
     public partial class InvCompareWindow : Window
     {
-        public static readonly DependencyProperty ErrorMessageProperty =
-            DependencyProperty.Register("ErrorMessage", typeof(string), typeof(InvCompareWindow), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty OwnerInvErrorProperty =
-            DependencyProperty.Register("OwnerInvError", typeof(string), typeof(InvCompareWindow), new PropertyMetadata(null));
-
         public static readonly DependencyProperty OwnerProfileProperty =
             DependencyProperty.Register("OwnerProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty SecondInvErrorProperty =
-            DependencyProperty.Register("SecondInvError", typeof(string), typeof(InvCompareWindow), new PropertyMetadata(null));
 
         public static readonly DependencyProperty SecondProfileProperty =
             DependencyProperty.Register("SecondProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null));
@@ -66,28 +57,10 @@ namespace s32.Sceh.WinApp
             DataContext = this;
         }
 
-        public string ErrorMessage
-        {
-            get { return (string)GetValue(ErrorMessageProperty); }
-            set { SetValue(ErrorMessageProperty, value); }
-        }
-
-        public string OwnerInvError
-        {
-            get { return (string)GetValue(OwnerInvErrorProperty); }
-            set { SetValue(OwnerInvErrorProperty, value); }
-        }
-
         public SteamProfile OwnerProfile
         {
             get { return (SteamProfile)GetValue(OwnerProfileProperty); }
             set { SetValue(OwnerProfileProperty, value); }
-        }
-
-        public string SecondInvError
-        {
-            get { return (string)GetValue(SecondInvErrorProperty); }
-            set { SetValue(SecondInvErrorProperty, value); }
         }
 
         public SteamProfile SecondProfile
@@ -144,9 +117,7 @@ namespace s32.Sceh.WinApp
                 var result = (InventoryLoadWorkerResult)e.Result;
                 if (result != null)
                 {
-                    OwnerInvError = result.OwnerInv.ErrorMessage;
-                    SecondInvError = result.SecondInv.ErrorMessage;
-                    MakeErrorMessage();
+                    MakeErrorMessage(result);
 
                     var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
                     steamApps.AddRange(_cardsCompareManager.SteamApps);
@@ -160,20 +131,18 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void MakeErrorMessage()
+        private void MakeErrorMessage(InventoryLoadWorkerResult result)
         {
-            if (OwnerInvError == null && SecondInvError == null)
-            {
-                ErrorMessage = null;
+            if (result.OwnerInv.ErrorMessage == null && result.SecondInv.ErrorMessage == null)
                 return;
-            }
 
             var sb = new StringBuilder();
-            if (OwnerInvError != null)
-                sb.AppendFormat(Strings.OwnerInvErrorMessage, OwnerInvError).AppendLine();
-            if (SecondInvError != null)
-                sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, SecondInvError).AppendLine();
-            ErrorMessage = sb.ToString();
+            if (result.OwnerInv.ErrorMessage != null)
+                sb.AppendFormat(Strings.OwnerInvErrorMessage, result.OwnerInv.ErrorMessage).AppendLine();
+            if (result.SecondInv.ErrorMessage != null)
+                sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, result.SecondInv.ErrorMessage).AppendLine();
+
+            MessageBox.Show(sb.ToString(), Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
 
         private void ShowException(Exception ex)

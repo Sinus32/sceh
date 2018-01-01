@@ -70,6 +70,51 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paste date.
+        /// </summary>
+        public static string Button_PasteDate {
+            get {
+                return ResourceManager.GetString("Button_PasteDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste my selected cards.
+        /// </summary>
+        public static string Button_PasteMyCards {
+            get {
+                return ResourceManager.GetString("Button_PasteMyCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paste other selected cards.
+        /// </summary>
+        public static string Button_PasteOtherCards {
+            get {
+                return ResourceManager.GetString("Button_PasteOtherCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Score down -1.
+        /// </summary>
+        public static string Button_ScoreDown {
+            get {
+                return ResourceManager.GetString("Button_ScoreDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Score up +1.
+        /// </summary>
+        public static string Button_ScoreUp {
+            get {
+                return ResourceManager.GetString("Button_ScoreUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Compare.
         /// </summary>
         public static string CompareButtonText {
@@ -120,6 +165,24 @@ namespace s32.Sceh.WinApp.Translations {
         public static string InvalidProfileIdOrUrl {
             get {
                 return ResourceManager.GetString("InvalidProfileIdOrUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided trade URL is invalid.
+        /// </summary>
+        public static string InvalidTradeUrl {
+            get {
+                return ResourceManager.GetString("InvalidTradeUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided trade URL have to use https scheme.
+        /// </summary>
+        public static string InvalidTradeUrlScheme {
+            get {
+                return ResourceManager.GetString("InvalidTradeUrlScheme", resourceCulture);
             }
         }
         
@@ -313,6 +376,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notes:.
+        /// </summary>
+        public static string NotesEditorLabel {
+            get {
+                return ResourceManager.GetString("NotesEditorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot load your cards: {0}.
         /// </summary>
         public static string OwnerInvErrorMessage {
@@ -358,7 +430,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show duplicated cards.
+        ///   Looks up a localized string similar to Show duplicated cards for trade.
         /// </summary>
         public static string ShowDuplicatesButtonText {
             get {
@@ -412,11 +484,47 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided trade URL doesn&apos;t match the pattern. Are you sure you want to use it?.
+        /// </summary>
+        public static string StrangeTradeUrl {
+            get {
+                return ResourceManager.GetString("StrangeTradeUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trade link:.
+        /// </summary>
+        public static string TradeLinkLabel {
+            get {
+                return ResourceManager.GetString("TradeLinkLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown error occurred.
         /// </summary>
         public static string UnknownErrorOccured {
             get {
                 return ResourceManager.GetString("UnknownErrorOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid trade URL looks like &quot;https://steamcommunity.com/tradeoffer/new/?partner=123456789&amp;token=abcdefgh&quot;.
+        /// </summary>
+        public static string ValidTradeUrlToolTip {
+            get {
+                return ResourceManager.GetString("ValidTradeUrlToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string WarningTitle {
+            get {
+                return ResourceManager.GetString("WarningTitle", resourceCulture);
             }
         }
         

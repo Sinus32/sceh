@@ -481,7 +481,6 @@
       </Button>
     </StackPanel>
     <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-      <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
       <Button Margin="2" ToolTip="{x:Static resx:Strings.FindCardsButtonText}"
           Command="ctl:ScehCommands.ShowHideCards">
         <Image Source="{StaticResource selection1}" Stretch="None" />

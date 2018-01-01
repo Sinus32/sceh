@@ -26,6 +26,9 @@
     <Grid.RowDefinitions>
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
       <RowDefinition Height="10*" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
@@ -36,46 +39,57 @@
       <Color x:Key="formColor" A="255" R="255" G="255" B="212" />
       <SolidColorBrush x:Key="formColorBrush" ice:Freeze="True" Color="{StaticResource formColor}" />
     </Grid.Resources>
-    <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="5" Fill="{StaticResource overlayColorBrush}" />
-    <ToolBarTray Grid.Row="1" Grid.Column="1" Margin="0,0,0,4">
-      <ToolBar>
-        <Button Command="ctl:ScehCommands.ScoreUpDown" Content="ScoreUp">
+    <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="8" Fill="{StaticResource overlayColorBrush}" />
+    <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="6" Margin="-5"
+        BorderBrush="{x:Static SystemColors.ControlLightLightBrush}" BorderThickness="1">
+      <Rectangle Fill="{x:Static SystemColors.ControlLightBrush}" />
+    </Border>
+    <Label Grid.Row="1" Grid.Column="1" Target="{Binding ElementName=tbTradeLink}" Content="{x:Static resx:Strings.TradeLinkLabel}" />
+    <TextBox Grid.Row="2" Grid.Column="1" Name="tbTradeLink" ToolTip="{x:Static resx:Strings.ValidTradeUrlToolTip}">
+      <TextBox.InputBindings>
+        <KeyBinding Command="ctl:ScehCommands.Cancel" Key="Escape" />
+      </TextBox.InputBindings>
+    </TextBox>
+    <Label Grid.Row="3" Grid.Column="1" Target="{Binding ElementName=tbEditor}" Content="{x:Static resx:Strings.NotesEditorLabel}" />
+    <ToolBarTray Grid.Row="4" Grid.Column="1">
+      <ToolBar ToolBarTray.IsLocked="True">
+        <Button Command="ctl:ScehCommands.ScoreUpDown" Content="{x:Static resx:Strings.Button_ScoreUp}">
           <Button.CommandParameter>
             <sys:Int32>+1</sys:Int32>
           </Button.CommandParameter>
         </Button>
-        <Button Command="ctl:ScehCommands.ScoreUpDown" Content="ScoreDown">
+        <Button Command="ctl:ScehCommands.ScoreUpDown" Content="{x:Static resx:Strings.Button_ScoreDown}">
           <Button.CommandParameter>
             <sys:Int32>-1</sys:Int32>
           </Button.CommandParameter>
         </Button>
         <Separator />
-        <Button Command="ctl:ScehCommands.PasteTag" Content="Date">
+        <Button Command="ctl:ScehCommands.PasteTag" Content="{x:Static resx:Strings.Button_PasteDate}">
           <Button.CommandParameter>
             <ctl:TagSelection>Date</ctl:TagSelection>
           </Button.CommandParameter>
         </Button>
-        <Button Command="ctl:ScehCommands.PasteTag" Content="MyCards">
+        <Button Command="ctl:ScehCommands.PasteTag" Content="{x:Static resx:Strings.Button_PasteMyCards}">
           <Button.CommandParameter>
             <ctl:TagSelection>MyCards</ctl:TagSelection>
           </Button.CommandParameter>
         </Button>
-        <Button Command="ctl:ScehCommands.PasteTag" Content="OtherCards">
+        <Button Command="ctl:ScehCommands.PasteTag" Content="{x:Static resx:Strings.Button_PasteOtherCards}">
           <Button.CommandParameter>
             <ctl:TagSelection>OtherCards</ctl:TagSelection>
           </Button.CommandParameter>
         </Button>
       </ToolBar>
     </ToolBarTray>
-    <TextBox Name="tbEditor" Grid.Row="2" Grid.Column="1"
+    <TextBox Name="tbEditor" Grid.Row="5" Grid.Column="1"
         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible">
       <TextBox.InputBindings>
         <KeyBinding Command="ctl:ScehCommands.Cancel" Key="Escape" />
       </TextBox.InputBindings>
     </TextBox>
-    <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right">
-      <Button Command="ctl:ScehCommands.Ok" Content="Save" Margin="5" Padding="20,2" />
-      <Button Command="ctl:ScehCommands.Cancel" Content="Close" Margin="5" Padding="20,2" />
+    <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right">
+      <Button Command="ctl:ScehCommands.Ok" Content="Save" Margin="5,5,0,0" Padding="20,2" />
+      <Button Command="ctl:ScehCommands.Cancel" Content="Close" Margin="5,5,0,0" Padding="20,2" />
     </StackPanel>
   </Grid>
 </UserControl>

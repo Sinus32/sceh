@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
@@ -10,7 +11,6 @@ using System.Xml;
 using System.Xml.Serialization;
 using s32.Sceh.DataModel;
 using s32.Sceh.SteamApi;
-using System.Globalization;
 
 namespace s32.Sceh.Code
 {

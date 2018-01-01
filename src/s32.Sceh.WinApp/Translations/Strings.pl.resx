@@ -120,6 +120,21 @@
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>Loguj _automatycznie</value>
   </data>
+  <data name="Button_PasteDate" xml:space="preserve">
+    <value>Wklej datę</value>
+  </data>
+  <data name="Button_PasteMyCards" xml:space="preserve">
+    <value>Wklej moje zaznaczone karty</value>
+  </data>
+  <data name="Button_PasteOtherCards" xml:space="preserve">
+    <value>Wklej jego zaznaczone karty</value>
+  </data>
+  <data name="Button_ScoreDown" xml:space="preserve">
+    <value>Obniż ocenę -1</value>
+  </data>
+  <data name="Button_ScoreUp" xml:space="preserve">
+    <value>Podnieś ocenę +1</value>
+  </data>
   <data name="CompareButtonText" xml:space="preserve">
     <value>_Porównaj</value>
   </data>
@@ -137,6 +152,12 @@
   </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
     <value>Błędny identyfikator lub własny url profilu</value>
+  </data>
+  <data name="InvalidTradeUrl" xml:space="preserve">
+    <value>Wprowadzony adres URL wymiany jest nieprawidłowy</value>
+  </data>
+  <data name="InvalidTradeUrlScheme" xml:space="preserve">
+    <value>Wprowadzony adres URL wymiany musi korzystać ze schematu https</value>
   </data>
   <data name="LoginButtonText" xml:space="preserve">
     <value>_Zaloguj</value>
@@ -201,6 +222,9 @@
   <data name="NotesButtonText" xml:space="preserve">
     <value>Notatki</value>
   </data>
+  <data name="NotesEditorLabel" xml:space="preserve">
+    <value>Notatki:</value>
+  </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować twoich kart: {0}</value>
   </data>
@@ -217,7 +241,7 @@
     <value>Pokaż wszystkie karty</value>
   </data>
   <data name="ShowDuplicatesButtonText" xml:space="preserve">
-    <value>Pokaż zduplikowane karty</value>
+    <value>Pokaż zduplikowane karty na wymianę</value>
   </data>
   <data name="ShowMyCardsButtonText" xml:space="preserve">
     <value>Pokaż moje karty</value>
@@ -234,8 +258,20 @@
   <data name="ShowTradeSugestionsButtonText" xml:space="preserve">
     <value>Pokaż wspólne karty</value>
   </data>
+  <data name="StrangeTradeUrl" xml:space="preserve">
+    <value>Wprowadzony adres URL wymiany nie pasuje do wzorca. Czy na pewno chcesz go użyć?</value>
+  </data>
+  <data name="TradeLinkLabel" xml:space="preserve">
+    <value>Adres URL wymiany:</value>
+  </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Wystąpił nieznany błąd</value>
+  </data>
+  <data name="ValidTradeUrlToolTip" xml:space="preserve">
+    <value>Prawidłowy adres URL wymiany wygląda podobnie do "https://steamcommunity.com/tradeoffer/new/?partner=123456789&amp;token=abcdefgh"</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Ostrzeżenie</value>
   </data>
   <data name="WrongProfileIdOrUrl" xml:space="preserve">
     <value>Nie znaleziono profilu</value>

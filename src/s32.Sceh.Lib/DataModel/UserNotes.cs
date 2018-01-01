@@ -13,6 +13,7 @@ namespace s32.Sceh.DataModel
     public class UserNotes : IList<UserNote>, INotifyPropertyChanged
     {
         private List<UserNote> _notes;
+        private Uri _tradeUrl;
 
         public UserNotes()
         {
@@ -68,6 +69,19 @@ namespace s32.Sceh.DataModel
                 foreach (var note in _notes)
                     result += note.Score;
                 return result;
+            }
+        }
+
+        public Uri TradeUrl
+        {
+            get { return _tradeUrl; }
+            set
+            {
+                if (_tradeUrl != value)
+                {
+                    _tradeUrl = value;
+                    NotifyPropertyChanged();
+                }
             }
         }
 
@@ -222,7 +236,7 @@ namespace s32.Sceh.DataModel
             NotifyPropertyChanged("AllTexts");
         }
 
-        private void NotifyPropertyChanged(string propertyName)
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));

@@ -120,6 +120,21 @@
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>_Auto login</value>
   </data>
+  <data name="Button_PasteDate" xml:space="preserve">
+    <value>Paste date</value>
+  </data>
+  <data name="Button_PasteMyCards" xml:space="preserve">
+    <value>Paste my selected cards</value>
+  </data>
+  <data name="Button_PasteOtherCards" xml:space="preserve">
+    <value>Paste other selected cards</value>
+  </data>
+  <data name="Button_ScoreDown" xml:space="preserve">
+    <value>Score down -1</value>
+  </data>
+  <data name="Button_ScoreUp" xml:space="preserve">
+    <value>Score up +1</value>
+  </data>
   <data name="CompareButtonText" xml:space="preserve">
     <value>_Compare</value>
   </data>
@@ -137,6 +152,12 @@
   </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
     <value>Invalid id or own profile url</value>
+  </data>
+  <data name="InvalidTradeUrl" xml:space="preserve">
+    <value>The provided trade URL is invalid</value>
+  </data>
+  <data name="InvalidTradeUrlScheme" xml:space="preserve">
+    <value>The provided trade URL have to use https scheme</value>
   </data>
   <data name="LoginButtonText" xml:space="preserve">
     <value>_Login</value>
@@ -201,6 +222,9 @@
   <data name="NotesButtonText" xml:space="preserve">
     <value>Notes</value>
   </data>
+  <data name="NotesEditorLabel" xml:space="preserve">
+    <value>Notes:</value>
+  </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Cannot load your cards: {0}</value>
   </data>
@@ -217,7 +241,7 @@
     <value>Show all cards</value>
   </data>
   <data name="ShowDuplicatesButtonText" xml:space="preserve">
-    <value>Show duplicated cards</value>
+    <value>Show duplicated cards for trade</value>
   </data>
   <data name="ShowMyCardsButtonText" xml:space="preserve">
     <value>Show my cards</value>
@@ -234,8 +258,20 @@
   <data name="ShowTradeSugestionsButtonText" xml:space="preserve">
     <value>Show common cards</value>
   </data>
+  <data name="StrangeTradeUrl" xml:space="preserve">
+    <value>The provided trade URL doesn't match the pattern. Are you sure you want to use it?</value>
+  </data>
+  <data name="TradeLinkLabel" xml:space="preserve">
+    <value>Trade link:</value>
+  </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Unknown error occurred</value>
+  </data>
+  <data name="ValidTradeUrlToolTip" xml:space="preserve">
+    <value>Valid trade URL looks like "https://steamcommunity.com/tradeoffer/new/?partner=123456789&amp;token=abcdefgh"</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Warning</value>
   </data>
   <data name="WrongProfileIdOrUrl" xml:space="preserve">
     <value>Profile not found</value>
