@@ -27,8 +27,11 @@ namespace s32.Sceh.WinApp
     /// </summary>
     public partial class InvCompareWindow : Window
     {
+        public static readonly DependencyProperty CompareWithSelfProperty =
+            DependencyProperty.Register("CompareWithSelf", typeof(bool), typeof(InvCompareWindow), new PropertyMetadata(false));
+
         public static readonly DependencyProperty OwnerProfileProperty =
-            DependencyProperty.Register("OwnerProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("OwnerProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null, OwnerProfileChange));
 
         public static readonly DependencyProperty SecondProfileProperty =
             DependencyProperty.Register("SecondProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null));
@@ -52,9 +55,13 @@ namespace s32.Sceh.WinApp
 
             InitializeComponent();
 
-            SteamProfiles = ProfileHelper.LoadProfiles();
-
             DataContext = this;
+        }
+
+        public bool CompareWithSelf
+        {
+            get { return (bool)GetValue(CompareWithSelfProperty); }
+            set { SetValue(CompareWithSelfProperty, value); }
         }
 
         public SteamProfile OwnerProfile
@@ -81,6 +88,12 @@ namespace s32.Sceh.WinApp
             set { SetValue(SteamProfilesProperty, value); }
         }
 
+        private static void OwnerProfileChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var firstProfileId = e.NewValue == null ? (long?)null : ((SteamProfile)e.NewValue).SteamId;
+            ((InvCompareWindow)d).SteamProfiles = ProfileHelper.LoadProfiles(firstProfileId);
+        }
+
         private void CollectionViewSource_FilterByHideProp(object sender, FilterEventArgs e)
         {
             var steamApp = e.Item as SteamApp;
@@ -100,57 +113,12 @@ namespace s32.Sceh.WinApp
             e.Accepted = true;
         }
 
-        private void InventoryLoadWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            var args = (InventoryLoadWorkerArgs)e.Argument;
-            var ownerInv = DataManager.GetSteamUserInventory(args.OwnerProfile, args.ForceRefresh);
-            var secondInv = DataManager.GetSteamUserInventory(args.SecondProfile, args.ForceRefresh);
-            _cardsCompareManager.Fill(ownerInv.Cards, secondInv.Cards);
-            _cardsCompareManager.ShowHideCards(CardsCompareManager.ShowTradeSugestionsStrategy);
-            e.Result = new InventoryLoadWorkerResult() { OwnerInv = ownerInv, SecondInv = secondInv };
-        }
-
-        private void InventoryLoadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            try
-            {
-                var result = (InventoryLoadWorkerResult)e.Result;
-                if (result != null)
-                {
-                    MakeErrorMessage(result);
-
-                    var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
-                    steamApps.AddRange(_cardsCompareManager.SteamApps);
-
-                    SteamApps = steamApps;
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowException(ex);
-            }
-        }
-
-        private void MakeErrorMessage(InventoryLoadWorkerResult result)
-        {
-            if (result.OwnerInv.ErrorMessage == null && result.SecondInv.ErrorMessage == null)
-                return;
-
-            var sb = new StringBuilder();
-            if (result.OwnerInv.ErrorMessage != null)
-                sb.AppendFormat(Strings.OwnerInvErrorMessage, result.OwnerInv.ErrorMessage).AppendLine();
-            if (result.SecondInv.ErrorMessage != null)
-                sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, result.SecondInv.ErrorMessage).AppendLine();
-
-            MessageBox.Show(sb.ToString(), Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-        }
-
         private void ShowException(Exception ex)
         {
             var sb = new StringBuilder(ex.Message);
             for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
                 sb.AppendLine().Append(inner.Message);
-            MessageBox.Show(sb.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(sb.ToString(), Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
             if (Debugger.IsAttached)
                 Debugger.Break();
         }
@@ -201,18 +169,12 @@ namespace s32.Sceh.WinApp
             else if (steamProfile != null)
             {
                 steamProfile.LastUse = DateTime.UtcNow;
-                SteamProfiles = ProfileHelper.LoadProfiles();
+                var firstProfileId = OwnerProfile == null ? (long?)null : OwnerProfile.SteamId;
+                SteamProfiles = ProfileHelper.LoadProfiles(firstProfileId);
                 cbOtherProfile.SelectedItem = steamProfile;
                 SecondProfile = steamProfile;
 
-                var args = new InventoryLoadWorkerArgs()
-                {
-                    OwnerProfile = OwnerProfile,
-                    SecondProfile = SecondProfile,
-                    ForceRefresh = false
-                };
-
-                _inventoryLoadWorker.RunWorkerAsync(args);
+                RunInventoryLoadWorker(OwnerProfile, SecondProfile, false);
             }
         }
 
@@ -511,6 +473,86 @@ namespace s32.Sceh.WinApp
 
         #endregion Commands
 
+        #region InventoryLoadWorker
+
+        private void InventoryLoadWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var args = (InventoryLoadWorkerArgs)e.Argument;
+            var ownerInv = DataManager.GetSteamUserInventory(args.OwnerProfile, args.ForceRefresh);
+            var secondInv = DataManager.GetSteamUserInventory(args.SecondProfile, args.ForceRefresh);
+            e.Result = new InventoryLoadWorkerResult() { OwnerInv = ownerInv, SecondInv = secondInv };
+        }
+
+        private void InventoryLoadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                if (e.Error != null)
+                {
+                    ShowException(e.Error);
+                    return;
+                }
+
+                var result = (InventoryLoadWorkerResult)e.Result;
+                if (result != null)
+                {
+                    MakeErrorMessage(result);
+
+                    if (result.OwnerInv.IsInventoryAvailable && result.SecondInv.IsInventoryAvailable)
+                    {
+                        if (result.OwnerInv.SteamId == result.SecondInv.SteamId)
+                        {
+                            _cardsCompareManager.Fill(result.OwnerInv.Cards, new List<Card>());
+                            _cardsCompareManager.ShowHideCards(CardsCompareManager.ShowMyCardsStrategy);
+                            var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
+                            steamApps.AddRange(_cardsCompareManager.SteamApps);
+                            SteamApps = steamApps;
+                            CompareWithSelf = true;
+                        }
+                        else
+                        {
+                            _cardsCompareManager.Fill(result.OwnerInv.Cards, result.SecondInv.Cards);
+                            _cardsCompareManager.ShowHideCards(CardsCompareManager.ShowTradeSugestionsStrategy);
+                            var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
+                            steamApps.AddRange(_cardsCompareManager.SteamApps);
+                            SteamApps = steamApps;
+                            CompareWithSelf = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex);
+            }
+        }
+
+        private void MakeErrorMessage(InventoryLoadWorkerResult result)
+        {
+            if (result.OwnerInv.ErrorMessage == null && result.SecondInv.ErrorMessage == null)
+                return;
+
+            var sb = new StringBuilder();
+            if (result.OwnerInv.ErrorMessage != null)
+                sb.AppendFormat(Strings.OwnerInvErrorMessage, result.OwnerInv.ErrorMessage).AppendLine();
+            if (result.SecondInv.ErrorMessage != null)
+                sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, result.SecondInv.ErrorMessage).AppendLine();
+
+            MessageBox.Show(sb.ToString(), Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        }
+
+        private void RunInventoryLoadWorker(SteamProfile ownerProfile, SteamProfile secondProfile, bool forceRefresh)
+        {
+            var args = new InventoryLoadWorkerArgs()
+            {
+                OwnerProfile = ownerProfile,
+                SecondProfile = secondProfile,
+                ForceRefresh = forceRefresh
+            };
+
+            _inventoryLoadWorker.RunWorkerAsync(args);
+        }
+
         private class InventoryLoadWorkerArgs
         {
             public bool ForceRefresh;
@@ -523,5 +565,7 @@ namespace s32.Sceh.WinApp
             public UserInventory OwnerInv;
             public UserInventory SecondInv;
         }
+
+        #endregion InventoryLoadWorker
     }
 }

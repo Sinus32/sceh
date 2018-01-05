@@ -35,7 +35,7 @@ namespace s32.Sceh.WinApp
         {
             InitializeComponent();
 
-            SteamProfiles = ProfileHelper.LoadProfiles();
+            SteamProfiles = ProfileHelper.LoadProfiles(null);
             AutoLogIn = DataManager.AutoLogIn;
 
             DataContext = this;

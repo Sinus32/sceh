@@ -120,6 +120,9 @@
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>_Auto login</value>
   </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
   <data name="Button_PasteDate" xml:space="preserve">
     <value>Paste date</value>
   </data>
@@ -128,6 +131,9 @@
   </data>
   <data name="Button_PasteOtherCards" xml:space="preserve">
     <value>Paste other selected cards</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Save</value>
   </data>
   <data name="Button_ScoreDown" xml:space="preserve">
     <value>Score down -1</value>
@@ -227,6 +233,9 @@
   </data>
   <data name="NotesEditorLabel" xml:space="preserve">
     <value>Notes:</value>
+  </data>
+  <data name="NotesPreviewLabel" xml:space="preserve">
+    <value>Preview</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Cannot load your cards: {0}</value>

@@ -82,6 +82,9 @@
     <Compile Include="SteamApi\RgInventoryItem.cs" />
     <Compile Include="SteamApi\RgInventoryResp.cs" />
     <Compile Include="SteamApi\SteamProfileResp.cs" />
+    <Compile Include="UserNoteTags\NoteTokenizer.cs" />
+    <Compile Include="UserNoteTags\Token.cs" />
+    <Compile Include="UserNoteTags\TokenType.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

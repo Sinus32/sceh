@@ -70,6 +70,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Close.
+        /// </summary>
+        public static string Button_Close {
+            get {
+                return ResourceManager.GetString("Button_Close", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paste date.
         /// </summary>
         public static string Button_PasteDate {
@@ -93,6 +102,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string Button_PasteOtherCards {
             get {
                 return ResourceManager.GetString("Button_PasteOtherCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Button_Save {
+            get {
+                return ResourceManager.GetString("Button_Save", resourceCulture);
             }
         }
         
@@ -390,6 +408,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string NotesEditorLabel {
             get {
                 return ResourceManager.GetString("NotesEditorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string NotesPreviewLabel {
+            get {
+                return ResourceManager.GetString("NotesPreviewLabel", resourceCulture);
             }
         }
         

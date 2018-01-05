@@ -207,6 +207,14 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
+    <Style x:Key="myCardsColumn" TargetType="ColumnDefinition">
+      <Setter Property="Width" Value="1*" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding DataContext.CompareWithSelf, ElementName=mainGrid}" Value="True">
+          <Setter Property="Width" Value="9*" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
     <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
     <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
       <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding}">
@@ -308,7 +316,7 @@
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
               Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
           <TextBlock Text="{Binding Name}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0" TextAlignment="Center"
-              VerticalAlignment="Top" TextWrapping="WrapWithOverflow" Style="{StaticResource cardAlternateText}" />
+              VerticalAlignment="Top" TextWrapping="Wrap" Style="{StaticResource cardAlternateText}" />
         </Grid>
       </ToggleButton>
     </DataTemplate>
@@ -319,7 +327,7 @@
           <CollectionViewSource x:Key="otherCardsView" Source="{Binding OtherCards}" Filter="CollectionViewSource_FilterByHideProp" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1*" />
+          <ColumnDefinition Style="{StaticResource myCardsColumn}" />
           <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>

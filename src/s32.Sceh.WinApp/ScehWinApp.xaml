@@ -32,6 +32,9 @@
     <BitmapImage x:Key="selection6" ice:Freeze="True" UriSource="Img/selection6.png" />
     <BitmapImage x:Key="selection7" ice:Freeze="True" UriSource="Img/selection7.png" />
     <BitmapImage x:Key="selection8" ice:Freeze="True" UriSource="Img/selection8.png" />
+    <BitmapImage x:Key="yesMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/yes.png" />
+    <BitmapImage x:Key="noMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/no.png" />
+    <BitmapImage x:Key="saveMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/save.png" />
     <BitmapImage x:Key="copyMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/copy.png" />
     <BitmapImage x:Key="badgeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/badge.png" />
     <BitmapImage x:Key="gameMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/game.png" />

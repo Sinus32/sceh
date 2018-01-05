@@ -29,7 +29,9 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="10*" />
+      <RowDefinition Height="7*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="3*" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
@@ -39,11 +41,10 @@
       <Color x:Key="formColor" A="255" R="255" G="255" B="212" />
       <SolidColorBrush x:Key="formColorBrush" ice:Freeze="True" Color="{StaticResource formColor}" />
     </Grid.Resources>
-    <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="8" Fill="{StaticResource overlayColorBrush}" />
-    <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="6" Margin="-5"
-        BorderBrush="{x:Static SystemColors.ControlLightLightBrush}" BorderThickness="1">
-      <Rectangle Fill="{x:Static SystemColors.ControlLightBrush}" />
-    </Border>
+    <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="10" Fill="{StaticResource overlayColorBrush}" />
+    <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="8" Margin="-5"
+        BorderBrush="{x:Static SystemColors.ControlLightLightBrush}" BorderThickness="1"
+        Background="{x:Static SystemColors.ControlLightBrush}" />
     <Label Grid.Row="1" Grid.Column="1" Target="{Binding ElementName=tbTradeLink}" Content="{x:Static resx:Strings.TradeLinkLabel}" />
     <TextBox Grid.Row="2" Grid.Column="1" Name="tbTradeLink" ToolTip="{x:Static resx:Strings.ValidTradeUrlToolTip}"
         ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
@@ -82,15 +83,36 @@
         </Button>
       </ToolBar>
     </ToolBarTray>
-    <TextBox Name="tbEditor" Grid.Row="5" Grid.Column="1"
+    <TextBox Name="tbEditor" Grid.Row="5" Grid.Column="1" 
         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible">
       <TextBox.InputBindings>
         <KeyBinding Command="ctl:ScehCommands.Cancel" Key="Escape" />
       </TextBox.InputBindings>
     </TextBox>
-    <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right">
-      <Button Command="ctl:ScehCommands.Ok" Content="Save" Margin="5,5,0,0" Padding="20,2" />
-      <Button Command="ctl:ScehCommands.Cancel" Content="Close" Margin="5,5,0,0" Padding="20,2" />
+    <Label Grid.Row="6" Grid.Column="1" Target="{Binding ElementName=tbPreview}" Content="{x:Static resx:Strings.NotesPreviewLabel}" />
+    <Border Grid.Row="7" Grid.Column="1" Padding="2"
+        BorderBrush="{x:Static SystemColors.GradientActiveCaptionBrush}" BorderThickness="1" CornerRadius="2"
+        Background="{x:Static SystemColors.ControlLightLightBrush}">
+      <ScrollViewer>
+        <ctl:UserNotesBlock x:Name="tbPreview" TextWrapping="Wrap" Delay="300"
+            UserNotes="{Binding Text, ElementName=tbEditor, Mode=OneWay}" />
+      </ScrollViewer>
+    </Border>
+    <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Right">
+      <Button Command="ctl:ScehCommands.Ok" Margin="12,5,0,0" Padding="2">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="{StaticResource saveMenuIcon}" Stretch="None" />
+          <AccessText Text="{x:Static resx:Strings.Button_Save}" Margin="12,0" MinWidth="40"
+            VerticalAlignment="Center" TextAlignment="Center" />
+        </StackPanel>
+      </Button>
+      <Button Command="ctl:ScehCommands.Cancel" Margin="12,5,0,0" Padding="2">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="{StaticResource noMenuIcon}" Stretch="None" />
+          <AccessText Text="{x:Static resx:Strings.Button_Close}" Margin="12,0" MinWidth="40"
+            VerticalAlignment="Center" TextAlignment="Center" />
+        </StackPanel>
+      </Button>
     </StackPanel>
   </Grid>
 </UserControl>

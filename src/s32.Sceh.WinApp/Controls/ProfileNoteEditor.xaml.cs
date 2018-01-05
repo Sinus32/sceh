@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using s32.Sceh.DataModel;
+using s32.Sceh.UserNoteTags;
 using s32.Sceh.WinApp.Translations;
 using s32.Sceh.WinApp.UserNoteTags;
 
@@ -35,7 +36,7 @@ namespace s32.Sceh.WinApp.Controls
             DependencyProperty.Register("SteamApps", typeof(List<SteamApp>), typeof(ProfileNoteEditor), new PropertyMetadata(null));
 
         private static readonly Regex ScoreRe = new Regex(@"^\[([+-]?[0-9]+)\]", RegexOptions.None);
-        private static readonly Regex ValidTradeUrlRe = new Regex(@"^https://steamcommunity.com/tradeoffer/new/\?partner=[0-9]{5,10}&token=[a-zA-Z0-9]{5,12}$", RegexOptions.None);
+        private static readonly Regex ValidTradeUrlRe = new Regex(@"^https://steamcommunity.com/tradeoffer/new/\?partner=[0-9]{5,10}&token=[a-zA-Z0-9_-]{5,12}$", RegexOptions.None);
 
         public ProfileNoteEditor()
         {

@@ -120,6 +120,9 @@
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>Loguj _automatycznie</value>
   </data>
+  <data name="Button_Close" xml:space="preserve">
+    <value>Zamknij</value>
+  </data>
   <data name="Button_PasteDate" xml:space="preserve">
     <value>Wklej datę</value>
   </data>
@@ -128,6 +131,9 @@
   </data>
   <data name="Button_PasteOtherCards" xml:space="preserve">
     <value>Wklej jego zaznaczone karty</value>
+  </data>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Zapisz</value>
   </data>
   <data name="Button_ScoreDown" xml:space="preserve">
     <value>Obniż ocenę -1</value>
@@ -227,6 +233,9 @@
   </data>
   <data name="NotesEditorLabel" xml:space="preserve">
     <value>Notatki:</value>
+  </data>
+  <data name="NotesPreviewLabel" xml:space="preserve">
+    <value>Podgląd</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować twoich kart: {0}</value>
