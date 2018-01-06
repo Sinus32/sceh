@@ -88,44 +88,57 @@ namespace s32.Sceh.UserNoteTags.Lexer
                     else
                     {
                         FinishToken(TokenType.BeginTag);
-                        _state = TAG_NAME;
+                        switch (c)
+                        {
+                            case '[': break;
+                            case '=': _state = TAG_SEPARATOR; break;
+                            case ']': _state = TAG_CLOSE; break;
+                            default: _state = TAG_NAME; break;
+                        }
                     }
                     break;
 
                 case TAG_END:
                     FinishToken(TokenType.EndTag);
-                    _state = TAG_NAME;
+                    switch (c)
+                    {
+                        case '[': _state = TAG_START; break;
+                        case '=': _state = TAG_SEPARATOR; break;
+                        case ']': _state = TAG_CLOSE; break;
+                        default: _state = TAG_NAME; break;
+                    }
                     break;
 
                 case TAG_NAME:
-                    if (c == '=')
+                    switch (c)
                     {
-                        FinishToken(TokenType.TagName);
-                        _state = TAG_SEPARATOR;
-                    }
-                    else if (c == ']')
-                    {
-                        FinishToken(TokenType.TagName);
-                        _state = TAG_CLOSE;
+                        case '[': FinishToken(TokenType.TagName); _state = TAG_START; break;
+                        case '=': FinishToken(TokenType.TagName); _state = TAG_SEPARATOR; break;
+                        case ']': FinishToken(TokenType.TagName); _state = TAG_CLOSE; break;
                     }
                     break;
 
                 case TAG_SEPARATOR:
                     FinishToken(TokenType.Separator);
-                    _state = TAG_PARAM;
+                    switch (c)
+                    {
+                        case '[': _state = TAG_START; break;
+                        case ']': _state = TAG_CLOSE; break;
+                        default: _state = TAG_PARAM; break;
+                    }
                     break;
 
                 case TAG_PARAM:
-                    if (c == ']')
+                    switch (c)
                     {
-                        FinishToken(TokenType.TagParam);
-                        _state = TAG_CLOSE;
+                        case '[': FinishToken(TokenType.TagParam); _state = TAG_START; break;
+                        case ']': FinishToken(TokenType.TagParam); _state = TAG_CLOSE; break;
                     }
                     break;
 
                 case TAG_CLOSE:
                     FinishToken(TokenType.TagClose);
-                    _state = TEXT;
+                    _state = c == '[' ? TAG_START : TEXT;
                     break;
             }
 

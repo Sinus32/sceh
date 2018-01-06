@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using s32.Sceh.DataModel;
 using s32.Sceh.UserNoteTags;
 using s32.Sceh.UserNoteTags.Lexer;
+using s32.Sceh.UserNoteTags.Parser;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -79,18 +80,21 @@ namespace s32.Sceh.WinApp.Controls
         {
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
-            var tokenizer = new NoteLexer();
+            var lexer = new NoteLexer();
+            var parser = new NoteParser();
             var inlines = new List<Inline>();
 
             foreach (var text in texts)
             {
-                var tokens = tokenizer.ParseString(text);
-                foreach (var token in tokens)
-                {
-                    inlines.Add(new Run(TokenTag(token.TokenType) + "{") { Foreground = Brushes.DarkRed });
-                    inlines.Add(new Run(token.Content) { FontWeight = FontWeights.Bold });
-                    inlines.Add(new Run("} ") { Foreground = Brushes.DarkRed });
-                }
+                var tokens = lexer.ParseString(text);
+                var rootNode = parser.Parse(tokens);
+                //foreach (var token in tokens)
+                //{
+                //    inlines.Add(new Run(TokenTag(token.TokenType) + "{") { Foreground = Brushes.DarkRed });
+                //    inlines.Add(new Run(token.Content) { FontWeight = FontWeights.Bold });
+                //    inlines.Add(new Run("} ") { Foreground = Brushes.DarkRed });
+                //}
+                CollectInlines(inlines, rootNode);
                 inlines.Add(new Run(Environment.NewLine));
             }
 
@@ -100,6 +104,32 @@ namespace s32.Sceh.WinApp.Controls
             Inlines.AddRange(inlines);
 
             System.Diagnostics.Debug.WriteLine("AddRange: {0}", stopwatch.Elapsed);
+        }
+
+        private void CollectInlines(List<Inline> inlines, Node node)
+        {
+            inlines.Add(new Run(NodeTag(node.NodeType) + "{") { Foreground = Brushes.DarkRed });
+            inlines.Add(new Run(node.GetText()) { FontWeight = FontWeights.Bold });
+
+            foreach (var subNode in node.Content)
+            {
+                inlines.Add(new Run(" "));
+                CollectInlines(inlines, subNode);
+            }
+
+            inlines.Add(new Run("}") { Foreground = Brushes.DarkRed });
+        }
+
+        private string NodeTag(NodeType nodeType)
+        {
+            switch (nodeType)
+            {
+                case NodeType.Root: return "r";
+                case NodeType.Text: return "t";
+                case NodeType.TagStart: return "s";
+                case NodeType.TagEnd: return "e";
+                default: return "";
+            }
         }
 
         private void Timer_Tick(object sender, EventArgs e)

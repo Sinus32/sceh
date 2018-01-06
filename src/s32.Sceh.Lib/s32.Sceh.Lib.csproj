@@ -85,7 +85,14 @@
     <Compile Include="UserNoteTags\DateTimeTag.cs" />
     <Compile Include="UserNoteTags\IUserNoteTag.cs" />
     <Compile Include="UserNoteTags\Lexer\NoteLexer.cs" />
+    <Compile Include="UserNoteTags\Parser\Node.cs" />
     <Compile Include="UserNoteTags\Parser\NoteParser.cs" />
+    <Compile Include="UserNoteTags\Parser\NodeType.cs" />
+    <Compile Include="UserNoteTags\Parser\RootNode.cs" />
+    <Compile Include="UserNoteTags\Parser\TagEndNode.cs" />
+    <Compile Include="UserNoteTags\Parser\ITagNode.cs" />
+    <Compile Include="UserNoteTags\Parser\TagStartNode.cs" />
+    <Compile Include="UserNoteTags\Parser\TextNode.cs" />
     <Compile Include="UserNoteTags\SteamAppTag.cs" />
     <Compile Include="UserNoteTags\SteamCardTag.cs" />
     <Compile Include="UserNoteTags\Lexer\Token.cs" />
