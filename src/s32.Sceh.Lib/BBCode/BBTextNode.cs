@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using s32.Sceh.UserNoteTags.Lexer;
 
-namespace s32.Sceh.UserNoteTags.Parser
+namespace s32.Sceh.BBCode
 {
-    public class TextNode : Node
+    public class BBTextNode : BBNode
     {
-        public override NodeType NodeType
+        public override BBNodeType NodeType
         {
-            get { return NodeType.Text; }
+            get { return BBNodeType.Text; }
         }
 
-        public override void AddToken(Token token)
+        public override void AddToken(BBToken token)
         {
-            if (token.TokenType != TokenType.Text)
+            if (token.TokenType != BBTokenType.Text)
                 throw new InvalidOperationException("Text node cannot have any tokens other than text tokens");
             _tokens.Add(token);
         }

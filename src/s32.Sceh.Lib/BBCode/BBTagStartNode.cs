@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using s32.Sceh.UserNoteTags.Lexer;
 
-namespace s32.Sceh.UserNoteTags.Parser
+namespace s32.Sceh.BBCode
 {
-    public class TagStartNode : Node, ITagNode
+    public class BBTagStartNode : BBNode, IBBTagNode
     {
         private bool _isCompleted;
         private string _tagName;
         private string _tagParam;
-        public ITagNode CloseTag { get; set; }
+
+        public IBBTagNode CloseTag { get; internal set; }
 
         public bool IsClosed
         {
@@ -29,9 +29,9 @@ namespace s32.Sceh.UserNoteTags.Parser
             get { return _isCompleted && !String.IsNullOrEmpty(_tagName); }
         }
 
-        public override NodeType NodeType
+        public override BBNodeType NodeType
         {
-            get { return NodeType.TagStart; }
+            get { return BBNodeType.TagStart; }
         }
 
         public string TagName
@@ -44,23 +44,37 @@ namespace s32.Sceh.UserNoteTags.Parser
             get { return _tagParam; }
         }
 
-        public override void AddToken(Token token)
+        bool IBBTagNode.IsEndTag
+        {
+            get { return false; }
+        }
+
+        bool IBBTagNode.IsStartTag
+        {
+            get { return true; }
+        }
+
+        public override void AddToken(BBToken token)
         {
             switch (token.TokenType)
             {
-                case TokenType.TagName:
+                case BBTokenType.BeginTag:
+                case BBTokenType.Separator:
+                    break;
+
+                case BBTokenType.TagName:
                     _tagName = token.Content;
                     break;
 
-                case TokenType.TagParam:
+                case BBTokenType.TagParam:
                     _tagParam = token.Content;
                     break;
 
-                case TokenType.BeginTag:
-                case TokenType.Separator:
-                    break;
-
-                case TokenType.TagClose:
+                case BBTokenType.TagClose:
+                    if (_tagName != null)
+                        _tagName = _tagName.Trim();
+                    if (_tagParam != null)
+                        _tagParam = _tagParam.Trim();
                     _isCompleted = true;
                     break;
 

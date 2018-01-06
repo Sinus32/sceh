@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using s32.Sceh.UserNoteTags.Lexer;
 
-namespace s32.Sceh.UserNoteTags.Parser
+namespace s32.Sceh.BBCode
 {
-    public class NoteParser
+    public class BBCodeParser
     {
-        public RootNode MakeNodes(IEnumerable<Token> tokens)
+        public BBRootNode MakeNodes(IEnumerable<BBToken> tokens)
         {
-            var result = new RootNode();
-            Node current = result;
+            var result = new BBRootNode();
+            BBNode current = result;
 
             foreach (var token in tokens)
             {
                 switch (token.TokenType)
                 {
-                    case TokenType.Text: PrepareNode(result, ref current, true, NodeType.Text); break;
-                    case TokenType.BeginTag: PrepareNode(result, ref current, false, NodeType.TagStart); break;
-                    case TokenType.EndTag: PrepareNode(result, ref current, false, NodeType.TagEnd); break;
+                    case BBTokenType.Text: PrepareNode(result, ref current, true, BBNodeType.Text); break;
+                    case BBTokenType.BeginTag: PrepareNode(result, ref current, false, BBNodeType.TagStart); break;
+                    case BBTokenType.EndTag: PrepareNode(result, ref current, false, BBNodeType.TagEnd); break;
                 }
                 current.AddToken(token);
             }
@@ -28,19 +27,19 @@ namespace s32.Sceh.UserNoteTags.Parser
             return result;
         }
 
-        public RootNode MakeTree(IReadOnlyList<Node> nodes)
+        public BBRootNode MakeTree(IReadOnlyList<BBNode> nodes)
         {
-            var stack = new List<Node>(nodes.Count);
+            var stack = new List<BBNode>(nodes.Count);
             foreach (var node in nodes)
             {
-                var tagEnd = node as TagEndNode;
+                var tagEnd = node as BBTagEndNode;
                 if (tagEnd != null)
                 {
                     int pos = stack.Count;
-                    TagStartNode tagStart = null;
+                    BBTagStartNode tagStart = null;
                     while (--pos >= 0)
                     {
-                        tagStart = stack[pos] as TagStartNode;
+                        tagStart = stack[pos] as BBTagStartNode;
                         if (tagStart != null && tagStart.CloseTag == null && tagStart.TagName == tagEnd.TagName)
                             break;
                     }
@@ -74,40 +73,40 @@ namespace s32.Sceh.UserNoteTags.Parser
 
             SelfCloseTags(stack);
 
-            var result = new RootNode();
+            var result = new BBRootNode();
             result.Content.AddRange(stack);
 
             return result;
         }
 
-        public RootNode Parse(IEnumerable<Token> tokens)
+        public BBRootNode Parse(IEnumerable<BBToken> tokens)
         {
             var root = MakeNodes(tokens);
             return MakeTree(root.Content);
         }
 
-        private void PrepareNode(RootNode result, ref Node current, bool allowMerge, NodeType nodeType)
+        private void PrepareNode(BBRootNode result, ref BBNode current, bool allowMerge, BBNodeType nodeType)
         {
             if (allowMerge && current.NodeType == nodeType)
                 return;
 
             switch (nodeType)
             {
-                case NodeType.Text: current = new TextNode(); break;
-                case NodeType.TagStart: current = new TagStartNode(); break;
-                case NodeType.TagEnd: current = new TagEndNode(); break;
+                case BBNodeType.Text: current = new BBTextNode(); break;
+                case BBNodeType.TagStart: current = new BBTagStartNode(); break;
+                case BBNodeType.TagEnd: current = new BBTagEndNode(); break;
             }
 
             result.Content.Add(current);
         }
 
-        private void SelfCloseTags(IEnumerable<Node> nodes)
+        private void SelfCloseTags(IEnumerable<BBNode> nodes)
         {
             foreach (var node in nodes)
             {
-                var tagStartNode = node as TagStartNode;
+                var tagStartNode = node as BBTagStartNode;
                 if (tagStartNode != null && tagStartNode.CloseTag == null)
-                     tagStartNode.CloseTag = tagStartNode;
+                    tagStartNode.CloseTag = tagStartNode;
             }
         }
     }

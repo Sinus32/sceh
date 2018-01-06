@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace s32.Sceh.UserNoteTags.Parser
+namespace s32.Sceh.BBCode
 {
-    public enum NodeType
+    public enum BBNodeType
     {
         Unknown,
         Root,

@@ -8,10 +8,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Threading;
+using s32.Sceh.BBCode;
 using s32.Sceh.DataModel;
 using s32.Sceh.UserNoteTags;
-using s32.Sceh.UserNoteTags.Lexer;
-using s32.Sceh.UserNoteTags.Parser;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -76,12 +75,55 @@ namespace s32.Sceh.WinApp.Controls
             }
         }
 
+        private void PrintComplexNode(List<Inline> inlines, BBNode node)
+        {
+            switch (node.NodeType)
+            {
+                case BBNodeType.Root:
+                    foreach (var subNode in node.Content)
+                        PrintComplexNode(inlines, subNode);
+                    break;
+
+                case BBNodeType.Text:
+                    inlines.Add(new Run(node.GetText()));
+                    break;
+
+                case BBNodeType.TagStart:
+                    PrintUnknowNode(inlines, node);
+                    break;
+
+                default:
+                    PrintUnknowNode(inlines, node);
+                    break;
+            }
+        }
+
+        private void PrintUnknowNode(List<Inline> inlines, BBNode node)
+        {
+            if (node.Content.Count > 0)
+            {
+                var subInlines = new List<Inline>();
+                subInlines.Add(new Run(node.GetText()) { FontWeight = FontWeights.Bold });
+
+                foreach (var subNode in node.Content)
+                    PrintComplexNode(subInlines, subNode);
+
+                var span = new Span();
+                span.Inlines.AddRange(subInlines);
+                inlines.Add(span);
+            }
+            else
+            {
+                inlines.Add(new Run(node.GetText()) { FontWeight = FontWeights.Bold });
+            }
+        }
+
         private void SetInlines(IEnumerable<string> texts)
         {
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
-            var lexer = new NoteLexer();
-            var parser = new NoteParser();
+            var lexer = new BBCodeLexer();
+            var parser = new BBCodeParser();
             var inlines = new List<Inline>();
 
             foreach (var text in texts)
@@ -94,7 +136,7 @@ namespace s32.Sceh.WinApp.Controls
                 //    inlines.Add(new Run(token.Content) { FontWeight = FontWeights.Bold });
                 //    inlines.Add(new Run("} ") { Foreground = Brushes.DarkRed });
                 //}
-                CollectInlines(inlines, rootNode);
+                PrintComplexNode(inlines, rootNode);
                 inlines.Add(new Run(Environment.NewLine));
             }
 
@@ -106,52 +148,11 @@ namespace s32.Sceh.WinApp.Controls
             System.Diagnostics.Debug.WriteLine("AddRange: {0}", stopwatch.Elapsed);
         }
 
-        private void CollectInlines(List<Inline> inlines, Node node)
-        {
-            inlines.Add(new Run(NodeTag(node.NodeType) + "{") { Foreground = Brushes.DarkRed });
-            inlines.Add(new Run(node.GetText()) { FontWeight = FontWeights.Bold });
-
-            foreach (var subNode in node.Content)
-            {
-                inlines.Add(new Run(" "));
-                CollectInlines(inlines, subNode);
-            }
-
-            inlines.Add(new Run("}") { Foreground = Brushes.DarkRed });
-        }
-
-        private string NodeTag(NodeType nodeType)
-        {
-            switch (nodeType)
-            {
-                case NodeType.Root: return "r";
-                case NodeType.Text: return "t";
-                case NodeType.TagStart: return "s";
-                case NodeType.TagEnd: return "e";
-                default: return "";
-            }
-        }
-
         private void Timer_Tick(object sender, EventArgs e)
         {
             ((DispatcherTimer)sender).Stop();
             if (IsLoaded)
                 UpdateUserNotes(UserNotes);
-        }
-
-        private string TokenTag(TokenType tokenType)
-        {
-            switch (tokenType)
-            {
-                case TokenType.Text: return "t";
-                case TokenType.BeginTag: return "b";
-                case TokenType.EndTag: return "e";
-                case TokenType.TagClose: return "c";
-                case TokenType.TagName: return "n";
-                case TokenType.Separator: return "s";
-                case TokenType.TagParam: return "p";
-                default: return "";
-            }
         }
 
         private void UserNotesBlock_Loaded(object sender, RoutedEventArgs e)

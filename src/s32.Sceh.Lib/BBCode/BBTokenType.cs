@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace s32.Sceh.UserNoteTags.Lexer
+namespace s32.Sceh.BBCode
 {
-    public enum TokenType
+    public enum BBTokenType
     {
+        Unknown,
         Text,
         BeginTag,
         EndTag,

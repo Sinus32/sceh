@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using s32.Sceh.UserNoteTags.Lexer;
 
-namespace s32.Sceh.UserNoteTags.Parser
+namespace s32.Sceh.BBCode
 {
-    public class RootNode : Node
+    public class BBRootNode : BBNode
     {
-        public override NodeType NodeType
+        public override BBNodeType NodeType
         {
-            get { return NodeType.Root; }
+            get { return BBNodeType.Root; }
         }
 
-        public override void AddToken(Token token)
+        public override void AddToken(BBToken token)
         {
             throw new InvalidOperationException("Root node cannot have any tokens");
         }
