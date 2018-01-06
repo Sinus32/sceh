@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace s32.Sceh.BBCode
 {
-    public abstract class BBNode
+    public abstract class BBNode : IBBNode
     {
         protected List<BBNode> _content;
         protected List<BBToken> _tokens;
@@ -27,6 +27,11 @@ namespace s32.Sceh.BBCode
         public IReadOnlyList<BBToken> Tokens
         {
             get { return _tokens; }
+        }
+
+        IReadOnlyList<BBNode> IBBNode.Content
+        {
+            get { return _content; }
         }
 
         public abstract void AddToken(BBToken token);

@@ -25,14 +25,14 @@ namespace s32.Sceh.UserNoteTags
 
         public string Name { get; set; }
 
-        public string BuildTag()
+        public string BuildSourceText()
         {
             return String.Concat("[card=", MarketHashName, ']', Name, "[/card]");
         }
 
         public override string ToString()
         {
-            return BuildTag();
+            return BuildSourceText();
         }
     }
 }

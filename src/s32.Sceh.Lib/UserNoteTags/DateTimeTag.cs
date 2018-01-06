@@ -21,7 +21,7 @@ namespace s32.Sceh.UserNoteTags
 
         public DateTime Value { get; set; }
 
-        public string BuildTag()
+        public string BuildSourceText()
         {
             string format = Value.TimeOfDay == TimeSpan.Zero ? DateFormat : DateTimeFormat;
             return String.Concat("[date]", Value.ToString(format), "[/date]");
@@ -29,7 +29,7 @@ namespace s32.Sceh.UserNoteTags
 
         public override string ToString()
         {
-            return BuildTag();
+            return BuildSourceText();
         }
     }
 }

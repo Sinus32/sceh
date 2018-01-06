@@ -89,13 +89,19 @@ namespace s32.Sceh.WinApp.Controls
                     break;
 
                 case BBNodeType.TagStart:
-                    PrintUnknowNode(inlines, node);
+                    if (!PrintTagNode(inlines, (IBBTagNode) node))
+                        PrintUnknowNode(inlines, node);
                     break;
 
                 default:
                     PrintUnknowNode(inlines, node);
                     break;
             }
+        }
+
+        private bool PrintTagNode(List<Inline> inlines, IBBTagNode node)
+        {
+            throw new NotImplementedException();
         }
 
         private void PrintUnknowNode(List<Inline> inlines, BBNode node)

@@ -25,14 +25,14 @@ namespace s32.Sceh.UserNoteTags
 
         public string Name { get; set; }
 
-        public string BuildTag()
+        public string BuildSourceText()
         {
             return String.Concat("[app=", Id, ']', Name, "[/app]");
         }
 
         public override string ToString()
         {
-            return BuildTag();
+            return BuildSourceText();
         }
     }
 }

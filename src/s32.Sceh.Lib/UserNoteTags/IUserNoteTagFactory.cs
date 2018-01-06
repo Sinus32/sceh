@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace s32.Sceh.UserNoteTags
 {
-    public interface IUserNoteTag
+    public interface IUserNoteTagFactory
     {
-        string BuildSourceText();
     }
 }

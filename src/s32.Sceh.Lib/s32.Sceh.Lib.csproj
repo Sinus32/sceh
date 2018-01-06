@@ -55,6 +55,7 @@
     <Compile Include="BBCode\BBTextNode.cs" />
     <Compile Include="BBCode\BBToken.cs" />
     <Compile Include="BBCode\BBTokenType.cs" />
+    <Compile Include="BBCode\IBBNode.cs" />
     <Compile Include="BBCode\IBBTagNode.cs" />
     <Compile Include="Code\CardEqualityKey.cs" />
     <Compile Include="Code\CardsCompareManager.cs" />
@@ -95,6 +96,8 @@
     <Compile Include="SteamApi\SteamProfileResp.cs" />
     <Compile Include="UserNoteTags\DateTimeTag.cs" />
     <Compile Include="UserNoteTags\IUserNoteTag.cs" />
+    <Compile Include="UserNoteTags\IUserNoteTagFactory.cs" />
+    <Compile Include="UserNoteTags\UserNoteTagFactory.cs" />
     <Compile Include="UserNoteTags\SteamAppTag.cs" />
     <Compile Include="UserNoteTags\SteamCardTag.cs" />
   </ItemGroup>

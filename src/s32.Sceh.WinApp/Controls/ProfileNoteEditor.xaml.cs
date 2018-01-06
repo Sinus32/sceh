@@ -241,7 +241,7 @@ namespace s32.Sceh.WinApp.Controls
             switch ((TagSelection)e.Parameter)
             {
                 case TagSelection.Date:
-                    text = new DateTimeTag(DateTime.Today).BuildTag();
+                    text = new DateTimeTag(DateTime.Today).BuildSourceText();
                     break;
 
                 case TagSelection.MyCards:
