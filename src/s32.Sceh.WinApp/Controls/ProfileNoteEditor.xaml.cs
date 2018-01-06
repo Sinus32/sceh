@@ -17,7 +17,6 @@ using System.Windows.Threading;
 using s32.Sceh.DataModel;
 using s32.Sceh.UserNoteTags;
 using s32.Sceh.WinApp.Translations;
-using s32.Sceh.WinApp.UserNoteTags;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -257,7 +256,10 @@ namespace s32.Sceh.WinApp.Controls
             }
 
             if (!String.IsNullOrEmpty(text))
-                tbEditor.SelectedText = text;
+            {
+                tbEditor.SelectedText = text + " ";
+                tbEditor.CaretIndex = tbEditor.SelectionStart + tbEditor.SelectionLength;
+            }
         }
 
         private void RaiseCancelCommand()

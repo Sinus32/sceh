@@ -6,14 +6,8 @@ using System.Threading.Tasks;
 
 namespace s32.Sceh.UserNoteTags
 {
-    public enum TokenType
+    public interface IUserNoteTag
     {
-        Text,
-        BeginTag,
-        EndTag,
-        TagClose,
-        TagName,
-        Separator,
-        TagParam,
+        string BuildTag();
     }
 }

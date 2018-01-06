@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using s32.Sceh.DataModel;
 using s32.Sceh.UserNoteTags;
+using s32.Sceh.UserNoteTags.Lexer;
 
 namespace s32.Sceh.WinApp.Controls
 {
@@ -78,7 +79,7 @@ namespace s32.Sceh.WinApp.Controls
         {
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
-            var tokenizer = new NoteTokenizer();
+            var tokenizer = new NoteLexer();
             var inlines = new List<Inline>();
 
             foreach (var text in texts)

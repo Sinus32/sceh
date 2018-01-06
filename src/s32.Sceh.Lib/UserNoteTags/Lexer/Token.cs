@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace s32.Sceh.UserNoteTags
+namespace s32.Sceh.UserNoteTags.Lexer
 {
     public class Token
     {

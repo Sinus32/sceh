@@ -79,10 +79,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
-    <Compile Include="UserNoteTags\DateTimeTag.cs" />
-    <Compile Include="UserNoteTags\IUserNoteTag.cs" />
-    <Compile Include="UserNoteTags\SteamAppTag.cs" />
-    <Compile Include="UserNoteTags\SteamCardTag.cs" />
     <Page Include="Controls\ProfileNoteEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -222,6 +218,7 @@
     <Resource Include="Img\MenuIcons\save.png" />
     <Resource Include="Img\MenuIcons\yes.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

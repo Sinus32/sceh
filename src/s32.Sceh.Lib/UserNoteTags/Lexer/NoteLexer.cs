@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace s32.Sceh.UserNoteTags
+namespace s32.Sceh.UserNoteTags.Lexer
 {
-    public class NoteTokenizer
+    public class NoteLexer
     {
         private const int TEXT = 0, TAG_START = 1, TAG_END = 2, TAG_NAME = 3, TAG_SEPARATOR = 4, TAG_PARAM = 5, TAG_CLOSE = 6;
         private List<Token> _result;
@@ -33,14 +33,14 @@ namespace s32.Sceh.UserNoteTags
             return _result;
         }
 
-        public NoteTokenizer Parse(IEnumerable<char> characters)
+        public NoteLexer Parse(IEnumerable<char> characters)
         {
             foreach (char c in characters)
                 ParseChar(c);
             return this;
         }
 
-        public NoteTokenizer Parse(char c)
+        public NoteLexer Parse(char c)
         {
             ParseChar(c);
             return this;
@@ -51,7 +51,7 @@ namespace s32.Sceh.UserNoteTags
             return Reset().Parse(text).Finish();
         }
 
-        public NoteTokenizer Reset()
+        public NoteLexer Reset()
         {
             _sb.Clear();
             _result = new List<Token>();

@@ -82,9 +82,14 @@
     <Compile Include="SteamApi\RgInventoryItem.cs" />
     <Compile Include="SteamApi\RgInventoryResp.cs" />
     <Compile Include="SteamApi\SteamProfileResp.cs" />
-    <Compile Include="UserNoteTags\NoteTokenizer.cs" />
-    <Compile Include="UserNoteTags\Token.cs" />
-    <Compile Include="UserNoteTags\TokenType.cs" />
+    <Compile Include="UserNoteTags\DateTimeTag.cs" />
+    <Compile Include="UserNoteTags\IUserNoteTag.cs" />
+    <Compile Include="UserNoteTags\Lexer\NoteLexer.cs" />
+    <Compile Include="UserNoteTags\Parser\NoteParser.cs" />
+    <Compile Include="UserNoteTags\SteamAppTag.cs" />
+    <Compile Include="UserNoteTags\SteamCardTag.cs" />
+    <Compile Include="UserNoteTags\Lexer\Token.cs" />
+    <Compile Include="UserNoteTags\Lexer\TokenType.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

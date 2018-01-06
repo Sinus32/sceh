@@ -1,11 +1,11 @@
-﻿using s32.Sceh.DataModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using s32.Sceh.DataModel;
 
-namespace s32.Sceh.WinApp.UserNoteTags
+namespace s32.Sceh.UserNoteTags
 {
     public class SteamCardTag : IUserNoteTag
     {
