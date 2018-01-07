@@ -14,6 +14,12 @@ namespace s32.Sceh.UserNoteTags
         public SteamCardTag()
         { }
 
+        public SteamCardTag(string marketHashName, string cardName)
+        {
+            MarketHashName = marketHashName;
+            CardName = cardName;
+        }
+
         public SteamCardTag(Card card)
         {
             if (card != null)

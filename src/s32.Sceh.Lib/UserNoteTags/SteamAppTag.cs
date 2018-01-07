@@ -14,6 +14,12 @@ namespace s32.Sceh.UserNoteTags
         public SteamAppTag()
         { }
 
+        public SteamAppTag(long appId, string appName)
+        {
+            AppId = appId;
+            AppName = appName;
+        }
+
         public SteamAppTag(SteamApp steamApp)
         {
             if (steamApp != null)
@@ -23,9 +29,9 @@ namespace s32.Sceh.UserNoteTags
             }
         }
 
-        public string AppName { get; set; }
-
         public long AppId { get; set; }
+
+        public string AppName { get; set; }
 
         public string Name
         {

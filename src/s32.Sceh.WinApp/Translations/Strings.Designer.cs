@@ -79,6 +79,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paste all selected cards.
+        /// </summary>
+        public static string Button_PasteAllCards {
+            get {
+                return ResourceManager.GetString("Button_PasteAllCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Paste date.
         /// </summary>
         public static string Button_PasteDate {

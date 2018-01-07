@@ -167,16 +167,17 @@ namespace s32.Sceh.WinApp.Controls
                     continue;
 
                 if (sb.Length > 0)
-                    sb.Append(' ');
+                    sb.Append("; ");
                 sb.Append(new SteamAppTag(app));
 
+                int i = -1;
                 foreach (var card in getCards(app))
                 {
                     if (!card.IsSelected)
                         continue;
 
                     if (sb.Length > 0)
-                        sb.Append(' ');
+                        sb.Append(++i == 0 ? ": " : ", ");
                     sb.Append(new SteamCardTag(card));
                 }
             }
@@ -218,6 +219,10 @@ namespace s32.Sceh.WinApp.Controls
                     e.CanExecute = true;
                     return;
 
+                case TagSelection.AllCards:
+                    e.CanExecute = SteamApps != null && SteamApps.Any(steamApp => steamApp.MyIsSelected || steamApp.OtherIsSelected);
+                    return;
+
                 case TagSelection.MyCards:
                     e.CanExecute = SteamApps != null && SteamApps.Any(steamApp => steamApp.MyIsSelected);
                     return;
@@ -242,6 +247,16 @@ namespace s32.Sceh.WinApp.Controls
             {
                 case TagSelection.Date:
                     text = new DateTimeTag(DateTime.Today).BuildSourceText();
+                    break;
+
+                case TagSelection.AllCards:
+                    if (SteamApps != null)
+                    {
+                        text = String.Concat(
+                            BuildCardsTags(steamApp => steamApp.MyIsSelected, steamApp => steamApp.MyCards),
+                            " [->] ",
+                            BuildCardsTags(steamApp => steamApp.OtherIsSelected, steamApp => steamApp.OtherCards));
+                    }
                     break;
 
                 case TagSelection.MyCards:

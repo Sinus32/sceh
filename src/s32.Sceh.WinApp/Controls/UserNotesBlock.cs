@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using System.Windows.Threading;
 using s32.Sceh.BBCode;
 using s32.Sceh.DataModel;
@@ -21,9 +22,19 @@ namespace s32.Sceh.WinApp.Controls
             DependencyProperty.Register("Delay", typeof(int), typeof(UserNotesBlock), new PropertyMetadata(100));
 
         public static readonly DependencyProperty UserNotesProperty =
-            DependencyProperty.Register("UserNotes", typeof(object), typeof(UserNotesBlock), new PropertyMetadata(null, UserNotesChanged));
+            DependencyProperty.Register("UserNotes", typeof(string), typeof(UserNotesBlock), new PropertyMetadata(null, UserNotesChanged));
 
+        private static readonly Dictionary<string, Action<Inline>> _formatters;
         private DispatcherTimer _timer;
+
+        static UserNotesBlock()
+        {
+            _formatters = new Dictionary<string, Action<Inline>>();
+            _formatters.Add("b", q => q.FontWeight = FontWeights.Bold);
+            _formatters.Add("i", q => q.FontStyle = FontStyles.Italic);
+            _formatters.Add("u", q => q.TextDecorations = System.Windows.TextDecorations.Underline);
+            _formatters.Add("s", q => q.TextDecorations = System.Windows.TextDecorations.Strikethrough);
+        }
 
         public UserNotesBlock()
         {
@@ -37,33 +48,35 @@ namespace s32.Sceh.WinApp.Controls
             set { SetValue(DelayProperty, value); }
         }
 
-        public object UserNotes
+        public string UserNotes
         {
-            get { return (object)GetValue(UserNotesProperty); }
+            get { return (string)GetValue(UserNotesProperty); }
             set { SetValue(UserNotesProperty, value); }
         }
 
-        public void UpdateUserNotes(object userNotes)
+        public void UpdateUserNotes(string userNotes)
         {
             if (userNotes == null)
             {
                 Inlines.Clear();
                 return;
             }
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
-            if (userNotes is string)
-            {
-                var texts = ((string)userNotes).Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-                SetInlines(texts);
-                return;
-            }
+            var lexer = new BBCodeLexer();
+            var parser = new BBCodeParser();
+            var inlines = new List<Inline>();
+            var tokens = lexer.ParseString(userNotes);
+            var rootNode = parser.Parse(tokens);
 
-            if (userNotes is UserNotes)
-            {
-                var texts = ((UserNotes)userNotes).Select(q => q.Text);
-                SetInlines(texts);
-                return;
-            }
+            PrintComplexNode(inlines, rootNode);
+
+            System.Diagnostics.Debug.WriteLine("ParseString: {0}", stopwatch.Elapsed);
+
+            Inlines.Clear();
+            Inlines.AddRange(inlines);
+
+            System.Diagnostics.Debug.WriteLine("AddRange: {0}", stopwatch.Elapsed);
         }
 
         private static void UserNotesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -100,6 +113,42 @@ namespace s32.Sceh.WinApp.Controls
             }
         }
 
+        private bool PrintFormattingTag(List<Inline> inlines, IBBTagNode node)
+        {
+            if (node.TagName == "->")
+            {
+                var rightArrowTemplate = (ControlTemplate)FindResource("rightArrowTemplate");
+                var rightArrow = (FrameworkElement)rightArrowTemplate.LoadContent();
+                rightArrow.Height = this.FontSize;
+                inlines.Add(new InlineUIContainer(rightArrow) { BaselineAlignment = BaselineAlignment.Center });
+                foreach (var subNode in node.Content)
+                    PrintComplexNode(inlines, subNode);
+                return true;
+            }
+
+            if (!node.IsSelfClosed)
+            {
+                Action<Inline> formatter;
+                if (_formatters.TryGetValue(node.TagName, out formatter))
+                {
+                    if (node.Content.Count == 0)
+                        return true; //empty, but handled
+
+                    var span = new Span();
+                    formatter(span);
+                    var subInlines = new List<Inline>();
+                    foreach (var subNode in node.Content)
+                        if (!Object.ReferenceEquals(node.SecondTag, subNode))
+                            PrintComplexNode(subInlines, subNode);
+                    span.Inlines.AddRange(subInlines);
+                    inlines.Add(span);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void PrintKnowTag(List<Inline> inlines, IUserNoteTag userNoteTag)
         {
             BitmapImage icon;
@@ -112,13 +161,15 @@ namespace s32.Sceh.WinApp.Controls
                     break;
 
                 case SteamAppTag.TagName:
-                    icon = (BitmapImage)FindResource("floppydigmInline");
+                    icon = null;
+                    //icon = (BitmapImage)FindResource("gameInline");
                     text = new Run(userNoteTag.GetFormatedText()) { Foreground = Brushes.Purple };
                     break;
 
                 case SteamCardTag.TagName:
-                    icon = (BitmapImage)FindResource("tradingcardInline");
-                    text = new Run(userNoteTag.GetFormatedText()) { Foreground = Brushes.Navy };
+                    icon = null;
+                    //icon = (BitmapImage)FindResource("cardInline");
+                    text = new Run(userNoteTag.GetFormatedText()) { Foreground = Brushes.Navy, FontWeight = FontWeights.Bold };
                     break;
 
                 default:
@@ -131,10 +182,10 @@ namespace s32.Sceh.WinApp.Controls
             {
                 var img = new Image();
                 img.BeginInit();
+                img.Height = 16;
                 img.Source = icon;
-                img.Stretch = Stretch.None;
                 img.EndInit();
-                inlines.Add(new InlineUIContainer(img));
+                inlines.Add(new InlineUIContainer(img) { BaselineAlignment = BaselineAlignment.Center });
             }
 
             inlines.Add(text);
@@ -145,12 +196,14 @@ namespace s32.Sceh.WinApp.Controls
             if (!node.IsValid || node.SecondTag == null || !node.SecondTag.IsValid)
                 return false;
 
-            IUserNoteTag userNoteTag = UserNoteTagFactory.Instance.Create(node);
-            if (userNoteTag == null)
-                return false;
+            IUserNoteTag userNoteTag = UserNoteTagFactory.Instance.CreateTag(node);
+            if (userNoteTag != null)
+            {
+                PrintKnowTag(inlines, userNoteTag);
+                return true;
+            }
 
-            PrintKnowTag(inlines, userNoteTag);
-            return true;
+            return PrintFormattingTag(inlines, node);
         }
 
         private void PrintUnknowNode(List<Inline> inlines, BBNode node)
@@ -171,36 +224,6 @@ namespace s32.Sceh.WinApp.Controls
             {
                 inlines.Add(new Run(node.GetText()) { FontWeight = FontWeights.Bold });
             }
-        }
-
-        private void SetInlines(IEnumerable<string> texts)
-        {
-            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
-
-            var lexer = new BBCodeLexer();
-            var parser = new BBCodeParser();
-            var inlines = new List<Inline>();
-
-            foreach (var text in texts)
-            {
-                var tokens = lexer.ParseString(text);
-                var rootNode = parser.Parse(tokens);
-                //foreach (var token in tokens)
-                //{
-                //    inlines.Add(new Run(TokenTag(token.TokenType) + "{") { Foreground = Brushes.DarkRed });
-                //    inlines.Add(new Run(token.Content) { FontWeight = FontWeights.Bold });
-                //    inlines.Add(new Run("} ") { Foreground = Brushes.DarkRed });
-                //}
-                PrintComplexNode(inlines, rootNode);
-                inlines.Add(new Run(Environment.NewLine));
-            }
-
-            System.Diagnostics.Debug.WriteLine("ParseString: {0}", stopwatch.Elapsed);
-
-            Inlines.Clear();
-            Inlines.AddRange(inlines);
-
-            System.Diagnostics.Debug.WriteLine("AddRange: {0}", stopwatch.Elapsed);
         }
 
         private void Timer_Tick(object sender, EventArgs e)

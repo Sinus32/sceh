@@ -12,6 +12,8 @@ namespace s32.Sceh.WinApp.Controls
 
         Date,
 
+        AllCards,
+
         MyCards,
 
         OtherCards,

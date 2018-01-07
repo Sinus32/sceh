@@ -97,6 +97,8 @@
     <Compile Include="UserNoteTags\DateTimeTag.cs" />
     <Compile Include="UserNoteTags\Factories\DateTimeTagFactory.cs" />
     <Compile Include="UserNoteTags\Factories\IUserNoteTagFactory.cs" />
+    <Compile Include="UserNoteTags\Factories\SteamAppTagFactory.cs" />
+    <Compile Include="UserNoteTags\Factories\SteamCardTagFactory.cs" />
     <Compile Include="UserNoteTags\IUserNoteTag.cs" />
     <Compile Include="UserNoteTags\UserNoteTagFactory.cs" />
     <Compile Include="UserNoteTags\SteamAppTag.cs" />

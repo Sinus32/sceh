@@ -123,6 +123,9 @@
   <data name="Button_Close" xml:space="preserve">
     <value>Close</value>
   </data>
+  <data name="Button_PasteAllCards" xml:space="preserve">
+    <value>Paste all selected cards</value>
+  </data>
   <data name="Button_PasteDate" xml:space="preserve">
     <value>Paste date</value>
   </data>
