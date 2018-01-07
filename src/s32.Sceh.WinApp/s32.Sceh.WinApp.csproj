@@ -218,7 +218,11 @@
     <Resource Include="Img\MenuIcons\save.png" />
     <Resource Include="Img\MenuIcons\yes.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Img\Inlines\floppydigm.png" />
+    <Resource Include="Img\Inlines\tradingcard.png" />
+    <Resource Include="Img\Inlines\tradingcardfoil.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

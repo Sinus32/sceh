@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using s32.Sceh.BBCode;
 using s32.Sceh.DataModel;
@@ -89,7 +90,7 @@ namespace s32.Sceh.WinApp.Controls
                     break;
 
                 case BBNodeType.TagStart:
-                    if (!PrintTagNode(inlines, (IBBTagNode) node))
+                    if (!PrintTagNode(inlines, (IBBTagNode)node))
                         PrintUnknowNode(inlines, node);
                     break;
 
@@ -99,9 +100,57 @@ namespace s32.Sceh.WinApp.Controls
             }
         }
 
+        private void PrintKnowTag(List<Inline> inlines, IUserNoteTag userNoteTag)
+        {
+            BitmapImage icon;
+            Run text;
+            switch (userNoteTag.Name)
+            {
+                case DateTimeTag.TagName:
+                    icon = null;
+                    text = new Run(userNoteTag.GetFormatedText()) { Foreground = Brushes.Maroon, FontWeight = FontWeights.Bold };
+                    break;
+
+                case SteamAppTag.TagName:
+                    icon = (BitmapImage)FindResource("floppydigmInline");
+                    text = new Run(userNoteTag.GetFormatedText()) { Foreground = Brushes.Purple };
+                    break;
+
+                case SteamCardTag.TagName:
+                    icon = (BitmapImage)FindResource("tradingcardInline");
+                    text = new Run(userNoteTag.GetFormatedText()) { Foreground = Brushes.Navy };
+                    break;
+
+                default:
+                    icon = null;
+                    text = new Run(userNoteTag.GetFormatedText()) { Foreground = Brushes.Goldenrod };
+                    break;
+            }
+
+            if (icon != null)
+            {
+                var img = new Image();
+                img.BeginInit();
+                img.Source = icon;
+                img.Stretch = Stretch.None;
+                img.EndInit();
+                inlines.Add(new InlineUIContainer(img));
+            }
+
+            inlines.Add(text);
+        }
+
         private bool PrintTagNode(List<Inline> inlines, IBBTagNode node)
         {
-            throw new NotImplementedException();
+            if (!node.IsValid || node.SecondTag == null || !node.SecondTag.IsValid)
+                return false;
+
+            IUserNoteTag userNoteTag = UserNoteTagFactory.Instance.Create(node);
+            if (userNoteTag == null)
+                return false;
+
+            PrintKnowTag(inlines, userNoteTag);
+            return true;
         }
 
         private void PrintUnknowNode(List<Inline> inlines, BBNode node)

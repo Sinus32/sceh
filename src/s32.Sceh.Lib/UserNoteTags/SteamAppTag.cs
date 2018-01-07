@@ -9,6 +9,8 @@ namespace s32.Sceh.UserNoteTags
 {
     public class SteamAppTag : IUserNoteTag
     {
+        public const string TagName = "app";
+
         public SteamAppTag()
         { }
 
@@ -16,18 +18,28 @@ namespace s32.Sceh.UserNoteTags
         {
             if (steamApp != null)
             {
-                Id = steamApp.Id;
-                Name = steamApp.Name;
+                AppId = steamApp.Id;
+                AppName = steamApp.Name;
             }
         }
 
-        public long Id { get; set; }
+        public string AppName { get; set; }
 
-        public string Name { get; set; }
+        public long AppId { get; set; }
+
+        public string Name
+        {
+            get { return TagName; }
+        }
 
         public string BuildSourceText()
         {
-            return String.Concat("[app=", Id, ']', Name, "[/app]");
+            return String.Concat("[app=", AppId, ']', AppName, "[/app]");
+        }
+
+        public string GetFormatedText()
+        {
+            return AppName;
         }
 
         public override string ToString()

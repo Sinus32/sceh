@@ -50,6 +50,9 @@
     <BitmapImage x:Key="tradeLinkMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/tradeLink.png" />
     <BitmapImage x:Key="changeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/change.png" />
     <BitmapImage x:Key="exitMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/exit.png" />
+    <BitmapImage x:Key="floppydigmInline" ice:Freeze="True" UriSource="Img/Inlines/floppydigm.png" />
+    <BitmapImage x:Key="tradingcardInline" ice:Freeze="True" UriSource="Img/Inlines/tradingcard.png" />
+    <BitmapImage x:Key="tradingcardfoilInline" ice:Freeze="True" UriSource="Img/Inlines/tradingcardfoil.png" />
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}" />
     <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}" />
     <ctl:ImageLoader x:Key="imageLoader" />
