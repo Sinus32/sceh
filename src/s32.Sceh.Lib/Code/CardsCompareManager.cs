@@ -30,17 +30,6 @@ namespace s32.Sceh.Code
             get { return _steamApps; }
         }
 
-        public static List<SteamApp> Generate(List<Card> myCards, List<Card> otherCards, out string errorMessage)
-        {
-            var current = new SteamApp(-1, null);
-            var steamApps = new List<SteamApp>();
-
-            steamApps.Sort(SteamAppsComparison);
-
-            errorMessage = null;
-            return steamApps;
-        }
-
         public void Fill(IReadOnlyCollection<Card> myCards, IReadOnlyCollection<Card> otherCards)
         {
             if (myCards == null)
@@ -77,7 +66,7 @@ namespace s32.Sceh.Code
                 {
                     if (it.Current.MarketFeeApp != current.Id)
                     {
-                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
+                        current = new SteamApp(it.Current.MarketFeeApp, it.Current.GetMarketFeeAppName());
                         _steamApps.Add(current);
                     }
                     current.OtherCards.Add(it.Current);
@@ -88,7 +77,7 @@ namespace s32.Sceh.Code
 
                 if (card.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(card.MarketFeeApp, card.Type);
+                    current = new SteamApp(card.MarketFeeApp, card.GetMarketFeeAppName());
                     _steamApps.Add(current);
                 }
 
@@ -101,7 +90,7 @@ namespace s32.Sceh.Code
             {
                 if (it.Current.MarketFeeApp != current.Id)
                 {
-                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.Type);
+                    current = new SteamApp(it.Current.MarketFeeApp, it.Current.GetMarketFeeAppName());
                     _steamApps.Add(current);
                 }
                 current.OtherCards.Add(it.Current);
@@ -137,6 +126,7 @@ namespace s32.Sceh.Code
         #region Show card strategies
 
         public static readonly ShowHideStrategy ShowAllStrategy = new ShowHideStrategy.ShowAllStrategy();
+        public static readonly ShowHideStrategy ShowDuplicatesStrategy = new ShowHideStrategy.ShowDuplicatesStrategy();
         public static readonly ShowHideStrategy ShowMyCardsStrategy = new ShowHideStrategy.ShowMyCardsStrategy();
         public static readonly ShowHideStrategy ShowOnlySelectedStrategy = new ShowHideStrategy.ShowOnlySelectedStrategy();
         public static readonly ShowHideStrategy ShowOtherCardsStrategy = new ShowHideStrategy.ShowOtherCardsStrategy();
@@ -156,6 +146,29 @@ namespace s32.Sceh.Code
                     foreach (var dt in steamApp.OtherCards)
                         dt.Hide = false;
                     steamApp.Hide = false;
+                }
+            }
+
+            public class ShowDuplicatesStrategy : ShowHideStrategy
+            {
+                public override void ShowHideCards(SteamApp steamApp)
+                {
+                    bool iHaveDuplicate = false, otherHaveDuplicate = false;
+
+                    foreach (var dt in steamApp.MyCards)
+                    {
+                        dt.Hide = false;
+                        if (dt.IsDuplicated && !dt.OtherHaveIt)
+                            iHaveDuplicate = true;
+                    }
+                    foreach (var dt in steamApp.OtherCards)
+                    {
+                        dt.Hide = false;
+                        if (dt.IsDuplicated && !dt.OtherHaveIt)
+                            otherHaveDuplicate = true;
+                    }
+
+                    steamApp.Hide = !(iHaveDuplicate && otherHaveDuplicate);
                 }
             }
 

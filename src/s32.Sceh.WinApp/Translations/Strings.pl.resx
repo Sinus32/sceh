@@ -120,20 +120,26 @@
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>Loguj _automatycznie</value>
   </data>
-  <data name="CardContextMenu_BadgePage" xml:space="preserve">
-    <value>_Odznaka Steam</value>
+  <data name="Button_Close" xml:space="preserve">
+    <value>Zamknij</value>
   </data>
-  <data name="CardContextMenu_CopyName" xml:space="preserve">
-    <value>Kopiuj _nazwę</value>
+  <data name="Button_PasteDate" xml:space="preserve">
+    <value>Wklej datę</value>
   </data>
-  <data name="CardContextMenu_MarketPage" xml:space="preserve">
-    <value>_Kupno i sprzedaż</value>
+  <data name="Button_PasteMyCards" xml:space="preserve">
+    <value>Wklej moje zaznaczone karty</value>
   </data>
-  <data name="CardContextMenu_StorePage" xml:space="preserve">
-    <value>_Strona sklepu</value>
+  <data name="Button_PasteOtherCards" xml:space="preserve">
+    <value>Wklej jego zaznaczone karty</value>
   </data>
-  <data name="CardContextMenu_TradingForum" xml:space="preserve">
-    <value>_Forum wymiany</value>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Zapisz</value>
+  </data>
+  <data name="Button_ScoreDown" xml:space="preserve">
+    <value>Obniż ocenę -1</value>
+  </data>
+  <data name="Button_ScoreUp" xml:space="preserve">
+    <value>Podnieś ocenę +1</value>
   </data>
   <data name="CompareButtonText" xml:space="preserve">
     <value>_Porównaj</value>
@@ -144,14 +150,23 @@
   <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
     <value>Podczas ściągania danych profilu wystąpił wyjątek: {0}</value>
   </data>
+  <data name="FindCardsButtonText" xml:space="preserve">
+    <value>Znajdź karty lub gry</value>
+  </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
     <value>Pobieranie obrazów: {0}/{1}/{2}</value>
   </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
     <value>Błędny identyfikator lub własny url profilu</value>
   </data>
+  <data name="InvalidTradeUrl" xml:space="preserve">
+    <value>Wprowadzony adres URL wymiany jest nieprawidłowy</value>
+  </data>
+  <data name="InvalidTradeUrlScheme" xml:space="preserve">
+    <value>Wprowadzony adres URL wymiany musi korzystać ze schematu https</value>
+  </data>
   <data name="LoginButtonText" xml:space="preserve">
-    <value>_Zaloguj</value>
+    <value>_Wejdź</value>
   </data>
   <data name="LoginProfileLabel" xml:space="preserve">
     <value>_Profil:</value>
@@ -159,11 +174,17 @@
   <data name="LoginWindowTitle" xml:space="preserve">
     <value>Steam cards exchange helper</value>
   </data>
+  <data name="MenuItem_BadgePage" xml:space="preserve">
+    <value>_Odznaka Steam</value>
+  </data>
   <data name="MenuItem_Badges" xml:space="preserve">
     <value>_Odznaki</value>
   </data>
   <data name="MenuItem_ChangeProfile" xml:space="preserve">
     <value>Z_mień profil</value>
+  </data>
+  <data name="MenuItem_CopyName" xml:space="preserve">
+    <value>Kopiuj _nazwę</value>
   </data>
   <data name="MenuItem_EditNote" xml:space="preserve">
     <value>_Notatki</value>
@@ -171,8 +192,17 @@
   <data name="MenuItem_Exit" xml:space="preserve">
     <value>_Zakończ</value>
   </data>
+  <data name="MenuItem_IncomingOffers" xml:space="preserve">
+    <value>_Oferty przychodzące</value>
+  </data>
   <data name="MenuItem_Inventory" xml:space="preserve">
     <value>_Ekwipunek</value>
+  </data>
+  <data name="MenuItem_MakeOffer" xml:space="preserve">
+    <value>Wyślij ofertę</value>
+  </data>
+  <data name="MenuItem_MarketPage" xml:space="preserve">
+    <value>_Kupno i sprzedaż</value>
   </data>
   <data name="MenuItem_MyProfile" xml:space="preserve">
     <value>_Mój profil</value>
@@ -186,14 +216,26 @@
   <data name="MenuItem_Profile" xml:space="preserve">
     <value>_Strona profilu</value>
   </data>
-  <data name="MenuItem_TradeOffers" xml:space="preserve">
-    <value>Oferty _wymiany</value>
+  <data name="MenuItem_SentOffers" xml:space="preserve">
+    <value>Oferty _wysłane</value>
+  </data>
+  <data name="MenuItem_StorePage" xml:space="preserve">
+    <value>_Strona sklepu</value>
   </data>
   <data name="MenuItem_TradeTopics" xml:space="preserve">
     <value>_Tematy dot. wymiany</value>
   </data>
+  <data name="MenuItem_TradingForum" xml:space="preserve">
+    <value>_Forum wymiany</value>
+  </data>
   <data name="NotesButtonText" xml:space="preserve">
     <value>Notatki</value>
+  </data>
+  <data name="NotesEditorLabel" xml:space="preserve">
+    <value>Notatki:</value>
+  </data>
+  <data name="NotesPreviewLabel" xml:space="preserve">
+    <value>Podgląd</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować twoich kart: {0}</value>
@@ -210,6 +252,9 @@
   <data name="ShowAllButtonText" xml:space="preserve">
     <value>Pokaż wszystkie karty</value>
   </data>
+  <data name="ShowDuplicatesButtonText" xml:space="preserve">
+    <value>Pokaż zduplikowane karty na wymianę</value>
+  </data>
   <data name="ShowMyCardsButtonText" xml:space="preserve">
     <value>Pokaż moje karty</value>
   </data>
@@ -225,8 +270,23 @@
   <data name="ShowTradeSugestionsButtonText" xml:space="preserve">
     <value>Pokaż wspólne karty</value>
   </data>
+  <data name="StrangeTradeUrl" xml:space="preserve">
+    <value>Wprowadzony adres URL wymiany nie pasuje do wzorca. Czy na pewno chcesz go użyć?</value>
+  </data>
+  <data name="TradeLinkLabel" xml:space="preserve">
+    <value>Adres URL wymiany:</value>
+  </data>
+  <data name="TradeUrlSeemsToBeInvalid" xml:space="preserve">
+    <value>Zapisany adres URL wymiany wydaje się być nieprawidłowy i nie można go użyć. Popraw adres na ekranie notatek użytkownika.</value>
+  </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Wystąpił nieznany błąd</value>
+  </data>
+  <data name="ValidTradeUrlToolTip" xml:space="preserve">
+    <value>Prawidłowy adres URL wymiany wygląda podobnie do "https://steamcommunity.com/tradeoffer/new/?partner=123456789&amp;token=abcdefgh"</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Ostrzeżenie</value>
   </data>
   <data name="WrongProfileIdOrUrl" xml:space="preserve">
     <value>Nie znaleziono profilu</value>

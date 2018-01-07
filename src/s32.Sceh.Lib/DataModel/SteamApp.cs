@@ -16,26 +16,12 @@ namespace s32.Sceh.DataModel
         private ObservableCollection<Card> _myCards, _otherCards;
         private string _name;
 
-        public SteamApp()
-        {
-            _myCards = new ObservableCollection<Card>();
-            _otherCards = new ObservableCollection<Card>();
-        }
-
         public SteamApp(long id, string name)
         {
             _id = id;
             _name = name;
             _myCards = new ObservableCollection<Card>();
             _otherCards = new ObservableCollection<Card>();
-        }
-
-        public SteamApp(long id, string name, IEnumerable<Card> myCards, IEnumerable<Card> otherCards)
-        {
-            _id = id;
-            _name = name;
-            _myCards = new ObservableCollection<Card>(myCards);
-            _otherCards = new ObservableCollection<Card>(otherCards);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -97,6 +83,9 @@ namespace s32.Sceh.DataModel
             get { return _name; }
             set
             {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
                 if (_name != value)
                 {
                     _name = value;

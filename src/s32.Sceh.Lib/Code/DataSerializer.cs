@@ -21,80 +21,6 @@ namespace s32.Sceh.Code
         {
         }
 
-        public void MakeBackup(string filePath, string backupsPath)
-        {
-            const string dateFormat = "yyyy-MM-dd-HH-mm-ss";
-
-            if (!File.Exists(filePath))
-                return;
-
-            var namePart = Path.GetFileNameWithoutExtension(filePath);
-            var extension = Path.GetExtension(filePath);
-
-            if (Directory.Exists(backupsPath))
-            {
-                const string datePatternPart = @"\.([12][0-9]{3}-[012][0-9]-[0123][0-9]-[012][0-9]-[0-5][0-9]-[0-5][0-9])";
-                var pattern = "^" + Regex.Escape(namePart) + datePatternPart + Regex.Escape(extension) + "$";
-                var re = new Regex(pattern, RegexOptions.IgnoreCase);
-
-                var currentFiles = new List<Tuple<string, DateTime>>(_maxBackups);
-
-                var searchPattern = String.Concat(namePart, "*", extension);
-                foreach (var filename in Directory.EnumerateFiles(backupsPath, searchPattern, SearchOption.TopDirectoryOnly))
-                {
-                    var match = re.Match(Path.GetFileName(filename));
-                    if (match.Success)
-                    {
-                        var date = DateTime.ParseExact(match.Groups[1].Value, dateFormat, CultureInfo.CurrentCulture);
-                        var item = Tuple.Create(filename, date);
-                        if (currentFiles.Count < _maxBackups - 1)
-                        {
-                            currentFiles.Add(item);
-                        }
-                        else
-                        {
-                            var pos = 0;
-                            var min = currentFiles[0];
-                            for (int i = 1; i < currentFiles.Count; ++i)
-                            {
-                                var dt = currentFiles[i];
-                                if (min.Item2 > dt.Item2)
-                                {
-                                    pos = i;
-                                    min = dt;
-                                }
-                            }
-                            File.Delete(min.Item1);
-                            currentFiles[pos] = item;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Directory.CreateDirectory(backupsPath);
-            }
-            var backupFilename = String.Concat(namePart, '.', DateTime.Now.ToString(dateFormat), extension);
-            var backupFilePath = Path.Combine(backupsPath, backupFilename);
-
-            File.Move(filePath, backupFilePath);
-        }
-
-        public void SaveFiles(ScehData scehData)
-        {
-            var steamProfilesFilePath = Path.Combine(scehData.Paths.AppDataPath, _steamProfilesFileName);
-            MakeBackup(steamProfilesFilePath, scehData.Paths.BackupsPath);
-            SaveSteamProfilesFile(steamProfilesFilePath, scehData.Profiles);
-
-            foreach (var imageDirectory in scehData.ImageDirectories)
-            {
-                var imageDirectoryFileName = String.Format(_imageDirectoryFilePattern, imageDirectory.RelativePath);
-                var imageDirectoryFilePath = Path.Combine(scehData.Paths.AppDataPath, imageDirectoryFileName);
-                MakeBackup(imageDirectoryFilePath, scehData.Paths.BackupsPath);
-                SaveImageDirectoryFile(imageDirectoryFilePath, imageDirectory);
-            }
-        }
-
         public void LoadFiles(ScehData scehData)
         {
             var steamProfilesFilePath = Path.Combine(scehData.Paths.AppDataPath, _steamProfilesFileName);
@@ -108,7 +34,7 @@ namespace s32.Sceh.Code
             }
         }
 
-        private void LoadSteamProfilesFile(string filePath, ProfilesData profiles)
+        public void LoadImageDirectoryFile(string filePath, ImageDirectory imageDirectory)
         {
             if (!File.Exists(filePath))
                 return;
@@ -116,8 +42,136 @@ namespace s32.Sceh.Code
             using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             using (var reader = XmlReader.Create(stream, MakeXmlReaderSettings()))
             {
-                const int IGNORE = -1, BEGINNING = 0, PROFILES = 1, LAST_PROFILE = 2, STEAM_PROFILE = 3,
-                    NAME = 4, LAST_USE = 5, AVATAR_URL = 6, SMALL = 7, MEDIUM = 8, FULL = 9, NOTE = 10;
+                const int IGNORE = -1, BEGINNING = 0, IMAGE_DIRECTORY = 1, IMAGE = 2, FILENAME = 3, IMAGE_URL = 4;
+
+                var state = BEGINNING;
+                var stack = new Stack<int>(5);
+                ImageFile imageFile = null;
+
+                while (reader.Read())
+                {
+                    switch (reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            int nextState = IGNORE;
+
+                            switch (state)
+                            {
+                                case BEGINNING:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "ImageDirectory":
+                                            imageDirectory.Images.Clear();
+                                            nextState = IMAGE_DIRECTORY;
+                                            break;
+                                    }
+                                    break;
+
+                                case IMAGE_DIRECTORY:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "Image":
+                                            imageFile = new ImageFile(imageDirectory);
+                                            nextState = IMAGE;
+                                            break;
+                                    }
+                                    break;
+
+                                case IMAGE:
+                                    switch (reader.LocalName)
+                                    {
+                                        case "Filename":
+                                            nextState = FILENAME;
+                                            break;
+
+                                        case "ImageUrl":
+                                            nextState = IMAGE_URL;
+                                            break;
+                                    }
+                                    break;
+                            }
+
+                            if (!reader.IsEmptyElement)
+                            {
+                                stack.Push(state);
+                                state = nextState;
+                            }
+
+                            while (reader.MoveToNextAttribute())
+                            {
+                                var attributeName = reader.LocalName;
+
+                                if (!reader.ReadAttributeValue())
+                                    continue;
+
+                                switch (state)
+                                {
+                                    case IMAGE:
+                                        switch (attributeName)
+                                        {
+                                            case "mimeType":
+                                                imageFile.MimeType = reader.ReadContentAsString();
+                                                break;
+
+                                            case "eTag":
+                                                imageFile.ETag = reader.ReadContentAsString();
+                                                break;
+
+                                            case "lastUpdate":
+                                                imageFile.LastUpdate = reader.ReadContentAsDateTime();
+                                                break;
+                                        }
+                                        break;
+                                }
+                            }
+
+                            break;
+
+                        case XmlNodeType.EndElement:
+                            switch (state)
+                            {
+                                case IMAGE:
+                                    if (imageFile.ImageUrl != null)
+                                        imageDirectory.Images.Add(imageFile);
+                                    break;
+                            }
+
+                            if (stack.Count > 0)
+                                state = stack.Pop();
+                            else
+                                return;
+                            break;
+
+                        case XmlNodeType.Text:
+                            switch (state)
+                            {
+                                case FILENAME:
+                                    imageFile.Filename = reader.ReadContentAsString();
+                                    break;
+
+                                case IMAGE_URL:
+                                    imageFile.ImageUrl = new Uri(reader.ReadContentAsString());
+                                    break;
+                            }
+
+                            if (reader.NodeType == XmlNodeType.EndElement)
+                                goto case XmlNodeType.EndElement;
+                            break;
+                    }
+                }
+            }
+        }
+
+        public void LoadSteamProfilesFile(string filePath, ProfilesData profiles)
+        {
+            if (!File.Exists(filePath))
+                return;
+
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (var reader = XmlReader.Create(stream, MakeXmlReaderSettings()))
+            {
+                const int IGNORE = -1, BEGINNING = 0, PROFILES = 1, LAST_PROFILE = 2, STEAM_PROFILE = 3, NAME = 4,
+                    LAST_USE = 5, AVATAR_URL = 6, SMALL = 7, MEDIUM = 8, FULL = 9, TRADE_URL = 10, NOTE = 11;
 
                 var state = BEGINNING;
                 var stack = new Stack<int>(5);
@@ -170,6 +224,10 @@ namespace s32.Sceh.Code
 
                                         case "AvatarUrl":
                                             nextState = AVATAR_URL;
+                                            break;
+
+                                        case "TradeUrl":
+                                            nextState = TRADE_URL;
                                             break;
 
                                         case "Note":
@@ -298,6 +356,10 @@ namespace s32.Sceh.Code
                                     steamProfile.AvatarFullUrl = new Uri(reader.ReadContentAsString());
                                     break;
 
+                                case TRADE_URL:
+                                    steamProfile.Notes.TradeUrl = new Uri(reader.ReadContentAsString());
+                                    break;
+
                                 case NOTE:
                                     userNote.Text = reader.ReadContentAsString();
                                     break;
@@ -311,131 +373,77 @@ namespace s32.Sceh.Code
             }
         }
 
-        private void LoadImageDirectoryFile(string filePath, ImageDirectory imageDirectory)
+        public void MakeBackup(string filePath, string backupsPath)
         {
+            const string dateFormat = "yyyy-MM-dd-HH-mm-ss";
+
             if (!File.Exists(filePath))
                 return;
 
-            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-            using (var reader = XmlReader.Create(stream, MakeXmlReaderSettings()))
+            var namePart = Path.GetFileNameWithoutExtension(filePath);
+            var extension = Path.GetExtension(filePath);
+
+            if (Directory.Exists(backupsPath))
             {
-                const int IGNORE = -1, BEGINNING = 0, IMAGE_DIRECTORY = 1, IMAGE = 2, FILENAME = 3, IMAGE_URL = 4;
+                const string datePatternPart = @"\.([12][0-9]{3}-[012][0-9]-[0123][0-9]-[012][0-9]-[0-5][0-9]-[0-5][0-9])";
+                var pattern = "^" + Regex.Escape(namePart) + datePatternPart + Regex.Escape(extension) + "$";
+                var re = new Regex(pattern, RegexOptions.IgnoreCase);
 
-                var state = BEGINNING;
-                var stack = new Stack<int>(5);
-                ImageFile imageFile = null;
+                var currentFiles = new List<Tuple<string, DateTime>>(_maxBackups);
 
-                while (reader.Read())
+                var searchPattern = String.Concat(namePart, "*", extension);
+                foreach (var filename in Directory.EnumerateFiles(backupsPath, searchPattern, SearchOption.TopDirectoryOnly))
                 {
-                    switch (reader.NodeType)
+                    var match = re.Match(Path.GetFileName(filename));
+                    if (match.Success)
                     {
-                        case XmlNodeType.Element:
-                            int nextState = IGNORE;
-
-                            switch (state)
+                        var date = DateTime.ParseExact(match.Groups[1].Value, dateFormat, CultureInfo.CurrentCulture);
+                        var item = Tuple.Create(filename, date);
+                        if (currentFiles.Count < _maxBackups - 1)
+                        {
+                            currentFiles.Add(item);
+                        }
+                        else
+                        {
+                            var pos = 0;
+                            var min = currentFiles[0];
+                            for (int i = 1; i < currentFiles.Count; ++i)
                             {
-                                case BEGINNING:
-                                    switch (reader.LocalName)
-                                    {
-                                        case "ImageDirectory":
-                                            imageDirectory.Images.Clear();
-                                            nextState = IMAGE_DIRECTORY;
-                                            break;
-                                    }
-                                    break;
-
-                                case IMAGE_DIRECTORY:
-                                    switch (reader.LocalName)
-                                    {
-                                        case "Image":
-                                            imageFile = new ImageFile(imageDirectory);
-                                            nextState = IMAGE;
-                                            break;
-                                    }
-                                    break;
-
-                                case IMAGE:
-                                    switch (reader.LocalName)
-                                    {
-                                        case "Filename":
-                                            nextState = FILENAME;
-                                            break;
-
-                                        case "ImageUrl":
-                                            nextState = IMAGE_URL;
-                                            break;
-                                    }
-                                    break;
-                            }
-
-                            if (!reader.IsEmptyElement)
-                            {
-                                stack.Push(state);
-                                state = nextState;
-                            }
-
-                            while (reader.MoveToNextAttribute())
-                            {
-                                var attributeName = reader.LocalName;
-
-                                if (!reader.ReadAttributeValue())
-                                    continue;
-
-                                switch (state)
+                                var dt = currentFiles[i];
+                                if (min.Item2 > dt.Item2)
                                 {
-                                    case IMAGE:
-                                        switch (attributeName)
-                                        {
-                                            case "mimeType":
-                                                imageFile.MimeType = reader.ReadContentAsString();
-                                                break;
-
-                                            case "eTag":
-                                                imageFile.ETag = reader.ReadContentAsString();
-                                                break;
-
-                                            case "lastUpdate":
-                                                imageFile.LastUpdate = reader.ReadContentAsDateTime();
-                                                break;
-                                        }
-                                        break;
+                                    pos = i;
+                                    min = dt;
                                 }
                             }
-
-                            break;
-
-                        case XmlNodeType.EndElement:
-                            switch (state)
-                            {
-                                case IMAGE:
-                                    if (imageFile.ImageUrl != null)
-                                        imageDirectory.Images.Add(imageFile);
-                                    break;
-                            }
-
-                            if (stack.Count > 0)
-                                state = stack.Pop();
-                            else
-                                return;
-                            break;
-
-                        case XmlNodeType.Text:
-                            switch (state)
-                            {
-                                case FILENAME:
-                                    imageFile.Filename = reader.ReadContentAsString();
-                                    break;
-
-                                case IMAGE_URL:
-                                    imageFile.ImageUrl = new Uri(reader.ReadContentAsString());
-                                    break;
-                            }
-
-                            if (reader.NodeType == XmlNodeType.EndElement)
-                                goto case XmlNodeType.EndElement;
-                            break;
+                            File.Delete(min.Item1);
+                            currentFiles[pos] = item;
+                        }
                     }
                 }
+            }
+            else
+            {
+                Directory.CreateDirectory(backupsPath);
+            }
+            var backupFilename = String.Concat(namePart, '.', DateTime.Now.ToString(dateFormat), extension);
+            var backupFilePath = Path.Combine(backupsPath, backupFilename);
+
+            File.Move(filePath, backupFilePath);
+        }
+
+        public void SaveFiles(ScehData scehData)
+        {
+            var steamProfilesFilePath = Path.Combine(scehData.Paths.AppDataPath, _steamProfilesFileName);
+            MakeBackup(steamProfilesFilePath, scehData.Paths.BackupsPath);
+            SaveSteamProfilesFile(steamProfilesFilePath, scehData.Profiles);
+
+            foreach (var imageDirectory in scehData.ImageDirectories)
+            {
+                var imageDirectoryFileName = String.Format(_imageDirectoryFilePattern, imageDirectory.RelativePath);
+                var imageDirectoryFilePath = Path.Combine(scehData.Paths.AppDataPath, imageDirectoryFileName);
+                MakeBackup(imageDirectoryFilePath, scehData.Paths.BackupsPath);
+                SaveImageDirectoryFile(imageDirectoryFilePath, imageDirectory);
             }
         }
 
@@ -551,6 +559,13 @@ namespace s32.Sceh.Code
                     writer.WriteElementString("Medium", profile.AvatarMediumUrl.ToString());
                     writer.WriteElementString("Full", profile.AvatarFullUrl.ToString());
                     writer.WriteEndElement();
+
+                    if (profile.Notes.TradeUrl != null)
+                    {
+                        writer.WriteStartElement("TradeUrl");
+                        writer.WriteValue(profile.Notes.TradeUrl.ToString());
+                        writer.WriteEndElement();
+                    }
 
                     foreach (var note in profile.Notes)
                     {

@@ -13,8 +13,8 @@ namespace s32.Sceh.WinApp.Controls
         private static RoutedCommand _ok, _cancel, _compare, _editNote, _showHideCards,
             _openMarketPage, _openStorePage, _openBadgePage, _openTradingForum,
             _openProfilePage, _openInventoryPage, _openUserBadges,
-            _openTradeOffers, _openTradeTopics, _openPostHistory,
-            _copyName, _scoreUpDown, _pasteCards;
+            _openIncomingOffers, _openSentOffers, _openTradeTopics, _openPostHistory,
+            _makeOffer, _copyName, _scoreUpDown, _pasteTag;
 
         static ScehCommands()
         {
@@ -30,21 +30,14 @@ namespace s32.Sceh.WinApp.Controls
             _openProfilePage = new RoutedCommand("OpenProfilePage", typeof(ScehCommands));
             _openInventoryPage = new RoutedCommand("OpenInventoryPage", typeof(ScehCommands));
             _openUserBadges = new RoutedCommand("OpenUserBadges", typeof(ScehCommands));
-            _openTradeOffers = new RoutedCommand("OpenTradeOffers", typeof(ScehCommands));
+            _openIncomingOffers = new RoutedCommand("OpenIncomingOffers", typeof(ScehCommands));
+            _openSentOffers = new RoutedCommand("OpenSentOffers", typeof(ScehCommands));
             _openTradeTopics = new RoutedCommand("OpenTradeTopics", typeof(ScehCommands));
             _openPostHistory = new RoutedCommand("OpenPostHistory", typeof(ScehCommands));
+            _makeOffer = new RoutedCommand("MakeOffer", typeof(ScehCommands));
             _copyName = new RoutedCommand("CopyName", typeof(ScehCommands));
             _scoreUpDown = new RoutedCommand("ScoreUpDown", typeof(ScehCommands));
-            _pasteCards = new RoutedCommand("PasteCards", typeof(ScehCommands));
-        }
-
-        public enum CardSelection
-        {
-            None,
-
-            MyCards,
-
-            OtherCards,
+            _pasteTag = new RoutedCommand("PasteTag", typeof(ScehCommands));
         }
 
         public static RoutedCommand Cancel
@@ -67,6 +60,11 @@ namespace s32.Sceh.WinApp.Controls
             get { return _editNote; }
         }
 
+        public static RoutedCommand MakeOffer
+        {
+            get { return _makeOffer; }
+        }
+
         public static RoutedCommand Ok
         {
             get { return _ok; }
@@ -75,6 +73,11 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand OpenBadgePage
         {
             get { return _openBadgePage; }
+        }
+
+        public static RoutedCommand OpenIncomingOffers
+        {
+            get { return _openIncomingOffers; }
         }
 
         public static RoutedCommand OpenInventoryPage
@@ -97,14 +100,14 @@ namespace s32.Sceh.WinApp.Controls
             get { return _openProfilePage; }
         }
 
+        public static RoutedCommand OpenSentOffers
+        {
+            get { return _openSentOffers; }
+        }
+
         public static RoutedCommand OpenStorePage
         {
             get { return _openStorePage; }
-        }
-
-        public static RoutedCommand OpenTradeOffers
-        {
-            get { return _openTradeOffers; }
         }
 
         public static RoutedCommand OpenTradeTopics
@@ -122,9 +125,9 @@ namespace s32.Sceh.WinApp.Controls
             get { return _openUserBadges; }
         }
 
-        public static RoutedCommand PasteCards
+        public static RoutedCommand PasteTag
         {
-            get { return _pasteCards; }
+            get { return _pasteTag; }
         }
 
         public static RoutedCommand ScoreUpDown

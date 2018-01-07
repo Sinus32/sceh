@@ -70,47 +70,65 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Badge page.
+        ///   Looks up a localized string similar to Close.
         /// </summary>
-        public static string CardContextMenu_BadgePage {
+        public static string Button_Close {
             get {
-                return ResourceManager.GetString("CardContextMenu_BadgePage", resourceCulture);
+                return ResourceManager.GetString("Button_Close", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copy _name.
+        ///   Looks up a localized string similar to Paste date.
         /// </summary>
-        public static string CardContextMenu_CopyName {
+        public static string Button_PasteDate {
             get {
-                return ResourceManager.GetString("CardContextMenu_CopyName", resourceCulture);
+                return ResourceManager.GetString("Button_PasteDate", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Market page.
+        ///   Looks up a localized string similar to Paste my selected cards.
         /// </summary>
-        public static string CardContextMenu_MarketPage {
+        public static string Button_PasteMyCards {
             get {
-                return ResourceManager.GetString("CardContextMenu_MarketPage", resourceCulture);
+                return ResourceManager.GetString("Button_PasteMyCards", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Store page.
+        ///   Looks up a localized string similar to Paste other selected cards.
         /// </summary>
-        public static string CardContextMenu_StorePage {
+        public static string Button_PasteOtherCards {
             get {
-                return ResourceManager.GetString("CardContextMenu_StorePage", resourceCulture);
+                return ResourceManager.GetString("Button_PasteOtherCards", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Trade forum.
+        ///   Looks up a localized string similar to Save.
         /// </summary>
-        public static string CardContextMenu_TradingForum {
+        public static string Button_Save {
             get {
-                return ResourceManager.GetString("CardContextMenu_TradingForum", resourceCulture);
+                return ResourceManager.GetString("Button_Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Score down -1.
+        /// </summary>
+        public static string Button_ScoreDown {
+            get {
+                return ResourceManager.GetString("Button_ScoreDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Score up +1.
+        /// </summary>
+        public static string Button_ScoreUp {
+            get {
+                return ResourceManager.GetString("Button_ScoreUp", resourceCulture);
             }
         }
         
@@ -142,6 +160,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Find cards or games.
+        /// </summary>
+        public static string FindCardsButtonText {
+            get {
+                return ResourceManager.GetString("FindCardsButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Images downloading: {0}/{1}/{2}.
         /// </summary>
         public static string ImagesToDownloadFormat {
@@ -160,7 +187,25 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Login.
+        ///   Looks up a localized string similar to The provided trade URL is invalid.
+        /// </summary>
+        public static string InvalidTradeUrl {
+            get {
+                return ResourceManager.GetString("InvalidTradeUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The provided trade URL have to use https scheme.
+        /// </summary>
+        public static string InvalidTradeUrlScheme {
+            get {
+                return ResourceManager.GetString("InvalidTradeUrlScheme", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Enter.
         /// </summary>
         public static string LoginButtonText {
             get {
@@ -187,6 +232,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Badge page.
+        /// </summary>
+        public static string MenuItem_BadgePage {
+            get {
+                return ResourceManager.GetString("MenuItem_BadgePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Badges.
         /// </summary>
         public static string MenuItem_Badges {
@@ -201,6 +255,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string MenuItem_ChangeProfile {
             get {
                 return ResourceManager.GetString("MenuItem_ChangeProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy _name.
+        /// </summary>
+        public static string MenuItem_CopyName {
+            get {
+                return ResourceManager.GetString("MenuItem_CopyName", resourceCulture);
             }
         }
         
@@ -223,11 +286,38 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Incoming offers.
+        /// </summary>
+        public static string MenuItem_IncomingOffers {
+            get {
+                return ResourceManager.GetString("MenuItem_IncomingOffers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Inventory.
         /// </summary>
         public static string MenuItem_Inventory {
             get {
                 return ResourceManager.GetString("MenuItem_Inventory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Make offer.
+        /// </summary>
+        public static string MenuItem_MakeOffer {
+            get {
+                return ResourceManager.GetString("MenuItem_MakeOffer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Market page.
+        /// </summary>
+        public static string MenuItem_MarketPage {
+            get {
+                return ResourceManager.GetString("MenuItem_MarketPage", resourceCulture);
             }
         }
         
@@ -268,11 +358,20 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Trade _offers.
+        ///   Looks up a localized string similar to _Sent offers.
         /// </summary>
-        public static string MenuItem_TradeOffers {
+        public static string MenuItem_SentOffers {
             get {
-                return ResourceManager.GetString("MenuItem_TradeOffers", resourceCulture);
+                return ResourceManager.GetString("MenuItem_SentOffers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Store page.
+        /// </summary>
+        public static string MenuItem_StorePage {
+            get {
+                return ResourceManager.GetString("MenuItem_StorePage", resourceCulture);
             }
         }
         
@@ -286,11 +385,38 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Trade forum.
+        /// </summary>
+        public static string MenuItem_TradingForum {
+            get {
+                return ResourceManager.GetString("MenuItem_TradingForum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string NotesButtonText {
             get {
                 return ResourceManager.GetString("NotesButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notes:.
+        /// </summary>
+        public static string NotesEditorLabel {
+            get {
+                return ResourceManager.GetString("NotesEditorLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preview.
+        /// </summary>
+        public static string NotesPreviewLabel {
+            get {
+                return ResourceManager.GetString("NotesPreviewLabel", resourceCulture);
             }
         }
         
@@ -340,6 +466,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show duplicated cards for trade.
+        /// </summary>
+        public static string ShowDuplicatesButtonText {
+            get {
+                return ResourceManager.GetString("ShowDuplicatesButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show my cards.
         /// </summary>
         public static string ShowMyCardsButtonText {
@@ -385,11 +520,56 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The provided trade URL doesn&apos;t match the pattern. Are you sure you want to use it?.
+        /// </summary>
+        public static string StrangeTradeUrl {
+            get {
+                return ResourceManager.GetString("StrangeTradeUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trade URL:.
+        /// </summary>
+        public static string TradeLinkLabel {
+            get {
+                return ResourceManager.GetString("TradeLinkLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stored trade URL seems to be invalid and cannot be used. Please correct the url on user notes screen..
+        /// </summary>
+        public static string TradeUrlSeemsToBeInvalid {
+            get {
+                return ResourceManager.GetString("TradeUrlSeemsToBeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unknown error occurred.
         /// </summary>
         public static string UnknownErrorOccured {
             get {
                 return ResourceManager.GetString("UnknownErrorOccured", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Valid trade URL looks like &quot;https://steamcommunity.com/tradeoffer/new/?partner=123456789&amp;token=abcdefgh&quot;.
+        /// </summary>
+        public static string ValidTradeUrlToolTip {
+            get {
+                return ResourceManager.GetString("ValidTradeUrlToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string WarningTitle {
+            get {
+                return ResourceManager.GetString("WarningTitle", resourceCulture);
             }
         }
         

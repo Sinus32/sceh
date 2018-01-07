@@ -68,7 +68,9 @@
       <DependentUpon>ProfileNoteEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScehCommands.cs" />
+    <Compile Include="Controls\TagSelection.cs" />
     <Compile Include="Controls\UrlToImageFileConverter.cs" />
+    <Compile Include="Controls\UserNotesBlock.cs" />
     <Compile Include="InvCompareWindow.xaml.cs">
       <DependentUpon>InvCompareWindow.xaml</DependentUpon>
     </Compile>
@@ -136,9 +138,7 @@
     <Resource Include="Img\sceh.ico" />
     <Resource Include="Img\avatar.jpg" />
     <Resource Include="Img\card.png" />
-    <Resource Include="Img\selection1.png" />
     <Resource Include="Img\selection2.png" />
-    <Resource Include="Img\selection3.png" />
     <Resource Include="Img\selection4.png" />
     <Resource Include="Img\selection5.png" />
   </ItemGroup>
@@ -173,8 +173,52 @@
     <Resource Include="Img\scoreUp.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="UserNoteTags\" />
+    <Resource Include="Img\MenuIcons\note20.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\badge.png" />
+    <Resource Include="Img\MenuIcons\copy.png" />
+    <Resource Include="Img\MenuIcons\forum.png" />
+    <Resource Include="Img\MenuIcons\game.png" />
+    <Resource Include="Img\MenuIcons\market.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\profile.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\backpack.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\received.png" />
+    <Resource Include="Img\MenuIcons\sent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\deal.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\postHistory.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\change.png" />
+    <Resource Include="Img\MenuIcons\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\selection7.png" />
+    <Resource Include="Img\selection8.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\selection1.png" />
+    <Resource Include="Img\selection3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\tradeLink.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\no.png" />
+    <Resource Include="Img\MenuIcons\save.png" />
+    <Resource Include="Img\MenuIcons\yes.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

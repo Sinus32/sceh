@@ -10,22 +10,24 @@
     Title="InvCompareWindow" MinHeight="400" MinWidth="580" Height="450" Width="970"
     Icon="Img/sceh.ico" ResizeMode="CanResizeWithGrip" WindowState="Maximized">
   <Window.CommandBindings>
-    <CommandBinding Command="ApplicationCommands.New" CanExecute="ChangeProfileCommand_CanExecute" Executed="ChangeProfileCommand_Executed" />
-    <CommandBinding Command="ApplicationCommands.Close" CanExecute="ExitAppCommand_CanExecute" Executed="ExitAppCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.Compare" CanExecute="CompareCommand_CanExecute" Executed="CompareCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.EditNote" CanExecute="EditNoteCommand_CanExecute" Executed="EditNoteCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.ShowHideCards" CanExecute="ShowHideCardsCommand_CanExecute" Executed="ShowHideCardsCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenMarketPage" CanExecute="OpenMarketPageCommand_CanExecute" Executed="OpenMarketPageCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenStorePage" CanExecute="OpenStorePageCommand_CanExecute" Executed="OpenStorePageCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenBadgePage" CanExecute="OpenBadgePageCommand_CanExecute" Executed="OpenBadgePageCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenTradingForum" CanExecute="OpenTradingForumCommand_CanExecute" Executed="OpenTradingForumCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenProfilePage" CanExecute="OpenProfilePageCommand_CanExecute" Executed="OpenProfilePageCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenInventoryPage" CanExecute="OpenInventoryPageCommand_CanExecute" Executed="OpenInventoryPageCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenUserBadges" CanExecute="OpenUserBadgesCommand_CanExecute" Executed="OpenUserBadgesCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenTradeOffers" CanExecute="OpenTradeOffersCommand_CanExecute" Executed="OpenTradeOffersCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenTradeTopics" CanExecute="OpenTradeTopicsCommand_CanExecute" Executed="OpenTradeTopicsCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.OpenPostHistory" CanExecute="OpenPostHistoryCommand_CanExecute" Executed="OpenPostHistoryCommand_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.CopyName" CanExecute="CopyNameCommand_CanExecute" Executed="CopyNameCommand_Executed" />
+    <CommandBinding Command="ApplicationCommands.New" CanExecute="ChangeProfile_CanExecute" Executed="ChangeProfile_Executed" />
+    <CommandBinding Command="ApplicationCommands.Close" CanExecute="ExitApp_CanExecute" Executed="ExitApp_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.Compare" CanExecute="Compare_CanExecute" Executed="Compare_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.EditNote" CanExecute="EditNote_CanExecute" Executed="EditNote_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.MakeOffer" CanExecute="MakeOffer_CanExecute" Executed="MakeOffer_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.ShowHideCards" CanExecute="ShowHideCards_CanExecute" Executed="ShowHideCards_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenMarketPage" CanExecute="OpenMarketPage_CanExecute" Executed="OpenMarketPage_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenStorePage" CanExecute="OpenStorePage_CanExecute" Executed="OpenStorePage_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenBadgePage" CanExecute="OpenBadgePage_CanExecute" Executed="OpenBadgePage_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenTradingForum" CanExecute="OpenTradingForum_CanExecute" Executed="OpenTradingForum_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenProfilePage" CanExecute="OpenProfilePage_CanExecute" Executed="OpenProfilePage_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenInventoryPage" CanExecute="OpenInventoryPage_CanExecute" Executed="OpenInventoryPage_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenUserBadges" CanExecute="OpenUserBadges_CanExecute" Executed="OpenUserBadges_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenIncomingOffers" CanExecute="OpenIncomingOffers_CanExecute" Executed="OpenIncomingOffers_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenSentOffers" CanExecute="OpenSentOffers_CanExecute" Executed="OpenSentOffers_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenTradeTopics" CanExecute="OpenTradeTopics_CanExecute" Executed="OpenTradeTopics_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenPostHistory" CanExecute="OpenPostHistory_CanExecute" Executed="OpenPostHistory_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.CopyName" CanExecute="CopyName_CanExecute" Executed="CopyName_Executed" />
   </Window.CommandBindings>
   <Window.Resources>
     <Color x:Key="steamAppNormalColor" A="255" R="238" G="225" B="242" />
@@ -205,32 +207,105 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
+    <Style x:Key="myCardsColumn" TargetType="ColumnDefinition">
+      <Setter Property="Width" Value="1*" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding DataContext.CompareWithSelf, ElementName=mainGrid}" Value="True">
+          <Setter Property="Width" Value="9*" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
     <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
     <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding}" />
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPage" CommandParameter="{Binding}" />
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadges" CommandParameter="{Binding}" />
-      <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource profileMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource backpackMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadges" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource postHistoryMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
     </ContextMenu>
     <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePage" CommandParameter="{Binding}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForum" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_BadgePage}" Command="ctl:ScehCommands.OpenBadgePage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_TradingForum}" Command="ctl:ScehCommands.OpenTradingForum" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource forumMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePage" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_StorePage}" Command="ctl:ScehCommands.OpenStorePage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource gameMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
     </ContextMenu>
     <ContextMenu x:Key="cardMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_MarketPage}" Command="ctl:ScehCommands.OpenMarketPage" CommandParameter="{Binding}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_MarketPage}" Command="ctl:ScehCommands.OpenMarketPage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource marketMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_BadgePage}" Command="ctl:ScehCommands.OpenBadgePage" CommandParameter="{Binding}" />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_StorePage}" Command="ctl:ScehCommands.OpenStorePage" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_BadgePage}" Command="ctl:ScehCommands.OpenBadgePage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_StorePage}" Command="ctl:ScehCommands.OpenStorePage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource gameMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
       <Separator />
-      <MenuItem Header="{x:Static resx:Strings.CardContextMenu_TradingForum}" Command="ctl:ScehCommands.OpenTradingForum" CommandParameter="{Binding}" />
+      <MenuItem Header="{x:Static resx:Strings.MenuItem_TradingForum}" Command="ctl:ScehCommands.OpenTradingForum" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource forumMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
     </ContextMenu>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
-      <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ToolTip="{Binding Name}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick">
+      <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick"
+          ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
+        <ToggleButton.ToolTip>
+          <TextBlock>
+            <Run Text="{Binding ItemClassName}" FontStyle="Italic" />: <Run Text="{Binding Name}" FontWeight="Bold" /><LineBreak />
+            <Run Text="{Binding MarketHashName}" /><LineBreak />
+            <Run Text="{Binding DroprateName}" />
+          </TextBlock>
+        </ToggleButton.ToolTip>
         <Grid>
           <Border Style="{StaticResource cardBorderStyle}">
             <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
@@ -241,7 +316,7 @@
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
               Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
           <TextBlock Text="{Binding Name}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0" TextAlignment="Center"
-              VerticalAlignment="Top" TextWrapping="WrapWithOverflow" Style="{StaticResource cardAlternateText}" />
+              VerticalAlignment="Top" TextWrapping="Wrap" Style="{StaticResource cardAlternateText}" />
         </Grid>
       </ToggleButton>
     </DataTemplate>
@@ -252,7 +327,7 @@
           <CollectionViewSource x:Key="otherCardsView" Source="{Binding OtherCards}" Filter="CollectionViewSource_FilterByHideProp" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="1*" />
+          <ColumnDefinition Style="{StaticResource myCardsColumn}" />
           <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -294,25 +369,103 @@
     </Grid.RowDefinitions>
     <Menu Grid.Row="0" Grid.ColumnSpan="3">
       <MenuItem Header="{x:Static resx:Strings.MenuItem_MyProfile}" >
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding OwnerProfile}" />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPage" CommandParameter="{Binding OwnerProfile}" />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadges" CommandParameter="{Binding OwnerProfile}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding OwnerProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource profileMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding OwnerProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPage" CommandParameter="{Binding OwnerProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource backpackMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadges" CommandParameter="{Binding OwnerProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
         <Separator />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_TradeOffers}" Command="ctl:ScehCommands.OpenTradeOffers" CommandParameter="{Binding OwnerProfile}" />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_TradeTopics}" Command="ctl:ScehCommands.OpenTradeTopics" CommandParameter="{Binding OwnerProfile}" />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding OwnerProfile}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_SentOffers}" Command="ctl:ScehCommands.OpenSentOffers" CommandParameter="{Binding OwnerProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource sentMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_IncomingOffers}" Command="ctl:ScehCommands.OpenIncomingOffers" CommandParameter="{Binding OwnerProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource receivedMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_TradeTopics}" Command="ctl:ScehCommands.OpenTradeTopics" CommandParameter="{Binding OwnerProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource dealMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding OwnerProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource postHistoryMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
         <Separator />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_ChangeProfile}" Command="ApplicationCommands.New" />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_Exit}" Command="ApplicationCommands.Close" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNote" CommandParameter="{Binding OwnerProfile.Notes}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource noteMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_ChangeProfile}" Command="ApplicationCommands.New">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource changeMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_Exit}" Command="ApplicationCommands.Close">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource exitMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
       </MenuItem>
       <MenuItem Header="{x:Static resx:Strings.MenuItem_OthersProfile}">
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding SecondProfile}" />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPage" CommandParameter="{Binding SecondProfile}" />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadges" CommandParameter="{Binding SecondProfile}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding SecondProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource profileMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding SecondProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_Inventory}" Command="ctl:ScehCommands.OpenInventoryPage" CommandParameter="{Binding SecondProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource backpackMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_Badges}" Command="ctl:ScehCommands.OpenUserBadges" CommandParameter="{Binding SecondProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
         <Separator />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding SecondProfile}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding SecondProfile}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource postHistoryMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
         <Separator />
-        <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNote" CommandParameter="{Binding SecondProfile.Notes}" />
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_EditNote}" Command="ctl:ScehCommands.EditNote" CommandParameter="{Binding SecondProfile.Notes}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource noteMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:Strings.MenuItem_MakeOffer}" Command="ctl:ScehCommands.MakeOffer" CommandParameter="{Binding SecondProfile.Notes}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource tradeLinkMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
       </MenuItem>
     </Menu>
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="None"
@@ -349,30 +502,37 @@
       </Button>
     </StackPanel>
     <StackPanel Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right">
-      <TextBlock Text="{Binding ErrorMessage}" TextWrapping="Wrap" />
+      <Button Margin="2" ToolTip="{x:Static resx:Strings.FindCardsButtonText}"
+          Command="ctl:ScehCommands.ShowHideCards">
+        <Image Source="{StaticResource selection1}" Stretch="None" />
+      </Button>
       <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowTradeSugestionsButtonText}"
           Command="ctl:ScehCommands.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowTradeSugestionsStrategy}">
-        <Image Source="{StaticResource selection1}" Stretch="None" />
+        <Image Source="{StaticResource selection2}" Stretch="None" />
+      </Button>
+      <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowDuplicatesButtonText}"
+          Command="ctl:ScehCommands.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowDuplicatesStrategy}">
+        <Image Source="{StaticResource selection3}" Stretch="None" />
       </Button>
       <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowMyCardsButtonText}"
           Command="ctl:ScehCommands.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowMyCardsStrategy}">
-        <Image Source="{StaticResource selection2}" Stretch="None" />
+        <Image Source="{StaticResource selection4}" Stretch="None" />
       </Button>
       <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowAllButtonText}"
           Command="ctl:ScehCommands.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowAllStrategy}">
-        <Image Source="{StaticResource selection3}" Stretch="None" />
+        <Image Source="{StaticResource selection5}" Stretch="None" />
       </Button>
       <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowOtherCardsButtonText}"
           Command="ctl:ScehCommands.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowOtherCardsStrategy}">
-        <Image Source="{StaticResource selection4}" Stretch="None" />
+        <Image Source="{StaticResource selection6}" Stretch="None" />
       </Button>
       <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowSelectedAppButtonText}"
           Command="ctl:ScehCommands.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowSelectedAppStrategy}">
-        <Image Source="{StaticResource selection5}" Stretch="None" />
+        <Image Source="{StaticResource selection7}" Stretch="None" />
       </Button>
       <Button Margin="2" ToolTip="{x:Static resx:Strings.ShowOnlySelectedButtonText}"
           Command="ctl:ScehCommands.ShowHideCards" CommandParameter="{x:Static code:CardsCompareManager.ShowOnlySelectedStrategy}">
-        <Image Source="{StaticResource selection6}" Stretch="None" />
+        <Image Source="{StaticResource selection8}" Stretch="None" />
       </Button>
     </StackPanel>
     <ItemsControl Grid.Row="4" Grid.ColumnSpan="3" VirtualizingPanel.CacheLength="3" VirtualizingPanel.CacheLengthUnit="Item"

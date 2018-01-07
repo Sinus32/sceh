@@ -90,19 +90,35 @@ namespace s32.Sceh.WinApp.Code
             }
         }
 
-        public static List<SteamProfile> LoadProfiles()
+        public static List<SteamProfile> LoadProfiles(long? firstProfileId)
         {
             var profiles = DataManager.GetSteamProfiles();
             var list = new List<SteamProfile>(profiles.Count);
             list.AddRange(profiles);
-            list.Sort(SteamProfileComparison);
+            list.Sort(new SteamProfileComparer(firstProfileId));
             return list;
         }
 
-        private static int SteamProfileComparison(SteamProfile x, SteamProfile y)
+        private class SteamProfileComparer : IComparer<SteamProfile>
         {
-            var ret = DateTime.Compare(y.LastUse, x.LastUse);
-            return ret != 0 ? ret : String.Compare(x.Name, y.Name);
+            private long? _firstProfileId;
+
+            public SteamProfileComparer(long? firstProfileId)
+            {
+                _firstProfileId = firstProfileId;
+            }
+
+            public int Compare(SteamProfile x, SteamProfile y)
+            {
+                if (x.SteamId == _firstProfileId)
+                    return -1;
+
+                if (y.SteamId == _firstProfileId)
+                    return 1;
+
+                var ret = DateTime.Compare(y.LastUse, x.LastUse);
+                return ret != 0 ? ret : String.Compare(x.Name, y.Name);
+            }
         }
     }
 }

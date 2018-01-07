@@ -120,20 +120,26 @@
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>_Auto login</value>
   </data>
-  <data name="CardContextMenu_BadgePage" xml:space="preserve">
-    <value>_Badge page</value>
+  <data name="Button_Close" xml:space="preserve">
+    <value>Close</value>
   </data>
-  <data name="CardContextMenu_CopyName" xml:space="preserve">
-    <value>Copy _name</value>
+  <data name="Button_PasteDate" xml:space="preserve">
+    <value>Paste date</value>
   </data>
-  <data name="CardContextMenu_MarketPage" xml:space="preserve">
-    <value>_Market page</value>
+  <data name="Button_PasteMyCards" xml:space="preserve">
+    <value>Paste my selected cards</value>
   </data>
-  <data name="CardContextMenu_StorePage" xml:space="preserve">
-    <value>_Store page</value>
+  <data name="Button_PasteOtherCards" xml:space="preserve">
+    <value>Paste other selected cards</value>
   </data>
-  <data name="CardContextMenu_TradingForum" xml:space="preserve">
-    <value>_Trade forum</value>
+  <data name="Button_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Button_ScoreDown" xml:space="preserve">
+    <value>Score down -1</value>
+  </data>
+  <data name="Button_ScoreUp" xml:space="preserve">
+    <value>Score up +1</value>
   </data>
   <data name="CompareButtonText" xml:space="preserve">
     <value>_Compare</value>
@@ -144,14 +150,23 @@
   <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
     <value>An exception occurred while downloading the profile data: {0}</value>
   </data>
+  <data name="FindCardsButtonText" xml:space="preserve">
+    <value>Find cards or games</value>
+  </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
     <value>Images downloading: {0}/{1}/{2}</value>
   </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
     <value>Invalid id or own profile url</value>
   </data>
+  <data name="InvalidTradeUrl" xml:space="preserve">
+    <value>The provided trade URL is invalid</value>
+  </data>
+  <data name="InvalidTradeUrlScheme" xml:space="preserve">
+    <value>The provided trade URL have to use https scheme</value>
+  </data>
   <data name="LoginButtonText" xml:space="preserve">
-    <value>_Login</value>
+    <value>_Enter</value>
   </data>
   <data name="LoginProfileLabel" xml:space="preserve">
     <value>_Profile:</value>
@@ -159,11 +174,17 @@
   <data name="LoginWindowTitle" xml:space="preserve">
     <value>Steam cards exchange helper</value>
   </data>
+  <data name="MenuItem_BadgePage" xml:space="preserve">
+    <value>_Badge page</value>
+  </data>
   <data name="MenuItem_Badges" xml:space="preserve">
     <value>_Badges</value>
   </data>
   <data name="MenuItem_ChangeProfile" xml:space="preserve">
     <value>_Change profile</value>
+  </data>
+  <data name="MenuItem_CopyName" xml:space="preserve">
+    <value>Copy _name</value>
   </data>
   <data name="MenuItem_EditNote" xml:space="preserve">
     <value>_Notes</value>
@@ -171,8 +192,17 @@
   <data name="MenuItem_Exit" xml:space="preserve">
     <value>_Exit</value>
   </data>
+  <data name="MenuItem_IncomingOffers" xml:space="preserve">
+    <value>_Incoming offers</value>
+  </data>
   <data name="MenuItem_Inventory" xml:space="preserve">
     <value>_Inventory</value>
+  </data>
+  <data name="MenuItem_MakeOffer" xml:space="preserve">
+    <value>Make offer</value>
+  </data>
+  <data name="MenuItem_MarketPage" xml:space="preserve">
+    <value>_Market page</value>
   </data>
   <data name="MenuItem_MyProfile" xml:space="preserve">
     <value>_My profile</value>
@@ -186,14 +216,26 @@
   <data name="MenuItem_Profile" xml:space="preserve">
     <value>_Profile page</value>
   </data>
-  <data name="MenuItem_TradeOffers" xml:space="preserve">
-    <value>Trade _offers</value>
+  <data name="MenuItem_SentOffers" xml:space="preserve">
+    <value>_Sent offers</value>
+  </data>
+  <data name="MenuItem_StorePage" xml:space="preserve">
+    <value>_Store page</value>
   </data>
   <data name="MenuItem_TradeTopics" xml:space="preserve">
     <value>Trading _topics</value>
   </data>
+  <data name="MenuItem_TradingForum" xml:space="preserve">
+    <value>_Trade forum</value>
+  </data>
   <data name="NotesButtonText" xml:space="preserve">
     <value>Notes</value>
+  </data>
+  <data name="NotesEditorLabel" xml:space="preserve">
+    <value>Notes:</value>
+  </data>
+  <data name="NotesPreviewLabel" xml:space="preserve">
+    <value>Preview</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Cannot load your cards: {0}</value>
@@ -210,6 +252,9 @@
   <data name="ShowAllButtonText" xml:space="preserve">
     <value>Show all cards</value>
   </data>
+  <data name="ShowDuplicatesButtonText" xml:space="preserve">
+    <value>Show duplicated cards for trade</value>
+  </data>
   <data name="ShowMyCardsButtonText" xml:space="preserve">
     <value>Show my cards</value>
   </data>
@@ -225,8 +270,23 @@
   <data name="ShowTradeSugestionsButtonText" xml:space="preserve">
     <value>Show common cards</value>
   </data>
+  <data name="StrangeTradeUrl" xml:space="preserve">
+    <value>The provided trade URL doesn't match the pattern. Are you sure you want to use it?</value>
+  </data>
+  <data name="TradeLinkLabel" xml:space="preserve">
+    <value>Trade URL:</value>
+  </data>
+  <data name="TradeUrlSeemsToBeInvalid" xml:space="preserve">
+    <value>Stored trade URL seems to be invalid and cannot be used. Please correct the url on user notes screen.</value>
+  </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Unknown error occurred</value>
+  </data>
+  <data name="ValidTradeUrlToolTip" xml:space="preserve">
+    <value>Valid trade URL looks like "https://steamcommunity.com/tradeoffer/new/?partner=123456789&amp;token=abcdefgh"</value>
+  </data>
+  <data name="WarningTitle" xml:space="preserve">
+    <value>Warning</value>
   </data>
   <data name="WrongProfileIdOrUrl" xml:space="preserve">
     <value>Profile not found</value>

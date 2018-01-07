@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
@@ -171,7 +172,7 @@ namespace s32.Sceh.Code
             string errorMessage;
             result = new UserInventory();
             result.SteamId = profile.SteamId;
-            result.Cards = SteamDataDownloader.GetCardsB(profile, out errorMessage);
+            result.Cards = SteamDataDownloader.GetCards(profile, CultureInfo.CurrentCulture, out errorMessage);
             result.ErrorMessage = errorMessage;
             result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
 

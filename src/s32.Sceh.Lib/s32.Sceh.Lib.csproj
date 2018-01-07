@@ -45,6 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BBCode\BBCodeLexer.cs" />
+    <Compile Include="BBCode\BBCodeParser.cs" />
+    <Compile Include="BBCode\BBNode.cs" />
+    <Compile Include="BBCode\BBNodeType.cs" />
+    <Compile Include="BBCode\BBRootNode.cs" />
+    <Compile Include="BBCode\BBTagEndNode.cs" />
+    <Compile Include="BBCode\BBTagStartNode.cs" />
+    <Compile Include="BBCode\BBTextNode.cs" />
+    <Compile Include="BBCode\BBToken.cs" />
+    <Compile Include="BBCode\BBTokenType.cs" />
+    <Compile Include="BBCode\IBBTagNode.cs" />
     <Compile Include="Code\CardEqualityKey.cs" />
     <Compile Include="Code\CardsCompareManager.cs" />
     <Compile Include="Code\CommunicationState.cs" />
@@ -58,6 +69,7 @@
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
     <Compile Include="DataModel\Card.cs" />
+    <Compile Include="DataModel\ItemClass.cs" />
     <Compile Include="DataModel\PathConfig.cs" />
     <Compile Include="DataModel\UserNote.cs" />
     <Compile Include="DataModel\ProfilesData.cs" />
@@ -81,6 +93,10 @@
     <Compile Include="SteamApi\RgInventoryItem.cs" />
     <Compile Include="SteamApi\RgInventoryResp.cs" />
     <Compile Include="SteamApi\SteamProfileResp.cs" />
+    <Compile Include="UserNoteTags\DateTimeTag.cs" />
+    <Compile Include="UserNoteTags\IUserNoteTag.cs" />
+    <Compile Include="UserNoteTags\SteamAppTag.cs" />
+    <Compile Include="UserNoteTags\SteamCardTag.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

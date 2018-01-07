@@ -17,8 +17,8 @@ using System.Windows.Shapes;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Code;
-using s32.Sceh.WinApp.Translations;
 using s32.Sceh.WinApp.Controls;
+using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp
 {
@@ -27,17 +27,11 @@ namespace s32.Sceh.WinApp
     /// </summary>
     public partial class InvCompareWindow : Window
     {
-        public static readonly DependencyProperty ErrorMessageProperty =
-            DependencyProperty.Register("ErrorMessage", typeof(string), typeof(InvCompareWindow), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty OwnerInvErrorProperty =
-            DependencyProperty.Register("OwnerInvError", typeof(string), typeof(InvCompareWindow), new PropertyMetadata(null));
+        public static readonly DependencyProperty CompareWithSelfProperty =
+            DependencyProperty.Register("CompareWithSelf", typeof(bool), typeof(InvCompareWindow), new PropertyMetadata(false));
 
         public static readonly DependencyProperty OwnerProfileProperty =
-            DependencyProperty.Register("OwnerProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty SecondInvErrorProperty =
-            DependencyProperty.Register("SecondInvError", typeof(string), typeof(InvCompareWindow), new PropertyMetadata(null));
+            DependencyProperty.Register("OwnerProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null, OwnerProfileChange));
 
         public static readonly DependencyProperty SecondProfileProperty =
             DependencyProperty.Register("SecondProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null));
@@ -61,33 +55,19 @@ namespace s32.Sceh.WinApp
 
             InitializeComponent();
 
-            SteamProfiles = ProfileHelper.LoadProfiles();
-
             DataContext = this;
         }
 
-        public string ErrorMessage
+        public bool CompareWithSelf
         {
-            get { return (string)GetValue(ErrorMessageProperty); }
-            set { SetValue(ErrorMessageProperty, value); }
-        }
-
-        public string OwnerInvError
-        {
-            get { return (string)GetValue(OwnerInvErrorProperty); }
-            set { SetValue(OwnerInvErrorProperty, value); }
+            get { return (bool)GetValue(CompareWithSelfProperty); }
+            set { SetValue(CompareWithSelfProperty, value); }
         }
 
         public SteamProfile OwnerProfile
         {
             get { return (SteamProfile)GetValue(OwnerProfileProperty); }
             set { SetValue(OwnerProfileProperty, value); }
-        }
-
-        public string SecondInvError
-        {
-            get { return (string)GetValue(SecondInvErrorProperty); }
-            set { SetValue(SecondInvErrorProperty, value); }
         }
 
         public SteamProfile SecondProfile
@@ -106,6 +86,12 @@ namespace s32.Sceh.WinApp
         {
             get { return (List<SteamProfile>)GetValue(SteamProfilesProperty); }
             set { SetValue(SteamProfilesProperty, value); }
+        }
+
+        private static void OwnerProfileChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var firstProfileId = e.NewValue == null ? (long?)null : ((SteamProfile)e.NewValue).SteamId;
+            ((InvCompareWindow)d).SteamProfiles = ProfileHelper.LoadProfiles(firstProfileId);
         }
 
         private void CollectionViewSource_FilterByHideProp(object sender, FilterEventArgs e)
@@ -127,58 +113,14 @@ namespace s32.Sceh.WinApp
             e.Accepted = true;
         }
 
-        private void InventoryLoadWorker_DoWork(object sender, DoWorkEventArgs e)
+        private void ShowException(Exception ex)
         {
-            var args = (InventoryLoadWorkerArgs)e.Argument;
-            var ownerInv = DataManager.GetSteamUserInventory(args.OwnerProfile, args.ForceRefresh);
-            var secondInv = DataManager.GetSteamUserInventory(args.SecondProfile, args.ForceRefresh);
-            _cardsCompareManager.Fill(ownerInv.Cards, secondInv.Cards);
-            _cardsCompareManager.ShowHideCards(CardsCompareManager.ShowTradeSugestionsStrategy);
-            e.Result = new InventoryLoadWorkerResult() { OwnerInv = ownerInv, SecondInv = secondInv };
-        }
-
-        private void InventoryLoadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            try
-            {
-                var result = (InventoryLoadWorkerResult)e.Result;
-                if (result != null)
-                {
-                    OwnerInvError = result.OwnerInv.ErrorMessage;
-                    SecondInvError = result.SecondInv.ErrorMessage;
-                    MakeErrorMessage();
-
-                    var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
-                    steamApps.AddRange(_cardsCompareManager.SteamApps);
-
-                    SteamApps = steamApps;
-                }
-            }
-            catch (Exception ex)
-            {
-                var sb = new StringBuilder(ex.Message);
-                for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
-                    sb.AppendLine().Append(inner.Message);
-                MessageBox.Show(sb.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-                if (Debugger.IsAttached)
-                    Debugger.Break();
-            }
-        }
-
-        private void MakeErrorMessage()
-        {
-            if (OwnerInvError == null && SecondInvError == null)
-            {
-                ErrorMessage = null;
-                return;
-            }
-
-            var sb = new StringBuilder();
-            if (OwnerInvError != null)
-                sb.AppendFormat(Strings.OwnerInvErrorMessage, OwnerInvError).AppendLine();
-            if (SecondInvError != null)
-                sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, SecondInvError).AppendLine();
-            ErrorMessage = sb.ToString();
+            var sb = new StringBuilder(ex.Message);
+            for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
+                sb.AppendLine().Append(inner.Message);
+            MessageBox.Show(sb.ToString(), Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+            if (Debugger.IsAttached)
+                Debugger.Break();
         }
 
         #region Commands
@@ -195,19 +137,19 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void ChangeProfileCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ChangeProfile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = !CommunicationState.Instance.IsInProgress;
         }
 
-        private void ChangeProfileCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ChangeProfile_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var loginWindow = new LoginWindow();
             loginWindow.Show();
             this.Close();
         }
 
-        private void CompareCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void Compare_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             if (_inventoryLoadWorker == null || _inventoryLoadWorker.IsBusy)
                 e.CanExecute = false;
@@ -215,7 +157,7 @@ namespace s32.Sceh.WinApp
                 e.CanExecute = cbOtherProfile.SelectedItem != null || !String.IsNullOrWhiteSpace(cbOtherProfile.Text);
         }
 
-        private void CompareCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void Compare_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             string errorMessage;
             var steamProfile = ProfileHelper.GetSteamUser((SteamProfile)cbOtherProfile.SelectedItem, cbOtherProfile.Text, out errorMessage);
@@ -227,27 +169,21 @@ namespace s32.Sceh.WinApp
             else if (steamProfile != null)
             {
                 steamProfile.LastUse = DateTime.UtcNow;
-                SteamProfiles = ProfileHelper.LoadProfiles();
+                var firstProfileId = OwnerProfile == null ? (long?)null : OwnerProfile.SteamId;
+                SteamProfiles = ProfileHelper.LoadProfiles(firstProfileId);
                 cbOtherProfile.SelectedItem = steamProfile;
                 SecondProfile = steamProfile;
 
-                var args = new InventoryLoadWorkerArgs()
-                {
-                    OwnerProfile = OwnerProfile,
-                    SecondProfile = SecondProfile,
-                    ForceRefresh = false
-                };
-
-                _inventoryLoadWorker.RunWorkerAsync(args);
+                RunInventoryLoadWorker(OwnerProfile, SecondProfile, false);
             }
         }
 
-        private void CopyNameCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void CopyName_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
+            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card || e.Parameter is SteamProfile;
         }
 
-        private void CopyNameCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CopyName_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamApp)
             {
@@ -259,14 +195,19 @@ namespace s32.Sceh.WinApp
                 var card = (Card)e.Parameter;
                 Clipboard.SetText(card.Name);
             }
+            else if (e.Parameter is SteamProfile)
+            {
+                var profile = (SteamProfile)e.Parameter;
+                Clipboard.SetText(profile.Name);
+            }
         }
 
-        private void EditNoteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void EditNote_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is UserNotes;
         }
 
-        private void EditNoteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void EditNote_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var editor = new ProfileNoteEditor();
             Grid.SetRowSpan(editor, mainGrid.RowDefinitions.Count);
@@ -277,22 +218,47 @@ namespace s32.Sceh.WinApp
             editor.AutoFocus = true;
         }
 
-        private void ExitAppCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ExitApp_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
         }
 
-        private void ExitAppCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ExitApp_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             Application.Current.Shutdown();
         }
 
-        private void OpenBadgePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void MakeOffer_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is UserNotes && ((UserNotes)e.Parameter).TradeUrl != null;
+        }
+
+        private void MakeOffer_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var tradeUrl = ((UserNotes)e.Parameter).TradeUrl;
+            if (!tradeUrl.IsAbsoluteUri || tradeUrl.Scheme != "https")
+            {
+                MessageBox.Show(Strings.TradeUrlSeemsToBeInvalid, Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                return;
+            }
+
+            try
+            {
+                var escaped = tradeUrl.ToString().Replace(" ", "%20");
+                System.Diagnostics.Process.Start(escaped);
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex);
+            }
+        }
+
+        private void OpenBadgePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
         }
 
-        private void OpenBadgePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenBadgePage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "{0}/gamecards/{1}/";
             string url = null;
@@ -313,12 +279,26 @@ namespace s32.Sceh.WinApp
                 System.Diagnostics.Process.Start(url);
         }
 
-        private void OpenInventoryPageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenIncomingOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenInventoryPageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenIncomingOffers_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.IncomingOffers);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
+        private void OpenInventoryPage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenInventoryPage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -327,12 +307,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenMarketPageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenMarketPage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is Card;
         }
 
-        private void OpenMarketPageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenMarketPage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "http://steamcommunity.com/market/listings/{0}/{1}";
             string url = null;
@@ -343,15 +323,25 @@ namespace s32.Sceh.WinApp
             }
 
             if (url != null)
-                System.Diagnostics.Process.Start(url);
+            {
+                try
+                {
+                    var escaped = url.Replace(" ", "%20");
+                    System.Diagnostics.Process.Start(escaped);
+                }
+                catch (Exception ex)
+                {
+                    ShowException(ex);
+                }
+            }
         }
 
-        private void OpenPostHistoryCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenPostHistory_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenPostHistoryCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenPostHistory_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -360,12 +350,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenProfilePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenProfilePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenProfilePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenProfilePage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -374,12 +364,26 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenStorePageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenSentOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is SteamProfileKey;
+        }
+
+        private void OpenSentOffers_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamProfileKey)
+            {
+                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.SentOffers);
+                System.Diagnostics.Process.Start(url.ToString());
+            }
+        }
+
+        private void OpenStorePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
         }
 
-        private void OpenStorePageCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenStorePage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "http://store.steampowered.com/app/{0}/";
             string url = null;
@@ -398,26 +402,12 @@ namespace s32.Sceh.WinApp
                 System.Diagnostics.Process.Start(url);
         }
 
-        private void OpenTradeOffersCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenTradeTopics_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenTradeOffersCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (e.Parameter is SteamProfileKey)
-            {
-                var url = SteamDataDownloader.GetProfileUri((SteamProfileKey)e.Parameter, SteamUrlPattern.TradeOffers);
-                System.Diagnostics.Process.Start(url.ToString());
-            }
-        }
-
-        private void OpenTradeTopicsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is SteamProfileKey;
-        }
-
-        private void OpenTradeTopicsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenTradeTopics_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -426,12 +416,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void OpenTradingForumCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenTradingForum_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
         }
 
-        private void OpenTradingForumCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenTradingForum_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "http://steamcommunity.com/app/{0}/tradingforum/";
             string url = null;
@@ -450,12 +440,12 @@ namespace s32.Sceh.WinApp
                 System.Diagnostics.Process.Start(url);
         }
 
-        private void OpenUserBadgesCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void OpenUserBadges_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;
         }
 
-        private void OpenUserBadgesCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void OpenUserBadges_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Parameter is SteamProfileKey)
             {
@@ -464,12 +454,12 @@ namespace s32.Sceh.WinApp
             }
         }
 
-        private void ShowHideCardsCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        private void ShowHideCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is CardsCompareManager.ShowHideStrategy;
         }
 
-        private void ShowHideCardsCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void ShowHideCards_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             var steamApps = SteamApps;
             if (steamApps != null && steamApps.Count > 0)
@@ -483,6 +473,86 @@ namespace s32.Sceh.WinApp
 
         #endregion Commands
 
+        #region InventoryLoadWorker
+
+        private void InventoryLoadWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            var args = (InventoryLoadWorkerArgs)e.Argument;
+            var ownerInv = DataManager.GetSteamUserInventory(args.OwnerProfile, args.ForceRefresh);
+            var secondInv = DataManager.GetSteamUserInventory(args.SecondProfile, args.ForceRefresh);
+            e.Result = new InventoryLoadWorkerResult() { OwnerInv = ownerInv, SecondInv = secondInv };
+        }
+
+        private void InventoryLoadWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            try
+            {
+                if (e.Error != null)
+                {
+                    ShowException(e.Error);
+                    return;
+                }
+
+                var result = (InventoryLoadWorkerResult)e.Result;
+                if (result != null)
+                {
+                    MakeErrorMessage(result);
+
+                    if (result.OwnerInv.IsInventoryAvailable && result.SecondInv.IsInventoryAvailable)
+                    {
+                        if (result.OwnerInv.SteamId == result.SecondInv.SteamId)
+                        {
+                            _cardsCompareManager.Fill(result.OwnerInv.Cards, new List<Card>());
+                            _cardsCompareManager.ShowHideCards(CardsCompareManager.ShowMyCardsStrategy);
+                            var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
+                            steamApps.AddRange(_cardsCompareManager.SteamApps);
+                            SteamApps = steamApps;
+                            CompareWithSelf = true;
+                        }
+                        else
+                        {
+                            _cardsCompareManager.Fill(result.OwnerInv.Cards, result.SecondInv.Cards);
+                            _cardsCompareManager.ShowHideCards(CardsCompareManager.ShowTradeSugestionsStrategy);
+                            var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
+                            steamApps.AddRange(_cardsCompareManager.SteamApps);
+                            SteamApps = steamApps;
+                            CompareWithSelf = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowException(ex);
+            }
+        }
+
+        private void MakeErrorMessage(InventoryLoadWorkerResult result)
+        {
+            if (result.OwnerInv.ErrorMessage == null && result.SecondInv.ErrorMessage == null)
+                return;
+
+            var sb = new StringBuilder();
+            if (result.OwnerInv.ErrorMessage != null)
+                sb.AppendFormat(Strings.OwnerInvErrorMessage, result.OwnerInv.ErrorMessage).AppendLine();
+            if (result.SecondInv.ErrorMessage != null)
+                sb.AppendFormat(Strings.SecondInvErrorMessage, SecondProfile.Name, result.SecondInv.ErrorMessage).AppendLine();
+
+            MessageBox.Show(sb.ToString(), Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        }
+
+        private void RunInventoryLoadWorker(SteamProfile ownerProfile, SteamProfile secondProfile, bool forceRefresh)
+        {
+            var args = new InventoryLoadWorkerArgs()
+            {
+                OwnerProfile = ownerProfile,
+                SecondProfile = secondProfile,
+                ForceRefresh = forceRefresh
+            };
+
+            _inventoryLoadWorker.RunWorkerAsync(args);
+        }
+
         private class InventoryLoadWorkerArgs
         {
             public bool ForceRefresh;
@@ -495,5 +565,7 @@ namespace s32.Sceh.WinApp
             public UserInventory OwnerInv;
             public UserInventory SecondInv;
         }
+
+        #endregion InventoryLoadWorker
     }
 }

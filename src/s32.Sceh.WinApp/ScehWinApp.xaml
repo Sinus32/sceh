@@ -30,6 +30,26 @@
     <BitmapImage x:Key="selection4" ice:Freeze="True" UriSource="Img/selection4.png" />
     <BitmapImage x:Key="selection5" ice:Freeze="True" UriSource="Img/selection5.png" />
     <BitmapImage x:Key="selection6" ice:Freeze="True" UriSource="Img/selection6.png" />
+    <BitmapImage x:Key="selection7" ice:Freeze="True" UriSource="Img/selection7.png" />
+    <BitmapImage x:Key="selection8" ice:Freeze="True" UriSource="Img/selection8.png" />
+    <BitmapImage x:Key="yesMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/yes.png" />
+    <BitmapImage x:Key="noMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/no.png" />
+    <BitmapImage x:Key="saveMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/save.png" />
+    <BitmapImage x:Key="copyMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/copy.png" />
+    <BitmapImage x:Key="badgeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/badge.png" />
+    <BitmapImage x:Key="gameMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/game.png" />
+    <BitmapImage x:Key="marketMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/market.png" />
+    <BitmapImage x:Key="forumMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/forum.png" />
+    <BitmapImage x:Key="noteMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/note20.png" />
+    <BitmapImage x:Key="profileMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/profile.png" />
+    <BitmapImage x:Key="backpackMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/backpack.png" />
+    <BitmapImage x:Key="sentMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/sent.png" />
+    <BitmapImage x:Key="receivedMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/received.png" />
+    <BitmapImage x:Key="dealMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deal.png" />
+    <BitmapImage x:Key="postHistoryMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/postHistory.png" />
+    <BitmapImage x:Key="tradeLinkMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/tradeLink.png" />
+    <BitmapImage x:Key="changeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/change.png" />
+    <BitmapImage x:Key="exitMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/exit.png" />
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}" />
     <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}" />
     <ctl:ImageLoader x:Key="imageLoader" />
@@ -60,6 +80,8 @@
           </ItemsControl>
         </Setter.Value>
       </Setter>
+      <Setter Property="ToolTipService.InitialShowDelay" Value="100" />
+      <Setter Property="ToolTipService.ShowDuration" Value="180000" />
     </Style>
     <Style x:Key="steamProfileComboBox" TargetType="ComboBox">
       <Setter Property="TextSearch.TextPath" Value="CustomUrlOrSteamId" />
