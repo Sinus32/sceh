@@ -72,6 +72,9 @@
     <Compile Include="DataModel\Card.cs" />
     <Compile Include="DataModel\ItemClass.cs" />
     <Compile Include="DataModel\PathConfig.cs" />
+    <Compile Include="DataModel\SceAppData.cs" />
+    <Compile Include="Code\SceInventoryData.cs" />
+    <Compile Include="DataModel\SceAppState.cs" />
     <Compile Include="DataModel\UserNote.cs" />
     <Compile Include="DataModel\ProfilesData.cs" />
     <Compile Include="DataModel\SteamApp.cs">

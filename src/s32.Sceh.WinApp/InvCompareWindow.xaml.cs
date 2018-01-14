@@ -446,6 +446,30 @@ namespace s32.Sceh.WinApp
             }
         }
 
+        private void OpenSceInvPage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
+        }
+
+        private void OpenSceInvPage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            const string PATTERN = "https://www.steamcardexchange.net/index.php?inventorygame-appid-{0}";
+            string url = null;
+            if (e.Parameter is SteamApp)
+            {
+                var steamApp = (SteamApp)e.Parameter;
+                url = String.Format(PATTERN, steamApp.Id);
+            }
+            else if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                url = String.Format(PATTERN, card.MarketFeeApp);
+            }
+
+            if (url != null)
+                System.Diagnostics.Process.Start(url);
+        }
+
         private void OpenSentOffers_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = e.Parameter is SteamProfileKey;

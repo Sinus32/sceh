@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,15 +46,8 @@ namespace s32.Sceh.Code
 
         private static void TryDownloadFile(ImageFile image, ref string filePath, bool fileExists)
         {
-            var request = (HttpWebRequest)HttpWebRequest.Create(image.ImageUrl);
-            request.Method = "GET";
-            request.Timeout = 10000;
-            request.ContinueTimeout = 10000;
-            request.ReadWriteTimeout = 10000;
-            request.Accept = FileType.AcceptedImageTypes;
-            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.Referer = "http://steamcommunity.com/";
+            const string referer = "http://steamcommunity.com/";
+            var request = SteamDataDownloader.PrepareRequest(image.ImageUrl, HttpMethod.Get, FileType.AcceptedImageTypes, referer);
 
             if (fileExists)
             {

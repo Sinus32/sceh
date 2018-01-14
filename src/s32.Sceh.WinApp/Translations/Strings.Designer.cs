@@ -61,6 +61,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} cards, {1} of {2} in set.
+        /// </summary>
+        public static string AppCardsSummary {
+            get {
+                return ResourceManager.GetString("AppCardsSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Auto login.
         /// </summary>
         public static string AutoLoginCheckBoxText {

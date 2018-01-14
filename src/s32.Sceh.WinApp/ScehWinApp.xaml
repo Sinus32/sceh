@@ -24,6 +24,7 @@
     <BitmapImage x:Key="transferOn" ice:Freeze="True" UriSource="Img/transfer1.png" />
     <BitmapImage x:Key="alertOff" ice:Freeze="True" UriSource="Img/alert0.png" />
     <BitmapImage x:Key="alertOn" ice:Freeze="True" UriSource="Img/alert1.png" />
+    <BitmapImage x:Key="sceIcon" ice:Freeze="True" UriSource="Img/steamcardexchange.png" />
     <BitmapImage x:Key="selection1" ice:Freeze="True" UriSource="Img/selection1.png" />
     <BitmapImage x:Key="selection2" ice:Freeze="True" UriSource="Img/selection2.png" />
     <BitmapImage x:Key="selection3" ice:Freeze="True" UriSource="Img/selection3.png" />

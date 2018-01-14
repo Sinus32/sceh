@@ -130,13 +130,13 @@
     <value>Copy _name</value>
   </data>
   <data name="DeselectAllCards" xml:space="preserve">
-    <value>Deselect all cards</value>
+    <value>Deselect _all cards</value>
   </data>
   <data name="DeselectMyCards" xml:space="preserve">
-    <value>Deselect my cards</value>
+    <value>Deselect _my cards</value>
   </data>
   <data name="DeselectOtherCards" xml:space="preserve">
-    <value>Deselect his cards</value>
+    <value>Deselect _his cards</value>
   </data>
   <data name="EditNote" xml:space="preserve">
     <value>_Notes</value>
@@ -156,11 +156,11 @@
   <data name="MarketPage" xml:space="preserve">
     <value>_Market page</value>
   </data>
-  <data name="MenuItem_SelectCardsFromOffer" xml:space="preserve">
-    <value />
-  </data>
   <data name="MyProfile" xml:space="preserve">
     <value>_My profile</value>
+  </data>
+  <data name="OpenSceInvPage" xml:space="preserve">
+    <value>Steam _Card Exchange</value>
   </data>
   <data name="OthersProfile" xml:space="preserve">
     <value>_Other profile</value>
@@ -172,7 +172,10 @@
     <value>_Profile page</value>
   </data>
   <data name="SelectCardsFromOffer" xml:space="preserve">
-    <value>Select cards from offer</value>
+    <value>Select cards from _offer</value>
+  </data>
+  <data name="Selection" xml:space="preserve">
+    <value>_Selection</value>
   </data>
   <data name="SentOffers" xml:space="preserve">
     <value>_Sent offers</value>

@@ -130,13 +130,13 @@
     <value>Kopiuj _nazwę</value>
   </data>
   <data name="DeselectAllCards" xml:space="preserve">
-    <value>Odznacz wszystkie karty</value>
+    <value>Odznacz _wszystkie karty</value>
   </data>
   <data name="DeselectMyCards" xml:space="preserve">
-    <value>Odznacz moje karty</value>
+    <value>Odznacz _moje karty</value>
   </data>
   <data name="DeselectOtherCards" xml:space="preserve">
-    <value>Odznacz jego karty</value>
+    <value>Odznacz _jego karty</value>
   </data>
   <data name="EditNote" xml:space="preserve">
     <value>_Notatki</value>
@@ -159,6 +159,9 @@
   <data name="MyProfile" xml:space="preserve">
     <value>_Mój profil</value>
   </data>
+  <data name="OpenSceInvPage" xml:space="preserve">
+    <value>Steam _Card Exchange</value>
+  </data>
   <data name="OthersProfile" xml:space="preserve">
     <value>_Drugi profil</value>
   </data>
@@ -169,7 +172,10 @@
     <value>_Strona profilu</value>
   </data>
   <data name="SelectCardsFromOffer" xml:space="preserve">
-    <value>Zaznacz karty z oferty</value>
+    <value>Zaznacz karty z _oferty</value>
+  </data>
+  <data name="Selection" xml:space="preserve">
+    <value>_Zaznaczenie</value>
   </data>
   <data name="SentOffers" xml:space="preserve">
     <value>Oferty _wysłane</value>

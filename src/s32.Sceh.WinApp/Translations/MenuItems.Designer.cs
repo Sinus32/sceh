@@ -97,7 +97,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deselect all cards.
+        ///   Looks up a localized string similar to Deselect _all cards.
         /// </summary>
         public static string DeselectAllCards {
             get {
@@ -106,7 +106,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deselect my cards.
+        ///   Looks up a localized string similar to Deselect _my cards.
         /// </summary>
         public static string DeselectMyCards {
             get {
@@ -115,7 +115,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deselect his cards.
+        ///   Looks up a localized string similar to Deselect _his cards.
         /// </summary>
         public static string DeselectOtherCards {
             get {
@@ -178,20 +178,20 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string MenuItem_SelectCardsFromOffer {
-            get {
-                return ResourceManager.GetString("MenuItem_SelectCardsFromOffer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to _My profile.
         /// </summary>
         public static string MyProfile {
             get {
                 return ResourceManager.GetString("MyProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Steam _Card Exchange.
+        /// </summary>
+        public static string OpenSceInvPage {
+            get {
+                return ResourceManager.GetString("OpenSceInvPage", resourceCulture);
             }
         }
         
@@ -223,11 +223,20 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select cards from offer.
+        ///   Looks up a localized string similar to Select cards from _offer.
         /// </summary>
         public static string SelectCardsFromOffer {
             get {
                 return ResourceManager.GetString("SelectCardsFromOffer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Selection.
+        /// </summary>
+        public static string Selection {
+            get {
+                return ResourceManager.GetString("Selection", resourceCulture);
             }
         }
         

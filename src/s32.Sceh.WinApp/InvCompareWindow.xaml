@@ -28,6 +28,7 @@
     <CommandBinding Command="ctl:ScehCommands.OpenSentOffers" CanExecute="OpenSentOffers_CanExecute" Executed="OpenSentOffers_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenTradeTopics" CanExecute="OpenTradeTopics_CanExecute" Executed="OpenTradeTopics_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenPostHistory" CanExecute="OpenPostHistory_CanExecute" Executed="OpenPostHistory_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenSceInvPage" CanExecute="OpenSceInvPage_CanExecute" Executed="OpenSceInvPage_Executed" />
     <CommandBinding Command="ctl:ScehCommands.CopyName" CanExecute="CopyName_CanExecute" Executed="CopyName_Executed" />
     <CommandBinding Command="ctl:ScehCommands.SelectCardsFromOffer" CanExecute="SelectCardsFromOffer_CanExecute" Executed="SelectCardsFromOffer_Executed" />
   </Window.CommandBindings>
@@ -217,6 +218,68 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
+    <Style x:Key="myCardsSummary" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="Black" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding MyIsSelected}" Value="True">
+          <Setter Property="Foreground" Value="White" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding IHaveMoreThanHalf}" Value="True">
+          <Setter Property="Foreground" Value="BlueViolet" />
+          <Setter Property="FontWeight" Value="Bold" />
+        </DataTrigger>
+        <MultiDataTrigger>
+          <MultiDataTrigger.Conditions>
+            <Condition Binding="{Binding MyIsSelected}" Value="True" />
+            <Condition Binding="{Binding IHaveMoreThanHalf}" Value="True" />
+          </MultiDataTrigger.Conditions>
+          <MultiDataTrigger.Setters>
+            <Setter Property="Foreground" Value="Gold" />
+          </MultiDataTrigger.Setters>
+        </MultiDataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="otherCardsSummary" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="Black" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding OtherIsSelected}" Value="True">
+          <Setter Property="Foreground" Value="White" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding HeHaveMoreThanHalf}" Value="True">
+          <Setter Property="Foreground" Value="BlueViolet" />
+          <Setter Property="FontWeight" Value="Bold" />
+        </DataTrigger>
+        <MultiDataTrigger>
+          <MultiDataTrigger.Conditions>
+            <Condition Binding="{Binding OtherIsSelected}" Value="True" />
+            <Condition Binding="{Binding HeHaveMoreThanHalf}" Value="True" />
+          </MultiDataTrigger.Conditions>
+          <MultiDataTrigger.Setters>
+            <Setter Property="Foreground" Value="Gold" />
+          </MultiDataTrigger.Setters>
+        </MultiDataTrigger>
+        <DataTrigger Binding="{Binding DataContext.CompareWithSelf, ElementName=mainGrid}" Value="True">
+          <Setter Property="Visibility" Value="Collapsed" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
+    <Style x:Key="sceState" TargetType="Rectangle">
+      <Setter Property="Fill" Value="Black" />
+      <Style.Triggers>
+        <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.Disabled}">
+          <Setter Property="Fill" Value="DarkGray" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.NoCards}">
+          <Setter Property="Fill" Value="CornflowerBlue" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.LastCard}">
+          <Setter Property="Fill" Value="Firebrick" />
+        </DataTrigger>
+        <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.Normal}">
+          <Setter Property="Fill" Value="LimeGreen" />
+        </DataTrigger>
+      </Style.Triggers>
+    </Style>
     <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
     <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
       <MenuItem Header="{x:Static resx:MenuItems.Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding}">
@@ -246,6 +309,11 @@
       </MenuItem>
     </ContextMenu>
     <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+      <MenuItem Header="{x:Static resx:MenuItems.StorePage}" Command="ctl:ScehCommands.OpenStorePage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource gameMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
       <MenuItem Header="{x:Static resx:MenuItems.CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
         <MenuItem.Icon>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
@@ -262,10 +330,9 @@
           <Image Source="{StaticResource forumMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <Separator />
-      <MenuItem Header="{x:Static resx:MenuItems.StorePage}" Command="ctl:ScehCommands.OpenStorePage" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.OpenSceInvPage}" Command="ctl:ScehCommands.OpenSceInvPage" CommandParameter="{Binding}">
         <MenuItem.Icon>
-          <Image Source="{StaticResource gameMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource sceIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
     </ContextMenu>
@@ -286,15 +353,14 @@
           <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.StorePage}" Command="ctl:ScehCommands.OpenStorePage" CommandParameter="{Binding}">
-        <MenuItem.Icon>
-          <Image Source="{StaticResource gameMenuIcon}" Width="20" Height="20" />
-        </MenuItem.Icon>
-      </MenuItem>
-      <Separator />
       <MenuItem Header="{x:Static resx:MenuItems.TradingForum}" Command="ctl:ScehCommands.OpenTradingForum" CommandParameter="{Binding}">
         <MenuItem.Icon>
           <Image Source="{StaticResource forumMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:MenuItems.OpenSceInvPage}" Command="ctl:ScehCommands.OpenSceInvPage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource sceIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
     </ContextMenu>
@@ -303,21 +369,21 @@
           ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
         <ToggleButton.ToolTip>
           <TextBlock>
-            <Run Text="{Binding ItemClassName}" FontStyle="Italic" />: <Run Text="{Binding Name}" FontWeight="Bold" /><LineBreak />
-            <Run Text="{Binding MarketHashName}" /><LineBreak />
-            <Run Text="{Binding DroprateName}" />
+            <Run Text="{Binding ItemClassName, Mode=OneWay}" FontStyle="Italic" />: <Run Text="{Binding Name, Mode=OneWay}" FontWeight="Bold" /><LineBreak />
+            <Run Text="{Binding MarketHashName, Mode=OneWay}" /><LineBreak />
+            <Run Text="{Binding DroprateName, Mode=OneWay}" />
           </TextBlock>
         </ToggleButton.ToolTip>
         <Grid>
           <Border Style="{StaticResource cardBorderStyle}">
-            <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}}"
+            <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}, Mode=OneWay}"
                 NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
                 Width="77" Height="89" Stretch="Uniform" Delay="300"
                 Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
           </Border>
-          <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}}"
+          <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
               Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-          <TextBlock Text="{Binding Name}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0" TextAlignment="Center"
+          <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0" TextAlignment="Center"
               VerticalAlignment="Top" TextWrapping="Wrap" Style="{StaticResource cardAlternateText}" />
         </Grid>
       </ToggleButton>
@@ -325,8 +391,8 @@
     <DataTemplate x:Key="steamAppTemplate" DataType="dm:SteamApp">
       <Grid ContextMenu="{StaticResource steamAppMenu}">
         <Grid.Resources>
-          <CollectionViewSource x:Key="myCardsView" Source="{Binding MyCards}" Filter="CollectionViewSource_FilterByHideProp" />
-          <CollectionViewSource x:Key="otherCardsView" Source="{Binding OtherCards}" Filter="CollectionViewSource_FilterByHideProp" />
+          <CollectionViewSource x:Key="myCardsView" Source="{Binding MyCards, Mode=OneWay}" Filter="CollectionViewSource_FilterByHideProp" />
+          <CollectionViewSource x:Key="otherCardsView" Source="{Binding OtherCards, Mode=OneWay}" Filter="CollectionViewSource_FilterByHideProp" />
         </Grid.Resources>
         <Grid.ColumnDefinitions>
           <ColumnDefinition Style="{StaticResource myCardsColumn}" />
@@ -337,15 +403,49 @@
           <RowDefinition />
         </Grid.RowDefinitions>
         <Rectangle Style="{StaticResource steamAppHeaderStyle}" Grid.ColumnSpan="2" />
-        <TextBlock Text="{Binding Name}" TextAlignment="Center" Padding="0,3" Grid.ColumnSpan="2" />
-        <ItemsControl Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Source={StaticResource myCardsView}}" ItemTemplate="{StaticResource cardTemplate}">
+        <TextBlock Grid.Column="0" TextAlignment="Left" Padding="10,3" Style="{StaticResource myCardsSummary}">
+          <TextBlock.Text>
+            <MultiBinding StringFormat="{x:Static resx:Strings.AppCardsSummary}">
+              <Binding Path="MyCardsTotal" Mode="OneWay" />
+              <Binding Path="MyUniqueCards" Mode="OneWay" />
+              <Binding Path="TotalUniqueCards" Mode="OneWay" />
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
+        <TextBlock Grid.Column="1" TextAlignment="Right" Padding="10,3" Style="{StaticResource otherCardsSummary}">
+          <TextBlock.Text>
+            <MultiBinding StringFormat="{x:Static resx:Strings.AppCardsSummary}">
+              <Binding Path="OtherCardsTotal" Mode="OneWay" />
+              <Binding Path="OtherUniqueCards" Mode="OneWay" />
+              <Binding Path="TotalUniqueCards" Mode="OneWay" />
+            </MultiBinding>
+          </TextBlock.Text>
+        </TextBlock>
+        <TextBlock TextAlignment="Center" Padding="0,3" Grid.ColumnSpan="2">
+          <TextBlock.Inlines>
+            <Run Text="{Binding Name, Mode=OneWay}" />
+            <InlineUIContainer BaselineAlignment="Center">
+              <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
+                Height="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+            </InlineUIContainer>
+            <InlineUIContainer BaselineAlignment="Center">
+              <Rectangle Margin="12,0,0,0" Width="7" Height="7" Style="{StaticResource sceState}" />
+            </InlineUIContainer>
+            <Run Text="{Binding SceWorth, Mode=OneWay, StringFormat={}{0}c}" />
+          </TextBlock.Inlines>
+        </TextBlock>
+        <ItemsControl Grid.Row="1" Grid.Column="0"
+            ItemsSource="{Binding Source={StaticResource myCardsView}}"
+            ItemTemplate="{StaticResource cardTemplate}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
               <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
         </ItemsControl>
-        <ItemsControl Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Source={StaticResource otherCardsView}}" ItemTemplate="{StaticResource cardTemplate}">
+        <ItemsControl Grid.Row="1" Grid.Column="1"
+            ItemsSource="{Binding Source={StaticResource otherCardsView}}"
+            ItemTemplate="{StaticResource cardTemplate}">
           <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
               <WrapPanel Orientation="Horizontal" HorizontalAlignment="Right" />
@@ -469,7 +569,7 @@
           </MenuItem.Icon>
         </MenuItem>
       </MenuItem>
-      <MenuItem Header="Selection">
+      <MenuItem Header="{x:Static resx:MenuItems.Selection}">
         <MenuItem Header="{x:Static resx:MenuItems.SelectCardsFromOffer}" Command="ctl:ScehCommands.SelectCardsFromOffer">
           <MenuItem.Icon>
             <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />

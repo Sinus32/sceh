@@ -101,12 +101,46 @@ namespace s32.Sceh.Code
 
             foreach (var card in _myCards)
             {
+                card.IsSelected = false;
                 card.OtherHaveIt = otherSet.Contains(card);
             }
 
             foreach (var card in _otherCards)
             {
+                card.IsSelected = false;
                 card.OtherHaveIt = mySet.Contains(card);
+            }
+            
+            foreach (var app in _steamApps)
+            {
+                SceAppData sceData = DataManager.GetSceAppData(app.Id);
+                if (sceData != null)
+                {
+                    app.SceState = sceData.State;
+                    app.Marketable = sceData.Marketable;
+                    app.TotalUniqueCards = sceData.TotalCards;
+                    app.SceWorth = sceData.Worth;
+                }
+
+                foreach (var card in app.MyCards)
+                {
+                    if (card.ItemClass != ItemClass.TradingCard || card.IsFoilCard == true)
+                        continue;
+
+                    app.MyCardsTotal += 1;
+                    if (!card.IsDuplicated)
+                        app.MyUniqueCards += 1;
+                }
+
+                foreach (var card in app.OtherCards)
+                {
+                    if (card.ItemClass != ItemClass.TradingCard || card.IsFoilCard == true)
+                        continue;
+
+                    app.OtherCardsTotal += 1;
+                    if (!card.IsDuplicated)
+                        app.OtherUniqueCards += 1;
+                }
             }
 
             _steamApps.Sort(SteamAppsComparison);

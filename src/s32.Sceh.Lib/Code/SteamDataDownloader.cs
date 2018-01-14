@@ -152,7 +152,7 @@ namespace s32.Sceh.Code
             string rawJson;
             HttpStatusCode statusCode;
             var firstUri = new Uri(inventoryUri);
-            using (var response = DoRequest(() => PrepareRequest(firstUri, "application/json", referer: referer), out statusCode))
+            using (var response = DoRequest(() => PrepareRequest(firstUri, HttpMethod.Get, "application/json", referer), out statusCode))
             {
                 if (response == null)
                 {
@@ -191,7 +191,7 @@ namespace s32.Sceh.Code
             while (ret.MoreItems)
             {
                 var nextUri = new Uri(String.Concat(inventoryUri, "&start_assetid=", ret.LastAssetId));
-                using (var response = DoRequest(() => PrepareRequest(nextUri, "application/json", referer: referer), out statusCode))
+                using (var response = DoRequest(() => PrepareRequest(nextUri, HttpMethod.Get, "application/json", referer), out statusCode))
                 {
                     if (response == null)
                     {
@@ -230,9 +230,10 @@ namespace s32.Sceh.Code
 
         public static SteamProfileResp GetProfile(Uri profileUri, out GetProfileError error)
         {
+            const string referer = "http://steamcommunity.com/";
             string rawXml;
             HttpStatusCode statusCode;
-            using (var response = DoRequest(() => PrepareRequest(profileUri, "text/xml"), out statusCode))
+            using (var response = DoRequest(() => PrepareRequest(profileUri, HttpMethod.Get, "text/xml", referer), out statusCode))
             {
                 if (response == null)
                 {
@@ -328,6 +329,31 @@ namespace s32.Sceh.Code
                 return null;
 
             return GetProfileUri(steamProfile.SteamId, steamProfile.CustomUrl, page, preferCustomUrl);
+        }
+
+        internal static HttpWebRequest PrepareRequest(Uri uri, HttpMethod method, string accept, string referer)
+        {
+            var request = (HttpWebRequest)HttpWebRequest.Create(uri);
+            request.Method = method.Method;
+            request.Timeout = 10000;
+            request.ContinueTimeout = 10000;
+            request.ReadWriteTimeout = 10000;
+            request.Accept = accept;
+            request.Referer = referer;
+            request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) Gecko/20100101";
+            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+
+            var lang = CultureInfo.CurrentCulture.Name ?? String.Empty;
+            switch (lang)
+            {
+                case "": lang = "en-US,en;q=0.3"; break;
+                case "en-US": lang += ",en;q=0.3"; break;
+                case "en": lang += ",en-US;q=0.7"; break;
+                default: lang += ",en-US;q=0.7,en;q=0.3"; break;
+            }
+            request.Headers.Add(HttpRequestHeader.AcceptLanguage, lang);
+
+            return request;
         }
 
         private static int CardComparison(Card x, Card y)
@@ -447,20 +473,6 @@ namespace s32.Sceh.Code
                 if (desc.Tradable)
                     result.Add(new Card(owner, dt, desc));
             }
-        }
-
-        private static HttpWebRequest PrepareRequest(Uri uri, string accept, HttpMethod method = null, string referer = null)
-        {
-            var request = (HttpWebRequest)HttpWebRequest.Create(uri);
-            request.Method = (method ?? HttpMethod.Get).Method;
-            request.Timeout = 10000;
-            request.ContinueTimeout = 10000;
-            request.ReadWriteTimeout = 10000;
-            request.Accept = accept;
-            request.Headers.Add(HttpRequestHeader.AcceptLanguage, "en-US");
-            request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
-            request.Referer = referer ?? "http://steamcommunity.com/";
-            return request;
         }
 
         private static bool TryExtractCustomUrlFromUrl(string idOrUrl, out string customUrl)
