@@ -55,38 +55,38 @@
     <Label Grid.Row="3" Grid.Column="1" Target="{Binding ElementName=tbEditor}" Content="{x:Static resx:Strings.NotesEditorLabel}" />
     <ToolBarTray Grid.Row="4" Grid.Column="1">
       <ToolBar ToolBarTray.IsLocked="True">
-        <Button Command="ctl:ScehCommands.ScoreUpDown" ToolTip="{x:Static resx:Strings.Button_ScoreUp}">
+        <Button Command="ctl:ScehCommands.ScoreUpDown" ToolTip="{x:Static resx:Buttons.ScoreUp}">
           <Button.CommandParameter>
             <sys:Int32>+1</sys:Int32>
           </Button.CommandParameter>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </Button>
-        <Button Command="ctl:ScehCommands.ScoreUpDown" ToolTip="{x:Static resx:Strings.Button_ScoreDown}">
+        <Button Command="ctl:ScehCommands.ScoreUpDown" ToolTip="{x:Static resx:Buttons.ScoreDown}">
           <Button.CommandParameter>
             <sys:Int32>-1</sys:Int32>
           </Button.CommandParameter>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </Button>
         <Separator />
-        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Strings.Button_PasteDate}">
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteDate}">
           <Button.CommandParameter>
             <ctl:TagSelection>Date</ctl:TagSelection>
           </Button.CommandParameter>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </Button>
-        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Strings.Button_PasteAllCards}">
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteAllCards}">
           <Button.CommandParameter>
             <ctl:TagSelection>AllCards</ctl:TagSelection>
           </Button.CommandParameter>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </Button>
-        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Strings.Button_PasteMyCards}">
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteMyCards}">
           <Button.CommandParameter>
             <ctl:TagSelection>MyCards</ctl:TagSelection>
           </Button.CommandParameter>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </Button>
-        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Strings.Button_PasteOtherCards}">
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteOtherCards}">
           <Button.CommandParameter>
             <ctl:TagSelection>OtherCards</ctl:TagSelection>
           </Button.CommandParameter>
@@ -113,14 +113,14 @@
       <Button Command="ctl:ScehCommands.Ok" Margin="12,5,0,0" Padding="2">
         <StackPanel Orientation="Horizontal">
           <Image Source="{StaticResource saveMenuIcon}" Stretch="None" />
-          <AccessText Text="{x:Static resx:Strings.Button_Save}" Margin="12,0" MinWidth="40"
+          <AccessText Text="{x:Static resx:Buttons.Save}" Margin="12,0" MinWidth="40"
             VerticalAlignment="Center" TextAlignment="Center" />
         </StackPanel>
       </Button>
       <Button Command="ctl:ScehCommands.Cancel" Margin="12,5,0,0" Padding="2">
         <StackPanel Orientation="Horizontal">
           <Image Source="{StaticResource noMenuIcon}" Stretch="None" />
-          <AccessText Text="{x:Static resx:Strings.Button_Close}" Margin="12,0" MinWidth="40"
+          <AccessText Text="{x:Static resx:Buttons.Close}" Margin="12,0" MinWidth="40"
             VerticalAlignment="Center" TextAlignment="Center" />
         </StackPanel>
       </Button>

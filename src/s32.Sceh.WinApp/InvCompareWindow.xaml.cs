@@ -123,6 +123,69 @@ namespace s32.Sceh.WinApp
                 Debugger.Break();
         }
 
+        #region Cards enumerators
+
+        public IEnumerable<Card> AllSelectedCards
+        {
+            get
+            {
+                List<SteamApp> steamApps = SteamApps;
+                if (steamApps == null)
+                    yield break;
+
+                foreach (var app in steamApps)
+                {
+                    if (app.MyIsSelected)
+                        foreach (var card in app.MyCards)
+                            if (card.IsSelected)
+                                yield return card;
+
+                    if (app.OtherIsSelected)
+                        foreach (var card in app.OtherCards)
+                            if (card.IsSelected)
+                                yield return card;
+                }
+            }
+        }
+
+        public IEnumerable<Card> MySelectedCards
+        {
+            get
+            {
+                List<SteamApp> steamApps = SteamApps;
+                if (steamApps == null)
+                    yield break;
+
+                foreach (var app in steamApps)
+                {
+                    if (app.MyIsSelected)
+                        foreach (var card in app.MyCards)
+                            if (card.IsSelected)
+                                yield return card;
+                }
+            }
+        }
+
+        public IEnumerable<Card> OtherSelectedCards
+        {
+            get
+            {
+                List<SteamApp> steamApps = SteamApps;
+                if (steamApps == null)
+                    yield break;
+
+                foreach (var app in steamApps)
+                {
+                    if (app.OtherIsSelected)
+                        foreach (var card in app.OtherCards)
+                            if (card.IsSelected)
+                                yield return card;
+                }
+            }
+        }
+
+        #endregion Cards enumerators
+
         #region Commands
 
         private void CardButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -200,6 +263,25 @@ namespace s32.Sceh.WinApp
                 var profile = (SteamProfile)e.Parameter;
                 Clipboard.SetText(profile.Name);
             }
+        }
+
+        private void DeselectCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            var steamApps = SteamApps;
+            if (steamApps != null && steamApps.Count > 0 && e.Parameter is IEnumerable<Card>)
+            {
+                e.CanExecute = ((IEnumerable<Card>)e.Parameter).Any();
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
+        }
+
+        private void DeselectCards_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            foreach (var card in (IEnumerable<Card>)e.Parameter)
+                card.IsSelected = false;
         }
 
         private void EditNote_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -454,21 +536,53 @@ namespace s32.Sceh.WinApp
             }
         }
 
+        private void SelectCardsFromOffer_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void SelectCardsFromOffer_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var data = Clipboard.GetDataObject();
+            if (data != null)
+            {
+                var formats = data.GetFormats(false);
+                MessageBox.Show("Formats: " + String.Join(", ", formats));
+
+                if (formats.Contains(DataFormats.Html))
+                {
+                    var html = data.GetData(DataFormats.Html);
+                    if (html != null)
+                    {
+                        MessageBox.Show(html.ToString(), html.GetType().Name);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("No data");
+            }
+        }
+
         private void ShowHideCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = e.Parameter is CardsCompareManager.ShowHideStrategy;
+            if (e.Parameter is CardsCompareManager.ShowHideStrategy)
+            {
+                var steamApps = SteamApps;
+                e.CanExecute = steamApps != null && steamApps.Count > 0;
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
         }
 
         private void ShowHideCards_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var steamApps = SteamApps;
-            if (steamApps != null && steamApps.Count > 0)
-            {
-                _cardsCompareManager.ShowHideCards((CardsCompareManager.ShowHideStrategy)e.Parameter);
+            _cardsCompareManager.ShowHideCards((CardsCompareManager.ShowHideStrategy)e.Parameter);
 
-                var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
-                cvs.View.Refresh();
-            }
+            var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
+            cvs.View.Refresh();
         }
 
         #endregion Commands

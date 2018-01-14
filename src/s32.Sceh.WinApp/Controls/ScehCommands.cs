@@ -10,7 +10,8 @@ namespace s32.Sceh.WinApp.Controls
 {
     public class ScehCommands : DependencyObject
     {
-        private static RoutedCommand _ok, _cancel, _compare, _editNote, _showHideCards,
+        private static RoutedCommand _ok, _cancel, _compare, _editNote,
+            _showHideCards, _selectCardsFromOffer, _deselectCards,
             _openMarketPage, _openStorePage, _openBadgePage, _openTradingForum,
             _openProfilePage, _openInventoryPage, _openUserBadges,
             _openIncomingOffers, _openSentOffers, _openTradeTopics, _openPostHistory,
@@ -23,6 +24,7 @@ namespace s32.Sceh.WinApp.Controls
             _compare = new RoutedCommand("Compare", typeof(ScehCommands));
             _editNote = new RoutedCommand("EditNote", typeof(ScehCommands));
             _showHideCards = new RoutedCommand("ShowHideCards", typeof(ScehCommands));
+            _deselectCards = new RoutedCommand("DeselectCards", typeof(ScehCommands));
             _openMarketPage = new RoutedCommand("OpenMarketPage", typeof(ScehCommands));
             _openStorePage = new RoutedCommand("OpenStorePage", typeof(ScehCommands));
             _openBadgePage = new RoutedCommand("OpenBadgePage", typeof(ScehCommands));
@@ -38,6 +40,7 @@ namespace s32.Sceh.WinApp.Controls
             _copyName = new RoutedCommand("CopyName", typeof(ScehCommands));
             _scoreUpDown = new RoutedCommand("ScoreUpDown", typeof(ScehCommands));
             _pasteTag = new RoutedCommand("PasteTag", typeof(ScehCommands));
+            _selectCardsFromOffer = new RoutedCommand("SelectCardsFromOffer", typeof(ScehCommands));
         }
 
         public static RoutedCommand Cancel
@@ -53,6 +56,11 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand CopyName
         {
             get { return _copyName; }
+        }
+
+        public static RoutedCommand DeselectCards
+        {
+            get { return _deselectCards; }
         }
 
         public static RoutedCommand EditNote
@@ -133,6 +141,11 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand ScoreUpDown
         {
             get { return _scoreUpDown; }
+        }
+
+        public static RoutedCommand SelectCardsFromOffer
+        {
+            get { return _selectCardsFromOffer; }
         }
 
         public static RoutedCommand ShowHideCards

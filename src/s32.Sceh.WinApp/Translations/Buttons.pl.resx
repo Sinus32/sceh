@@ -117,70 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutoLoginCheckBoxText" xml:space="preserve">
-    <value>_Auto login</value>
+  <data name="Close" xml:space="preserve">
+    <value>Zamknij</value>
   </data>
-  <data name="ErrorTitle" xml:space="preserve">
-    <value>Error</value>
+  <data name="Compare" xml:space="preserve">
+    <value>_Porównaj</value>
   </data>
-  <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
-    <value>An exception occurred while downloading the profile data: {0}</value>
+  <data name="Enter" xml:space="preserve">
+    <value>_Wejdź</value>
   </data>
-  <data name="ImagesToDownloadFormat" xml:space="preserve">
-    <value>Images downloading: {0}/{1}/{2}</value>
+  <data name="FindCards" xml:space="preserve">
+    <value>Znajdź karty lub gry</value>
   </data>
-  <data name="InvalidProfileIdOrUrl" xml:space="preserve">
-    <value>Invalid id or own profile url</value>
+  <data name="Notes" xml:space="preserve">
+    <value>Notatki</value>
   </data>
-  <data name="InvalidTradeUrl" xml:space="preserve">
-    <value>The provided trade URL is invalid</value>
+  <data name="PasteAllCards" xml:space="preserve">
+    <value>Wklej wszystkie zaznaczone karty</value>
   </data>
-  <data name="InvalidTradeUrlScheme" xml:space="preserve">
-    <value>The provided trade URL have to use https scheme</value>
+  <data name="PasteDate" xml:space="preserve">
+    <value>Wklej datę</value>
   </data>
-  <data name="LoginProfileLabel" xml:space="preserve">
-    <value>_Profile:</value>
+  <data name="PasteMyCards" xml:space="preserve">
+    <value>Wklej moje zaznaczone karty</value>
   </data>
-  <data name="LoginWindowTitle" xml:space="preserve">
-    <value>Steam cards exchange helper</value>
+  <data name="PasteOtherCards" xml:space="preserve">
+    <value>Wklej jego zaznaczone karty</value>
   </data>
-  <data name="NotesEditorLabel" xml:space="preserve">
-    <value>Notes:</value>
+  <data name="Save" xml:space="preserve">
+    <value>Zapisz</value>
   </data>
-  <data name="NotesPreviewLabel" xml:space="preserve">
-    <value>Preview</value>
+  <data name="ScoreDown" xml:space="preserve">
+    <value>Obniż ocenę -1</value>
   </data>
-  <data name="OwnerInvErrorMessage" xml:space="preserve">
-    <value>Cannot load your cards: {0}</value>
+  <data name="ScoreUp" xml:space="preserve">
+    <value>Podnieś ocenę +1</value>
   </data>
-  <data name="ProfileDeserializationError" xml:space="preserve">
-    <value>Error reading profile data</value>
+  <data name="ShowAll" xml:space="preserve">
+    <value>Pokaż wszystkie karty</value>
   </data>
-  <data name="RequestCountFormat" xml:space="preserve">
-    <value>Request counter: {0}</value>
+  <data name="ShowDuplicates" xml:space="preserve">
+    <value>Pokaż zduplikowane karty na wymianę</value>
   </data>
-  <data name="SecondInvErrorMessage" xml:space="preserve">
-    <value>Cannot load cards of user {0}: {1}</value>
+  <data name="ShowMyCards" xml:space="preserve">
+    <value>Pokaż moje karty</value>
   </data>
-  <data name="StrangeTradeUrl" xml:space="preserve">
-    <value>The provided trade URL doesn't match the pattern. Are you sure you want to use it?</value>
+  <data name="ShowOnlySelected" xml:space="preserve">
+    <value>Pokaż tylko zaznaczone karty</value>
   </data>
-  <data name="TradeLinkLabel" xml:space="preserve">
-    <value>Trade URL:</value>
+  <data name="ShowOtherCards" xml:space="preserve">
+    <value>Pokaż jego karty</value>
   </data>
-  <data name="TradeUrlSeemsToBeInvalid" xml:space="preserve">
-    <value>Stored trade URL seems to be invalid and cannot be used. Please correct the url on user notes screen.</value>
+  <data name="ShowSelectedApp" xml:space="preserve">
+    <value>Pokaż zaznaczone gry</value>
   </data>
-  <data name="UnknownErrorOccured" xml:space="preserve">
-    <value>Unknown error occurred</value>
-  </data>
-  <data name="ValidTradeUrlToolTip" xml:space="preserve">
-    <value>Valid trade URL looks like "https://steamcommunity.com/tradeoffer/new/?partner=123456789&amp;token=abcdefgh"</value>
-  </data>
-  <data name="WarningTitle" xml:space="preserve">
-    <value>Warning</value>
-  </data>
-  <data name="WrongProfileIdOrUrl" xml:space="preserve">
-    <value>Profile not found</value>
+  <data name="ShowTradeSugestions" xml:space="preserve">
+    <value>Pokaż wspólne karty</value>
   </data>
 </root>

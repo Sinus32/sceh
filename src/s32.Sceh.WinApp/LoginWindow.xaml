@@ -28,7 +28,7 @@
     <CheckBox IsChecked="{Binding AutoLogIn}" Margin="2,4">
       <AccessText Text="{x:Static resx:Strings.AutoLoginCheckBoxText}" />
     </CheckBox>
-    <Button x:Name="btnLogin" Command="ctl:ScehCommands.Ok" Content="{x:Static resx:Strings.LoginButtonText}"
+    <Button x:Name="btnLogin" Command="ctl:ScehCommands.Ok" Content="{x:Static resx:Buttons.Enter}"
       HorizontalAlignment="Center" Margin="0,10" Padding="20,2" IsDefault="True" />
   </StackPanel>
 </Window>
