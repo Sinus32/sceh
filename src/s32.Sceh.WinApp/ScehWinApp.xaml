@@ -110,6 +110,12 @@
           </Style>
         </Setter.Value>
       </Setter>
+      <Setter Property="ToolTip">
+        <Setter.Value>
+          <ctl:BBCodeBlock TextWrapping="Wrap" BBCodeText="{x:Static resx:Strings.ProfileComboBoxToolTip}" />
+        </Setter.Value>
+      </Setter>
+      <Setter Property="ToolTipService.ShowDuration" Value="30000" />
       <Setter Property="ItemTemplate">
         <Setter.Value>
           <DataTemplate DataType="{x:Type dm:SteamProfile}">

@@ -115,20 +115,20 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images in queue to download:.
-        /// </summary>
-        public static string ImagesInQueue {
-            get {
-                return ResourceManager.GetString("ImagesInQueue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Images not modified since last download:.
         /// </summary>
         public static string ImagesNotModified {
             get {
                 return ResourceManager.GetString("ImagesNotModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images in queue to download:.
+        /// </summary>
+        public static string ImagesToDownload {
+            get {
+                return ResourceManager.GetString("ImagesToDownload", resourceCulture);
             }
         }
         
@@ -210,6 +210,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string OwnerInvErrorMessage {
             get {
                 return ResourceManager.GetString("OwnerInvErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [b]Enter the Steam platform profile.[/b][br][br]Use Steam identifier,[br]custom user URL,[br]or full profile url..
+        /// </summary>
+        public static string ProfileComboBoxToolTip {
+            get {
+                return ResourceManager.GetString("ProfileComboBoxToolTip", resourceCulture);
             }
         }
         

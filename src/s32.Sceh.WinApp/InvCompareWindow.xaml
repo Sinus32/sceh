@@ -743,12 +743,12 @@
         <TextBlock ToolTipService.ShowDuration="30000">
           <TextBlock.ToolTip>
             <TextBlock>
-              <Run Text="{x:Static resx:Strings.ImagesInQueue}" />
+              <Run Text="{x:Static resx:Strings.ImagesToDownload}" />
               <Run Text="{Binding ImagesToDownload}" FontWeight="Bold" /><LineBreak />
               <Run Text="{x:Static resx:Strings.ImagesNotModified}" />
               <Run Text="{Binding ImagesNotModified}" FontWeight="Bold" /><LineBreak />
               <Run Text="{x:Static resx:Strings.ImagesDownloaded}" />
-              <Run Text="{Binding ImagesToDownload}" FontWeight="Bold" />
+              <Run Text="{Binding ImagesDownloaded}" FontWeight="Bold" />
             </TextBlock>
           </TextBlock.ToolTip>
           <TextBlock.Text>

@@ -135,11 +135,11 @@
   <data name="ImagesDownloaded" xml:space="preserve">
     <value>Images downloaded successfully:</value>
   </data>
-  <data name="ImagesInQueue" xml:space="preserve">
-    <value>Images in queue to download:</value>
-  </data>
   <data name="ImagesNotModified" xml:space="preserve">
     <value>Images not modified since last download:</value>
+  </data>
+  <data name="ImagesToDownload" xml:space="preserve">
+    <value>Images in queue to download:</value>
   </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
     <value>Images downloading: {0}/{1}/{2}</value>
@@ -167,6 +167,9 @@
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Cannot load your cards: {0}</value>
+  </data>
+  <data name="ProfileComboBoxToolTip" xml:space="preserve">
+    <value>[b]Enter the Steam platform profile.[/b][br][br]Use Steam identifier,[br]custom user URL,[br]or full profile url.</value>
   </data>
   <data name="ProfileDeserializationError" xml:space="preserve">
     <value>Error reading profile data</value>
