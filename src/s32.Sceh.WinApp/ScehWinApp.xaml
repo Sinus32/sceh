@@ -51,6 +51,16 @@
     <BitmapImage x:Key="tradeLinkMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/tradeLink.png" />
     <BitmapImage x:Key="changeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/change.png" />
     <BitmapImage x:Key="exitMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/exit.png" />
+    <BitmapImage x:Key="deselectAllCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectAllCards.png" />
+    <BitmapImage x:Key="deselectMyCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectMyCards.png" />
+    <BitmapImage x:Key="deselectOtherCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectOtherCards.png" />
+    <BitmapImage x:Key="pasteAllCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/pasteAllCards.png" />
+    <BitmapImage x:Key="pasteDateMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/pasteDate.png" />
+    <BitmapImage x:Key="pasteMyCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/pasteMyCards.png" />
+    <BitmapImage x:Key="pasteOtherCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/pasteOtherCards.png" />
+    <BitmapImage x:Key="scoreDownMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/scoreDown.png" />
+    <BitmapImage x:Key="scoreUpMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/scoreUp.png" />
+    <BitmapImage x:Key="selectFromOfferMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/selectFromOffer.png" />
     <BitmapImage x:Key="gameInline" ice:Freeze="True" UriSource="Img/Inlines/game.png" />
     <BitmapImage x:Key="cardInline" ice:Freeze="True" UriSource="Img/Inlines/card.png" />
     <ControlTemplate x:Key="rightArrowTemplate" ice:Freeze="True">
@@ -82,7 +92,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <ctl:BBCodeBlock TextWrapping="Wrap" Delay="0" BBCodeText="{Binding Text, Mode=OneWay}" />
+                <ctl:BBCodeBlock TextWrapping="Wrap" BBCodeText="{Binding Text, Mode=OneWay}" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>

@@ -247,6 +247,22 @@
   <ItemGroup>
     <Resource Include="Img\steamcardexchange.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\deselectAllCards.png" />
+    <Resource Include="Img\MenuIcons\deselectMyCards.png" />
+    <Resource Include="Img\MenuIcons\deselectOtherCards.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\pasteAllCards.png" />
+    <Resource Include="Img\MenuIcons\pasteDate.png" />
+    <Resource Include="Img\MenuIcons\pasteMyCards.png" />
+    <Resource Include="Img\MenuIcons\pasteOtherCards.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\scoreDown.png" />
+    <Resource Include="Img\MenuIcons\scoreUp.png" />
+    <Resource Include="Img\MenuIcons\selectFromOffer.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

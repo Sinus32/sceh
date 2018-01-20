@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlertOnOffToolTip" xml:space="preserve">
+    <value>When [c=Maroon]red[/c] indicates that a SteamAPI request is delayed.</value>
+  </data>
   <data name="AppCardsSummary" xml:space="preserve">
     <value>{0} cards, {1} of {2} in set</value>
   </data>
@@ -128,6 +131,15 @@
   </data>
   <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
     <value>An exception occurred while downloading the profile data: {0}</value>
+  </data>
+  <data name="ImagesDownloaded" xml:space="preserve">
+    <value>Images downloaded successfully:</value>
+  </data>
+  <data name="ImagesInQueue" xml:space="preserve">
+    <value>Images in queue to download:</value>
+  </data>
+  <data name="ImagesNotModified" xml:space="preserve">
+    <value>Images not modified since last download:</value>
   </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
     <value>Images downloading: {0}/{1}/{2}</value>
@@ -162,6 +174,9 @@
   <data name="RequestCountFormat" xml:space="preserve">
     <value>Request counter: {0}</value>
   </data>
+  <data name="RequestCountToolTip" xml:space="preserve">
+    <value>SteamAPI queries counter[br]It's [c=ForestGreen]green[/c] when query is in progress,[br]or [c=Maroon]red[/c] when request is delayed.</value>
+  </data>
   <data name="SecondInvErrorMessage" xml:space="preserve">
     <value>Cannot load cards of user {0}: {1}</value>
   </data>
@@ -173,6 +188,9 @@
   </data>
   <data name="TradeUrlSeemsToBeInvalid" xml:space="preserve">
     <value>Stored trade URL seems to be invalid and cannot be used. Please correct the url on user notes screen.</value>
+  </data>
+  <data name="TransferOnOffToolTip" xml:space="preserve">
+    <value>When [c=ForestGreen]green[/c] indicates that a SteamAPI query is in progress.</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Unknown error occurred</value>

@@ -54,43 +54,57 @@
     </TextBox>
     <Label Grid.Row="3" Grid.Column="1" Target="{Binding ElementName=tbEditor}" Content="{x:Static resx:Strings.NotesEditorLabel}" />
     <ToolBarTray Grid.Row="4" Grid.Column="1">
+      <ToolBarTray.Resources>
+        <Style TargetType="Button" x:Key="{x:Static ToolBar.ButtonStyleKey}">
+          <Style.Resources>
+            <Style TargetType="Image">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEnabled, RelativeSource={RelativeSource AncestorType=Button}}" Value="False">
+                  <Setter Property="Opacity" Value="0.5" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Style.Resources>
+          <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+        </Style>
+      </ToolBarTray.Resources>
       <ToolBar ToolBarTray.IsLocked="True">
         <Button Command="ctl:ScehCommands.ScoreUpDown" ToolTip="{x:Static resx:Buttons.ScoreUp}">
           <Button.CommandParameter>
             <sys:Int32>+1</sys:Int32>
           </Button.CommandParameter>
-          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource scoreUpMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.ScoreUpDown" ToolTip="{x:Static resx:Buttons.ScoreDown}">
           <Button.CommandParameter>
             <sys:Int32>-1</sys:Int32>
           </Button.CommandParameter>
-          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource scoreDownMenuIcon}" Width="20" Height="20" />
         </Button>
         <Separator />
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteDate}">
           <Button.CommandParameter>
             <ctl:TagSelection>Date</ctl:TagSelection>
           </Button.CommandParameter>
-          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteAllCards}">
           <Button.CommandParameter>
             <ctl:TagSelection>AllCards</ctl:TagSelection>
           </Button.CommandParameter>
-          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource pasteAllCardsMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteMyCards}">
           <Button.CommandParameter>
             <ctl:TagSelection>MyCards</ctl:TagSelection>
           </Button.CommandParameter>
-          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource pasteMyCardsMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteOtherCards}">
           <Button.CommandParameter>
             <ctl:TagSelection>OtherCards</ctl:TagSelection>
           </Button.CommandParameter>
-          <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource pasteOtherCardsMenuIcon}" Width="20" Height="20" />
         </Button>
       </ToolBar>
     </ToolBarTray>

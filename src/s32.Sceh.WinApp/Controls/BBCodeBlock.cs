@@ -23,7 +23,7 @@ namespace s32.Sceh.WinApp.Controls
             DependencyProperty.Register("BBCodeText", typeof(string), typeof(BBCodeBlock), new PropertyMetadata(null, BBCodeTextChanged));
 
         public static readonly DependencyProperty DelayProperty =
-            DependencyProperty.Register("Delay", typeof(int), typeof(BBCodeBlock), new PropertyMetadata(100));
+            DependencyProperty.Register("Delay", typeof(int), typeof(BBCodeBlock), new PropertyMetadata(0));
 
         private readonly DispatcherTimer _timer;
         private bool _isActive, _needRefresh;

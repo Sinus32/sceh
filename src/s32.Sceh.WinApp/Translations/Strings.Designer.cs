@@ -61,6 +61,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to When [c=Maroon]red[/c] indicates that a SteamAPI request is delayed..
+        /// </summary>
+        public static string AlertOnOffToolTip {
+            get {
+                return ResourceManager.GetString("AlertOnOffToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} cards, {1} of {2} in set.
         /// </summary>
         public static string AppCardsSummary {
@@ -93,6 +102,33 @@ namespace s32.Sceh.WinApp.Translations {
         public static string ExceptionDuringDownloadingSteamProfile {
             get {
                 return ResourceManager.GetString("ExceptionDuringDownloadingSteamProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images downloaded successfully:.
+        /// </summary>
+        public static string ImagesDownloaded {
+            get {
+                return ResourceManager.GetString("ImagesDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images in queue to download:.
+        /// </summary>
+        public static string ImagesInQueue {
+            get {
+                return ResourceManager.GetString("ImagesInQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images not modified since last download:.
+        /// </summary>
+        public static string ImagesNotModified {
+            get {
+                return ResourceManager.GetString("ImagesNotModified", resourceCulture);
             }
         }
         
@@ -196,6 +232,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SteamAPI queries counter[br]It&apos;s [c=ForestGreen]green[/c] when query is in progress,[br]or [c=Maroon]red[/c] when request is delayed..
+        /// </summary>
+        public static string RequestCountToolTip {
+            get {
+                return ResourceManager.GetString("RequestCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot load cards of user {0}: {1}.
         /// </summary>
         public static string SecondInvErrorMessage {
@@ -228,6 +273,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string TradeUrlSeemsToBeInvalid {
             get {
                 return ResourceManager.GetString("TradeUrlSeemsToBeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When [c=ForestGreen]green[/c] indicates that a SteamAPI query is in progress..
+        /// </summary>
+        public static string TransferOnOffToolTip {
+            get {
+                return ResourceManager.GetString("TransferOnOffToolTip", resourceCulture);
             }
         }
         

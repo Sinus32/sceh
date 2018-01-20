@@ -572,23 +572,23 @@
       <MenuItem Header="{x:Static resx:MenuItems.Selection}">
         <MenuItem Header="{x:Static resx:MenuItems.SelectCardsFromOffer}" Command="ctl:ScehCommands.SelectCardsFromOffer">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource selectFromOfferMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
         <Separator />
         <MenuItem Header="{x:Static resx:MenuItems.DeselectMyCards}" Command="ctl:ScehCommands.DeselectCards" CommandParameter="{Binding MySelectedCards}">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource deselectMyCardsMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="{x:Static resx:MenuItems.DeselectOtherCards}" Command="ctl:ScehCommands.DeselectCards" CommandParameter="{Binding OtherSelectedCards}">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource deselectOtherCardsMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
         <MenuItem Header="{x:Static resx:MenuItems.DeselectAllCards}" Command="ctl:ScehCommands.DeselectCards" CommandParameter="{Binding AllSelectedCards}">
           <MenuItem.Icon>
-            <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+            <Image Source="{StaticResource deselectAllCardsMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
       </MenuItem>
@@ -685,7 +685,11 @@
     </ItemsControl>
     <StatusBar Grid.Row="5" Grid.ColumnSpan="3">
       <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
-        <TextBlock Text="{Binding RequestCount, StringFormat={x:Static resx:Strings.RequestCountFormat}}">
+        <TextBlock Text="{Binding RequestCount, StringFormat={x:Static resx:Strings.RequestCountFormat}}"
+              ToolTipService.ShowDuration="30000">
+          <TextBlock.ToolTip>
+            <ctl:BBCodeBlock BBCodeText="{x:Static resx:Strings.RequestCountToolTip}" TextWrapping="Wrap" />
+          </TextBlock.ToolTip>
           <TextBlock.Style>
             <Style TargetType="TextBlock">
               <Style.Triggers>
@@ -701,7 +705,10 @@
         </TextBlock>
       </StatusBarItem>
       <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
-        <Image Height="16">
+        <Image Height="16" ToolTipService.ShowDuration="30000">
+          <Image.ToolTip>
+            <ctl:BBCodeBlock BBCodeText="{x:Static resx:Strings.TransferOnOffToolTip}" TextWrapping="Wrap" />
+          </Image.ToolTip>
           <Image.Style>
             <Style TargetType="Image">
               <Setter Property="Source" Value="{StaticResource transferOff}" />
@@ -715,7 +722,10 @@
         </Image>
       </StatusBarItem>
       <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
-        <Image Height="16">
+        <Image Height="16" ToolTipService.ShowDuration="30000">
+          <Image.ToolTip>
+            <ctl:BBCodeBlock BBCodeText="{x:Static resx:Strings.AlertOnOffToolTip}" TextWrapping="Wrap" />
+          </Image.ToolTip>
           <Image.Style>
             <Style TargetType="Image">
               <Setter Property="Source" Value="{StaticResource alertOff}" />
@@ -730,7 +740,17 @@
       </StatusBarItem>
       <Separator />
       <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
-        <TextBlock>
+        <TextBlock ToolTipService.ShowDuration="30000">
+          <TextBlock.ToolTip>
+            <TextBlock>
+              <Run Text="{x:Static resx:Strings.ImagesInQueue}" />
+              <Run Text="{Binding ImagesToDownload}" FontWeight="Bold" /><LineBreak />
+              <Run Text="{x:Static resx:Strings.ImagesNotModified}" />
+              <Run Text="{Binding ImagesNotModified}" FontWeight="Bold" /><LineBreak />
+              <Run Text="{x:Static resx:Strings.ImagesDownloaded}" />
+              <Run Text="{Binding ImagesToDownload}" FontWeight="Bold" />
+            </TextBlock>
+          </TextBlock.ToolTip>
           <TextBlock.Text>
             <MultiBinding StringFormat="{x:Static resx:Strings.ImagesToDownloadFormat}">
               <Binding Path="ImagesToDownload" />

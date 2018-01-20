@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AlertOnOffToolTip" xml:space="preserve">
+    <value>Kiedy jest [c=Maroon]czerwony[/c] wskazuje że realizacja żądania do SteamAPI się przedłuża.</value>
+  </data>
   <data name="AppCardsSummary" xml:space="preserve">
     <value>{0} kart, {1} z {2} w zestawie</value>
   </data>
@@ -128,6 +131,15 @@
   </data>
   <data name="ExceptionDuringDownloadingSteamProfile" xml:space="preserve">
     <value>Podczas ściągania danych profilu wystąpił wyjątek: {0}</value>
+  </data>
+  <data name="ImagesDownloaded" xml:space="preserve">
+    <value>Obrazy pobrane pomyślnie:</value>
+  </data>
+  <data name="ImagesInQueue" xml:space="preserve">
+    <value>Obrazy w kolejce do pobrania:</value>
+  </data>
+  <data name="ImagesNotModified" xml:space="preserve">
+    <value>Obrazy niezmodyfikowane od czasu ostatniego pobrania:</value>
   </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
     <value>Pobieranie obrazów: {0}/{1}/{2}</value>
@@ -162,6 +174,9 @@
   <data name="RequestCountFormat" xml:space="preserve">
     <value>Licznik zapytań: {0}</value>
   </data>
+  <data name="RequestCountToolTip" xml:space="preserve">
+    <value>Licznik zapytań do SteamAPI[br]Jest [c=ForestGreen]zielony[/c] gdy zapytanie jest w toku,[br]lub [c=Maroon]czerwony[/c] gdy realizacja żądania się przedłuża.</value>
+  </data>
   <data name="SecondInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować kart użytkownika {0}: {1}</value>
   </data>
@@ -173,6 +188,9 @@
   </data>
   <data name="TradeUrlSeemsToBeInvalid" xml:space="preserve">
     <value>Zapisany adres URL wymiany wydaje się być nieprawidłowy i nie można go użyć. Popraw adres na ekranie notatek użytkownika.</value>
+  </data>
+  <data name="TransferOnOffToolTip" xml:space="preserve">
+    <value>Kiedy jest [c=ForestGreen]zielony[/c] wskazuje że zapytanie do SteamAPI jest w toku.</value>
   </data>
   <data name="UnknownErrorOccured" xml:space="preserve">
     <value>Wystąpił nieznany błąd</value>

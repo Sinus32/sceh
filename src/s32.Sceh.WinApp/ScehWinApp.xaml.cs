@@ -48,6 +48,8 @@ namespace s32.Sceh.WinApp
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+
             DataManager.Initialize();
             _imageDownloaderWorker = new ImageDownloader.Worker[3];
             _imageDownloaderWorker[0] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
