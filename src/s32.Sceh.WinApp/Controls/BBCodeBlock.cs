@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,30 +17,35 @@ using s32.Sceh.UserNoteTags;
 
 namespace s32.Sceh.WinApp.Controls
 {
-    public class UserNotesBlock : TextBlock
+    public class BBCodeBlock : TextBlock
     {
+        public static readonly DependencyProperty BBCodeTextProperty =
+            DependencyProperty.Register("BBCodeText", typeof(string), typeof(BBCodeBlock), new PropertyMetadata(null, BBCodeTextChanged));
+
         public static readonly DependencyProperty DelayProperty =
-            DependencyProperty.Register("Delay", typeof(int), typeof(UserNotesBlock), new PropertyMetadata(100));
+            DependencyProperty.Register("Delay", typeof(int), typeof(BBCodeBlock), new PropertyMetadata(100));
 
-        public static readonly DependencyProperty UserNotesProperty =
-            DependencyProperty.Register("UserNotes", typeof(string), typeof(UserNotesBlock), new PropertyMetadata(null, UserNotesChanged));
+        private readonly DispatcherTimer _timer;
+        private bool _isActive, _needRefresh;
 
-        private static readonly Dictionary<string, Action<Inline>> _formatters;
-        private DispatcherTimer _timer;
-
-        static UserNotesBlock()
+        public BBCodeBlock()
         {
-            _formatters = new Dictionary<string, Action<Inline>>();
-            _formatters.Add("b", q => q.FontWeight = FontWeights.Bold);
-            _formatters.Add("i", q => q.FontStyle = FontStyles.Italic);
-            _formatters.Add("u", q => q.TextDecorations = System.Windows.TextDecorations.Underline);
-            _formatters.Add("s", q => q.TextDecorations = System.Windows.TextDecorations.Strikethrough);
-        }
+            _timer = new DispatcherTimer(DispatcherPriority.ApplicationIdle, this.Dispatcher);
+            _timer.Tick += Timer_Tick;
 
-        public UserNotesBlock()
-        {
             Loaded += UserNotesBlock_Loaded;
             Unloaded += UserNotesBlock_Unloaded;
+        }
+
+        ~BBCodeBlock()
+        {
+            Dispose(false);
+        }
+
+        public string BBCodeText
+        {
+            get { return (string)GetValue(BBCodeTextProperty); }
+            set { SetValue(BBCodeTextProperty, value); }
         }
 
         public int Delay
@@ -48,15 +54,21 @@ namespace s32.Sceh.WinApp.Controls
             set { SetValue(DelayProperty, value); }
         }
 
-        public string UserNotes
+        public void Dispose()
         {
-            get { return (string)GetValue(UserNotesProperty); }
-            set { SetValue(UserNotesProperty, value); }
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public void UpdateUserNotes(string userNotes)
+        public void UpdateInlines()
         {
-            if (userNotes == null)
+            if (_needRefresh)
+                _needRefresh = false;
+            else
+                return;
+
+            var input = BBCodeText;
+            if (input == null)
             {
                 Inlines.Clear();
                 return;
@@ -66,7 +78,7 @@ namespace s32.Sceh.WinApp.Controls
             var lexer = new BBCodeLexer();
             var parser = new BBCodeParser();
             var inlines = new List<Inline>();
-            var tokens = lexer.ParseString(userNotes);
+            var tokens = lexer.ParseString(input);
             var rootNode = parser.Parse(tokens);
 
             PrintComplexNode(inlines, rootNode);
@@ -79,14 +91,25 @@ namespace s32.Sceh.WinApp.Controls
             System.Diagnostics.Debug.WriteLine("AddRange: {0}", stopwatch.Elapsed);
         }
 
-        private static void UserNotesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        protected virtual void Dispose(bool disposing)
         {
-            var self = (UserNotesBlock)d;
-            if (self._timer != null)
+            if (disposing)
             {
-                self._timer.Stop();
-                self._timer.Start();
+                if (_timer != null)
+                {
+                    _timer.Stop();
+                    _timer.Tick -= Timer_Tick;
+                }
             }
+        }
+
+        private static void BBCodeTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var self = (BBCodeBlock)d;
+            self._needRefresh = true;
+            if (self._isActive)
+                if (!self.SetupTimer())
+                    self.UpdateInlines();
         }
 
         private void PrintComplexNode(List<Inline> inlines, BBNode node)
@@ -115,38 +138,73 @@ namespace s32.Sceh.WinApp.Controls
 
         private bool PrintFormattingTag(List<Inline> inlines, IBBTagNode node)
         {
-            if (node.TagName == "->")
+            if (node.IsSelfClosed)
             {
-                var rightArrowTemplate = (ControlTemplate)FindResource("rightArrowTemplate");
-                var rightArrow = (FrameworkElement)rightArrowTemplate.LoadContent();
-                rightArrow.Height = this.FontSize;
-                inlines.Add(new InlineUIContainer(rightArrow) { BaselineAlignment = BaselineAlignment.Center });
-                foreach (var subNode in node.Content)
-                    PrintComplexNode(inlines, subNode);
-                return true;
-            }
-
-            if (!node.IsSelfClosed)
-            {
-                Action<Inline> formatter;
-                if (_formatters.TryGetValue(node.TagName, out formatter))
+                switch (node.TagName)
                 {
-                    if (node.Content.Count == 0)
-                        return true; //empty, but handled
+                    case "->":
+                        var rightArrowTemplate = (ControlTemplate)FindResource("rightArrowTemplate");
+                        var rightArrow = (FrameworkElement)rightArrowTemplate.LoadContent();
+                        rightArrow.Height = this.FontSize;
+                        inlines.Add(new InlineUIContainer(rightArrow) { BaselineAlignment = BaselineAlignment.Center });
+                        foreach (var subNode in node.Content)
+                            PrintComplexNode(inlines, subNode);
+                        return true;
 
-                    var span = new Span();
-                    formatter(span);
-                    var subInlines = new List<Inline>();
-                    foreach (var subNode in node.Content)
-                        if (!Object.ReferenceEquals(node.SecondTag, subNode))
-                            PrintComplexNode(subInlines, subNode);
-                    span.Inlines.AddRange(subInlines);
-                    inlines.Add(span);
-                    return true;
+                    case "br":
+                        inlines.Add(new LineBreak());
+                        return true;
+
+                    default:
+                        return false;
                 }
             }
+            else
+            {
+                Span span;
+                switch (node.TagName)
+                {
+                    case "b":
+                        span = new Span() { FontWeight = FontWeights.Bold };
+                        break;
 
-            return false;
+                    case "i":
+                        span = new Span() { FontStyle = FontStyles.Italic };
+                        break;
+
+                    case "u":
+                        span = new Span() { TextDecorations = System.Windows.TextDecorations.Underline };
+                        break;
+
+                    case "s":
+                        span = new Span() { TextDecorations = System.Windows.TextDecorations.Strikethrough };
+                        break;
+
+                    case "c":
+                        if (String.IsNullOrWhiteSpace(node.TagParam))
+                            return false;
+                        var brush = typeof(Brushes).GetProperty(node.TagParam.Trim(), BindingFlags.Public | BindingFlags.Static | BindingFlags.IgnoreCase | BindingFlags.DeclaredOnly);
+                        if (brush == null)
+                            return false;
+                        span = new Span() { Foreground = (Brush)brush.GetValue(null) };
+                        break;
+
+                    default:
+                        return false;
+                }
+
+                if (node.Content.Count == 0)
+                    return true; //empty, but handled
+
+                inlines.Add(span);
+                var subInlines = new List<Inline>();
+                foreach (var subNode in node.Content)
+                    if (!Object.ReferenceEquals(node.SecondTag, subNode))
+                        PrintComplexNode(subInlines, subNode);
+
+                span.Inlines.AddRange(subInlines);
+                return true;
+            }
         }
 
         private void PrintKnowTag(List<Inline> inlines, IUserNoteTag userNoteTag)
@@ -226,34 +284,39 @@ namespace s32.Sceh.WinApp.Controls
             }
         }
 
+        private bool SetupTimer()
+        {
+            var delay = Delay;
+            if (delay > 0)
+            {
+                _timer.Interval = TimeSpan.FromMilliseconds(delay);
+                _timer.Start();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             ((DispatcherTimer)sender).Stop();
-            if (IsLoaded)
-                UpdateUserNotes(UserNotes);
+            if (IsLoaded && _isActive)
+                UpdateInlines();
         }
 
         private void UserNotesBlock_Loaded(object sender, RoutedEventArgs e)
         {
-            if (_timer == null)
-            {
-                _timer = new DispatcherTimer(DispatcherPriority.ApplicationIdle, this.Dispatcher);
-                var delay = Delay;
-                if (delay < 0)
-                    delay = 0;
-                _timer.Interval = TimeSpan.FromMilliseconds(delay);
-                _timer.Tick += Timer_Tick;
-            }
-            _timer.Start();
+            _isActive = true;
+            if (!SetupTimer())
+                UpdateInlines();
         }
 
         private void UserNotesBlock_Unloaded(object sender, RoutedEventArgs e)
         {
-            if (_timer != null)
-            {
-                _timer.Stop();
-                _timer = null;
-            }
+            _isActive = false;
+            _timer.Stop();
         }
     }
 }

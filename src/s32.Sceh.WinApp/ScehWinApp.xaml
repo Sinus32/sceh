@@ -82,7 +82,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Text, Mode=OneWay}" TextWrapping="Wrap" />
+                <ctl:BBCodeBlock TextWrapping="Wrap" Delay="0" BBCodeText="{Binding Text, Mode=OneWay}" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>

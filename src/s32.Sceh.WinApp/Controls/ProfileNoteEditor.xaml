@@ -105,8 +105,8 @@
         BorderBrush="{x:Static SystemColors.GradientActiveCaptionBrush}" BorderThickness="1" CornerRadius="2"
         Background="{x:Static SystemColors.ControlLightLightBrush}">
       <ScrollViewer>
-        <ctl:UserNotesBlock x:Name="tbPreview" TextWrapping="Wrap" Delay="300"
-            UserNotes="{Binding Text, ElementName=tbEditor, Mode=OneWay}" />
+        <ctl:BBCodeBlock x:Name="tbPreview" TextWrapping="Wrap" Delay="300"
+            BBCodeText="{Binding Text, ElementName=tbEditor, Mode=OneWay}" />
       </ScrollViewer>
     </Border>
     <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Right">

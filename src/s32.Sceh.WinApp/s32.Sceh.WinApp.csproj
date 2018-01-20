@@ -61,6 +61,7 @@
     </ApplicationDefinition>
     <Compile Include="Code\ImageLoadNotifier.cs" />
     <Compile Include="Code\ProfileHelper.cs" />
+    <Compile Include="Controls\BBCodeBlock.cs" />
     <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controls\ImageLoader.cs" />
     <Compile Include="Controls\LazyImage.cs" />
@@ -70,7 +71,6 @@
     <Compile Include="Controls\ScehCommands.cs" />
     <Compile Include="Controls\TagSelection.cs" />
     <Compile Include="Controls\UrlToImageFileConverter.cs" />
-    <Compile Include="Controls\UserNotesBlock.cs" />
     <Compile Include="InvCompareWindow.xaml.cs">
       <DependentUpon>InvCompareWindow.xaml</DependentUpon>
     </Compile>
