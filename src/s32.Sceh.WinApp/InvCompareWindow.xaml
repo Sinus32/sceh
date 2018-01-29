@@ -2,12 +2,16 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
+    xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    Title="InvCompareWindow" MinHeight="400" MinWidth="580" Height="450" Width="970"
+    Title="{x:Static resx:Strings.InvCompareWindowTitle}" MinHeight="400" MinWidth="580" Height="450" Width="970"
     Icon="Img/sceh.ico" ResizeMode="CanResizeWithGrip" WindowState="Maximized">
   <Window.CommandBindings>
     <CommandBinding Command="ApplicationCommands.New" CanExecute="ChangeProfile_CanExecute" Executed="ChangeProfile_Executed" />
@@ -376,9 +380,9 @@
         </ToggleButton.ToolTip>
         <Grid>
           <Border Style="{StaticResource cardBorderStyle}">
-            <ctl:LazyImage Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}, Mode=OneWay}"
+            <ctl:LazyImage x:Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}, Mode=OneWay}"
                 NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
-                Width="77" Height="89" Stretch="Uniform" Delay="300"
+                Width="77" Height="89" Stretch="Uniform" Delay="400"
                 Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
           </Border>
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
@@ -686,7 +690,7 @@
     <StatusBar Grid.Row="5" Grid.ColumnSpan="3">
       <StatusBarItem DataContext="{x:Static code:CommunicationState.Instance}">
         <TextBlock Text="{Binding RequestCount, StringFormat={x:Static resx:Strings.RequestCountFormat}}"
-              ToolTipService.ShowDuration="30000">
+            ToolTipService.ShowDuration="30000">
           <TextBlock.ToolTip>
             <ctl:BBCodeBlock BBCodeText="{x:Static resx:Strings.RequestCountToolTip}" TextWrapping="Wrap" />
           </TextBlock.ToolTip>

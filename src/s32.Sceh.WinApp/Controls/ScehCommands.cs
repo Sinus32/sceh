@@ -16,7 +16,7 @@ namespace s32.Sceh.WinApp.Controls
             _openProfilePage, _openInventoryPage, _openUserBadges,
             _openIncomingOffers, _openSentOffers, _openTradeTopics, _openPostHistory,
             _openSceInvPage,
-            _makeOffer, _copyName, _scoreUpDown, _pasteTag;
+            _makeOffer, _copyName, _pasteTag;
 
         static ScehCommands()
         {
@@ -40,7 +40,6 @@ namespace s32.Sceh.WinApp.Controls
             _openSceInvPage = new RoutedCommand("OpenSceInvPage", typeof(ScehCommands));
             _makeOffer = new RoutedCommand("MakeOffer", typeof(ScehCommands));
             _copyName = new RoutedCommand("CopyName", typeof(ScehCommands));
-            _scoreUpDown = new RoutedCommand("ScoreUpDown", typeof(ScehCommands));
             _pasteTag = new RoutedCommand("PasteTag", typeof(ScehCommands));
             _selectCardsFromOffer = new RoutedCommand("SelectCardsFromOffer", typeof(ScehCommands));
         }
@@ -144,12 +143,7 @@ namespace s32.Sceh.WinApp.Controls
         {
             get { return _pasteTag; }
         }
-
-        public static RoutedCommand ScoreUpDown
-        {
-            get { return _scoreUpDown; }
-        }
-
+        
         public static RoutedCommand SelectCardsFromOffer
         {
             get { return _selectCardsFromOffer; }

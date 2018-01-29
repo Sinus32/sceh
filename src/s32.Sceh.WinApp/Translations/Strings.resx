@@ -153,6 +153,9 @@
   <data name="InvalidTradeUrlScheme" xml:space="preserve">
     <value>The provided trade URL have to use https scheme</value>
   </data>
+  <data name="InvCompareWindowTitle" xml:space="preserve">
+    <value>Steam cards exchange helper</value>
+  </data>
   <data name="LoginProfileLabel" xml:space="preserve">
     <value>_Profile:</value>
   </data>

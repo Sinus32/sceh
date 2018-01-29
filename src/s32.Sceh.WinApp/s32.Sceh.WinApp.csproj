@@ -59,17 +59,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BBCodeWriters\ItalicTextWriter.cs" />
+    <Compile Include="BBCodeWriters\StrikethroughTextWriter.cs" />
+    <Compile Include="BBCodeWriters\UnderlineTextWriter.cs" />
+    <Compile Include="BBCodeWriters\BoldTextWriter.cs" />
+    <Compile Include="BBCodeWriters\DateWriter.cs" />
+    <Compile Include="BBCodeWriters\IBBCodeWriter.cs" />
+    <Compile Include="BBCodeWriters\ScoreUpDownWriter.cs" />
+    <Compile Include="BBCodeWriters\SelectedCardsWriter.cs" />
+    <Compile Include="BBCodeWriters\TextColorWriter.cs" />
+    <Compile Include="BBCodeWriters\TextFormatWriter.cs" />
     <Compile Include="Code\ImageLoadNotifier.cs" />
     <Compile Include="Code\ProfileHelper.cs" />
     <Compile Include="Controls\BBCodeBlock.cs" />
     <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Controls\CardsFromOfferSelect.xaml.cs">
+      <DependentUpon>CardsFromOfferSelect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ImageLoader.cs" />
     <Compile Include="Controls\LazyImage.cs" />
     <Compile Include="Controls\ProfileNoteEditor.xaml.cs">
       <DependentUpon>ProfileNoteEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScehCommands.cs" />
-    <Compile Include="Controls\TagSelection.cs" />
     <Compile Include="Controls\UrlToImageFileConverter.cs" />
     <Compile Include="InvCompareWindow.xaml.cs">
       <DependentUpon>InvCompareWindow.xaml</DependentUpon>
@@ -89,6 +101,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Page Include="Controls\CardsFromOfferSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ProfileNoteEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -262,6 +278,9 @@
     <Resource Include="Img\MenuIcons\scoreDown.png" />
     <Resource Include="Img\MenuIcons\scoreUp.png" />
     <Resource Include="Img\MenuIcons\selectFromOffer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\info.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -19,7 +19,7 @@ namespace s32.Sceh.WinApp.Translations {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Buttons {
@@ -61,6 +61,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bold.
+        /// </summary>
+        public static string BoldText {
+            get {
+                return ResourceManager.GetString("BoldText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
         public static string Close {
@@ -97,11 +106,29 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Italic.
+        /// </summary>
+        public static string ItalicText {
+            get {
+                return ResourceManager.GetString("ItalicText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open page.
+        /// </summary>
+        public static string OpenPage {
+            get {
+                return ResourceManager.GetString("OpenPage", resourceCulture);
             }
         }
         
@@ -169,6 +196,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select.
+        /// </summary>
+        public static string Select {
+            get {
+                return ResourceManager.GetString("Select", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show all cards.
         /// </summary>
         public static string ShowAll {
@@ -228,6 +264,33 @@ namespace s32.Sceh.WinApp.Translations {
         public static string ShowTradeSugestions {
             get {
                 return ResourceManager.GetString("ShowTradeSugestions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Strikethrough.
+        /// </summary>
+        public static string StrikethroughText {
+            get {
+                return ResourceManager.GetString("StrikethroughText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color.
+        /// </summary>
+        public static string TextColor {
+            get {
+                return ResourceManager.GetString("TextColor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Underline.
+        /// </summary>
+        public static string UnderlineText {
+            get {
+                return ResourceManager.GetString("UnderlineText", resourceCulture);
             }
         }
     }

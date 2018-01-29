@@ -2,22 +2,22 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
+    xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="400">
   <UserControl.CommandBindings>
     <CommandBinding Command="ctl:ScehCommands.Ok" CanExecute="Save_CanExecute" Executed="Save_Executed" />
     <CommandBinding Command="ctl:ScehCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.ScoreUpDown" CanExecute="ScoreUpDown_CanExecute" Executed="ScoreUpDown_Executed" />
     <CommandBinding Command="ctl:ScehCommands.PasteTag" CanExecute="PasteTag_CanExecute" Executed="PasteTag_Executed" />
   </UserControl.CommandBindings>
-  <Grid Name="noteEditForm" FocusManager.FocusedElement="{Binding ElementName=tbEditor}" Loaded="noteEditForm_Loaded">
+  <Grid Name="noteEditForm" FocusManager.FocusedElement="{Binding ElementName=tbEditor}">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="10*" />
@@ -35,12 +35,6 @@
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Grid.Resources>
-      <Color x:Key="overlayColor" A="96" R="96" G="96" B="96" />
-      <SolidColorBrush x:Key="overlayColorBrush" ice:Freeze="True" Color="{StaticResource overlayColor}" />
-      <Color x:Key="formColor" A="255" R="255" G="255" B="212" />
-      <SolidColorBrush x:Key="formColorBrush" ice:Freeze="True" Color="{StaticResource formColor}" />
-    </Grid.Resources>
     <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="10" Fill="{StaticResource overlayColorBrush}" />
     <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="8" Margin="-5"
         BorderBrush="{x:Static SystemColors.ControlLightLightBrush}" BorderThickness="1"
@@ -69,42 +63,73 @@
         </Style>
       </ToolBarTray.Resources>
       <ToolBar ToolBarTray.IsLocked="True">
-        <Button Command="ctl:ScehCommands.ScoreUpDown" ToolTip="{x:Static resx:Buttons.ScoreUp}">
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ScoreUp}">
           <Button.CommandParameter>
-            <sys:Int32>+1</sys:Int32>
+            <tags:ScoreUpDownWriter Score="+1" />
           </Button.CommandParameter>
           <Image Source="{StaticResource scoreUpMenuIcon}" Width="20" Height="20" />
         </Button>
-        <Button Command="ctl:ScehCommands.ScoreUpDown" ToolTip="{x:Static resx:Buttons.ScoreDown}">
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ScoreDown}">
           <Button.CommandParameter>
-            <sys:Int32>-1</sys:Int32>
+            <tags:ScoreUpDownWriter Score="-1" />
           </Button.CommandParameter>
           <Image Source="{StaticResource scoreDownMenuIcon}" Width="20" Height="20" />
         </Button>
         <Separator />
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteDate}">
           <Button.CommandParameter>
-            <ctl:TagSelection>Date</ctl:TagSelection>
+            <tags:DateWriter />
           </Button.CommandParameter>
           <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteAllCards}">
           <Button.CommandParameter>
-            <ctl:TagSelection>AllCards</ctl:TagSelection>
+            <tags:SelectedCardsWriter MyCards="True" OtherCards="True" />
           </Button.CommandParameter>
           <Image Source="{StaticResource pasteAllCardsMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteMyCards}">
           <Button.CommandParameter>
-            <ctl:TagSelection>MyCards</ctl:TagSelection>
+            <tags:SelectedCardsWriter MyCards="True" />
           </Button.CommandParameter>
           <Image Source="{StaticResource pasteMyCardsMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteOtherCards}">
           <Button.CommandParameter>
-            <ctl:TagSelection>OtherCards</ctl:TagSelection>
+            <tags:SelectedCardsWriter OtherCards="True" />
           </Button.CommandParameter>
           <Image Source="{StaticResource pasteOtherCardsMenuIcon}" Width="20" Height="20" />
+        </Button>
+        <Separator />
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.BoldText}">
+          <Button.CommandParameter>
+            <tags:BoldTextWriter />
+          </Button.CommandParameter>
+          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+        </Button>
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ItalicText}">
+          <Button.CommandParameter>
+            <tags:ItalicTextWriter />
+          </Button.CommandParameter>
+          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+        </Button>
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.UnderlineText}">
+          <Button.CommandParameter>
+            <tags:UnderlineTextWriter />
+          </Button.CommandParameter>
+          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+        </Button>
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.StrikethroughText}">
+          <Button.CommandParameter>
+            <tags:StrikethroughTextWriter />
+          </Button.CommandParameter>
+          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+        </Button>
+        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.TextColor}">
+          <Button.CommandParameter>
+            <tags:TextColorWriter />
+          </Button.CommandParameter>
+          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
         </Button>
       </ToolBar>
     </ToolBarTray>

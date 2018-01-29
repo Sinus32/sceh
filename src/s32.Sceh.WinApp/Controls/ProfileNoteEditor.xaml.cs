@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.Windows.Threading;
 using s32.Sceh.DataModel;
 using s32.Sceh.UserNoteTags;
+using s32.Sceh.WinApp.BBCodeWriters;
 using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp.Controls
@@ -40,6 +41,8 @@ namespace s32.Sceh.WinApp.Controls
         public ProfileNoteEditor()
         {
             InitializeComponent();
+
+            Loaded += ProfileNoteEditor_Loaded;
         }
 
         public bool AutoFocus
@@ -148,42 +151,26 @@ namespace s32.Sceh.WinApp.Controls
             return true;
         }
 
-        private void noteEditForm_Loaded(object sender, RoutedEventArgs e)
+        private void ProfileNoteEditor_Loaded(object sender, RoutedEventArgs e)
         {
             Load(Source);
             if (AutoFocus)
                 Keyboard.Focus(tbEditor);
         }
 
-        #region Commands
-
-        private string BuildCardsTags(Func<SteamApp, bool> getIsSelected, Func<SteamApp, IEnumerable<Card>> getCards)
+        private bool RemoveSelfFromParent()
         {
-            var sb = new StringBuilder();
-
-            foreach (var app in SteamApps)
+            var parent = LogicalTreeHelper.GetParent(this);
+            if (parent is Panel)
             {
-                if (!getIsSelected(app))
-                    continue;
-
-                if (sb.Length > 0)
-                    sb.Append("; ");
-                sb.Append(new SteamAppTag(app));
-
-                int i = -1;
-                foreach (var card in getCards(app))
-                {
-                    if (!card.IsSelected)
-                        continue;
-
-                    if (sb.Length > 0)
-                        sb.Append(++i == 0 ? ": " : ", ");
-                    sb.Append(new SteamCardTag(card));
-                }
+                var panel = (Panel)parent;
+                panel.Children.Remove(this);
+                return true;
             }
-
-            return sb.ToString();
+            return false;
         }
+
+        #region Commands
 
         private void Cancel_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -192,99 +179,26 @@ namespace s32.Sceh.WinApp.Controls
 
         private void Cancel_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var parent = LogicalTreeHelper.GetParent(this);
-            if (parent is Panel)
-            {
-                var panel = (Panel)parent;
-                panel.Children.Remove(this);
-                e.Handled = true;
-            }
-            else
-            {
-                e.Handled = false;
-            }
+            RemoveSelfFromParent();
         }
 
         private void PasteTag_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (!(e.Parameter is TagSelection))
+            if (!(e.Parameter is IBBCodeWriter))
             {
                 e.CanExecute = false;
                 return;
             }
 
-            switch ((TagSelection)e.Parameter)
-            {
-                case TagSelection.Date:
-                    e.CanExecute = true;
-                    return;
-
-                case TagSelection.AllCards:
-                    e.CanExecute = SteamApps != null && SteamApps.Any(steamApp => steamApp.MyIsSelected || steamApp.OtherIsSelected);
-                    return;
-
-                case TagSelection.MyCards:
-                    e.CanExecute = SteamApps != null && SteamApps.Any(steamApp => steamApp.MyIsSelected);
-                    return;
-
-                case TagSelection.OtherCards:
-                    e.CanExecute = SteamApps != null && SteamApps.Any(steamApp => steamApp.OtherIsSelected);
-                    return;
-
-                default:
-                    e.CanExecute = false;
-                    return;
-            }
+            e.CanExecute = ((IBBCodeWriter)e.Parameter).CanWrite(SteamApps);
         }
 
         private void PasteTag_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!(e.Parameter is TagSelection))
+            if (!(e.Parameter is IBBCodeWriter))
                 return;
 
-            string text = null;
-            switch ((TagSelection)e.Parameter)
-            {
-                case TagSelection.Date:
-                    text = new DateTimeTag(DateTime.Today).BuildSourceText();
-                    break;
-
-                case TagSelection.AllCards:
-                    if (SteamApps != null)
-                    {
-                        text = String.Concat(
-                            BuildCardsTags(steamApp => steamApp.MyIsSelected, steamApp => steamApp.MyCards),
-                            " [->] ",
-                            BuildCardsTags(steamApp => steamApp.OtherIsSelected, steamApp => steamApp.OtherCards));
-                    }
-                    break;
-
-                case TagSelection.MyCards:
-                    if (SteamApps != null)
-                        text = BuildCardsTags(steamApp => steamApp.MyIsSelected, steamApp => steamApp.MyCards);
-                    break;
-
-                case TagSelection.OtherCards:
-                    if (SteamApps != null)
-                        text = BuildCardsTags(steamApp => steamApp.OtherIsSelected, steamApp => steamApp.OtherCards);
-                    break;
-            }
-
-            if (!String.IsNullOrEmpty(text))
-            {
-                tbEditor.SelectedText = text + " ";
-                tbEditor.CaretIndex = tbEditor.SelectionStart + tbEditor.SelectionLength;
-            }
-        }
-
-        private void RaiseCancelCommand()
-        {
-            RoutedCommand routed = ScehCommands.Cancel;
-            IInputElement target = this;
-            object parameter = null;
-
-            if (routed.CanExecute(parameter, target))
-                routed.Execute(parameter, target);
+            ((IBBCodeWriter)e.Parameter).Write(tbEditor, SteamApps);
         }
 
         private void Save_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -295,16 +209,7 @@ namespace s32.Sceh.WinApp.Controls
         private void Save_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (Save(Source))
-                Dispatcher.Invoke(RaiseCancelCommand, DispatcherPriority.Background);
-        }
-
-        private void ScoreUpDown_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = e.Parameter is int;
-        }
-
-        private void ScoreUpDown_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
+                RemoveSelfFromParent();
         }
 
         #endregion Commands

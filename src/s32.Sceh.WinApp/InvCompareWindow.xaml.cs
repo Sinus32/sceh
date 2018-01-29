@@ -562,30 +562,20 @@ namespace s32.Sceh.WinApp
 
         private void SelectCardsFromOffer_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = true;
+            if (_inventoryLoadWorker != null && _inventoryLoadWorker.IsBusy)
+                e.CanExecute = false;
+            else
+                e.CanExecute = SteamApps != null && SteamApps.Count > 0;
         }
 
         private void SelectCardsFromOffer_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            var data = Clipboard.GetDataObject();
-            if (data != null)
-            {
-                var formats = data.GetFormats(false);
-                MessageBox.Show("Formats: " + String.Join(", ", formats));
-
-                if (formats.Contains(DataFormats.Html))
-                {
-                    var html = data.GetData(DataFormats.Html);
-                    if (html != null)
-                    {
-                        MessageBox.Show(html.ToString(), html.GetType().Name);
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("No data");
-            }
+            var form = new CardsFromOfferSelect();
+            Grid.SetRowSpan(form, mainGrid.RowDefinitions.Count);
+            Grid.SetColumnSpan(form, mainGrid.ColumnDefinitions.Count);
+            mainGrid.Children.Add(form);
+            form.SteamApps = SteamApps;
+            form.OwnerProfile = OwnerProfile;
         }
 
         private void ShowHideCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
