@@ -55,6 +55,7 @@
     <Compile Include="BBCode\BBTextNode.cs" />
     <Compile Include="BBCode\BBToken.cs" />
     <Compile Include="BBCode\BBTokenType.cs" />
+    <Compile Include="BBCode\IBBNode.cs" />
     <Compile Include="BBCode\IBBTagNode.cs" />
     <Compile Include="Code\CardEqualityKey.cs" />
     <Compile Include="Code\CardsCompareManager.cs" />
@@ -71,6 +72,9 @@
     <Compile Include="DataModel\Card.cs" />
     <Compile Include="DataModel\ItemClass.cs" />
     <Compile Include="DataModel\PathConfig.cs" />
+    <Compile Include="DataModel\SceAppData.cs" />
+    <Compile Include="Code\SceInventoryData.cs" />
+    <Compile Include="DataModel\SceAppState.cs" />
     <Compile Include="DataModel\UserNote.cs" />
     <Compile Include="DataModel\ProfilesData.cs" />
     <Compile Include="DataModel\SteamApp.cs">
@@ -94,7 +98,12 @@
     <Compile Include="SteamApi\RgInventoryResp.cs" />
     <Compile Include="SteamApi\SteamProfileResp.cs" />
     <Compile Include="UserNoteTags\DateTimeTag.cs" />
+    <Compile Include="UserNoteTags\Factories\DateTimeTagFactory.cs" />
+    <Compile Include="UserNoteTags\Factories\IUserNoteTagFactory.cs" />
+    <Compile Include="UserNoteTags\Factories\SteamAppTagFactory.cs" />
+    <Compile Include="UserNoteTags\Factories\SteamCardTagFactory.cs" />
     <Compile Include="UserNoteTags\IUserNoteTag.cs" />
+    <Compile Include="UserNoteTags\UserNoteTagFactory.cs" />
     <Compile Include="UserNoteTags\SteamAppTag.cs" />
     <Compile Include="UserNoteTags\SteamCardTag.cs" />
   </ItemGroup>

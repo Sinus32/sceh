@@ -20,21 +20,16 @@ namespace s32.Sceh.WinApp
     /// </summary>
     public partial class ScehWinApp : Application
     {
+        private DispatcherTimer _autoSaveTimer;
         private ImageDownloader.Worker[] _imageDownloaderWorker;
-        private DispatcherTimer _timer;
-
-        private void _timer_Tick(object sender, EventArgs e)
-        {
-            DataManager.SaveFile();
-        }
 
         private void Application_Exit(object sender, ExitEventArgs e)
         {
-            if (_timer != null)
+            if (_autoSaveTimer != null)
             {
-                _timer.Stop();
-                _timer.Tick -= _timer_Tick;
-                _timer = null;
+                _autoSaveTimer.Stop();
+                _autoSaveTimer.Tick -= AutoSaveTimer_Tick;
+                _autoSaveTimer = null;
             }
 
             if (_imageDownloaderWorker != null)
@@ -53,6 +48,8 @@ namespace s32.Sceh.WinApp
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            //Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
+
             DataManager.Initialize();
             _imageDownloaderWorker = new ImageDownloader.Worker[3];
             _imageDownloaderWorker[0] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
@@ -61,10 +58,12 @@ namespace s32.Sceh.WinApp
             _imageDownloaderWorker[1].Start();
             _imageDownloaderWorker[2] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
             _imageDownloaderWorker[2].Start();
-            _timer = new DispatcherTimer();
-            _timer.Interval = new TimeSpan(0, 1, 0);
-            _timer.Tick += _timer_Tick;
-            _timer.Start();
+            _autoSaveTimer = new DispatcherTimer();
+            _autoSaveTimer.Interval = new TimeSpan(0, 1, 0);
+            _autoSaveTimer.Tick += AutoSaveTimer_Tick;
+            _autoSaveTimer.Start();
+
+            ThreadPool.QueueUserWorkItem(LoadSceData);
 
             bool openLoginWindow = true;
             if (DataManager.AutoLogIn)
@@ -84,6 +83,16 @@ namespace s32.Sceh.WinApp
                 var loginWindow = new LoginWindow();
                 loginWindow.Show();
             }
+        }
+
+        private void AutoSaveTimer_Tick(object sender, EventArgs e)
+        {
+            DataManager.SaveFile();
+        }
+
+        private void LoadSceData(object state)
+        {
+            DataManager.SceData.LoadSceData();
         }
     }
 }

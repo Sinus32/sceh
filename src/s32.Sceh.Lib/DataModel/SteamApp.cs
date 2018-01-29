@@ -13,18 +13,27 @@ namespace s32.Sceh.DataModel
     {
         private bool _hide, _myIsSelected, _otherIsSelected;
         private long _id;
-        private ObservableCollection<Card> _myCards, _otherCards;
+        private bool? _marketable;
+        private List<Card> _myCards, _otherCards;
+        private int _myCardsTotal, _myUniqueCards, _otherCardsTotal, _otherUniqueCards;
         private string _name;
+        private SceAppState _sceState;
+        private int? _totalUniqueCards, _sceWorth;
 
         public SteamApp(long id, string name)
         {
             _id = id;
             _name = name;
-            _myCards = new ObservableCollection<Card>();
-            _otherCards = new ObservableCollection<Card>();
+            _myCards = new List<Card>();
+            _otherCards = new List<Card>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public bool HeHaveMoreThanHalf
+        {
+            get { return OtherCardsTotal > (TotalUniqueCards + 1) / 2; }
+        }
 
         public bool Hide
         {
@@ -42,17 +51,20 @@ namespace s32.Sceh.DataModel
         public long Id
         {
             get { return _id; }
-            set
-            {
-                if (_id != value)
-                {
-                    _id = value;
-                    NotifyPropertyChanged();
-                }
-            }
         }
 
-        public ObservableCollection<Card> MyCards
+        public bool IHaveMoreThanHalf
+        {
+            get { return MyCardsTotal > (TotalUniqueCards + 1) / 2; }
+        }
+
+        public bool? Marketable
+        {
+            get { return _marketable; }
+            set { _marketable = value; }
+        }
+
+        public List<Card> MyCards
         {
             get { return _myCards; }
             set
@@ -63,6 +75,12 @@ namespace s32.Sceh.DataModel
                     NotifyPropertyChanged();
                 }
             }
+        }
+
+        public int MyCardsTotal
+        {
+            get { return _myCardsTotal; }
+            set { _myCardsTotal = value; }
         }
 
         public bool MyIsSelected
@@ -78,33 +96,26 @@ namespace s32.Sceh.DataModel
             }
         }
 
+        public int MyUniqueCards
+        {
+            get { return _myUniqueCards; }
+            set { _myUniqueCards = value; }
+        }
+
         public string Name
         {
             get { return _name; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                if (_name != value)
-                {
-                    _name = value;
-                    NotifyPropertyChanged();
-                }
-            }
         }
 
-        public ObservableCollection<Card> OtherCards
+        public List<Card> OtherCards
         {
             get { return _otherCards; }
-            set
-            {
-                if (_otherCards != value)
-                {
-                    _otherCards = value;
-                    NotifyPropertyChanged();
-                }
-            }
+        }
+
+        public int OtherCardsTotal
+        {
+            get { return _otherCardsTotal; }
+            set { _otherCardsTotal = value; }
         }
 
         public bool OtherIsSelected
@@ -118,6 +129,30 @@ namespace s32.Sceh.DataModel
                     NotifyPropertyChanged();
                 }
             }
+        }
+
+        public int OtherUniqueCards
+        {
+            get { return _otherUniqueCards; }
+            set { _otherUniqueCards = value; }
+        }
+
+        public SceAppState SceState
+        {
+            get { return _sceState; }
+            set { _sceState = value; }
+        }
+
+        public int? SceWorth
+        {
+            get { return _sceWorth; }
+            set { _sceWorth = value; }
+        }
+
+        public int? TotalUniqueCards
+        {
+            get { return _totalUniqueCards; }
+            set { _totalUniqueCards = value; }
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

@@ -1,12 +1,18 @@
 ﻿<Window x:Class="s32.Sceh.WinApp.LoginWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
+    xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    Title="{x:Static resx:Strings.LoginWindowTitle}" Height="200" Width="470" Icon="Img/sceh.ico">
+    Title="{x:Static resx:Strings.LoginWindowTitle}" MinHeight="170" MinWidth="300" Height="200" Width="470"
+    Icon="Img/sceh.ico" ResizeMode="CanResize">
   <Window.Resources>
     <Style TargetType="Label">
       <Setter Property="FontSize" Value="16" />
@@ -28,7 +34,7 @@
     <CheckBox IsChecked="{Binding AutoLogIn}" Margin="2,4">
       <AccessText Text="{x:Static resx:Strings.AutoLoginCheckBoxText}" />
     </CheckBox>
-    <Button x:Name="btnLogin" Command="ctl:ScehCommands.Ok" Content="{x:Static resx:Strings.LoginButtonText}"
+    <Button x:Name="btnLogin" Command="ctl:ScehCommands.Ok" Content="{x:Static resx:Buttons.Enter}"
       HorizontalAlignment="Center" Margin="0,10" Padding="20,2" IsDefault="True" />
   </StackPanel>
 </Window>

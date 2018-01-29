@@ -11,16 +11,6 @@ namespace s32.Sceh.BBCode
         private bool _isCompleted, _isInvalid;
         private string _tagName;
 
-        public bool IsClosed
-        {
-            get { return OpenTag != null; }
-        }
-
-        public bool IsSelfClosed
-        {
-            get { return OpenTag == this; }
-        }
-
         public bool IsValid
         {
             get { return _isCompleted && !_isInvalid && !String.IsNullOrEmpty(_tagName); }
@@ -43,9 +33,19 @@ namespace s32.Sceh.BBCode
             get { return true; }
         }
 
+        bool IBBTagNode.IsSelfClosed
+        {
+            get { return Object.ReferenceEquals(this, OpenTag); }
+        }
+
         bool IBBTagNode.IsStartTag
         {
             get { return false; }
+        }
+
+        IBBTagNode IBBTagNode.SecondTag
+        {
+            get { return OpenTag; }
         }
 
         string IBBTagNode.TagParam

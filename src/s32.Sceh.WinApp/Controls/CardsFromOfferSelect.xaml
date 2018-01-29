@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="s32.Sceh.WinApp.Controls.CardsFromOfferSelect"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:local="clr-namespace:s32.Sceh.WinApp"
+    xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
+    xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
+    xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
+    xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
+    xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
+    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+  <UserControl.CommandBindings>
+    <CommandBinding Command="ctl:ScehCommands.Ok" CanExecute="Ok_CanExecute" Executed="Ok_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed" />
+  </UserControl.CommandBindings>
+  <Grid Name="noteEditForm">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="10*" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="5*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="4*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="10" Fill="{StaticResource overlayColorBrush}" />
+    <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="8" Margin="-5"
+      BorderBrush="{x:Static SystemColors.ControlLightLightBrush}" BorderThickness="1"
+      Background="{x:Static SystemColors.ControlLightBrush}" />
+    <Image Grid.Column="1" Grid.Row="1" Source="{StaticResource infoIcon}" Stretch="None" Cursor="Help"
+        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2"
+        ToolTipService.ShowDuration="30000" ToolTipService.Placement="Left">
+      <Image.ToolTip>
+        <TextBlock TextWrapping="Wrap">
+          Przejdź na stronę oferty wymiany, zaznacz tekst wymiany razem z kartami, a następnie skopiuj do schowka.
+          <LineBreak />
+          Karty które zaznaczyłeś pojawią się w tym oknie jeżeli znajdują się w aktywnym porównaniu.
+        </TextBlock>
+      </Image.ToolTip>
+    </Image>
+    <Button Grid.Column="1" Grid.Row="1" Padding="2" ContextMenuService.IsEnabled="False"
+        HorizontalAlignment="Left" VerticalAlignment="Center" Click="OpenPageButton_Click" >
+      <Button.ContextMenu>
+        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+          <MenuItem Header="{x:Static resx:MenuItems.SentOffers}" Command="ctl:ScehCommands.OpenSentOffers" CommandParameter="{Binding OwnerProfile}">
+            <MenuItem.Icon>
+              <Image Source="{StaticResource sentMenuIcon}" Width="20" Height="20" />
+            </MenuItem.Icon>
+          </MenuItem>
+          <MenuItem Header="{x:Static resx:MenuItems.IncomingOffers}" Command="ctl:ScehCommands.OpenIncomingOffers" CommandParameter="{Binding OwnerProfile}">
+            <MenuItem.Icon>
+              <Image Source="{StaticResource receivedMenuIcon}" Width="20" Height="20" />
+            </MenuItem.Icon>
+          </MenuItem>
+        </ContextMenu>
+      </Button.ContextMenu>
+      <StackPanel Orientation="Horizontal">
+        <Image Source="{StaticResource tradeLinkMenuIcon}" Stretch="None" />
+        <AccessText Text="{x:Static resx:Buttons.OpenPage}" Margin="12,0" MinWidth="60"
+            VerticalAlignment="Center" TextAlignment="Center" />
+        <Path Margin="4" Width="6" Fill="#FF527DB5" Stretch="Uniform"
+            VerticalAlignment="Center" HorizontalAlignment="Right"
+            Data="F1 M 301.14,-189.041 L 311.57,-189.041 L 306.355,-182.942 L 301.14,-189.041 Z" />
+      </StackPanel>
+    </Button>
+    <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Right">
+      <Button Command="ctl:ScehCommands.Ok" Margin="12,5,0,0" Padding="2">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="{StaticResource yesMenuIcon}" Stretch="None" />
+          <AccessText Text="{x:Static resx:Buttons.Select}" Margin="12,0" MinWidth="40"
+            VerticalAlignment="Center" TextAlignment="Center" />
+        </StackPanel>
+      </Button>
+      <Button Command="ctl:ScehCommands.Cancel" Margin="12,5,0,0" Padding="2">
+        <StackPanel Orientation="Horizontal">
+          <Image Source="{StaticResource noMenuIcon}" Stretch="None" />
+          <AccessText Text="{x:Static resx:Buttons.Close}" Margin="12,0" MinWidth="40"
+            VerticalAlignment="Center" TextAlignment="Center" />
+        </StackPanel>
+      </Button>
+    </StackPanel>
+  </Grid>
+</UserControl>

@@ -9,20 +9,9 @@ namespace s32.Sceh.BBCode
     public class BBTagStartNode : BBNode, IBBTagNode
     {
         private bool _isCompleted;
-        private string _tagName;
-        private string _tagParam;
+        private string _tagName, _tagParam;
 
         public IBBTagNode CloseTag { get; internal set; }
-
-        public bool IsClosed
-        {
-            get { return CloseTag != null; }
-        }
-
-        public bool IsSelfClosed
-        {
-            get { return CloseTag == this; }
-        }
 
         public bool IsValid
         {
@@ -49,9 +38,19 @@ namespace s32.Sceh.BBCode
             get { return false; }
         }
 
+        bool IBBTagNode.IsSelfClosed
+        {
+            get { return Object.ReferenceEquals(this, CloseTag); }
+        }
+
         bool IBBTagNode.IsStartTag
         {
             get { return true; }
+        }
+
+        IBBTagNode IBBTagNode.SecondTag
+        {
+            get { return CloseTag; }
         }
 
         public override void AddToken(BBToken token)

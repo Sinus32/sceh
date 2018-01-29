@@ -6,14 +6,20 @@ using System.Threading.Tasks;
 
 namespace s32.Sceh.BBCode
 {
-    public interface IBBTagNode
+    public interface IBBTagNode : IBBNode
     {
-        bool IsClosed { get; }
         bool IsEndTag { get; }
+
         bool IsSelfClosed { get; }
+
         bool IsStartTag { get; }
+
         bool IsValid { get; }
+
+        IBBTagNode SecondTag { get; }
+
         string TagName { get; }
+
         string TagParam { get; }
     }
 }

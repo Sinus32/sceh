@@ -19,7 +19,7 @@ namespace s32.Sceh.WinApp.Translations {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
@@ -61,83 +61,29 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to When [c=Maroon]red[/c] indicates that a SteamAPI request is delayed..
+        /// </summary>
+        public static string AlertOnOffToolTip {
+            get {
+                return ResourceManager.GetString("AlertOnOffToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} cards, {1} of {2} in set.
+        /// </summary>
+        public static string AppCardsSummary {
+            get {
+                return ResourceManager.GetString("AppCardsSummary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Auto login.
         /// </summary>
         public static string AutoLoginCheckBoxText {
             get {
                 return ResourceManager.GetString("AutoLoginCheckBoxText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Close.
-        /// </summary>
-        public static string Button_Close {
-            get {
-                return ResourceManager.GetString("Button_Close", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Paste date.
-        /// </summary>
-        public static string Button_PasteDate {
-            get {
-                return ResourceManager.GetString("Button_PasteDate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Paste my selected cards.
-        /// </summary>
-        public static string Button_PasteMyCards {
-            get {
-                return ResourceManager.GetString("Button_PasteMyCards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Paste other selected cards.
-        /// </summary>
-        public static string Button_PasteOtherCards {
-            get {
-                return ResourceManager.GetString("Button_PasteOtherCards", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Save.
-        /// </summary>
-        public static string Button_Save {
-            get {
-                return ResourceManager.GetString("Button_Save", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Score down -1.
-        /// </summary>
-        public static string Button_ScoreDown {
-            get {
-                return ResourceManager.GetString("Button_ScoreDown", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Score up +1.
-        /// </summary>
-        public static string Button_ScoreUp {
-            get {
-                return ResourceManager.GetString("Button_ScoreUp", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Compare.
-        /// </summary>
-        public static string CompareButtonText {
-            get {
-                return ResourceManager.GetString("CompareButtonText", resourceCulture);
             }
         }
         
@@ -160,11 +106,29 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Find cards or games.
+        ///   Looks up a localized string similar to Images downloaded successfully:.
         /// </summary>
-        public static string FindCardsButtonText {
+        public static string ImagesDownloaded {
             get {
-                return ResourceManager.GetString("FindCardsButtonText", resourceCulture);
+                return ResourceManager.GetString("ImagesDownloaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images not modified since last download:.
+        /// </summary>
+        public static string ImagesNotModified {
+            get {
+                return ResourceManager.GetString("ImagesNotModified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Images in queue to download:.
+        /// </summary>
+        public static string ImagesToDownload {
+            get {
+                return ResourceManager.GetString("ImagesToDownload", resourceCulture);
             }
         }
         
@@ -205,11 +169,11 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to _Enter.
+        ///   Looks up a localized string similar to Steam cards exchange helper.
         /// </summary>
-        public static string LoginButtonText {
+        public static string InvCompareWindowTitle {
             get {
-                return ResourceManager.GetString("LoginButtonText", resourceCulture);
+                return ResourceManager.GetString("InvCompareWindowTitle", resourceCulture);
             }
         }
         
@@ -228,177 +192,6 @@ namespace s32.Sceh.WinApp.Translations {
         public static string LoginWindowTitle {
             get {
                 return ResourceManager.GetString("LoginWindowTitle", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Badge page.
-        /// </summary>
-        public static string MenuItem_BadgePage {
-            get {
-                return ResourceManager.GetString("MenuItem_BadgePage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Badges.
-        /// </summary>
-        public static string MenuItem_Badges {
-            get {
-                return ResourceManager.GetString("MenuItem_Badges", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Change profile.
-        /// </summary>
-        public static string MenuItem_ChangeProfile {
-            get {
-                return ResourceManager.GetString("MenuItem_ChangeProfile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Copy _name.
-        /// </summary>
-        public static string MenuItem_CopyName {
-            get {
-                return ResourceManager.GetString("MenuItem_CopyName", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Notes.
-        /// </summary>
-        public static string MenuItem_EditNote {
-            get {
-                return ResourceManager.GetString("MenuItem_EditNote", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Exit.
-        /// </summary>
-        public static string MenuItem_Exit {
-            get {
-                return ResourceManager.GetString("MenuItem_Exit", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Incoming offers.
-        /// </summary>
-        public static string MenuItem_IncomingOffers {
-            get {
-                return ResourceManager.GetString("MenuItem_IncomingOffers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Inventory.
-        /// </summary>
-        public static string MenuItem_Inventory {
-            get {
-                return ResourceManager.GetString("MenuItem_Inventory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Make offer.
-        /// </summary>
-        public static string MenuItem_MakeOffer {
-            get {
-                return ResourceManager.GetString("MenuItem_MakeOffer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Market page.
-        /// </summary>
-        public static string MenuItem_MarketPage {
-            get {
-                return ResourceManager.GetString("MenuItem_MarketPage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _My profile.
-        /// </summary>
-        public static string MenuItem_MyProfile {
-            get {
-                return ResourceManager.GetString("MenuItem_MyProfile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Other profile.
-        /// </summary>
-        public static string MenuItem_OthersProfile {
-            get {
-                return ResourceManager.GetString("MenuItem_OthersProfile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Post _history.
-        /// </summary>
-        public static string MenuItem_PostHistory {
-            get {
-                return ResourceManager.GetString("MenuItem_PostHistory", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Profile page.
-        /// </summary>
-        public static string MenuItem_Profile {
-            get {
-                return ResourceManager.GetString("MenuItem_Profile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Sent offers.
-        /// </summary>
-        public static string MenuItem_SentOffers {
-            get {
-                return ResourceManager.GetString("MenuItem_SentOffers", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Store page.
-        /// </summary>
-        public static string MenuItem_StorePage {
-            get {
-                return ResourceManager.GetString("MenuItem_StorePage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Trading _topics.
-        /// </summary>
-        public static string MenuItem_TradeTopics {
-            get {
-                return ResourceManager.GetString("MenuItem_TradeTopics", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to _Trade forum.
-        /// </summary>
-        public static string MenuItem_TradingForum {
-            get {
-                return ResourceManager.GetString("MenuItem_TradingForum", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Notes.
-        /// </summary>
-        public static string NotesButtonText {
-            get {
-                return ResourceManager.GetString("NotesButtonText", resourceCulture);
             }
         }
         
@@ -430,6 +223,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to [b]Enter the Steam platform profile.[/b][br][br]Use Steam identifier,[br]custom user URL,[br]or full profile url..
+        /// </summary>
+        public static string ProfileComboBoxToolTip {
+            get {
+                return ResourceManager.GetString("ProfileComboBoxToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error reading profile data.
         /// </summary>
         public static string ProfileDeserializationError {
@@ -448,74 +250,20 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SteamAPI queries counter[br]It&apos;s [c=ForestGreen]green[/c] when query is in progress,[br]or [c=Maroon]red[/c] when request is delayed..
+        /// </summary>
+        public static string RequestCountToolTip {
+            get {
+                return ResourceManager.GetString("RequestCountToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot load cards of user {0}: {1}.
         /// </summary>
         public static string SecondInvErrorMessage {
             get {
                 return ResourceManager.GetString("SecondInvErrorMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show all cards.
-        /// </summary>
-        public static string ShowAllButtonText {
-            get {
-                return ResourceManager.GetString("ShowAllButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show duplicated cards for trade.
-        /// </summary>
-        public static string ShowDuplicatesButtonText {
-            get {
-                return ResourceManager.GetString("ShowDuplicatesButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show my cards.
-        /// </summary>
-        public static string ShowMyCardsButtonText {
-            get {
-                return ResourceManager.GetString("ShowMyCardsButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show only selected cards.
-        /// </summary>
-        public static string ShowOnlySelectedButtonText {
-            get {
-                return ResourceManager.GetString("ShowOnlySelectedButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show his cards.
-        /// </summary>
-        public static string ShowOtherCardsButtonText {
-            get {
-                return ResourceManager.GetString("ShowOtherCardsButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show selected games.
-        /// </summary>
-        public static string ShowSelectedAppButtonText {
-            get {
-                return ResourceManager.GetString("ShowSelectedAppButtonText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Show common cards.
-        /// </summary>
-        public static string ShowTradeSugestionsButtonText {
-            get {
-                return ResourceManager.GetString("ShowTradeSugestionsButtonText", resourceCulture);
             }
         }
         
@@ -543,6 +291,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string TradeUrlSeemsToBeInvalid {
             get {
                 return ResourceManager.GetString("TradeUrlSeemsToBeInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to When [c=ForestGreen]green[/c] indicates that a SteamAPI query is in progress..
+        /// </summary>
+        public static string TransferOnOffToolTip {
+            get {
+                return ResourceManager.GetString("TransferOnOffToolTip", resourceCulture);
             }
         }
         

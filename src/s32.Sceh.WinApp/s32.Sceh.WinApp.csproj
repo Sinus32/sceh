@@ -59,26 +59,52 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BBCodeWriters\ItalicTextWriter.cs" />
+    <Compile Include="BBCodeWriters\StrikethroughTextWriter.cs" />
+    <Compile Include="BBCodeWriters\UnderlineTextWriter.cs" />
+    <Compile Include="BBCodeWriters\BoldTextWriter.cs" />
+    <Compile Include="BBCodeWriters\DateWriter.cs" />
+    <Compile Include="BBCodeWriters\IBBCodeWriter.cs" />
+    <Compile Include="BBCodeWriters\ScoreUpDownWriter.cs" />
+    <Compile Include="BBCodeWriters\SelectedCardsWriter.cs" />
+    <Compile Include="BBCodeWriters\TextColorWriter.cs" />
+    <Compile Include="BBCodeWriters\TextFormatWriter.cs" />
     <Compile Include="Code\ImageLoadNotifier.cs" />
     <Compile Include="Code\ProfileHelper.cs" />
+    <Compile Include="Controls\BBCodeBlock.cs" />
     <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Controls\CardsFromOfferSelect.xaml.cs">
+      <DependentUpon>CardsFromOfferSelect.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ImageLoader.cs" />
     <Compile Include="Controls\LazyImage.cs" />
     <Compile Include="Controls\ProfileNoteEditor.xaml.cs">
       <DependentUpon>ProfileNoteEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScehCommands.cs" />
-    <Compile Include="Controls\TagSelection.cs" />
     <Compile Include="Controls\UrlToImageFileConverter.cs" />
-    <Compile Include="Controls\UserNotesBlock.cs" />
     <Compile Include="InvCompareWindow.xaml.cs">
       <DependentUpon>InvCompareWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Translations\Buttons.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Buttons.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Translations\MenuItems.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MenuItems.resx</DependentUpon>
     </Compile>
     <Compile Include="Translations\Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Page Include="Controls\CardsFromOfferSelect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ProfileNoteEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,6 +143,16 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translations\Buttons.pl.resx" />
+    <EmbeddedResource Include="Translations\Buttons.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Buttons.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translations\MenuItems.pl.resx" />
+    <EmbeddedResource Include="Translations\MenuItems.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>MenuItems.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Translations\Strings.pl.resx" />
     <EmbeddedResource Include="Translations\Strings.resx">
@@ -218,7 +254,34 @@
     <Resource Include="Img\MenuIcons\save.png" />
     <Resource Include="Img\MenuIcons\yes.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Img\Inlines\game.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\Inlines\card.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\steamcardexchange.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\deselectAllCards.png" />
+    <Resource Include="Img\MenuIcons\deselectMyCards.png" />
+    <Resource Include="Img\MenuIcons\deselectOtherCards.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\pasteAllCards.png" />
+    <Resource Include="Img\MenuIcons\pasteDate.png" />
+    <Resource Include="Img\MenuIcons\pasteMyCards.png" />
+    <Resource Include="Img\MenuIcons\pasteOtherCards.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\MenuIcons\scoreDown.png" />
+    <Resource Include="Img\MenuIcons\scoreUp.png" />
+    <Resource Include="Img\MenuIcons\selectFromOffer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Img\info.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

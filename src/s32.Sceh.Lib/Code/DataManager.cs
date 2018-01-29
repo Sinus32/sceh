@@ -19,6 +19,7 @@ namespace s32.Sceh.Code
         private const string INVENTORY_CACHE_KEY = "SteamUserInventory_";
         private static ScehData _currentData;
         private static Dictionary<string, ImageFile> _imageUrlLookup;
+        private static SceInventoryData _sceData;
 
         public static bool AutoLogIn
         {
@@ -60,6 +61,11 @@ namespace s32.Sceh.Code
                 else
                     _currentData.Profiles.LastSteamProfileId = value.SteamId;
             }
+        }
+
+        public static SceInventoryData SceData
+        {
+            get { return _sceData; }
         }
 
         public static SteamProfile AddOrUpdateSteamProfile(SteamProfile profile)
@@ -135,6 +141,14 @@ namespace s32.Sceh.Code
             return result;
         }
 
+        public static SceAppData GetSceAppData(long appId)
+        {
+            SceAppData result;
+            if (_sceData.IsLoaded && _sceData.Data.TryGetValue(appId, out result))
+                return result;
+            return null;
+        }
+
         public static SteamProfile GetSteamProfile(SteamProfileKey profileKey)
         {
             if (profileKey == null)
@@ -188,16 +202,17 @@ namespace s32.Sceh.Code
             if (_currentData != null)
                 throw new InvalidOperationException("Data manager is already initialized");
 
+            _sceData = new SceInventoryData();
+
             _currentData = new ScehData();
             _currentData.Profiles = new ProfilesData();
             _currentData.AvatarsDirectory = new ImageDirectory("Avatars");
             _currentData.CardsDirectory = new ImageDirectory("Cards");
 
-            _currentData.Paths = new PathConfig();
-
             var dataLocation = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
             var localDataLocation = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
+            _currentData.Paths = new PathConfig();
             _currentData.Paths.AppDataPath = Path.Combine(dataLocation, "Sceh");
             _currentData.Paths.LocalAppDataPath = Path.Combine(localDataLocation, "Sceh");
             _currentData.Paths.BackupsPath = Path.Combine(_currentData.Paths.AppDataPath, "Backups");

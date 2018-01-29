@@ -8,6 +8,10 @@ namespace s32.Sceh.UserNoteTags
 {
     public interface IUserNoteTag
     {
-        string BuildTag();
+        string BuildSourceText();
+
+        string Name { get; }
+
+        string GetFormatedText();
     }
 }

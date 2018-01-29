@@ -11,8 +11,12 @@
   <Application.Resources>
     <Color x:Key="foregroundGreenColor" A="255" R="43" G="128" B="4" />
     <Color x:Key="foregroundRedColor" A="255" R="196" G="57" B="29" />
+    <Color x:Key="overlayColor" A="96" R="96" G="96" B="96" />
+    <Color x:Key="formColor" A="255" R="255" G="255" B="212" />
     <SolidColorBrush x:Key="foregroundGreenBrush" ice:Freeze="True" Color="{StaticResource foregroundGreenColor}" />
     <SolidColorBrush x:Key="foregroundRedBrush" ice:Freeze="True" Color="{StaticResource foregroundRedColor}" />
+    <SolidColorBrush x:Key="overlayColorBrush" ice:Freeze="True" Color="{StaticResource overlayColor}" />
+    <SolidColorBrush x:Key="formColorBrush" ice:Freeze="True" Color="{StaticResource formColor}" />
     <BitmapImage x:Key="defaultAvatar" ice:Freeze="True" UriSource="Img/avatar.jpg" />
     <BitmapImage x:Key="defaultCard" ice:Freeze="True" UriSource="Img/card.png" />
     <BitmapImage x:Key="compareIcon" ice:Freeze="True" UriSource="Img/compare.png" />
@@ -24,6 +28,7 @@
     <BitmapImage x:Key="transferOn" ice:Freeze="True" UriSource="Img/transfer1.png" />
     <BitmapImage x:Key="alertOff" ice:Freeze="True" UriSource="Img/alert0.png" />
     <BitmapImage x:Key="alertOn" ice:Freeze="True" UriSource="Img/alert1.png" />
+    <BitmapImage x:Key="sceIcon" ice:Freeze="True" UriSource="Img/steamcardexchange.png" />
     <BitmapImage x:Key="selection1" ice:Freeze="True" UriSource="Img/selection1.png" />
     <BitmapImage x:Key="selection2" ice:Freeze="True" UriSource="Img/selection2.png" />
     <BitmapImage x:Key="selection3" ice:Freeze="True" UriSource="Img/selection3.png" />
@@ -32,6 +37,7 @@
     <BitmapImage x:Key="selection6" ice:Freeze="True" UriSource="Img/selection6.png" />
     <BitmapImage x:Key="selection7" ice:Freeze="True" UriSource="Img/selection7.png" />
     <BitmapImage x:Key="selection8" ice:Freeze="True" UriSource="Img/selection8.png" />
+    <BitmapImage x:Key="infoIcon" ice:Freeze="True" UriSource="Img/info.png" />
     <BitmapImage x:Key="yesMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/yes.png" />
     <BitmapImage x:Key="noMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/no.png" />
     <BitmapImage x:Key="saveMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/save.png" />
@@ -50,6 +56,23 @@
     <BitmapImage x:Key="tradeLinkMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/tradeLink.png" />
     <BitmapImage x:Key="changeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/change.png" />
     <BitmapImage x:Key="exitMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/exit.png" />
+    <BitmapImage x:Key="deselectAllCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectAllCards.png" />
+    <BitmapImage x:Key="deselectMyCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectMyCards.png" />
+    <BitmapImage x:Key="deselectOtherCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectOtherCards.png" />
+    <BitmapImage x:Key="pasteAllCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/pasteAllCards.png" />
+    <BitmapImage x:Key="pasteDateMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/pasteDate.png" />
+    <BitmapImage x:Key="pasteMyCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/pasteMyCards.png" />
+    <BitmapImage x:Key="pasteOtherCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/pasteOtherCards.png" />
+    <BitmapImage x:Key="scoreDownMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/scoreDown.png" />
+    <BitmapImage x:Key="scoreUpMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/scoreUp.png" />
+    <BitmapImage x:Key="selectFromOfferMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/selectFromOffer.png" />
+    <BitmapImage x:Key="gameInline" ice:Freeze="True" UriSource="Img/Inlines/game.png" />
+    <BitmapImage x:Key="cardInline" ice:Freeze="True" UriSource="Img/Inlines/card.png" />
+    <ControlTemplate x:Key="rightArrowTemplate" ice:Freeze="True">
+      <Viewbox>
+        <Path Fill="DarkSlateGray" Data="M 0,5 H 14 L 12,0 L 27,6 V 7 L 12,13 L 14,8 H 0 Z" />
+      </Viewbox>
+    </ControlTemplate>
     <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}" />
     <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}" />
     <ctl:ImageLoader x:Key="imageLoader" />
@@ -74,7 +97,7 @@
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <TextBlock Text="{Binding Text, Mode=OneWay}" TextWrapping="Wrap" />
+                <ctl:BBCodeBlock TextWrapping="Wrap" BBCodeText="{Binding Text, Mode=OneWay}" />
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
@@ -92,6 +115,12 @@
           </Style>
         </Setter.Value>
       </Setter>
+      <Setter Property="ToolTip">
+        <Setter.Value>
+          <ctl:BBCodeBlock TextWrapping="Wrap" BBCodeText="{x:Static resx:Strings.ProfileComboBoxToolTip}" />
+        </Setter.Value>
+      </Setter>
+      <Setter Property="ToolTipService.ShowDuration" Value="30000" />
       <Setter Property="ItemTemplate">
         <Setter.Value>
           <DataTemplate DataType="{x:Type dm:SteamProfile}">
