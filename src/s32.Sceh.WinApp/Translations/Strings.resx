@@ -120,9 +120,6 @@
   <data name="AlertOnOffToolTip" xml:space="preserve">
     <value>When [c=Maroon]red[/c] indicates that a SteamAPI request is delayed.</value>
   </data>
-  <data name="AppCardsSummary" xml:space="preserve">
-    <value>{0} cards, {1} of {2} in set</value>
-  </data>
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>_Auto login</value>
   </data>
@@ -168,6 +165,9 @@
   <data name="NotesPreviewLabel" xml:space="preserve">
     <value>Preview</value>
   </data>
+  <data name="AppCardsSummary" xml:space="preserve">
+    <value>{0} cards, {1} of {2} in set</value>
+  </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Cannot load your cards: {0}</value>
   </data>
@@ -183,8 +183,14 @@
   <data name="RequestCountToolTip" xml:space="preserve">
     <value>SteamAPI queries counter[br]It's [c=ForestGreen]green[/c] when query is in progress,[br]or [c=Maroon]red[/c] when request is delayed.</value>
   </data>
+  <data name="SceErrorTitle" xml:space="preserve">
+    <value>Cannot download Steam Card Exchange data</value>
+  </data>
   <data name="SecondInvErrorMessage" xml:space="preserve">
     <value>Cannot load cards of user {0}: {1}</value>
+  </data>
+  <data name="StErrorTitle" xml:space="preserve">
+    <value>Cannot download Steam Tools data</value>
   </data>
   <data name="StrangeTradeUrl" xml:space="preserve">
     <value>The provided trade URL doesn't match the pattern. Are you sure you want to use it?</value>

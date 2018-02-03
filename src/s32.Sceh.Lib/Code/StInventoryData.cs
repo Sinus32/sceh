@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -134,7 +135,120 @@ namespace s32.Sceh.Code
 
         private static Dictionary<long, StAppData> ReadResponse(JsonTextReader reader, out string errorMessage)
         {
-            throw new NotImplementedException();
+            const int IGNORE = -1, BEGINNING = 0, MAIN = 1, SETS_ARRAY = 2, ST_APP_DATA = 3, NORMAL_CARD = 4;
+
+            long gameCount = -1L;
+            int state = BEGINNING;
+            string propName = null;
+            var stateStack = new Stack<int>(5);
+            var result = new Dictionary<long, StAppData>();
+            StAppData stApp = null;
+
+            while (reader.Read())
+            {
+                switch (reader.TokenType)
+                {
+                    case JsonToken.StartObject:
+                        stateStack.Push(state);
+                        switch (state)
+                        {
+                            case BEGINNING:
+                                state = MAIN;
+                                break;
+
+                            case SETS_ARRAY:
+                                stApp = new StAppData();
+                                state = ST_APP_DATA;
+                                break;
+
+                            case ST_APP_DATA:
+                                if (propName == "normal")
+                                    state = NORMAL_CARD;
+                                else
+                                    state = IGNORE;
+                                break;
+
+                            default:
+                                state = IGNORE;
+                                break;
+                        }
+                        break;
+
+                    case JsonToken.StartArray:
+                        stateStack.Push(state);
+                        if (state == MAIN && propName == "sets")
+                            state = SETS_ARRAY;
+                        else
+                            state = IGNORE;
+                        break;
+
+                    case JsonToken.EndObject:
+                        if (state == ST_APP_DATA && stApp.Id > 0)
+                            result[stApp.Id] = stApp;
+                        if (stateStack.Count == 0)
+                        {
+                            errorMessage = null;
+                            return result;
+                        }
+                        state = stateStack.Pop();
+                        break;
+
+                    case JsonToken.EndArray:
+                        if (stateStack.Count == 0)
+                        {
+                            errorMessage = null;
+                            return result;
+                        }
+                        state = stateStack.Pop();
+                        break;
+
+                    case JsonToken.PropertyName:
+                        propName = (string)reader.Value;
+                        break;
+
+                    case JsonToken.Integer:
+                        if (state == MAIN && propName == "game_count")
+                            gameCount = (long)reader.Value;
+                        break;
+
+                    case JsonToken.String:
+                        switch (state)
+                        {
+                            case ST_APP_DATA:
+                                switch (propName)
+                                {
+                                    case "appid":
+                                        stApp.Id = Int64.Parse((string)reader.Value, NumberStyles.Integer, CultureInfo.InvariantCulture);
+                                        break;
+
+                                    case "bprice":
+                                        stApp.BoosterAvg = Double.Parse((string)reader.Value, NumberStyles.Number, CultureInfo.InvariantCulture);
+                                        break;
+                                }
+                                break;
+
+                            case NORMAL_CARD:
+                                switch (propName)
+                                {
+                                    case "price":
+                                        stApp.SetPrice = Double.Parse((string)reader.Value, NumberStyles.Number, CultureInfo.InvariantCulture);
+                                        break;
+
+                                    case "avg":
+                                        stApp.CardAvg = Double.Parse((string)reader.Value, NumberStyles.Number, CultureInfo.InvariantCulture);
+                                        break;
+                                }
+                                break;
+                        }
+                        break;
+                }
+            }
+
+            if (gameCount == result.Count)
+                errorMessage = null;
+            else
+                errorMessage = String.Format("Steam tools data readed incorrectly: readed {0} games out of {1} in total", result.Count, gameCount);
+            return result;
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")

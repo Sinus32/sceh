@@ -435,10 +435,11 @@
             <Run Text="{Binding Name, Mode=OneWay}" />
             <InlineUIContainer BaselineAlignment="Center">
               <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
-                Height="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                Margin="0,0,12,0" Height="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
             </InlineUIContainer>
+            <Run Text="{Binding CardAvg, StringFormat=${0:F2}}" />
             <InlineUIContainer BaselineAlignment="Center">
-              <Rectangle Margin="12,0,0,0" Width="7" Height="7" Style="{StaticResource sceState}" />
+              <Rectangle Margin="8,0,0,0" Width="7" Height="7" Style="{StaticResource sceState}" />
             </InlineUIContainer>
             <Run Text="{Binding SceWorth, Mode=OneWay, StringFormat={}{0}c}" />
           </TextBlock.Inlines>

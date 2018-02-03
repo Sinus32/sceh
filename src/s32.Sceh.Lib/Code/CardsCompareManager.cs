@@ -122,6 +122,14 @@ namespace s32.Sceh.Code
                     app.SceWorth = sceData.Worth;
                 }
 
+                StAppData stData = DataManager.GetStAppData(app.Id);
+                if (stData != null)
+                {
+                    app.SetPrice = stData.SetPrice;
+                    app.BoosterAvg = stData.BoosterAvg;
+                    app.CardAvg = stData.CardAvg;
+                }
+
                 foreach (var card in app.MyCards)
                 {
                     if (card.ItemClass != ItemClass.TradingCard || card.IsFoilCard == true)

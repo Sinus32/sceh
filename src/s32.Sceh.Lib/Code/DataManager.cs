@@ -155,6 +155,14 @@ namespace s32.Sceh.Code
             return null;
         }
 
+        public static StAppData GetStAppData(long appId)
+        {
+            StAppData result;
+            if (_stData.IsLoaded && _stData.Data.TryGetValue(appId, out result))
+                return result;
+            return null;
+        }
+
         public static SteamProfile GetSteamProfile(SteamProfileKey profileKey)
         {
             if (profileKey == null)

@@ -146,7 +146,7 @@ namespace s32.Sceh.Code
                 return null;
             }
 
-            var inventoryUri = String.Concat("http://steamcommunity.com/inventory/", profile.SteamId, "/753/6?l=", language, "&count=2000");
+            var inventoryUri = String.Concat("https://steamcommunity.com/inventory/", profile.SteamId, "/753/6?l=", language, "&count=2000");
             var referer = GetProfileUri(profile, SteamUrlPattern.Inventory, preferCustomUrl: true).ToString();
 
             string rawJson;
@@ -230,7 +230,7 @@ namespace s32.Sceh.Code
 
         public static SteamProfileResp GetProfile(Uri profileUri, out GetProfileError error)
         {
-            const string referer = "http://steamcommunity.com/";
+            const string referer = "https://steamcommunity.com/";
             string rawXml;
             HttpStatusCode statusCode;
             using (var response = DoRequest(() => PrepareRequest(profileUri, HttpMethod.Get, "text/xml", referer), out statusCode))
@@ -378,13 +378,13 @@ namespace s32.Sceh.Code
 
         private static HttpWebResponse DoRequest(Func<HttpWebRequest> makeRequestFunc, out HttpStatusCode statusCode)
         {
-            var delay = 1;
+            var delayMs = 300;
             CommunicationState.Instance.IsInProgress = true;
             try
             {
                 while (true)
                 {
-                    CommunicationState.Instance.IsRepeating = delay > 1;
+                    CommunicationState.Instance.IsRepeating = delayMs > 300;
                     var now = DateTime.Now;
                     if (_nextCall > now)
                     {
@@ -409,10 +409,10 @@ namespace s32.Sceh.Code
                                 statusCode = response.StatusCode;
                                 if (response.StatusCode == (HttpStatusCode)429)
                                 {
-                                    if (delay < 5)
-                                        delay = 5;
-                                    else if (delay < 10)
-                                        delay += 1;
+                                    if (delayMs < 3000)
+                                        delayMs = 3000;
+                                    else if (delayMs < 7000)
+                                        delayMs += 500;
                                     else
                                         throw;
                                     response.Close();
@@ -427,10 +427,10 @@ namespace s32.Sceh.Code
                         }
                         else if (ex.Status == WebExceptionStatus.Timeout)
                         {
-                            if (delay < 7)
-                                delay = 7;
-                            else if (delay < 15)
-                                delay += 2;
+                            if (delayMs < 5000)
+                                delayMs = 5000;
+                            else if (delayMs < 9000)
+                                delayMs += 500;
                             else
                                 throw;
                             continue;
@@ -439,7 +439,7 @@ namespace s32.Sceh.Code
                     }
                     finally
                     {
-                        _nextCall = DateTime.Now.AddSeconds(delay);
+                        _nextCall = DateTime.Now.AddMilliseconds(delayMs);
                     }
                 }
             }

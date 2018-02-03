@@ -120,9 +120,6 @@
   <data name="AlertOnOffToolTip" xml:space="preserve">
     <value>Kiedy jest [c=Maroon]czerwony[/c] wskazuje że realizacja żądania do SteamAPI się przedłuża.</value>
   </data>
-  <data name="AppCardsSummary" xml:space="preserve">
-    <value>{0} kart, {1} z {2} w zestawie</value>
-  </data>
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>Loguj _automatycznie</value>
   </data>
@@ -168,6 +165,9 @@
   <data name="NotesPreviewLabel" xml:space="preserve">
     <value>Podgląd</value>
   </data>
+  <data name="AppCardsSummary" xml:space="preserve">
+    <value>{0} kart, {1} z {2} w zestawie</value>
+  </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować twoich kart: {0}</value>
   </data>
@@ -183,8 +183,14 @@
   <data name="RequestCountToolTip" xml:space="preserve">
     <value>Licznik zapytań do SteamAPI[br]Jest [c=ForestGreen]zielony[/c] gdy zapytanie jest w toku,[br]lub [c=Maroon]czerwony[/c] gdy realizacja żądania się przedłuża.</value>
   </data>
+  <data name="SceErrorTitle" xml:space="preserve">
+    <value>Nie można pobrać danych z Steam Card Exchange</value>
+  </data>
   <data name="SecondInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować kart użytkownika {0}: {1}</value>
+  </data>
+  <data name="StErrorTitle" xml:space="preserve">
+    <value>Nie można pobrać danych z Steam Tools</value>
   </data>
   <data name="StrangeTradeUrl" xml:space="preserve">
     <value>Wprowadzony adres URL wymiany nie pasuje do wzorca. Czy na pewno chcesz go użyć?</value>

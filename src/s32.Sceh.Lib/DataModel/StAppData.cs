@@ -10,7 +10,13 @@ namespace s32.Sceh.DataModel
     {
         private long _id;
         private string _name;
-        private double _setPrice, _cardAvg;
+        private double _setPrice, _cardAvg, _boosterAvg;
+
+        public double BoosterAvg
+        {
+            get { return _boosterAvg; }
+            set { _boosterAvg = value; }
+        }
 
         public double CardAvg
         {

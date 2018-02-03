@@ -190,7 +190,7 @@ namespace s32.Sceh.WinApp
 
         private void CardButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            const string PATTERN = "http://steamcommunity.com/market/listings/{0}/{1}";
+            const string PATTERN = "https://steamcommunity.com/market/listings/{0}/{1}";
             var card = ((FrameworkElement)sender).DataContext as Card;
             if (card != null)
             {
