@@ -20,6 +20,7 @@ namespace s32.Sceh.Code
         private static ScehData _currentData;
         private static Dictionary<string, ImageFile> _imageUrlLookup;
         private static SceInventoryData _sceData;
+        private static StInventoryData _stData;
 
         public static bool AutoLogIn
         {
@@ -66,6 +67,11 @@ namespace s32.Sceh.Code
         public static SceInventoryData SceData
         {
             get { return _sceData; }
+        }
+
+        public static StInventoryData StData
+        {
+            get { return _stData; }
         }
 
         public static SteamProfile AddOrUpdateSteamProfile(SteamProfile profile)
@@ -203,6 +209,7 @@ namespace s32.Sceh.Code
                 throw new InvalidOperationException("Data manager is already initialized");
 
             _sceData = new SceInventoryData();
+            _stData = new StInventoryData();
 
             _currentData = new ScehData();
             _currentData.Profiles = new ProfilesData();

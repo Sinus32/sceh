@@ -66,6 +66,7 @@
     <Compile Include="Code\FilenameGenerator.cs" />
     <Compile Include="Code\ImageDownloader.cs" />
     <Compile Include="Code\FileType.cs" />
+    <Compile Include="Code\StInventoryData.cs" />
     <Compile Include="Code\SteamUrlPattern.cs" />
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
@@ -75,6 +76,7 @@
     <Compile Include="DataModel\SceAppData.cs" />
     <Compile Include="Code\SceInventoryData.cs" />
     <Compile Include="DataModel\SceAppState.cs" />
+    <Compile Include="DataModel\StAppData.cs" />
     <Compile Include="DataModel\UserNote.cs" />
     <Compile Include="DataModel\ProfilesData.cs" />
     <Compile Include="DataModel\SteamApp.cs">

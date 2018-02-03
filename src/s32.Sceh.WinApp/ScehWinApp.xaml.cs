@@ -64,6 +64,7 @@ namespace s32.Sceh.WinApp
             _autoSaveTimer.Start();
 
             ThreadPool.QueueUserWorkItem(LoadSceData);
+            ThreadPool.QueueUserWorkItem(LoadStData);
 
             bool openLoginWindow = true;
             if (DataManager.AutoLogIn)
@@ -93,6 +94,11 @@ namespace s32.Sceh.WinApp
         private void LoadSceData(object state)
         {
             DataManager.SceData.LoadSceData();
+        }
+
+        private void LoadStData(object state)
+        {
+            //DataManager.StData.LoadStData();
         }
     }
 }

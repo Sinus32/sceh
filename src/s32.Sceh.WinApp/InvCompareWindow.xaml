@@ -318,6 +318,11 @@
           <Image Source="{StaticResource gameMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
+      <MenuItem Header="{x:Static resx:MenuItems.MarketPage}" Command="ctl:ScehCommands.OpenMarketPage" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource marketMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
       <MenuItem Header="{x:Static resx:MenuItems.CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
         <MenuItem.Icon>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
