@@ -120,6 +120,9 @@
   <data name="AlertOnOffToolTip" xml:space="preserve">
     <value>Kiedy jest [c=Maroon]czerwony[/c] wskazuje że realizacja żądania do SteamAPI się przedłuża.</value>
   </data>
+  <data name="AppCardsSummary" xml:space="preserve">
+    <value>{0} kart, {1} z {2} w zestawie</value>
+  </data>
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>Loguj _automatycznie</value>
   </data>
@@ -164,9 +167,6 @@
   </data>
   <data name="NotesPreviewLabel" xml:space="preserve">
     <value>Podgląd</value>
-  </data>
-  <data name="AppCardsSummary" xml:space="preserve">
-    <value>{0} kart, {1} z {2} w zestawie</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Nie można załadować twoich kart: {0}</value>

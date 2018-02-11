@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "s32.Sceh", "s32.Sceh\s32.Sceh.csproj", "{E97499F3-F86D-4214-BAAC-5A1CA0550A3F}"
 EndProject
@@ -32,7 +32,8 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		RESX_AutoCreateNewLanguageFiles = True
 		RESX_SortFileContentOnSave = True
+		RESX_AutoCreateNewLanguageFiles = True
+		SolutionGuid = {3FBCF0CD-5E53-432A-BF16-AD184E0598C2}
 	EndGlobalSection
 EndGlobal

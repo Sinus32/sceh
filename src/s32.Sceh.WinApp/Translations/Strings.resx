@@ -120,6 +120,9 @@
   <data name="AlertOnOffToolTip" xml:space="preserve">
     <value>When [c=Maroon]red[/c] indicates that a SteamAPI request is delayed.</value>
   </data>
+  <data name="AppCardsSummary" xml:space="preserve">
+    <value>{0} cards, {1} of {2} in set</value>
+  </data>
   <data name="AutoLoginCheckBoxText" xml:space="preserve">
     <value>_Auto login</value>
   </data>
@@ -164,9 +167,6 @@
   </data>
   <data name="NotesPreviewLabel" xml:space="preserve">
     <value>Preview</value>
-  </data>
-  <data name="AppCardsSummary" xml:space="preserve">
-    <value>{0} cards, {1} of {2} in set</value>
   </data>
   <data name="OwnerInvErrorMessage" xml:space="preserve">
     <value>Cannot load your cards: {0}</value>

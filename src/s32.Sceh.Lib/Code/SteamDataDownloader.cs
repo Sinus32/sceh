@@ -33,106 +33,13 @@ namespace s32.Sceh.Code
             WrongProfile,
             DeserializationError
         }
-
-        //[Obsolete]
-        //public static List<Card> GetCardsA(SteamProfileKey profile, out string errorMessage)
-        //{
-        //    var inventoryUri = GetProfileUri(profile, SteamUrlPattern.ApiGetInventoryA);
-        //    if (inventoryUri == null)
-        //    {
-        //        errorMessage = "Invalid profile data";
-        //        return null;
-        //    }
-        //    string rawJson;
-        //    HttpStatusCode statusCode;
-        //    using (var response = DoRequest(() => PrepareRequest(inventoryUri, "application/json"), out statusCode))
-        //    {
-        //        if (response == null)
-        //        {
-        //            errorMessage = String.Format("Http error: {0} ({1})", (int)statusCode, statusCode);
-        //            return null;
-        //        }
-
-        //        if (!response.ContentType.StartsWith("application/json"))
-        //        {
-        //            errorMessage = "Wrong profile";
-        //            return null;
-        //        }
-
-        //        using (var reader = new StreamReader(response.GetResponseStream()))
-        //        {
-        //            rawJson = reader.ReadToEnd();
-        //        }
-        //    }
-
-        //    var jss = new JsonSerializerSettings();
-        //    jss.MissingMemberHandling = MissingMemberHandling.Ignore;
-        //    jss.NullValueHandling = NullValueHandling.Include;
-        //    jss.ObjectCreationHandling = ObjectCreationHandling.Replace;
-        //    var ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
-
-        //    if (!ret.Success)
-        //    {
-        //        errorMessage = ret.Error ?? "Wrong query";
-        //        return null;
-        //    }
-
-        //    var result = new List<Card>();
-
-        //    Load(profile, result, ret);
-
-        //    while (ret.More)
-        //    {
-        //        var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "?start=", ret.MoreStart));
-
-        //        using (var response = DoRequest(() => PrepareRequest(nextUri, "application/json"), out statusCode))
-        //        {
-        //            if (response == null)
-        //            {
-        //                errorMessage = String.Format("Http error: {0} ({1})", (int)statusCode, statusCode);
-        //                return null;
-        //            }
-
-        //            if (!response.ContentType.StartsWith("application/json"))
-        //            {
-        //                errorMessage = "Wrong profile";
-        //                return null;
-        //            }
-
-        //            using (var reader = new StreamReader(response.GetResponseStream()))
-        //            {
-        //                rawJson = reader.ReadToEnd();
-        //            }
-        //        }
-
-        //        ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
-
-        //        if (!ret.Success)
-        //        {
-        //            errorMessage = ret.Error ?? "Wrong query";
-        //            return null;
-        //        }
-
-        //        Load(profile, result, ret);
-        //    }
-
-        //    result.Sort(CardComparison);
-
-        //    errorMessage = null;
-        //    return result;
-        //}
-
-        public static List<Card> GetCards(SteamProfileKey profile, CultureInfo culture, out string errorMessage)
+        
+        public static List<Card> GetCards(SteamProfileKey profile, ScehSettings settings, out string errorMessage)
         {
-            if (culture == null)
-                throw new ArgumentNullException("culture");
-
-            if (String.IsNullOrEmpty(culture.Name))
-                throw new ArgumentException("The chosen culture cannot be of invariant type", "culture");
-
-            var language = culture.Parent.IsNeutralCulture ? culture.Parent.EnglishName : culture.EnglishName;
-
-            return GetCards(profile, language.ToLower(), out errorMessage);
+            if (settings == null)
+                throw new ArgumentNullException("settings");
+            
+            return GetCards(profile, settings.Language, out errorMessage);
         }
 
         public static List<Card> GetCards(SteamProfileKey profile, string language, out string errorMessage)
@@ -449,19 +356,7 @@ namespace s32.Sceh.Code
                 CommunicationState.Instance.IsRepeating = false;
             }
         }
-
-        //[Obsolete]
-        //private static void Load(SteamProfileKey owner, List<Card> result, RgInventoryResp ret)
-        //{
-        //    foreach (var dt in ret.RgInventory.Values)
-        //    {
-        //        var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
-        //        var desc = ret.RgDescriptions[key];
-        //        if (desc.Tradable)
-        //            result.Add(new Card(owner, dt, desc));
-        //    }
-        //}
-
+        
         private static void Load(SteamProfileKey owner, List<Card> result, ApiInventoryResp ret)
         {
             var dict = new Dictionary<CardEqualityKey, ApiInventoryResp.Description>();
