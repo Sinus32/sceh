@@ -49,10 +49,10 @@
         </TextBlock>
       </Image.ToolTip>
     </Image>
-    <Button Grid.Column="1" Grid.Row="1" Padding="2" ContextMenuService.IsEnabled="False"
-        HorizontalAlignment="Left" VerticalAlignment="Center" Click="OpenPageButton_Click" >
-      <Button.ContextMenu>
-        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
+    <ctl:DropDownButton Grid.Column="1" Grid.Row="1" Padding="2" ContextMenuService.IsEnabled="False"
+        HorizontalAlignment="Left" VerticalAlignment="Center">
+      <ctl:DropDownButton.Menu>
+        <ContextMenu>
           <MenuItem Header="{x:Static resx:MenuItems.SentOffers}" Command="ctl:ScehCommands.OpenSentOffers" CommandParameter="{Binding OwnerProfile}">
             <MenuItem.Icon>
               <Image Source="{StaticResource sentMenuIcon}" Width="20" Height="20" />
@@ -64,7 +64,7 @@
             </MenuItem.Icon>
           </MenuItem>
         </ContextMenu>
-      </Button.ContextMenu>
+      </ctl:DropDownButton.Menu>
       <StackPanel Orientation="Horizontal">
         <Image Source="{StaticResource tradeLinkMenuIcon}" Stretch="None" />
         <AccessText Text="{x:Static resx:Buttons.OpenPage}" Margin="12,0" MinWidth="60"
@@ -73,7 +73,7 @@
             VerticalAlignment="Center" HorizontalAlignment="Right"
             Data="F1 M 301.14,-189.041 L 311.57,-189.041 L 306.355,-182.942 L 301.14,-189.041 Z" />
       </StackPanel>
-    </Button>
+    </ctl:DropDownButton>
     <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Right">
       <Button Command="ctl:ScehCommands.Ok" Margin="12,5,0,0" Padding="2">
         <StackPanel Orientation="Horizontal">

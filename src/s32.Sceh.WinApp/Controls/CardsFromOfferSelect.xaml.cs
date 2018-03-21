@@ -87,14 +87,14 @@ namespace s32.Sceh.WinApp.Controls
             RemoveSelfFromParent();
         }
 
-        private void OpenPageButton_Click(object sender, RoutedEventArgs e)
-        {
-            var self = (Button)sender;
-            self.ContextMenu.IsEnabled = true;
-            self.ContextMenu.PlacementTarget = self;
-            self.ContextMenu.Placement = PlacementMode.Bottom;
-            self.ContextMenu.IsOpen = true;
-        }
+        //private void OpenPageButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var self = (Button)sender;
+        //    self.ContextMenu.IsEnabled = true;
+        //    self.ContextMenu.PlacementTarget = self;
+        //    self.ContextMenu.Placement = PlacementMode.Bottom;
+        //    self.ContextMenu.IsOpen = true;
+        //}
 
         #endregion Commands
     }

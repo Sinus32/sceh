@@ -76,6 +76,8 @@
     <Compile Include="Controls\CardsFromOfferSelect.xaml.cs">
       <DependentUpon>CardsFromOfferSelect.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CopyFormat.cs" />
+    <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="Controls\ImageLoader.cs" />
     <Compile Include="Controls\LazyImage.cs" />
     <Compile Include="Controls\ProfileNoteEditor.xaml.cs">

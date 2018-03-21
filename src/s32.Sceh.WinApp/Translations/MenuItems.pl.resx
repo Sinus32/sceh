@@ -144,6 +144,9 @@
   <data name="Exit" xml:space="preserve">
     <value>_Zakończ</value>
   </data>
+  <data name="FormattedText" xml:space="preserve">
+    <value>Sformatowany tekst</value>
+  </data>
   <data name="IncomingOffers" xml:space="preserve">
     <value>_Oferty przychodzące</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="OthersProfile" xml:space="preserve">
     <value>_Drugi profil</value>
+  </data>
+  <data name="PlainText" xml:space="preserve">
+    <value>Zwykły tekst</value>
   </data>
   <data name="PostHistory" xml:space="preserve">
     <value>_Historia postów</value>
