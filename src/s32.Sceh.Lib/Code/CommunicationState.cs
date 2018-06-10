@@ -22,16 +22,29 @@ namespace s32.Sceh.Code
         public int ImageRequests
         {
             get { return _imageRequests; }
-            set
+            private set
             {
-                lock (this)
+                if (_imageRequests != value)
                 {
-                    if (_imageRequests != value)
-                    {
-                        _imageRequests = value;
-                        NotifyPropertyChanged();
-                    }
+                    _imageRequests = value;
+                    NotifyPropertyChanged();
                 }
+            }
+        }
+
+        public void IncImageRequests()
+        {
+            lock (this)
+            {
+                ImageRequests = _imageRequests + 1;
+            }
+        }
+
+        public void DecImageRequests()
+        {
+            lock (this)
+            {
+                ImageRequests = _imageRequests - 1;
             }
         }
 

@@ -105,31 +105,31 @@
           <Button.CommandParameter>
             <tags:BoldTextWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource boldMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ItalicText}">
           <Button.CommandParameter>
             <tags:ItalicTextWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource italicMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.UnderlineText}">
           <Button.CommandParameter>
             <tags:UnderlineTextWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource underlineMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.StrikethroughText}">
           <Button.CommandParameter>
             <tags:StrikethroughTextWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource strikethrounghMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.TextColor}">
           <Button.CommandParameter>
             <tags:TextColorWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource colorSelectMenuIcon}" Width="20" Height="20" />
         </Button>
       </ToolBar>
     </ToolBarTray>

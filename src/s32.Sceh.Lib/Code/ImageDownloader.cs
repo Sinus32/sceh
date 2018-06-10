@@ -59,7 +59,7 @@ namespace s32.Sceh.Code
 
             try
             {
-                CommunicationState.Instance.ImageRequests += 1;
+                CommunicationState.Instance.IncImageRequests();
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     var fileType = FileType.FindByMimeType(response.ContentType);
@@ -126,7 +126,7 @@ namespace s32.Sceh.Code
             }
             finally
             {
-                CommunicationState.Instance.ImageRequests -= 1;
+                CommunicationState.Instance.DecImageRequests();
             }
         }
 
