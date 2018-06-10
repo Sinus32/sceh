@@ -52,11 +52,25 @@ namespace s32.Sceh.BBCode
             char c;
             switch (NodeType)
             {
-                case BBNodeType.Root: c = 'r'; break;
-                case BBNodeType.Text: c = 't'; break;
-                case BBNodeType.TagStart: c = 's'; break;
-                case BBNodeType.TagEnd: c = 'e'; break;
-                default: c = 'u'; break;
+                case BBNodeType.Root:
+                    c = 'r';
+                    break;
+
+                case BBNodeType.Text:
+                    c = 't';
+                    break;
+
+                case BBNodeType.TagStart:
+                    c = 's';
+                    break;
+
+                case BBNodeType.TagEnd:
+                    c = 'e';
+                    break;
+
+                default:
+                    c = 'u';
+                    break;
             }
             return String.Concat(c, '{', GetText(), '}');
         }

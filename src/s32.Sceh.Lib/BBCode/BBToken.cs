@@ -23,14 +23,37 @@ namespace s32.Sceh.BBCode
             char c;
             switch (TokenType)
             {
-                case BBTokenType.Text: c = 't'; break;
-                case BBTokenType.BeginTag: c = 'b'; break;
-                case BBTokenType.EndTag: c = 'e'; break;
-                case BBTokenType.TagClose: c = 'c'; break;
-                case BBTokenType.TagName: c = 'n'; break;
-                case BBTokenType.Separator: c = 's'; break;
-                case BBTokenType.TagParam: c = 'p'; break;
-                default: c = 'u'; break;
+                case BBTokenType.Text:
+                    c = 't';
+                    break;
+
+                case BBTokenType.BeginTag:
+                    c = 'b';
+                    break;
+
+                case BBTokenType.EndTag:
+                    c = 'e';
+                    break;
+
+                case BBTokenType.TagClose:
+                    c = 'c';
+                    break;
+
+                case BBTokenType.TagName:
+                    c = 'n';
+                    break;
+
+                case BBTokenType.Separator:
+                    c = 's';
+                    break;
+
+                case BBTokenType.TagParam:
+                    c = 'p';
+                    break;
+
+                default:
+                    c = 'u';
+                    break;
             }
             return String.Concat(c, '{', Content, '}');
         }

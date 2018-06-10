@@ -33,12 +33,12 @@ namespace s32.Sceh.Code
             WrongProfile,
             DeserializationError
         }
-        
+
         public static List<Card> GetCards(SteamProfileKey profile, ScehSettings settings, out string errorMessage)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
-            
+
             return GetCards(profile, settings.Language, out errorMessage);
         }
 
@@ -249,14 +249,27 @@ namespace s32.Sceh.Code
             request.Referer = referer;
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) Gecko/20100101";
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.KeepAlive = true;
+            request.UnsafeAuthenticatedConnectionSharing = true;
 
             var lang = CultureInfo.CurrentCulture.Name ?? String.Empty;
             switch (lang)
             {
-                case "": lang = "en-US,en;q=0.3"; break;
-                case "en-US": lang += ",en;q=0.3"; break;
-                case "en": lang += ",en-US;q=0.7"; break;
-                default: lang += ",en-US;q=0.7,en;q=0.3"; break;
+                case "":
+                    lang = "en-US,en;q=0.3";
+                    break;
+
+                case "en-US":
+                    lang += ",en;q=0.3";
+                    break;
+
+                case "en":
+                    lang += ",en-US;q=0.7";
+                    break;
+
+                default:
+                    lang += ",en-US;q=0.7,en;q=0.3";
+                    break;
             }
             request.Headers.Add(HttpRequestHeader.AcceptLanguage, lang);
 
@@ -356,7 +369,7 @@ namespace s32.Sceh.Code
                 CommunicationState.Instance.IsRepeating = false;
             }
         }
-        
+
         private static void Load(SteamProfileKey owner, List<Card> result, ApiInventoryResp ret)
         {
             var dict = new Dictionary<CardEqualityKey, ApiInventoryResp.Description>();

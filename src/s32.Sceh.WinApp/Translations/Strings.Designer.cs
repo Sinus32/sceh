@@ -133,7 +133,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images downloading: {0}/{1}/{2}.
+        ///   Looks up a localized string similar to Images downloading: {0}/{1}/{2}/{3}.
         /// </summary>
         public static string ImagesToDownloadFormat {
             get {

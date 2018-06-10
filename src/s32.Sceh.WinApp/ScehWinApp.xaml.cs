@@ -57,13 +57,12 @@ namespace s32.Sceh.WinApp
             SetCulture();
 
             DataManager.Initialize();
-            _imageDownloaderWorker = new ImageDownloader.Worker[3];
-            _imageDownloaderWorker[0] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
-            _imageDownloaderWorker[0].Start();
-            _imageDownloaderWorker[1] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
-            _imageDownloaderWorker[1].Start();
-            _imageDownloaderWorker[2] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
-            _imageDownloaderWorker[2].Start();
+            _imageDownloaderWorker = new ImageDownloader.Worker[30];
+            for (int i = 0; i < _imageDownloaderWorker.Length; ++i)
+            {
+                _imageDownloaderWorker[i] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
+                _imageDownloaderWorker[i].Start();
+            }
             _autoSaveTimer = new DispatcherTimer();
             _autoSaveTimer.Interval = new TimeSpan(0, 1, 0);
             _autoSaveTimer.Tick += AutoSaveTimer_Tick;

@@ -142,7 +142,7 @@
     <value>Images in queue to download:</value>
   </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
-    <value>Images downloading: {0}/{1}/{2}</value>
+    <value>Images downloading: {0}/{1}/{2}/{3}</value>
   </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
     <value>Invalid id or own profile url</value>

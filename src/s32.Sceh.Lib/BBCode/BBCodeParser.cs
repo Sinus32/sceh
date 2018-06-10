@@ -17,9 +17,17 @@ namespace s32.Sceh.BBCode
             {
                 switch (token.TokenType)
                 {
-                    case BBTokenType.Text: PrepareNode(result, ref current, true, BBNodeType.Text); break;
-                    case BBTokenType.BeginTag: PrepareNode(result, ref current, false, BBNodeType.TagStart); break;
-                    case BBTokenType.EndTag: PrepareNode(result, ref current, false, BBNodeType.TagEnd); break;
+                    case BBTokenType.Text:
+                        PrepareNode(result, ref current, true, BBNodeType.Text);
+                        break;
+
+                    case BBTokenType.BeginTag:
+                        PrepareNode(result, ref current, false, BBNodeType.TagStart);
+                        break;
+
+                    case BBTokenType.EndTag:
+                        PrepareNode(result, ref current, false, BBNodeType.TagEnd);
+                        break;
                 }
                 current.AddToken(token);
             }
@@ -92,9 +100,17 @@ namespace s32.Sceh.BBCode
 
             switch (nodeType)
             {
-                case BBNodeType.Text: current = new BBTextNode(); break;
-                case BBNodeType.TagStart: current = new BBTagStartNode(); break;
-                case BBNodeType.TagEnd: current = new BBTagEndNode(); break;
+                case BBNodeType.Text:
+                    current = new BBTextNode();
+                    break;
+
+                case BBNodeType.TagStart:
+                    current = new BBTagStartNode();
+                    break;
+
+                case BBNodeType.TagEnd:
+                    current = new BBTagEndNode();
+                    break;
             }
 
             result.Content.Add(current);

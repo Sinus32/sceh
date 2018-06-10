@@ -111,7 +111,7 @@
       <Setter Property="ItemContainerStyle">
         <Setter.Value>
           <Style TargetType="{x:Type ComboBoxItem}">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
           </Style>
         </Setter.Value>
       </Setter>
@@ -124,7 +124,7 @@
       <Setter Property="ItemTemplate">
         <Setter.Value>
           <DataTemplate DataType="{x:Type dm:SteamProfile}">
-            <Grid HorizontalAlignment="Stretch" Margin="0,1,0,1" >
+            <Grid HorizontalAlignment="Stretch" Margin="0,1,0,1">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />

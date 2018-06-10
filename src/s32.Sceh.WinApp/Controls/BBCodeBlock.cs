@@ -173,7 +173,6 @@ namespace s32.Sceh.WinApp.Controls
 
         private void Copy_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            //e.CanExecute = !String.IsNullOrEmpty(BBCodeText);
             e.CanExecute = Inlines.Count > 0;
         }
 

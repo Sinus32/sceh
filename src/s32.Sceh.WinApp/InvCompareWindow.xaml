@@ -88,7 +88,7 @@
       <GradientStop Color="{StaticResource cardIsDuplicatedColor}" Offset="0.7" />
       <GradientStop Color="{StaticResource cardIsSelectedColor}" Offset="0.9" />
     </LinearGradientBrush>
-    <Style x:Key="steamAppHeaderStyle" TargetType="Rectangle">
+    <Style x:Key="steamAppHeaderStyle" TargetType="{x:Type Rectangle}">
       <Setter Property="Fill" Value="{StaticResource steamAppNormalBrush}" />
       <Style.Triggers>
         <MultiDataTrigger>
@@ -120,7 +120,7 @@
         </MultiDataTrigger>
       </Style.Triggers>
     </Style>
-    <Style x:Key="cardBorderStyle" TargetType="Border">
+    <Style x:Key="cardBorderStyle" TargetType="{x:Type Border}">
       <Setter Property="BorderBrush" Value="{StaticResource cardNormalBrush}" />
       <Setter Property="BorderThickness" Value="6,0,0,0" />
       <Setter Property="CornerRadius" Value="2" />
@@ -206,7 +206,7 @@
         </Style>
       </Style.Resources>
     </Style>
-    <Style x:Key="cardAlternateText" TargetType="TextBlock">
+    <Style x:Key="cardAlternateText" TargetType="{x:Type TextBlock}">
       <Setter Property="Visibility" Value="Collapsed" />
       <Style.Triggers>
         <DataTrigger Binding="{Binding DelayedLocalFilePath, ElementName=CardImage}" Value="{x:Null}">
@@ -214,7 +214,7 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
-    <Style x:Key="myCardsColumn" TargetType="ColumnDefinition">
+    <Style x:Key="myCardsColumn" TargetType="{x:Type ColumnDefinition}">
       <Setter Property="Width" Value="1*" />
       <Style.Triggers>
         <DataTrigger Binding="{Binding DataContext.CompareWithSelf, ElementName=mainGrid}" Value="True">
@@ -222,7 +222,7 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
-    <Style x:Key="myCardsSummary" TargetType="TextBlock">
+    <Style x:Key="myCardsSummary" TargetType="{x:Type TextBlock}">
       <Setter Property="Foreground" Value="Black" />
       <Style.Triggers>
         <DataTrigger Binding="{Binding MyIsSelected}" Value="True">
@@ -243,7 +243,7 @@
         </MultiDataTrigger>
       </Style.Triggers>
     </Style>
-    <Style x:Key="otherCardsSummary" TargetType="TextBlock">
+    <Style x:Key="otherCardsSummary" TargetType="{x:Type TextBlock}">
       <Setter Property="Foreground" Value="Black" />
       <Style.Triggers>
         <DataTrigger Binding="{Binding OtherIsSelected}" Value="True">
@@ -267,7 +267,7 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
-    <Style x:Key="sceState" TargetType="Rectangle">
+    <Style x:Key="sceState" TargetType="{x:Type Rectangle}">
       <Setter Property="Fill" Value="Black" />
       <Style.Triggers>
         <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.Disabled}">
@@ -374,7 +374,7 @@
       </MenuItem>
     </ContextMenu>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
-      <ToggleButton Margin="1" IsChecked="{Binding IsSelected}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick"
+      <ToggleButton IsChecked="{Binding IsSelected}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick"
           ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
         <ToggleButton.ToolTip>
           <TextBlock>
@@ -452,6 +452,20 @@
               <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemContainerStyle>
+            <Style TargetType="{x:Type ContentPresenter}">
+              <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Panel.ZIndex" Value="99" />
+                </Trigger>
+              </Style.Triggers>
+              <Style.Resources>
+                <Style TargetType="{x:Type ToggleButton}">
+                  <Setter Property="Margin" Value="1,1,-30,1" />
+                </Style>
+              </Style.Resources>
+            </Style>
+          </ItemsControl.ItemContainerStyle>
         </ItemsControl>
         <ItemsControl Grid.Row="1" Grid.Column="1"
             ItemsSource="{Binding Source={StaticResource otherCardsView}}"
@@ -461,6 +475,20 @@
               <WrapPanel Orientation="Horizontal" HorizontalAlignment="Right" />
             </ItemsPanelTemplate>
           </ItemsControl.ItemsPanel>
+          <ItemsControl.ItemContainerStyle>
+            <Style TargetType="{x:Type ContentPresenter}">
+              <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                  <Setter Property="Panel.ZIndex" Value="99" />
+                </Trigger>
+              </Style.Triggers>
+              <Style.Resources>
+                <Style TargetType="{x:Type ToggleButton}">
+                  <Setter Property="Margin" Value="-30,1,1,1" />
+                </Style>
+              </Style.Resources>
+            </Style>
+          </ItemsControl.ItemContainerStyle>
         </ItemsControl>
       </Grid>
     </DataTemplate>
@@ -480,7 +508,7 @@
       <RowDefinition Height="Auto" />
     </Grid.RowDefinitions>
     <Menu Grid.Row="0" Grid.ColumnSpan="3">
-      <MenuItem Header="{x:Static resx:MenuItems.MyProfile}" >
+      <MenuItem Header="{x:Static resx:MenuItems.MyProfile}">
         <MenuItem Header="{x:Static resx:MenuItems.Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding OwnerProfile}">
           <MenuItem.Icon>
             <Image Source="{StaticResource profileMenuIcon}" Width="20" Height="20" />
@@ -764,6 +792,7 @@
           <TextBlock.Text>
             <MultiBinding StringFormat="{x:Static resx:Strings.ImagesToDownloadFormat}">
               <Binding Path="ImagesToDownload" />
+              <Binding Path="ImageRequests" />
               <Binding Path="ImagesNotModified" />
               <Binding Path="ImagesDownloaded" />
             </MultiBinding>

@@ -142,7 +142,7 @@
     <value>Obrazy w kolejce do pobrania:</value>
   </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
-    <value>Pobieranie obrazów: {0}/{1}/{2}</value>
+    <value>Pobieranie obrazów: {0}/{1}/{2}/{3}</value>
   </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
     <value>Błędny identyfikator lub własny url profilu</value>

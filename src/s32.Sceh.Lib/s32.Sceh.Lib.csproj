@@ -90,6 +90,8 @@
     <Compile Include="DataModel\SteamProfile.cs" />
     <Compile Include="DataModel\SteamProfileKey.cs" />
     <Compile Include="DataModel\UserNotes.cs" />
+    <Compile Include="Jobs\StatefulJob.cs" />
+    <Compile Include="Jobs\JobManager.cs" />
     <Compile Include="LegacyClasses\Inventory.cs" />
     <Compile Include="LegacyClasses\SteamUser.cs" />
     <Compile Include="LegacyClasses\TradeSuggestions.cs" />

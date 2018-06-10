@@ -110,7 +110,7 @@ namespace s32.Sceh.Code
                 card.IsSelected = false;
                 card.OtherHaveIt = mySet.Contains(card);
             }
-            
+
             foreach (var app in _steamApps)
             {
                 SceAppData sceData = DataManager.GetSceAppData(app.Id);
