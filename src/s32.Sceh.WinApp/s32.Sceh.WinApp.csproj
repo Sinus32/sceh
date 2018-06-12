@@ -69,6 +69,7 @@
     <Compile Include="BBCodeWriters\SelectedCardsWriter.cs" />
     <Compile Include="BBCodeWriters\TextColorWriter.cs" />
     <Compile Include="BBCodeWriters\TextFormatWriter.cs" />
+    <Compile Include="Code\BrushName.cs" />
     <Compile Include="Code\ImageLoadNotifier.cs" />
     <Compile Include="Code\ProfileHelper.cs" />
     <Compile Include="Controls\BBCodeBlock.cs" />
@@ -80,6 +81,7 @@
     <Compile Include="Controls\DropDownButton.cs" />
     <Compile Include="Controls\ImageLoader.cs" />
     <Compile Include="Controls\LazyImage.cs" />
+    <Compile Include="Controls\PopupButton.cs" />
     <Compile Include="Controls\ProfileNoteEditor.xaml.cs">
       <DependentUpon>ProfileNoteEditor.xaml</DependentUpon>
     </Compile>

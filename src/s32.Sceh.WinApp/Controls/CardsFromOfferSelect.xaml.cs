@@ -26,6 +26,8 @@ namespace s32.Sceh.WinApp.Controls
         public CardsFromOfferSelect()
         {
             InitializeComponent();
+
+            DataContext = this;
         }
 
         public List<SteamApp> SteamApps { get; internal set; }

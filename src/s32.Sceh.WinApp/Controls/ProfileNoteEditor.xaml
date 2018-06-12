@@ -63,6 +63,9 @@
         </Style>
       </ToolBarTray.Resources>
       <ToolBar ToolBarTray.IsLocked="True">
+        <ToolBar.Resources>
+          <Style TargetType="{x:Type ctl:PopupButton}" BasedOn="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" />
+        </ToolBar.Resources>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ScoreUp}">
           <Button.CommandParameter>
             <tags:ScoreUpDownWriter Score="+1" />
@@ -125,12 +128,44 @@
           </Button.CommandParameter>
           <Image Source="{StaticResource strikethrounghMenuIcon}" Width="20" Height="20" />
         </Button>
-        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.TextColor}">
-          <Button.CommandParameter>
-            <tags:TextColorWriter />
-          </Button.CommandParameter>
+        <ctl:PopupButton ToolTip="{x:Static resx:Buttons.TextColor}">
           <Image Source="{StaticResource colorSelectMenuIcon}" Width="20" Height="20" />
-        </Button>
+          <ctl:PopupButton.Popup>
+            <Popup AllowsTransparency="True" Placement="Bottom">
+              <ItemsControl ItemsSource="{Binding ColorList}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <UniformGrid Columns="7" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                  <Style>
+                    <Style.Resources>
+                      <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Width" Value="36" />
+                        <Setter Property="Height" Value="21" />
+                      </Style>
+                    </Style.Resources>
+                  </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Button Command="ctl:ScehCommands.PasteTag" CommandParameter="{Binding}"
+                      CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                      Click="ColorSelectButton_Click">
+                      <!--<TextBlock Background="{Binding Value, Mode=OneTime}">
+                          <Run Text="{Binding OrderPosition, Mode=OneTime, StringFormat={}{0:X8}}" />
+                          <LineBreak />
+                          <Run Text="{Binding Name, Mode=OneTime}" />
+                      </TextBlock>-->
+                      <Rectangle Fill="{Binding BrushName.Value, Mode=OneWay}" />
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </Popup>
+          </ctl:PopupButton.Popup>
+        </ctl:PopupButton>
       </ToolBar>
     </ToolBarTray>
     <TextBox Name="tbEditor" Grid.Row="5" Grid.Column="1"

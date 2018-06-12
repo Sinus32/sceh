@@ -65,13 +65,16 @@ namespace s32.Sceh.WinApp.BBCodeWriters
 
         private void BuildCardsTags(StringBuilder sb, List<SteamApp> steamApps, Func<SteamApp, bool> getIsSelected, Func<SteamApp, IEnumerable<Card>> getCards)
         {
+            var flag = false;
             foreach (var app in steamApps)
             {
                 if (!getIsSelected(app))
                     continue;
 
-                if (sb.Length > 0)
+                if (flag)
                     sb.Append("; ");
+                else
+                    flag = true;
                 sb.Append(new SteamAppTag(app));
 
                 int i = -1;
