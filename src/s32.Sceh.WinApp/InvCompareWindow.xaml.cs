@@ -190,7 +190,7 @@ namespace s32.Sceh.WinApp
 
         private void CardButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            const string PATTERN = "http://steamcommunity.com/market/listings/{0}/{1}";
+            const string PATTERN = "https://steamcommunity.com/market/listings/{0}/{1}";
             var card = ((FrameworkElement)sender).DataContext as Card;
             if (card != null)
             {
@@ -391,17 +391,23 @@ namespace s32.Sceh.WinApp
 
         private void OpenMarketPage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = e.Parameter is Card;
+            e.CanExecute = e.Parameter is SteamApp || e.Parameter is Card;
         }
 
         private void OpenMarketPage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            const string PATTERN = "http://steamcommunity.com/market/listings/{0}/{1}";
+            const string PATTERN_STEAM_APP = "https://steamcommunity.com/market/search?appid=753&category_753_Game%5B%5D=tag_app_{0}&category_753_cardborder%5B%5D=tag_cardborder_0&category_753_item_class%5B%5D=tag_item_class_2";
+            const string PATTERN_CARD = "https://steamcommunity.com/market/listings/{0}/{1}";
             string url = null;
-            if (e.Parameter is Card)
+            if (e.Parameter is SteamApp)
+            {
+                var steamApp = (SteamApp)e.Parameter;
+                url = String.Format(PATTERN_STEAM_APP, steamApp.Id);
+            }
+            else if (e.Parameter is Card)
             {
                 var card = (Card)e.Parameter;
-                url = String.Format(PATTERN, card.AppId, card.MarketHashName);
+                url = String.Format(PATTERN_CARD, card.AppId, card.MarketHashName);
             }
 
             if (url != null)
@@ -491,7 +497,7 @@ namespace s32.Sceh.WinApp
 
         private void OpenStorePage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            const string PATTERN = "http://store.steampowered.com/app/{0}/";
+            const string PATTERN = "https://store.steampowered.com/app/{0}/";
             string url = null;
             if (e.Parameter is SteamApp)
             {
@@ -529,7 +535,7 @@ namespace s32.Sceh.WinApp
 
         private void OpenTradingForum_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            const string PATTERN = "http://steamcommunity.com/app/{0}/tradingforum/";
+            const string PATTERN = "https://steamcommunity.com/app/{0}/tradingforum/";
             string url = null;
             if (e.Parameter is SteamApp)
             {

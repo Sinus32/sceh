@@ -22,13 +22,33 @@ namespace s32.Sceh.BBCode
         {
             switch (_state)
             {
-                case TEXT: FinishToken(BBTokenType.Text); break;
-                case TAG_START: FinishToken(BBTokenType.BeginTag); break;
-                case TAG_END: FinishToken(BBTokenType.EndTag); break;
-                case TAG_NAME: FinishToken(BBTokenType.TagName); break;
-                case TAG_SEPARATOR: FinishToken(BBTokenType.Separator); break;
-                case TAG_PARAM: FinishToken(BBTokenType.TagParam); break;
-                case TAG_CLOSE: FinishToken(BBTokenType.TagClose); break;
+                case TEXT:
+                    FinishToken(BBTokenType.Text);
+                    break;
+
+                case TAG_START:
+                    FinishToken(BBTokenType.BeginTag);
+                    break;
+
+                case TAG_END:
+                    FinishToken(BBTokenType.EndTag);
+                    break;
+
+                case TAG_NAME:
+                    FinishToken(BBTokenType.TagName);
+                    break;
+
+                case TAG_SEPARATOR:
+                    FinishToken(BBTokenType.Separator);
+                    break;
+
+                case TAG_PARAM:
+                    FinishToken(BBTokenType.TagParam);
+                    break;
+
+                case TAG_CLOSE:
+                    FinishToken(BBTokenType.TagClose);
+                    break;
             }
             return _result;
         }
@@ -90,10 +110,20 @@ namespace s32.Sceh.BBCode
                         FinishToken(BBTokenType.BeginTag);
                         switch (c)
                         {
-                            case '[': break;
-                            case '=': _state = TAG_SEPARATOR; break;
-                            case ']': _state = TAG_CLOSE; break;
-                            default: _state = TAG_NAME; break;
+                            case '[':
+                                break;
+
+                            case '=':
+                                _state = TAG_SEPARATOR;
+                                break;
+
+                            case ']':
+                                _state = TAG_CLOSE;
+                                break;
+
+                            default:
+                                _state = TAG_NAME;
+                                break;
                         }
                     }
                     break;
@@ -102,19 +132,41 @@ namespace s32.Sceh.BBCode
                     FinishToken(BBTokenType.EndTag);
                     switch (c)
                     {
-                        case '[': _state = TAG_START; break;
-                        case '=': _state = TAG_SEPARATOR; break;
-                        case ']': _state = TAG_CLOSE; break;
-                        default: _state = TAG_NAME; break;
+                        case '[':
+                            _state = TAG_START;
+                            break;
+
+                        case '=':
+                            _state = TAG_SEPARATOR;
+                            break;
+
+                        case ']':
+                            _state = TAG_CLOSE;
+                            break;
+
+                        default:
+                            _state = TAG_NAME;
+                            break;
                     }
                     break;
 
                 case TAG_NAME:
                     switch (c)
                     {
-                        case '[': FinishToken(BBTokenType.TagName); _state = TAG_START; break;
-                        case '=': FinishToken(BBTokenType.TagName); _state = TAG_SEPARATOR; break;
-                        case ']': FinishToken(BBTokenType.TagName); _state = TAG_CLOSE; break;
+                        case '[':
+                            FinishToken(BBTokenType.TagName);
+                            _state = TAG_START;
+                            break;
+
+                        case '=':
+                            FinishToken(BBTokenType.TagName);
+                            _state = TAG_SEPARATOR;
+                            break;
+
+                        case ']':
+                            FinishToken(BBTokenType.TagName);
+                            _state = TAG_CLOSE;
+                            break;
                     }
                     break;
 
@@ -122,17 +174,32 @@ namespace s32.Sceh.BBCode
                     FinishToken(BBTokenType.Separator);
                     switch (c)
                     {
-                        case '[': _state = TAG_START; break;
-                        case ']': _state = TAG_CLOSE; break;
-                        default: _state = TAG_PARAM; break;
+                        case '[':
+                            _state = TAG_START;
+                            break;
+
+                        case ']':
+                            _state = TAG_CLOSE;
+                            break;
+
+                        default:
+                            _state = TAG_PARAM;
+                            break;
                     }
                     break;
 
                 case TAG_PARAM:
                     switch (c)
                     {
-                        case '[': FinishToken(BBTokenType.TagParam); _state = TAG_START; break;
-                        case ']': FinishToken(BBTokenType.TagParam); _state = TAG_CLOSE; break;
+                        case '[':
+                            FinishToken(BBTokenType.TagParam);
+                            _state = TAG_START;
+                            break;
+
+                        case ']':
+                            FinishToken(BBTokenType.TagParam);
+                            _state = TAG_CLOSE;
+                            break;
                     }
                     break;
 

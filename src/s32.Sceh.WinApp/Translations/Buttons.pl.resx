@@ -126,6 +126,9 @@
   <data name="Compare" xml:space="preserve">
     <value>_Porównaj</value>
   </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Kopiuj</value>
+  </data>
   <data name="Enter" xml:space="preserve">
     <value>_Wejdź</value>
   </data>

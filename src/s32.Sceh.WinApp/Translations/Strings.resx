@@ -142,7 +142,7 @@
     <value>Images in queue to download:</value>
   </data>
   <data name="ImagesToDownloadFormat" xml:space="preserve">
-    <value>Images downloading: {0}/{1}/{2}</value>
+    <value>Images downloading: {0}/{1}/{2}/{3}</value>
   </data>
   <data name="InvalidProfileIdOrUrl" xml:space="preserve">
     <value>Invalid id or own profile url</value>
@@ -183,8 +183,14 @@
   <data name="RequestCountToolTip" xml:space="preserve">
     <value>SteamAPI queries counter[br]It's [c=ForestGreen]green[/c] when query is in progress,[br]or [c=Maroon]red[/c] when request is delayed.</value>
   </data>
+  <data name="SceErrorTitle" xml:space="preserve">
+    <value>Cannot download Steam Card Exchange data</value>
+  </data>
   <data name="SecondInvErrorMessage" xml:space="preserve">
     <value>Cannot load cards of user {0}: {1}</value>
+  </data>
+  <data name="StErrorTitle" xml:space="preserve">
+    <value>Cannot download Steam Tools data</value>
   </data>
   <data name="StrangeTradeUrl" xml:space="preserve">
     <value>The provided trade URL doesn't match the pattern. Are you sure you want to use it?</value>

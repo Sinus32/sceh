@@ -12,12 +12,41 @@ namespace s32.Sceh.Code
         public static readonly CommunicationState Instance = new CommunicationState();
 
         private bool _isInProgress, _isRepeating;
-        private int _requestCount, _imagesToDownload, _imagesDownloaded, _imagesNotModified;
+        private int _requestCount, _imagesToDownload, _imageRequests, _imagesDownloaded, _imagesNotModified;
 
         private CommunicationState()
         { }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public int ImageRequests
+        {
+            get { return _imageRequests; }
+            private set
+            {
+                if (_imageRequests != value)
+                {
+                    _imageRequests = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+        public void IncImageRequests()
+        {
+            lock (this)
+            {
+                ImageRequests = _imageRequests + 1;
+            }
+        }
+
+        public void DecImageRequests()
+        {
+            lock (this)
+            {
+                ImageRequests = _imageRequests - 1;
+            }
+        }
 
         public int ImagesDownloaded
         {

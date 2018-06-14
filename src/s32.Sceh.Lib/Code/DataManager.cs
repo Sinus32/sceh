@@ -20,6 +20,7 @@ namespace s32.Sceh.Code
         private static ScehData _currentData;
         private static Dictionary<string, ImageFile> _imageUrlLookup;
         private static SceInventoryData _sceData;
+        private static StInventoryData _stData;
 
         public static bool AutoLogIn
         {
@@ -66,6 +67,11 @@ namespace s32.Sceh.Code
         public static SceInventoryData SceData
         {
             get { return _sceData; }
+        }
+
+        public static StInventoryData StData
+        {
+            get { return _stData; }
         }
 
         public static SteamProfile AddOrUpdateSteamProfile(SteamProfile profile)
@@ -149,6 +155,14 @@ namespace s32.Sceh.Code
             return null;
         }
 
+        public static StAppData GetStAppData(long appId)
+        {
+            StAppData result;
+            if (_stData.IsLoaded && _stData.Data.TryGetValue(appId, out result))
+                return result;
+            return null;
+        }
+
         public static SteamProfile GetSteamProfile(SteamProfileKey profileKey)
         {
             if (profileKey == null)
@@ -186,7 +200,7 @@ namespace s32.Sceh.Code
             string errorMessage;
             result = new UserInventory();
             result.SteamId = profile.SteamId;
-            result.Cards = SteamDataDownloader.GetCards(profile, CultureInfo.CurrentCulture, out errorMessage);
+            result.Cards = SteamDataDownloader.GetCards(profile, _currentData.Settings, out errorMessage);
             result.ErrorMessage = errorMessage;
             result.IsInventoryAvailable = errorMessage == null && result.Cards != null;
 
@@ -203,8 +217,10 @@ namespace s32.Sceh.Code
                 throw new InvalidOperationException("Data manager is already initialized");
 
             _sceData = new SceInventoryData();
+            _stData = new StInventoryData();
 
             _currentData = new ScehData();
+            _currentData.Settings = MakeDefaultSettings(CultureInfo.CurrentCulture);
             _currentData.Profiles = new ProfilesData();
             _currentData.AvatarsDirectory = new ImageDirectory("Avatars");
             _currentData.CardsDirectory = new ImageDirectory("Cards");
@@ -250,6 +266,30 @@ namespace s32.Sceh.Code
                 return null;
 
             return Path.Combine(_currentData.Paths.LocalAppDataPath, image.Directory.RelativePath, image.Filename.Remove(2), image.Filename);
+        }
+
+        public static ScehSettings MakeDefaultSettings(CultureInfo culture)
+        {
+            if (culture == null)
+                throw new ArgumentNullException("culture");
+
+            if (String.IsNullOrEmpty(culture.Name))
+                throw new ArgumentException("The chosen culture cannot be of invariant type", "culture");
+
+            var result = new ScehSettings();
+
+            var country = culture.Name.Length == 5 ? culture.Name.Substring(3) : String.Empty;
+            result.Country = SteamEnumerations.GetCountry(country)
+                ?? SteamEnumerations.DefaultCountry;
+
+            var language = culture.Parent.IsNeutralCulture ? culture.Parent.EnglishName : culture.EnglishName;
+            result.Language = SteamEnumerations.GetLanguage(language)
+                ?? SteamEnumerations.DefaultLanguage;
+
+            result.Currency = SteamEnumerations.FindCurrencyBySymbol(culture.NumberFormat.CurrencySymbol)
+                ?? SteamEnumerations.GetCurrency(SteamEnumerations.DefaultCurrencyId);
+
+            return result;
         }
 
         public static void SaveFile()

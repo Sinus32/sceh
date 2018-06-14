@@ -11,12 +11,35 @@
     xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="300">
+    mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="350">
   <UserControl.CommandBindings>
     <CommandBinding Command="ctl:ScehCommands.Ok" CanExecute="Ok_CanExecute" Executed="Ok_Executed" />
     <CommandBinding Command="ctl:ScehCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed" />
   </UserControl.CommandBindings>
-  <Grid Name="noteEditForm">
+  <UserControl.Resources>
+    <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
+      <Grid Margin="1" ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
+        <Grid.ToolTip>
+          <TextBlock>
+            <Run Text="{Binding ItemClassName, Mode=OneWay}" FontStyle="Italic" />: <Run Text="{Binding Name, Mode=OneWay}" FontWeight="Bold" /><LineBreak />
+            <Run Text="{Binding MarketHashName, Mode=OneWay}" /><LineBreak />
+            <Run Text="{Binding DroprateName, Mode=OneWay}" />
+          </TextBlock>
+        </Grid.ToolTip>
+        <Border Style="{DynamicResource cardBorderStyle}">
+          <ctl:LazyImage x:Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}, Mode=OneWay}"
+            NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
+            Width="77" Height="89" Stretch="Uniform" Delay="400"
+            Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
+        </Border>
+        <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
+          Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+        <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0" TextAlignment="Center"
+          VerticalAlignment="Top" TextWrapping="Wrap" Style="{DynamicResource cardAlternateText}" />
+      </Grid>
+    </DataTemplate>
+  </UserControl.Resources>
+  <Grid Name="cardsSelectForm">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" />
       <ColumnDefinition Width="10*" />
@@ -26,55 +49,72 @@
       <RowDefinition Height="*" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="Auto" />
       <RowDefinition Height="5*" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="4*" />
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
-    <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="10" Fill="{StaticResource overlayColorBrush}" />
-    <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="8" Margin="-5"
+    <Rectangle Grid.ColumnSpan="3" Grid.RowSpan="8" Fill="{StaticResource overlayColorBrush}" />
+    <Border Grid.Row="1" Grid.Column="1" Grid.RowSpan="6" Margin="-5"
       BorderBrush="{x:Static SystemColors.ControlLightLightBrush}" BorderThickness="1"
       Background="{x:Static SystemColors.ControlLightBrush}" />
-    <Image Grid.Column="1" Grid.Row="1" Source="{StaticResource infoIcon}" Stretch="None" Cursor="Help"
-        HorizontalAlignment="Right" VerticalAlignment="Top" Margin="2"
-        ToolTipService.ShowDuration="30000" ToolTipService.Placement="Left">
-      <Image.ToolTip>
-        <TextBlock TextWrapping="Wrap">
-          Przejdź na stronę oferty wymiany, zaznacz tekst wymiany razem z kartami, a następnie skopiuj do schowka.
-          <LineBreak />
-          Karty które zaznaczyłeś pojawią się w tym oknie jeżeli znajdują się w aktywnym porównaniu.
-        </TextBlock>
-      </Image.ToolTip>
-    </Image>
-    <Button Grid.Column="1" Grid.Row="1" Padding="2" ContextMenuService.IsEnabled="False"
-        HorizontalAlignment="Left" VerticalAlignment="Center" Click="OpenPageButton_Click" >
-      <Button.ContextMenu>
-        <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-          <MenuItem Header="{x:Static resx:MenuItems.SentOffers}" Command="ctl:ScehCommands.OpenSentOffers" CommandParameter="{Binding OwnerProfile}">
-            <MenuItem.Icon>
-              <Image Source="{StaticResource sentMenuIcon}" Width="20" Height="20" />
-            </MenuItem.Icon>
-          </MenuItem>
-          <MenuItem Header="{x:Static resx:MenuItems.IncomingOffers}" Command="ctl:ScehCommands.OpenIncomingOffers" CommandParameter="{Binding OwnerProfile}">
-            <MenuItem.Icon>
-              <Image Source="{StaticResource receivedMenuIcon}" Width="20" Height="20" />
-            </MenuItem.Icon>
-          </MenuItem>
-        </ContextMenu>
-      </Button.ContextMenu>
-      <StackPanel Orientation="Horizontal">
-        <Image Source="{StaticResource tradeLinkMenuIcon}" Stretch="None" />
-        <AccessText Text="{x:Static resx:Buttons.OpenPage}" Margin="12,0" MinWidth="60"
+    <Label Grid.Row="1" Grid.Column="1" Content="Zaznaczenie kart z oferty:" FontSize="14" />
+    <TextBlock Grid.Row="2" Grid.Column="1" TextWrapping="Wrap" TextAlignment="Center" Margin="50,0">
+      Przejdź na stronę oferty wymiany, zaznacz tekst wymiany razem z kartami, a następnie skopiuj do schowka.
+      <LineBreak />Zaznaczone karty pojawią się w tym oknie.
+    </TextBlock>
+    <ItemsControl Grid.Row="3" Grid.Column="1" Background="{x:Static SystemColors.ControlLightLightBrush}"
+        VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
+        ScrollViewer.CanContentScroll="True" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
+        BorderThickness="1" ItemTemplate="{StaticResource cardTemplate}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <VirtualizingStackPanel />
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.Template>
+        <ControlTemplate>
+          <Border SnapsToDevicePixels="True"
+              BorderThickness="{TemplateBinding Border.BorderThickness}"
+              Padding="{TemplateBinding Control.Padding}"
+              BorderBrush="{TemplateBinding Border.BorderBrush}"
+              Background="{TemplateBinding Panel.Background}">
+            <ScrollViewer Focusable="False" Padding="{TemplateBinding Control.Padding}">
+              <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+            </ScrollViewer>
+          </Border>
+        </ControlTemplate>
+      </ItemsControl.Template>
+    </ItemsControl>
+
+    <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left">
+      <ctl:DropDownButton Margin="0,5,12,0" Padding="2">
+        <ctl:DropDownButton.Menu>
+          <ContextMenu>
+            <MenuItem Header="{x:Static resx:MenuItems.SentOffers}" Command="ctl:ScehCommands.OpenSentOffers" CommandParameter="{Binding OwnerProfile}">
+              <MenuItem.Icon>
+                <Image Source="{StaticResource sentMenuIcon}" Width="20" Height="20" />
+              </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{x:Static resx:MenuItems.IncomingOffers}" Command="ctl:ScehCommands.OpenIncomingOffers" CommandParameter="{Binding OwnerProfile}">
+              <MenuItem.Icon>
+                <Image Source="{StaticResource receivedMenuIcon}" Width="20" Height="20" />
+              </MenuItem.Icon>
+            </MenuItem>
+          </ContextMenu>
+        </ctl:DropDownButton.Menu>
+        <StackPanel Orientation="Horizontal">
+          <Image Source="{StaticResource tradeLinkMenuIcon}" Stretch="None" />
+          <AccessText Text="{x:Static resx:Buttons.OpenPage}" Margin="12,0" MinWidth="60"
             VerticalAlignment="Center" TextAlignment="Center" />
-        <Path Margin="4" Width="6" Fill="#FF527DB5" Stretch="Uniform"
+          <Path Margin="4" Width="6" Fill="#FF527DB5" Stretch="Uniform"
             VerticalAlignment="Center" HorizontalAlignment="Right"
             Data="F1 M 301.14,-189.041 L 311.57,-189.041 L 306.355,-182.942 L 301.14,-189.041 Z" />
-      </StackPanel>
-    </Button>
-    <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.Column="1" HorizontalAlignment="Right">
+        </StackPanel>
+      </ctl:DropDownButton>
+    </StackPanel>
+    <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="1" HorizontalAlignment="Right">
       <Button Command="ctl:ScehCommands.Ok" Margin="12,5,0,0" Padding="2">
         <StackPanel Orientation="Horizontal">
           <Image Source="{StaticResource yesMenuIcon}" Stretch="None" />

@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -17,6 +18,7 @@ using System.Windows.Threading;
 using s32.Sceh.DataModel;
 using s32.Sceh.UserNoteTags;
 using s32.Sceh.WinApp.BBCodeWriters;
+using s32.Sceh.WinApp.Code;
 using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp.Controls
@@ -42,6 +44,12 @@ namespace s32.Sceh.WinApp.Controls
         {
             InitializeComponent();
 
+            var brushArray = BrushName.GetBrushArray();
+            ColorList = new List<TextColorWriter>(brushArray.Length);
+            ColorList.AddRange(brushArray.Select(q => new TextColorWriter(q)));
+
+            DataContext = this;
+
             Loaded += ProfileNoteEditor_Loaded;
         }
 
@@ -50,6 +58,8 @@ namespace s32.Sceh.WinApp.Controls
             get { return (bool)GetValue(AutoFocusProperty); }
             set { SetValue(AutoFocusProperty, value); }
         }
+
+        public List<TextColorWriter> ColorList { get; set; }
 
         public UserNotes Source
         {
@@ -149,6 +159,16 @@ namespace s32.Sceh.WinApp.Controls
                 notes.Add(note);
             }
             return true;
+        }
+
+        private void ColorSelectButton_Click(object sender, RoutedEventArgs e)
+        {
+            var popup = VisualTreeHelper.GetParent((DependencyObject)sender);
+            while (popup != null && !(popup is Popup))
+                popup = LogicalTreeHelper.GetParent(popup) ?? VisualTreeHelper.GetParent(popup);
+
+            if (popup != null)
+                ((Popup)popup).IsOpen = false;
         }
 
         private void ProfileNoteEditor_Loaded(object sender, RoutedEventArgs e)

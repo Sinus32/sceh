@@ -34,105 +34,12 @@ namespace s32.Sceh.Code
             DeserializationError
         }
 
-        //[Obsolete]
-        //public static List<Card> GetCardsA(SteamProfileKey profile, out string errorMessage)
-        //{
-        //    var inventoryUri = GetProfileUri(profile, SteamUrlPattern.ApiGetInventoryA);
-        //    if (inventoryUri == null)
-        //    {
-        //        errorMessage = "Invalid profile data";
-        //        return null;
-        //    }
-        //    string rawJson;
-        //    HttpStatusCode statusCode;
-        //    using (var response = DoRequest(() => PrepareRequest(inventoryUri, "application/json"), out statusCode))
-        //    {
-        //        if (response == null)
-        //        {
-        //            errorMessage = String.Format("Http error: {0} ({1})", (int)statusCode, statusCode);
-        //            return null;
-        //        }
-
-        //        if (!response.ContentType.StartsWith("application/json"))
-        //        {
-        //            errorMessage = "Wrong profile";
-        //            return null;
-        //        }
-
-        //        using (var reader = new StreamReader(response.GetResponseStream()))
-        //        {
-        //            rawJson = reader.ReadToEnd();
-        //        }
-        //    }
-
-        //    var jss = new JsonSerializerSettings();
-        //    jss.MissingMemberHandling = MissingMemberHandling.Ignore;
-        //    jss.NullValueHandling = NullValueHandling.Include;
-        //    jss.ObjectCreationHandling = ObjectCreationHandling.Replace;
-        //    var ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
-
-        //    if (!ret.Success)
-        //    {
-        //        errorMessage = ret.Error ?? "Wrong query";
-        //        return null;
-        //    }
-
-        //    var result = new List<Card>();
-
-        //    Load(profile, result, ret);
-
-        //    while (ret.More)
-        //    {
-        //        var nextUri = new Uri(String.Concat(inventoryUri.ToString(), "?start=", ret.MoreStart));
-
-        //        using (var response = DoRequest(() => PrepareRequest(nextUri, "application/json"), out statusCode))
-        //        {
-        //            if (response == null)
-        //            {
-        //                errorMessage = String.Format("Http error: {0} ({1})", (int)statusCode, statusCode);
-        //                return null;
-        //            }
-
-        //            if (!response.ContentType.StartsWith("application/json"))
-        //            {
-        //                errorMessage = "Wrong profile";
-        //                return null;
-        //            }
-
-        //            using (var reader = new StreamReader(response.GetResponseStream()))
-        //            {
-        //                rawJson = reader.ReadToEnd();
-        //            }
-        //        }
-
-        //        ret = JsonConvert.DeserializeObject<RgInventoryResp>(rawJson, jss);
-
-        //        if (!ret.Success)
-        //        {
-        //            errorMessage = ret.Error ?? "Wrong query";
-        //            return null;
-        //        }
-
-        //        Load(profile, result, ret);
-        //    }
-
-        //    result.Sort(CardComparison);
-
-        //    errorMessage = null;
-        //    return result;
-        //}
-
-        public static List<Card> GetCards(SteamProfileKey profile, CultureInfo culture, out string errorMessage)
+        public static List<Card> GetCards(SteamProfileKey profile, ScehSettings settings, out string errorMessage)
         {
-            if (culture == null)
-                throw new ArgumentNullException("culture");
+            if (settings == null)
+                throw new ArgumentNullException("settings");
 
-            if (String.IsNullOrEmpty(culture.Name))
-                throw new ArgumentException("The chosen culture cannot be of invariant type", "culture");
-
-            var language = culture.Parent.IsNeutralCulture ? culture.Parent.EnglishName : culture.EnglishName;
-
-            return GetCards(profile, language.ToLower(), out errorMessage);
+            return GetCards(profile, settings.Language, out errorMessage);
         }
 
         public static List<Card> GetCards(SteamProfileKey profile, string language, out string errorMessage)
@@ -146,7 +53,7 @@ namespace s32.Sceh.Code
                 return null;
             }
 
-            var inventoryUri = String.Concat("http://steamcommunity.com/inventory/", profile.SteamId, "/753/6?l=", language, "&count=2000");
+            var inventoryUri = String.Concat("https://steamcommunity.com/inventory/", profile.SteamId, "/753/6?l=", language, "&count=2000");
             var referer = GetProfileUri(profile, SteamUrlPattern.Inventory, preferCustomUrl: true).ToString();
 
             string rawJson;
@@ -230,7 +137,7 @@ namespace s32.Sceh.Code
 
         public static SteamProfileResp GetProfile(Uri profileUri, out GetProfileError error)
         {
-            const string referer = "http://steamcommunity.com/";
+            const string referer = "https://steamcommunity.com/";
             string rawXml;
             HttpStatusCode statusCode;
             using (var response = DoRequest(() => PrepareRequest(profileUri, HttpMethod.Get, "text/xml", referer), out statusCode))
@@ -342,14 +249,27 @@ namespace s32.Sceh.Code
             request.Referer = referer;
             request.UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) Gecko/20100101";
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+            request.KeepAlive = true;
+            request.UnsafeAuthenticatedConnectionSharing = true;
 
             var lang = CultureInfo.CurrentCulture.Name ?? String.Empty;
             switch (lang)
             {
-                case "": lang = "en-US,en;q=0.3"; break;
-                case "en-US": lang += ",en;q=0.3"; break;
-                case "en": lang += ",en-US;q=0.7"; break;
-                default: lang += ",en-US;q=0.7,en;q=0.3"; break;
+                case "":
+                    lang = "en-US,en;q=0.3";
+                    break;
+
+                case "en-US":
+                    lang += ",en;q=0.3";
+                    break;
+
+                case "en":
+                    lang += ",en-US;q=0.7";
+                    break;
+
+                default:
+                    lang += ",en-US;q=0.7,en;q=0.3";
+                    break;
             }
             request.Headers.Add(HttpRequestHeader.AcceptLanguage, lang);
 
@@ -378,13 +298,13 @@ namespace s32.Sceh.Code
 
         private static HttpWebResponse DoRequest(Func<HttpWebRequest> makeRequestFunc, out HttpStatusCode statusCode)
         {
-            var delay = 1;
+            var delayMs = 300;
             CommunicationState.Instance.IsInProgress = true;
             try
             {
                 while (true)
                 {
-                    CommunicationState.Instance.IsRepeating = delay > 1;
+                    CommunicationState.Instance.IsRepeating = delayMs > 300;
                     var now = DateTime.Now;
                     if (_nextCall > now)
                     {
@@ -409,10 +329,10 @@ namespace s32.Sceh.Code
                                 statusCode = response.StatusCode;
                                 if (response.StatusCode == (HttpStatusCode)429)
                                 {
-                                    if (delay < 5)
-                                        delay = 5;
-                                    else if (delay < 10)
-                                        delay += 1;
+                                    if (delayMs < 3000)
+                                        delayMs = 3000;
+                                    else if (delayMs < 7000)
+                                        delayMs += 500;
                                     else
                                         throw;
                                     response.Close();
@@ -427,10 +347,10 @@ namespace s32.Sceh.Code
                         }
                         else if (ex.Status == WebExceptionStatus.Timeout)
                         {
-                            if (delay < 7)
-                                delay = 7;
-                            else if (delay < 15)
-                                delay += 2;
+                            if (delayMs < 5000)
+                                delayMs = 5000;
+                            else if (delayMs < 9000)
+                                delayMs += 500;
                             else
                                 throw;
                             continue;
@@ -439,7 +359,7 @@ namespace s32.Sceh.Code
                     }
                     finally
                     {
-                        _nextCall = DateTime.Now.AddSeconds(delay);
+                        _nextCall = DateTime.Now.AddMilliseconds(delayMs);
                     }
                 }
             }
@@ -449,18 +369,6 @@ namespace s32.Sceh.Code
                 CommunicationState.Instance.IsRepeating = false;
             }
         }
-
-        //[Obsolete]
-        //private static void Load(SteamProfileKey owner, List<Card> result, RgInventoryResp ret)
-        //{
-        //    foreach (var dt in ret.RgInventory.Values)
-        //    {
-        //        var key = new RgInventoryResp.RgDescriptionKey(dt.ClassId, dt.InstanceId);
-        //        var desc = ret.RgDescriptions[key];
-        //        if (desc.Tradable)
-        //            result.Add(new Card(owner, dt, desc));
-        //    }
-        //}
 
         private static void Load(SteamProfileKey owner, List<Card> result, ApiInventoryResp ret)
         {

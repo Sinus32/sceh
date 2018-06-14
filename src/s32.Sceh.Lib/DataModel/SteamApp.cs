@@ -18,6 +18,7 @@ namespace s32.Sceh.DataModel
         private int _myCardsTotal, _myUniqueCards, _otherCardsTotal, _otherUniqueCards;
         private string _name;
         private SceAppState _sceState;
+        private double _setPrice, _cardAvg, _boosterAvg;
         private int? _totalUniqueCards, _sceWorth;
 
         public SteamApp(long id, string name)
@@ -29,6 +30,18 @@ namespace s32.Sceh.DataModel
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public double BoosterAvg
+        {
+            get { return _boosterAvg; }
+            set { _boosterAvg = value; }
+        }
+
+        public double CardAvg
+        {
+            get { return _cardAvg; }
+            set { _cardAvg = value; }
+        }
 
         public bool HeHaveMoreThanHalf
         {
@@ -147,6 +160,12 @@ namespace s32.Sceh.DataModel
         {
             get { return _sceWorth; }
             set { _sceWorth = value; }
+        }
+
+        public double SetPrice
+        {
+            get { return _setPrice; }
+            set { _setPrice = value; }
         }
 
         public int? TotalUniqueCards

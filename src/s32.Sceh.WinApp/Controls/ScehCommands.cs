@@ -10,7 +10,7 @@ namespace s32.Sceh.WinApp.Controls
 {
     public class ScehCommands : DependencyObject
     {
-        private static RoutedCommand _ok, _cancel, _compare, _editNote,
+        private static readonly RoutedCommand _ok, _cancel, _compare, _editNote,
             _showHideCards, _selectCardsFromOffer, _deselectCards,
             _openMarketPage, _openStorePage, _openBadgePage, _openTradingForum,
             _openProfilePage, _openInventoryPage, _openUserBadges,
@@ -42,11 +42,6 @@ namespace s32.Sceh.WinApp.Controls
             _copyName = new RoutedCommand("CopyName", typeof(ScehCommands));
             _pasteTag = new RoutedCommand("PasteTag", typeof(ScehCommands));
             _selectCardsFromOffer = new RoutedCommand("SelectCardsFromOffer", typeof(ScehCommands));
-        }
-
-        public static RoutedCommand OpenSceInvPage
-        {
-            get { return _openSceInvPage; }
         }
 
         public static RoutedCommand Cancel
@@ -114,6 +109,11 @@ namespace s32.Sceh.WinApp.Controls
             get { return _openProfilePage; }
         }
 
+        public static RoutedCommand OpenSceInvPage
+        {
+            get { return _openSceInvPage; }
+        }
+
         public static RoutedCommand OpenSentOffers
         {
             get { return _openSentOffers; }
@@ -143,7 +143,7 @@ namespace s32.Sceh.WinApp.Controls
         {
             get { return _pasteTag; }
         }
-        
+
         public static RoutedCommand SelectCardsFromOffer
         {
             get { return _selectCardsFromOffer; }

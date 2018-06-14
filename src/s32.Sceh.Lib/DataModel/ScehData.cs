@@ -27,5 +27,6 @@ namespace s32.Sceh.DataModel
 
         public PathConfig Paths { get; set; }
         public ProfilesData Profiles { get; set; }
+        public ScehSettings Settings { get; set; }
     }
 }

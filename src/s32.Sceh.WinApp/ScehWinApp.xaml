@@ -56,6 +56,11 @@
     <BitmapImage x:Key="tradeLinkMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/tradeLink.png" />
     <BitmapImage x:Key="changeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/change.png" />
     <BitmapImage x:Key="exitMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/exit.png" />
+    <BitmapImage x:Key="boldMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/bold.png" />
+    <BitmapImage x:Key="italicMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/italic.png" />
+    <BitmapImage x:Key="underlineMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/underline.png" />
+    <BitmapImage x:Key="strikethrounghMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/strikethroungh.png" />
+    <BitmapImage x:Key="colorSelectMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/colorSelect.png" />
     <BitmapImage x:Key="deselectAllCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectAllCards.png" />
     <BitmapImage x:Key="deselectMyCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectMyCards.png" />
     <BitmapImage x:Key="deselectOtherCardsMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/deselectOtherCards.png" />
@@ -111,7 +116,7 @@
       <Setter Property="ItemContainerStyle">
         <Setter.Value>
           <Style TargetType="{x:Type ComboBoxItem}">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
           </Style>
         </Setter.Value>
       </Setter>
@@ -124,7 +129,7 @@
       <Setter Property="ItemTemplate">
         <Setter.Value>
           <DataTemplate DataType="{x:Type dm:SteamProfile}">
-            <Grid HorizontalAlignment="Stretch" Margin="0,1,0,1" >
+            <Grid HorizontalAlignment="Stretch" Margin="0,1,0,1">
               <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />

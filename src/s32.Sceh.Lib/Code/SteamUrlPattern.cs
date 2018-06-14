@@ -8,8 +8,8 @@ namespace s32.Sceh.Code
 {
     public class SteamUrlPattern
     {
-        public const string SteamCommunityPageByCustomUrl = "http://steamcommunity.com/id/";
-        public const string SteamCommunityPageBySteamId = "http://steamcommunity.com/profiles/";
+        private const string SteamCommunityPageByCustomUrl = "https://steamcommunity.com/id/";
+        private const string SteamCommunityPageBySteamId = "https://steamcommunity.com/profiles/";
 
         public static readonly SteamUrlPattern CommunityPage, /*ApiGetInventoryA,*/
             ApiGetProfile, Badges, Inventory,

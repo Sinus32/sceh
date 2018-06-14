@@ -133,7 +133,7 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Images downloading: {0}/{1}/{2}.
+        ///   Looks up a localized string similar to Images downloading: {0}/{1}/{2}/{3}.
         /// </summary>
         public static string ImagesToDownloadFormat {
             get {
@@ -259,11 +259,29 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot download Steam Card Exchange data.
+        /// </summary>
+        public static string SceErrorTitle {
+            get {
+                return ResourceManager.GetString("SceErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cannot load cards of user {0}: {1}.
         /// </summary>
         public static string SecondInvErrorMessage {
             get {
                 return ResourceManager.GetString("SecondInvErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot download Steam Tools data.
+        /// </summary>
+        public static string StErrorTitle {
+            get {
+                return ResourceManager.GetString("StErrorTitle", resourceCulture);
             }
         }
         

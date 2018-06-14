@@ -30,7 +30,7 @@ namespace s32.Sceh.WinApp.Controls
 
             if (!typeof(ImageFile).Equals(targetType))
                 throw new NotSupportedException();
-            
+
             if (Directory == null)
                 return DependencyProperty.UnsetValue;
 

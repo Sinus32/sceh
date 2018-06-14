@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -25,8 +27,16 @@ namespace s32.Sceh.WinApp.Controls
         public static readonly DependencyProperty DelayProperty =
             DependencyProperty.Register("Delay", typeof(int), typeof(BBCodeBlock), new PropertyMetadata(0));
 
+        private static readonly RoutedCommand _copy;
+
         private readonly DispatcherTimer _timer;
+
         private bool _isActive, _needRefresh;
+
+        static BBCodeBlock()
+        {
+            _copy = new RoutedCommand("Copy", typeof(BBCodeBlock));
+        }
 
         public BBCodeBlock()
         {
@@ -35,11 +45,18 @@ namespace s32.Sceh.WinApp.Controls
 
             Loaded += UserNotesBlock_Loaded;
             Unloaded += UserNotesBlock_Unloaded;
+
+            CommandBindings.Add(new CommandBinding(CopyCommand, Copy_Executed, Copy_CanExecute));
         }
 
         ~BBCodeBlock()
         {
             Dispose(false);
+        }
+
+        public static RoutedCommand CopyCommand
+        {
+            get { return _copy; }
         }
 
         public string BBCodeText
@@ -58,6 +75,48 @@ namespace s32.Sceh.WinApp.Controls
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public string GetPlainText()
+        {
+            var sb = new StringBuilder();
+            var stack = new Stack<Inline>();
+            stack.Push(Inlines.FirstInline);
+
+            while (stack.Count > 0)
+            {
+                var inline = stack.Pop();
+
+                if (inline.NextInline != null)
+                    stack.Push(inline.NextInline);
+
+                if (inline is Run)
+                {
+                    sb.Append(((Run)inline).Text);
+                }
+                else if (inline is Span)
+                {
+                    var subInline = ((Span)inline).Inlines.FirstInline;
+                    if (subInline != null)
+                        stack.Push(subInline);
+                }
+                else if (inline.Tag is TextReplacement)
+                {
+                    sb.Append(((TextReplacement)inline.Tag).PlainText);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        public string GetRtfText()
+        {
+            var range = new TextRange(ContentStart, ContentEnd);
+            using (var stream = new MemoryStream())
+            {
+                range.Save(stream, DataFormats.Rtf);
+                return Encoding.UTF8.GetString(stream.ToArray());
+            }
         }
 
         public void UpdateInlines()
@@ -112,6 +171,27 @@ namespace s32.Sceh.WinApp.Controls
                     self.UpdateInlines();
         }
 
+        private void Copy_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Inlines.Count > 0;
+        }
+
+        private void Copy_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var dataObject = new DataObject();
+
+            if (Enum.Equals(e.Parameter, CopyFormat.FormattedText))
+            {
+                string rtf = GetRtfText();
+                dataObject.SetText(rtf, TextDataFormat.Rtf);
+            }
+
+            string plain = GetPlainText();
+            dataObject.SetText(plain, TextDataFormat.UnicodeText);
+
+            Clipboard.SetDataObject(dataObject);
+        }
+
         private void PrintComplexNode(List<Inline> inlines, BBNode node)
         {
             switch (node.NodeType)
@@ -140,19 +220,22 @@ namespace s32.Sceh.WinApp.Controls
         {
             if (node.IsSelfClosed)
             {
+                TextReplacement replacement;
                 switch (node.TagName)
                 {
                     case "->":
                         var rightArrowTemplate = (ControlTemplate)FindResource("rightArrowTemplate");
                         var rightArrow = (FrameworkElement)rightArrowTemplate.LoadContent();
                         rightArrow.Height = this.FontSize;
-                        inlines.Add(new InlineUIContainer(rightArrow) { BaselineAlignment = BaselineAlignment.Center });
+                        replacement = new TextReplacement(node.TagName);
+                        inlines.Add(new InlineUIContainer(rightArrow) { Tag = replacement, BaselineAlignment = BaselineAlignment.Center });
                         foreach (var subNode in node.Content)
                             PrintComplexNode(inlines, subNode);
                         return true;
 
                     case "br":
-                        inlines.Add(new LineBreak());
+                        replacement = new TextReplacement(Environment.NewLine);
+                        inlines.Add(new LineBreak() { Tag = replacement });
                         return true;
 
                     default:
@@ -317,6 +400,16 @@ namespace s32.Sceh.WinApp.Controls
         {
             _isActive = false;
             _timer.Stop();
+        }
+
+        private class TextReplacement
+        {
+            public TextReplacement(string plainText)
+            {
+                PlainText = plainText;
+            }
+
+            public string PlainText { get; private set; }
         }
     }
 }

@@ -46,7 +46,7 @@ namespace s32.Sceh.Code
 
         private static void TryDownloadFile(ImageFile image, ref string filePath, bool fileExists)
         {
-            const string referer = "http://steamcommunity.com/";
+            const string referer = "https://steamcommunity.com/";
             var request = SteamDataDownloader.PrepareRequest(image.ImageUrl, HttpMethod.Get, FileType.AcceptedImageTypes, referer);
 
             if (fileExists)
@@ -59,6 +59,7 @@ namespace s32.Sceh.Code
 
             try
             {
+                CommunicationState.Instance.IncImageRequests();
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     var fileType = FileType.FindByMimeType(response.ContentType);
@@ -122,6 +123,10 @@ namespace s32.Sceh.Code
                 {
                     throw;
                 }
+            }
+            finally
+            {
+                CommunicationState.Instance.DecImageRequests();
             }
         }
 

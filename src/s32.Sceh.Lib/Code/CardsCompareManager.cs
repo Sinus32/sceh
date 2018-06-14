@@ -110,7 +110,7 @@ namespace s32.Sceh.Code
                 card.IsSelected = false;
                 card.OtherHaveIt = mySet.Contains(card);
             }
-            
+
             foreach (var app in _steamApps)
             {
                 SceAppData sceData = DataManager.GetSceAppData(app.Id);
@@ -120,6 +120,14 @@ namespace s32.Sceh.Code
                     app.Marketable = sceData.Marketable;
                     app.TotalUniqueCards = sceData.TotalCards;
                     app.SceWorth = sceData.Worth;
+                }
+
+                StAppData stData = DataManager.GetStAppData(app.Id);
+                if (stData != null)
+                {
+                    app.SetPrice = stData.SetPrice;
+                    app.BoosterAvg = stData.BoosterAvg;
+                    app.CardAvg = stData.CardAvg;
                 }
 
                 foreach (var card in app.MyCards)

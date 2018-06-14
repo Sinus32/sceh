@@ -66,6 +66,7 @@
     <Compile Include="Code\FilenameGenerator.cs" />
     <Compile Include="Code\ImageDownloader.cs" />
     <Compile Include="Code\FileType.cs" />
+    <Compile Include="Code\StInventoryData.cs" />
     <Compile Include="Code\SteamUrlPattern.cs" />
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="DataModel\SceAppData.cs" />
     <Compile Include="Code\SceInventoryData.cs" />
     <Compile Include="DataModel\SceAppState.cs" />
+    <Compile Include="DataModel\ScehSettings.cs" />
+    <Compile Include="DataModel\StAppData.cs" />
     <Compile Include="DataModel\UserNote.cs" />
     <Compile Include="DataModel\ProfilesData.cs" />
     <Compile Include="DataModel\SteamApp.cs">
@@ -87,6 +90,8 @@
     <Compile Include="DataModel\SteamProfile.cs" />
     <Compile Include="DataModel\SteamProfileKey.cs" />
     <Compile Include="DataModel\UserNotes.cs" />
+    <Compile Include="Jobs\StatefulJob.cs" />
+    <Compile Include="Jobs\JobManager.cs" />
     <Compile Include="LegacyClasses\Inventory.cs" />
     <Compile Include="LegacyClasses\SteamUser.cs" />
     <Compile Include="LegacyClasses\TradeSuggestions.cs" />
@@ -96,6 +101,13 @@
     <Compile Include="SteamApi\RgDescriptionItem.cs" />
     <Compile Include="SteamApi\RgInventoryItem.cs" />
     <Compile Include="SteamApi\RgInventoryResp.cs" />
+    <Compile Include="SteamApi\SteamEnumerations.cs" />
+    <Compile Include="SteamApi\SteamCurrency.cs" />
+    <Compile Include="SteamApi\ValuesNames.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ValuesNames.resx</DependentUpon>
+    </Compile>
     <Compile Include="SteamApi\SteamProfileResp.cs" />
     <Compile Include="UserNoteTags\DateTimeTag.cs" />
     <Compile Include="UserNoteTags\Factories\DateTimeTagFactory.cs" />
@@ -107,7 +119,13 @@
     <Compile Include="UserNoteTags\SteamAppTag.cs" />
     <Compile Include="UserNoteTags\SteamCardTag.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="SteamApi\ValuesNames.pl.resx" />
+    <EmbeddedResource Include="SteamApi\ValuesNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ValuesNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

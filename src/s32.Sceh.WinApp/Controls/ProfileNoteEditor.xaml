@@ -63,6 +63,9 @@
         </Style>
       </ToolBarTray.Resources>
       <ToolBar ToolBarTray.IsLocked="True">
+        <ToolBar.Resources>
+          <Style TargetType="{x:Type ctl:PopupButton}" BasedOn="{StaticResource {x:Static ToolBar.ToggleButtonStyleKey}}" />
+        </ToolBar.Resources>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ScoreUp}">
           <Button.CommandParameter>
             <tags:ScoreUpDownWriter Score="+1" />
@@ -105,41 +108,92 @@
           <Button.CommandParameter>
             <tags:BoldTextWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource boldMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ItalicText}">
           <Button.CommandParameter>
             <tags:ItalicTextWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource italicMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.UnderlineText}">
           <Button.CommandParameter>
             <tags:UnderlineTextWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource underlineMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.StrikethroughText}">
           <Button.CommandParameter>
             <tags:StrikethroughTextWriter />
           </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
+          <Image Source="{StaticResource strikethrounghMenuIcon}" Width="20" Height="20" />
         </Button>
-        <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.TextColor}">
-          <Button.CommandParameter>
-            <tags:TextColorWriter />
-          </Button.CommandParameter>
-          <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
-        </Button>
+        <ctl:PopupButton ToolTip="{x:Static resx:Buttons.TextColor}">
+          <Image Source="{StaticResource colorSelectMenuIcon}" Width="20" Height="20" />
+          <ctl:PopupButton.Popup>
+            <Popup AllowsTransparency="True" Placement="Bottom">
+              <ItemsControl ItemsSource="{Binding ColorList}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <UniformGrid Columns="7" />
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                  <Style>
+                    <Style.Resources>
+                      <Style TargetType="{x:Type Rectangle}">
+                        <Setter Property="Width" Value="36" />
+                        <Setter Property="Height" Value="21" />
+                      </Style>
+                    </Style.Resources>
+                  </Style>
+                </ItemsControl.ItemContainerStyle>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Button Command="ctl:ScehCommands.PasteTag" CommandParameter="{Binding}"
+                      CommandTarget="{Binding PlacementTarget, RelativeSource={RelativeSource AncestorType={x:Type Popup}}}"
+                      Click="ColorSelectButton_Click">
+                      <!--<TextBlock Background="{Binding Value, Mode=OneTime}">
+                          <Run Text="{Binding OrderPosition, Mode=OneTime, StringFormat={}{0:X8}}" />
+                          <LineBreak />
+                          <Run Text="{Binding Name, Mode=OneTime}" />
+                      </TextBlock>-->
+                      <Rectangle Fill="{Binding BrushName.Value, Mode=OneWay}" />
+                    </Button>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </Popup>
+          </ctl:PopupButton.Popup>
+        </ctl:PopupButton>
       </ToolBar>
     </ToolBarTray>
-    <TextBox Name="tbEditor" Grid.Row="5" Grid.Column="1" 
+    <TextBox Name="tbEditor" Grid.Row="5" Grid.Column="1"
         TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Visible">
       <TextBox.InputBindings>
         <KeyBinding Command="ctl:ScehCommands.Cancel" Key="Escape" />
       </TextBox.InputBindings>
     </TextBox>
     <Label Grid.Row="6" Grid.Column="1" Target="{Binding ElementName=tbPreview}" Content="{x:Static resx:Strings.NotesPreviewLabel}" />
+    <ctl:DropDownButton Grid.Row="6" Grid.Column="1" Padding="2,0" Margin="0,2"
+        HorizontalAlignment="Right" VerticalAlignment="Center" DataContext="{Binding ElementName=tbPreview}">
+      <ctl:DropDownButton.Menu>
+        <ContextMenu>
+          <MenuItem Header="{x:Static resx:MenuItems.FormattedText}" Command="ctl:BBCodeBlock.CopyCommand"
+            CommandTarget="{Binding}" CommandParameter="{x:Static ctl:CopyFormat.FormattedText}" />
+          <MenuItem Header="{x:Static resx:MenuItems.PlainText}" Command="ctl:BBCodeBlock.CopyCommand"
+            CommandTarget="{Binding}" CommandParameter="{x:Static ctl:CopyFormat.PlainText}" />
+        </ContextMenu>
+      </ctl:DropDownButton.Menu>
+      <StackPanel Orientation="Horizontal">
+        <Image Source="{StaticResource copyMenuIcon}" Stretch="None" />
+        <AccessText Text="{x:Static resx:Buttons.Copy}" Margin="4,0" MinWidth="40"
+            VerticalAlignment="Center" TextAlignment="Center" />
+        <Path Margin="4" Width="6" Fill="#FF527DB5" Stretch="Uniform"
+            VerticalAlignment="Center" HorizontalAlignment="Right"
+            Data="F1 M 301.14,-189.041 L 311.57,-189.041 L 306.355,-182.942 L 301.14,-189.041 Z" />
+      </StackPanel>
+    </ctl:DropDownButton>
     <Border Grid.Row="7" Grid.Column="1" Padding="2"
         BorderBrush="{x:Static SystemColors.GradientActiveCaptionBrush}" BorderThickness="1" CornerRadius="2"
         Background="{x:Static SystemColors.ControlLightLightBrush}">
