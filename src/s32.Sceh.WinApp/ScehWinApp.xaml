@@ -92,17 +92,55 @@
       </Style.Triggers>
     </Style>
     <Style x:Key="noteIconToolTip" TargetType="FrameworkElement">
+      <Style.Resources>
+        <Style x:Key="noteIconToolTipText" TargetType="TextBlock">
+          <Setter Property="HorizontalAlignment" Value="Center" />
+          <Setter Property="VerticalAlignment" Value="Center" />
+          <Setter Property="FontWeight" Value="Bold" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsNeutral}" Value="True">
+              <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+        <Style x:Key="noteIconToolTipImage" TargetType="Image">
+          <Setter Property="Stretch" Value="None" />
+          <Setter Property="HorizontalAlignment" Value="Center" />
+          <Setter Property="VerticalAlignment" Value="Center" />
+          <Setter Property="Margin" Value="5,1" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsPositive}" Value="True">
+              <Setter Property="Source" Value="{StaticResource scoreUpIcon}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsNegative}" Value="True">
+              <Setter Property="Source" Value="{StaticResource scoreDownIcon}" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+      </Style.Resources>
       <Setter Property="ToolTip">
         <Setter.Value>
           <ItemsControl ItemsSource="{Binding Notes, Mode=OneWay}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <WrapPanel Orientation="Vertical" HorizontalAlignment="Left" />
+                <WrapPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" />
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
               <DataTemplate>
-                <ctl:BBCodeBlock TextWrapping="Wrap" BBCodeText="{Binding Text, Mode=OneWay}" />
+                <Grid>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition SharedSizeGroup="ColumnOne" />
+                    <ColumnDefinition SharedSizeGroup="ColumnTwo" />
+                    <ColumnDefinition Width="*" />
+                  </Grid.ColumnDefinitions>
+                  <Grid.RowDefinitions>
+                    <RowDefinition />
+                  </Grid.RowDefinitions>
+                  <TextBlock Style="{StaticResource noteIconToolTipText}" Text="{Binding Score, Mode=OneWay, StringFormat={}{0:+0;-0}}" />
+                  <Image Grid.Column="1" Style="{StaticResource noteIconToolTipImage}" />
+                  <ctl:BBCodeBlock Grid.Column="2" TextWrapping="Wrap" BBCodeText="{Binding Text, Mode=OneWay}" VerticalAlignment="Center" />
+                </Grid>
               </DataTemplate>
             </ItemsControl.ItemTemplate>
           </ItemsControl>
