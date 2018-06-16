@@ -11,7 +11,7 @@
     xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="400">
+    mc:Ignorable="d" d:DesignWidth="560" d:DesignHeight="380">
   <UserControl.CommandBindings>
     <CommandBinding Command="ctl:ScehCommands.Ok" CanExecute="Save_CanExecute" Executed="Save_Executed" />
     <CommandBinding Command="ctl:ScehCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed" />

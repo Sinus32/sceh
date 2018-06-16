@@ -654,13 +654,25 @@
           Command="ctl:ScehCommands.EditNote" CommandParameter="{Binding Notes}">
         <StackPanel Orientation="Horizontal" Style="{DynamicResource noteIconToolTip}">
           <Image Source="{StaticResource noteIcon}" Stretch="None" />
-          <AccessText Text="{x:Static resx:Buttons.Notes}" Margin="6,0" VerticalAlignment="Center" />
+          <AccessText Text="{x:Static resx:Buttons.Notes}" Margin="6,0" MinWidth="60"
+              VerticalAlignment="Center" TextAlignment="Center" />
         </StackPanel>
       </Button>
       <Button Margin="2,0" Padding="2" Command="ctl:ScehCommands.Compare">
         <StackPanel Orientation="Horizontal">
           <Image Source="{StaticResource compareIcon}" Stretch="None" />
-          <AccessText Text="{x:Static resx:Buttons.Compare}" Margin="6,0" VerticalAlignment="Center" />
+          <AccessText Margin="6,0" MinWidth="60" VerticalAlignment="Center" TextAlignment="Center">
+            <AccessText.Style>
+              <Style TargetType="AccessText">
+                <Setter Property="Text" Value="{x:Static resx:Buttons.Compare}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding MyProfileSelected}" Value="True">
+                    <Setter Property="Text" Value="{x:Static resx:Buttons.Show}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </AccessText.Style>
+          </AccessText>
         </StackPanel>
       </Button>
     </StackPanel>

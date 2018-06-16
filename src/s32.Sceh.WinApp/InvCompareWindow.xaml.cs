@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,9 @@ namespace s32.Sceh.WinApp
         public static readonly DependencyProperty CompareWithSelfProperty =
             DependencyProperty.Register("CompareWithSelf", typeof(bool), typeof(InvCompareWindow), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty MyProfileSelectedProperty =
+            DependencyProperty.Register("MyProfileSelected", typeof(bool), typeof(InvCompareWindow), new PropertyMetadata(false));
+
         public static readonly DependencyProperty OwnerProfileProperty =
             DependencyProperty.Register("OwnerProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null, OwnerProfileChange));
 
@@ -56,12 +60,24 @@ namespace s32.Sceh.WinApp
             InitializeComponent();
 
             DataContext = this;
+
+            var binding = new Binding("SelectedItem");
+            binding.Source = cbOtherProfile;
+            binding.Converter = new CompareConverter(() => OwnerProfile);
+            binding.Mode = BindingMode.OneWay;
+            SetBinding(MyProfileSelectedProperty, binding);
         }
 
         public bool CompareWithSelf
         {
             get { return (bool)GetValue(CompareWithSelfProperty); }
             set { SetValue(CompareWithSelfProperty, value); }
+        }
+
+        public bool MyProfileSelected
+        {
+            get { return (bool)GetValue(MyProfileSelectedProperty); }
+            set { SetValue(MyProfileSelectedProperty, value); }
         }
 
         public SteamProfile OwnerProfile
@@ -701,5 +717,31 @@ namespace s32.Sceh.WinApp
         }
 
         #endregion InventoryLoadWorker
+
+        private class CompareConverter : DependencyObject, IValueConverter
+        {
+            private readonly Func<object> _target;
+
+            public CompareConverter(Func<object> target)
+            {
+                _target = target;
+            }
+
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                if (value == null)
+                    return DependencyProperty.UnsetValue;
+
+                if (!typeof(bool).Equals(targetType))
+                    throw new NotSupportedException();
+
+                return Object.Equals(value, _target());
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 }
