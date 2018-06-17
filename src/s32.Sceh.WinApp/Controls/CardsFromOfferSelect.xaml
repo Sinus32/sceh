@@ -8,7 +8,7 @@
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
-    xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
+    xmlns:bbcw="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
     mc:Ignorable="d" d:DesignWidth="560" d:DesignHeight="380">

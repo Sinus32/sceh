@@ -10,7 +10,7 @@ using System.Windows.Data;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
 
-namespace s32.Sceh.WinApp.Controls
+namespace s32.Sceh.WinApp.Converters
 {
     public class UrlToImageFileConverter : DependencyObject, IValueConverter
     {

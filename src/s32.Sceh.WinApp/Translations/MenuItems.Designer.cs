@@ -268,6 +268,123 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Sort cards.
+        /// </summary>
+        public static string SortCards {
+            get {
+                return ResourceManager.GetString("SortCards", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By card average price, ascending.
+        /// </summary>
+        public static string SortCards_ByCardAvgPriceAsc {
+            get {
+                return ResourceManager.GetString("SortCards_ByCardAvgPriceAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By card average price, descending.
+        /// </summary>
+        public static string SortCards_ByCardAvgPriceDesc {
+            get {
+                return ResourceManager.GetString("SortCards_ByCardAvgPriceDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By surplus of cards, ascending.
+        /// </summary>
+        public static string SortCards_ByCardsSurplusAsc {
+            get {
+                return ResourceManager.GetString("SortCards_ByCardsSurplusAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By surplus of cards, descending.
+        /// </summary>
+        public static string SortCards_ByCardsSurplusDesc {
+            get {
+                return ResourceManager.GetString("SortCards_ByCardsSurplusDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By name, ascending.
+        /// </summary>
+        public static string SortCards_ByNameAsc {
+            get {
+                return ResourceManager.GetString("SortCards_ByNameAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By name, descending.
+        /// </summary>
+        public static string SortCards_ByNameDesc {
+            get {
+                return ResourceManager.GetString("SortCards_ByNameDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By card SCE worth, ascending.
+        /// </summary>
+        public static string SortCards_BySceWorthAsc {
+            get {
+                return ResourceManager.GetString("SortCards_BySceWorthAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By card SCE worth, descending.
+        /// </summary>
+        public static string SortCards_BySceWorthDesc {
+            get {
+                return ResourceManager.GetString("SortCards_BySceWorthDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By set completion rate, ascending.
+        /// </summary>
+        public static string SortCards_BySetCompletionRateAsc {
+            get {
+                return ResourceManager.GetString("SortCards_BySetCompletionRateAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By set completion rate, descending.
+        /// </summary>
+        public static string SortCards_BySetCompletionRateDesc {
+            get {
+                return ResourceManager.GetString("SortCards_BySetCompletionRateDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By number of cards in set, ascending.
+        /// </summary>
+        public static string SortCards_ByTotalUniqueCardsAsc {
+            get {
+                return ResourceManager.GetString("SortCards_ByTotalUniqueCardsAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By number of cards in set.
+        /// </summary>
+        public static string SortCards_ByTotalUniqueCardsDesc {
+            get {
+                return ResourceManager.GetString("SortCards_ByTotalUniqueCardsDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Store page.
         /// </summary>
         public static string StorePage {

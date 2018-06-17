@@ -4,6 +4,7 @@
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
+    xmlns:cnv="clr-namespace:s32.Sceh.WinApp.Converters"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
@@ -78,11 +79,11 @@
         <Path Fill="DarkSlateGray" Data="M 0,5 H 14 L 12,0 L 27,6 V 7 L 12,13 L 14,8 H 0 Z" />
       </Viewbox>
     </ControlTemplate>
-    <ctl:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}" />
-    <ctl:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}" />
-    <ctl:ImageLoader x:Key="imageLoader" />
-    <ctl:BooleanToVisibilityConverter x:Key="visibleToVisibilityConv" ValueForFalse="Collapsed" ValueForTrue="Visible" />
-    <ctl:BooleanToVisibilityConverter x:Key="hideToVisibilityConv" ValueForFalse="Visible" ValueForTrue="Collapsed" />
+    <cnv:UrlToImageFileConverter x:Key="avatarImageFileConv" Directory="{x:Static code:DataManager.AvatarsDirectory}" />
+    <cnv:UrlToImageFileConverter x:Key="cardImageFileConv" Directory="{x:Static code:DataManager.CardsDirectory}" />
+    <cnv:ImageLoader x:Key="imageLoader" />
+    <cnv:BooleanToVisibilityConverter x:Key="visibleToVisibilityConv" ValueForFalse="Collapsed" ValueForTrue="Visible" />
+    <cnv:BooleanToVisibilityConverter x:Key="hideToVisibilityConv" ValueForFalse="Visible" ValueForTrue="Collapsed" />
     <Style x:Key="urlOrSteamIdTextBlock" TargetType="TextBlock">
       <Setter Property="Foreground" Value="#FF8D8D8D" />
       <Style.Triggers>

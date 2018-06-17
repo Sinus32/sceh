@@ -69,24 +69,26 @@
     <Compile Include="BBCodeWriters\SelectedCardsWriter.cs" />
     <Compile Include="BBCodeWriters\TextColorWriter.cs" />
     <Compile Include="BBCodeWriters\TextFormatWriter.cs" />
-    <Compile Include="Code\BrushName.cs" />
-    <Compile Include="Code\ImageLoadNotifier.cs" />
-    <Compile Include="Code\ProfileHelper.cs" />
+    <Compile Include="BBCodeWriters\BrushName.cs" />
+    <Compile Include="Helpers\SteamAppSort.cs" />
+    <Compile Include="Helpers\ImageLoadNotifier.cs" />
+    <Compile Include="Helpers\ProfileHelper.cs" />
     <Compile Include="Controls\BBCodeBlock.cs" />
-    <Compile Include="Controls\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Controls\CardsFromOfferSelect.xaml.cs">
       <DependentUpon>CardsFromOfferSelect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CopyFormat.cs" />
     <Compile Include="Controls\DropDownButton.cs" />
-    <Compile Include="Controls\ImageLoader.cs" />
+    <Compile Include="Converters\ImageLoader.cs" />
     <Compile Include="Controls\LazyImage.cs" />
     <Compile Include="Controls\PopupButton.cs" />
     <Compile Include="Controls\ProfileNoteEditor.xaml.cs">
       <DependentUpon>ProfileNoteEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ScehCommands.cs" />
-    <Compile Include="Controls\UrlToImageFileConverter.cs" />
+    <Compile Include="Converters\UrlToImageFileConverter.cs" />
+    <Compile Include="Helpers\SteamAppComparer.cs" />
     <Compile Include="InvCompareWindow.xaml.cs">
       <DependentUpon>InvCompareWindow.xaml</DependentUpon>
     </Compile>

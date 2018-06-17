@@ -5,20 +5,14 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
-using s32.Sceh.WinApp.Code;
 using s32.Sceh.WinApp.Controls;
+using s32.Sceh.WinApp.Helpers;
 using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp
@@ -621,6 +615,27 @@ namespace s32.Sceh.WinApp
             cvs.View.Refresh();
         }
 
+        private void SortCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamAppSort)
+            {
+                var steamApps = SteamApps;
+                e.CanExecute = steamApps != null && steamApps.Count > 0;
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
+        }
+
+        private void SortCards_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var sortValue = (SteamAppSort)e.Parameter;
+
+            var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
+            ((ListCollectionView)cvs.View).CustomSort = new SteamAppComparer(sortValue);
+        }
+        
         #endregion Commands
 
         #region InventoryLoadWorker

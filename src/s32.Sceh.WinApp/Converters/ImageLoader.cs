@@ -12,7 +12,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace s32.Sceh.WinApp.Controls
+namespace s32.Sceh.WinApp.Converters
 {
     public class ImageLoader : IValueConverter
     {
