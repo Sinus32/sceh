@@ -5,10 +5,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
+    xmlns:hlp="clr-namespace:s32.Sceh.WinApp.Helpers"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
-    xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
+    xmlns:bbcw="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
     Title="{x:Static resx:Strings.InvCompareWindowTitle}" MinHeight="400" MinWidth="580" Height="450" Width="970"
@@ -20,6 +22,7 @@
     <CommandBinding Command="ctl:ScehCommands.EditNote" CanExecute="EditNote_CanExecute" Executed="EditNote_Executed" />
     <CommandBinding Command="ctl:ScehCommands.MakeOffer" CanExecute="MakeOffer_CanExecute" Executed="MakeOffer_Executed" />
     <CommandBinding Command="ctl:ScehCommands.ShowHideCards" CanExecute="ShowHideCards_CanExecute" Executed="ShowHideCards_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.SortCards" CanExecute="SortCards_CanExecute" Executed="SortCards_Executed" />
     <CommandBinding Command="ctl:ScehCommands.DeselectCards" CanExecute="DeselectCards_CanExecute" Executed="DeselectCards_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenMarketPage" CanExecute="OpenMarketPage_CanExecute" Executed="OpenMarketPage_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenStorePage" CanExecute="OpenStorePage_CanExecute" Executed="OpenStorePage_Executed" />
@@ -444,7 +447,7 @@
             <Run Text="{Binding SceWorth, Mode=OneWay, StringFormat={}{0}c}" />
           </TextBlock.Inlines>
         </TextBlock>
-        <ItemsControl Grid.Row="1" Grid.Column="0"
+        <ItemsControl Grid.Row="1" Grid.Column="0" Margin="0,0,30,0"
             ItemsSource="{Binding Source={StaticResource myCardsView}}"
             ItemTemplate="{StaticResource cardTemplate}">
           <ItemsControl.ItemsPanel>
@@ -467,7 +470,7 @@
             </Style>
           </ItemsControl.ItemContainerStyle>
         </ItemsControl>
-        <ItemsControl Grid.Row="1" Grid.Column="1"
+        <ItemsControl Grid.Row="1" Grid.Column="1" Margin="30,0,0,0"
             ItemsSource="{Binding Source={StaticResource otherCardsView}}"
             ItemTemplate="{StaticResource cardTemplate}">
           <ItemsControl.ItemsPanel>
@@ -607,6 +610,73 @@
           </MenuItem.Icon>
         </MenuItem>
       </MenuItem>
+      <MenuItem Header="{x:Static resx:MenuItems.SortCards}">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByNameAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByName</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByNameDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByName,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByCardAvgPriceAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByCardAvgPrice</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByCardAvgPriceDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByCardAvgPrice,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_BySceWorthAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>BySceWorth</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_BySceWorthDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>BySceWorth,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByTotalUniqueCardsAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByTotalUniqueCards</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByTotalUniqueCardsDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByTotalUniqueCards,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByCardsSurplusAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByCardsSurplus</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByCardsSurplusDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByCardsSurplus,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_BySetCompletionRateAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>BySetCompletionRate</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_BySetCompletionRateDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>BySetCompletionRate,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+      </MenuItem>
       <MenuItem Header="{x:Static resx:MenuItems.Selection}">
         <MenuItem Header="{x:Static resx:MenuItems.SelectCardsFromOffer}" Command="ctl:ScehCommands.SelectCardsFromOffer">
           <MenuItem.Icon>
@@ -654,13 +724,25 @@
           Command="ctl:ScehCommands.EditNote" CommandParameter="{Binding Notes}">
         <StackPanel Orientation="Horizontal" Style="{DynamicResource noteIconToolTip}">
           <Image Source="{StaticResource noteIcon}" Stretch="None" />
-          <AccessText Text="{x:Static resx:Buttons.Notes}" Margin="6,0" VerticalAlignment="Center" />
+          <AccessText Text="{x:Static resx:Buttons.Notes}" Margin="6,0" MinWidth="60"
+              VerticalAlignment="Center" TextAlignment="Center" />
         </StackPanel>
       </Button>
       <Button Margin="2,0" Padding="2" Command="ctl:ScehCommands.Compare">
         <StackPanel Orientation="Horizontal">
           <Image Source="{StaticResource compareIcon}" Stretch="None" />
-          <AccessText Text="{x:Static resx:Buttons.Compare}" Margin="6,0" VerticalAlignment="Center" />
+          <AccessText Margin="6,0" MinWidth="60" VerticalAlignment="Center" TextAlignment="Center">
+            <AccessText.Style>
+              <Style TargetType="AccessText">
+                <Setter Property="Text" Value="{x:Static resx:Buttons.Compare}" />
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding MyProfileSelected}" Value="True">
+                    <Setter Property="Text" Value="{x:Static resx:Buttons.Show}" />
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </AccessText.Style>
+          </AccessText>
         </StackPanel>
       </Button>
     </StackPanel>

@@ -8,10 +8,10 @@
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
-    xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
+    xmlns:bbcw="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    mc:Ignorable="d" d:DesignHeight="400" d:DesignWidth="400">
+    mc:Ignorable="d" d:DesignWidth="560" d:DesignHeight="380">
   <UserControl.CommandBindings>
     <CommandBinding Command="ctl:ScehCommands.Ok" CanExecute="Save_CanExecute" Executed="Save_Executed" />
     <CommandBinding Command="ctl:ScehCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed" />
@@ -68,63 +68,63 @@
         </ToolBar.Resources>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ScoreUp}">
           <Button.CommandParameter>
-            <tags:ScoreUpDownWriter Score="+1" />
+            <bbcw:ScoreUpDownWriter Score="+1" />
           </Button.CommandParameter>
           <Image Source="{StaticResource scoreUpMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ScoreDown}">
           <Button.CommandParameter>
-            <tags:ScoreUpDownWriter Score="-1" />
+            <bbcw:ScoreUpDownWriter Score="-1" />
           </Button.CommandParameter>
           <Image Source="{StaticResource scoreDownMenuIcon}" Width="20" Height="20" />
         </Button>
         <Separator />
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteDate}">
           <Button.CommandParameter>
-            <tags:DateWriter />
+            <bbcw:DateWriter />
           </Button.CommandParameter>
           <Image Source="{StaticResource pasteDateMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteAllCards}">
           <Button.CommandParameter>
-            <tags:SelectedCardsWriter MyCards="True" OtherCards="True" />
+            <bbcw:SelectedCardsWriter MyCards="True" OtherCards="True" />
           </Button.CommandParameter>
           <Image Source="{StaticResource pasteAllCardsMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteMyCards}">
           <Button.CommandParameter>
-            <tags:SelectedCardsWriter MyCards="True" />
+            <bbcw:SelectedCardsWriter MyCards="True" />
           </Button.CommandParameter>
           <Image Source="{StaticResource pasteMyCardsMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.PasteOtherCards}">
           <Button.CommandParameter>
-            <tags:SelectedCardsWriter OtherCards="True" />
+            <bbcw:SelectedCardsWriter OtherCards="True" />
           </Button.CommandParameter>
           <Image Source="{StaticResource pasteOtherCardsMenuIcon}" Width="20" Height="20" />
         </Button>
         <Separator />
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.BoldText}">
           <Button.CommandParameter>
-            <tags:BoldTextWriter />
+            <bbcw:BoldTextWriter />
           </Button.CommandParameter>
           <Image Source="{StaticResource boldMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.ItalicText}">
           <Button.CommandParameter>
-            <tags:ItalicTextWriter />
+            <bbcw:ItalicTextWriter />
           </Button.CommandParameter>
           <Image Source="{StaticResource italicMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.UnderlineText}">
           <Button.CommandParameter>
-            <tags:UnderlineTextWriter />
+            <bbcw:UnderlineTextWriter />
           </Button.CommandParameter>
           <Image Source="{StaticResource underlineMenuIcon}" Width="20" Height="20" />
         </Button>
         <Button Command="ctl:ScehCommands.PasteTag" ToolTip="{x:Static resx:Buttons.StrikethroughText}">
           <Button.CommandParameter>
-            <tags:StrikethroughTextWriter />
+            <bbcw:StrikethroughTextWriter />
           </Button.CommandParameter>
           <Image Source="{StaticResource strikethrounghMenuIcon}" Width="20" Height="20" />
         </Button>

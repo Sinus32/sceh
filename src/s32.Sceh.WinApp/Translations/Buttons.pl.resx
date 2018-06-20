@@ -168,6 +168,9 @@
   <data name="Select" xml:space="preserve">
     <value>Zaznacz</value>
   </data>
+  <data name="Show" xml:space="preserve">
+    <value>_Pokaż</value>
+  </data>
   <data name="ShowAll" xml:space="preserve">
     <value>Pokaż wszystkie karty</value>
   </data>

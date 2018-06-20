@@ -11,7 +11,7 @@ namespace s32.Sceh.WinApp.Controls
     public class ScehCommands : DependencyObject
     {
         private static readonly RoutedCommand _ok, _cancel, _compare, _editNote,
-            _showHideCards, _selectCardsFromOffer, _deselectCards,
+            _showHideCards, _sortCards, _selectCardsFromOffer, _deselectCards,
             _openMarketPage, _openStorePage, _openBadgePage, _openTradingForum,
             _openProfilePage, _openInventoryPage, _openUserBadges,
             _openIncomingOffers, _openSentOffers, _openTradeTopics, _openPostHistory,
@@ -25,6 +25,7 @@ namespace s32.Sceh.WinApp.Controls
             _compare = new RoutedCommand("Compare", typeof(ScehCommands));
             _editNote = new RoutedCommand("EditNote", typeof(ScehCommands));
             _showHideCards = new RoutedCommand("ShowHideCards", typeof(ScehCommands));
+            _sortCards = new RoutedCommand("SortCards", typeof(ScehCommands));
             _deselectCards = new RoutedCommand("DeselectCards", typeof(ScehCommands));
             _openMarketPage = new RoutedCommand("OpenMarketPage", typeof(ScehCommands));
             _openStorePage = new RoutedCommand("OpenStorePage", typeof(ScehCommands));
@@ -152,6 +153,11 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand ShowHideCards
         {
             get { return _showHideCards; }
+        }
+
+        public static RoutedCommand SortCards
+        {
+            get { return _sortCards; }
         }
     }
 }

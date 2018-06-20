@@ -8,10 +8,10 @@
     xmlns:local="clr-namespace:s32.Sceh.WinApp"
     xmlns:ctl="clr-namespace:s32.Sceh.WinApp.Controls"
     xmlns:resx="clr-namespace:s32.Sceh.WinApp.Translations"
-    xmlns:tags="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
+    xmlns:bbcw="clr-namespace:s32.Sceh.WinApp.BBCodeWriters"
     xmlns:code="clr-namespace:s32.Sceh.Code;assembly=ScehLib"
     xmlns:dm="clr-namespace:s32.Sceh.DataModel;assembly=ScehLib"
-    mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="350">
+    mc:Ignorable="d" d:DesignWidth="560" d:DesignHeight="380">
   <UserControl.CommandBindings>
     <CommandBinding Command="ctl:ScehCommands.Ok" CanExecute="Ok_CanExecute" Executed="Ok_Executed" />
     <CommandBinding Command="ctl:ScehCommands.Cancel" CanExecute="Cancel_CanExecute" Executed="Cancel_Executed" />

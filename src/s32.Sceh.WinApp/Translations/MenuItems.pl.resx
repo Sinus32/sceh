@@ -186,6 +186,45 @@
   <data name="SentOffers" xml:space="preserve">
     <value>Oferty _wysłane</value>
   </data>
+  <data name="SortCards" xml:space="preserve">
+    <value>_Sortowanie</value>
+  </data>
+  <data name="SortCards_ByCardAvgPriceAsc" xml:space="preserve">
+    <value>Według średniej ceny karty, rosnąco</value>
+  </data>
+  <data name="SortCards_ByCardAvgPriceDesc" xml:space="preserve">
+    <value>Według średniej ceny karty, malejąco</value>
+  </data>
+  <data name="SortCards_ByCardsSurplusAsc" xml:space="preserve">
+    <value>Według nadwyżki kart, rosnąco</value>
+  </data>
+  <data name="SortCards_ByCardsSurplusDesc" xml:space="preserve">
+    <value>Według nadwyżki kart, malejąco</value>
+  </data>
+  <data name="SortCards_ByNameAsc" xml:space="preserve">
+    <value>Według nazwy, rosnąco</value>
+  </data>
+  <data name="SortCards_ByNameDesc" xml:space="preserve">
+    <value>Według nazwy, malejąco</value>
+  </data>
+  <data name="SortCards_BySceWorthAsc" xml:space="preserve">
+    <value>Według wartości SCE, rosnąco</value>
+  </data>
+  <data name="SortCards_BySceWorthDesc" xml:space="preserve">
+    <value>Według wartości SCE, malejąco</value>
+  </data>
+  <data name="SortCards_BySetCompletionRateAsc" xml:space="preserve">
+    <value>Według stopnia ukończenia zbioru, rosnąco</value>
+  </data>
+  <data name="SortCards_BySetCompletionRateDesc" xml:space="preserve">
+    <value>Według stopnia ukończenia zbioru, malejąco</value>
+  </data>
+  <data name="SortCards_ByTotalUniqueCardsAsc" xml:space="preserve">
+    <value>Według ilości kart w zbiorze, rosnąco</value>
+  </data>
+  <data name="SortCards_ByTotalUniqueCardsDesc" xml:space="preserve">
+    <value>Według ilości kart w zbiorze, malejąco</value>
+  </data>
   <data name="StorePage" xml:space="preserve">
     <value>_Strona sklepu</value>
   </data>

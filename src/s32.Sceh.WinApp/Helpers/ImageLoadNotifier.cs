@@ -16,7 +16,7 @@ using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Controls;
 using System.Diagnostics;
 
-namespace s32.Sceh.WinApp.Code
+namespace s32.Sceh.WinApp.Helpers
 {
     public class ImageLoadNotifier
     {

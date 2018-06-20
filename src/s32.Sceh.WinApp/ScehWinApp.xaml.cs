@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Configuration;
-using System.Data;
 using System.Globalization;
-using System.Linq;
-using System.Resources;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Threading;
 using s32.Sceh.Code;
-using s32.Sceh.WinApp.Code;
+using s32.Sceh.WinApp.Helpers;
 using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp

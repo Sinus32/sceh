@@ -2,22 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
-using s32.Sceh.WinApp.Code;
 using s32.Sceh.WinApp.Controls;
+using s32.Sceh.WinApp.Helpers;
 using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp
@@ -29,6 +24,9 @@ namespace s32.Sceh.WinApp
     {
         public static readonly DependencyProperty CompareWithSelfProperty =
             DependencyProperty.Register("CompareWithSelf", typeof(bool), typeof(InvCompareWindow), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty MyProfileSelectedProperty =
+            DependencyProperty.Register("MyProfileSelected", typeof(bool), typeof(InvCompareWindow), new PropertyMetadata(false));
 
         public static readonly DependencyProperty OwnerProfileProperty =
             DependencyProperty.Register("OwnerProfile", typeof(SteamProfile), typeof(InvCompareWindow), new PropertyMetadata(null, OwnerProfileChange));
@@ -56,12 +54,24 @@ namespace s32.Sceh.WinApp
             InitializeComponent();
 
             DataContext = this;
+
+            var binding = new Binding("SelectedItem");
+            binding.Source = cbOtherProfile;
+            binding.Converter = new CompareConverter(() => OwnerProfile);
+            binding.Mode = BindingMode.OneWay;
+            SetBinding(MyProfileSelectedProperty, binding);
         }
 
         public bool CompareWithSelf
         {
             get { return (bool)GetValue(CompareWithSelfProperty); }
             set { SetValue(CompareWithSelfProperty, value); }
+        }
+
+        public bool MyProfileSelected
+        {
+            get { return (bool)GetValue(MyProfileSelectedProperty); }
+            set { SetValue(MyProfileSelectedProperty, value); }
         }
 
         public SteamProfile OwnerProfile
@@ -605,6 +615,27 @@ namespace s32.Sceh.WinApp
             cvs.View.Refresh();
         }
 
+        private void SortCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (e.Parameter is SteamAppSort)
+            {
+                var steamApps = SteamApps;
+                e.CanExecute = steamApps != null && steamApps.Count > 0;
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
+        }
+
+        private void SortCards_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            var sortValue = (SteamAppSort)e.Parameter;
+
+            var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
+            ((ListCollectionView)cvs.View).CustomSort = new SteamAppComparer(sortValue);
+        }
+        
         #endregion Commands
 
         #region InventoryLoadWorker
@@ -701,5 +732,31 @@ namespace s32.Sceh.WinApp
         }
 
         #endregion InventoryLoadWorker
+
+        private class CompareConverter : DependencyObject, IValueConverter
+        {
+            private readonly Func<object> _target;
+
+            public CompareConverter(Func<object> target)
+            {
+                _target = target;
+            }
+
+            public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                if (value == null)
+                    return DependencyProperty.UnsetValue;
+
+                if (!typeof(bool).Equals(targetType))
+                    throw new NotSupportedException();
+
+                return Object.Equals(value, _target());
+            }
+
+            public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 }

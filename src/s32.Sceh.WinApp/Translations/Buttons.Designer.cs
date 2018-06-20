@@ -214,7 +214,16 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Show all cards.
+        ///   Looks up a localized string similar to Show.
+        /// </summary>
+        public static string Show {
+            get {
+                return ResourceManager.GetString("Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Show all cards.
         /// </summary>
         public static string ShowAll {
             get {

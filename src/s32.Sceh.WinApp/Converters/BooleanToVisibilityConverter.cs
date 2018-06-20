@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace s32.Sceh.WinApp.Controls
+namespace s32.Sceh.WinApp.Converters
 {
     public class BooleanToVisibilityConverter : DependencyObject, IValueConverter
     {

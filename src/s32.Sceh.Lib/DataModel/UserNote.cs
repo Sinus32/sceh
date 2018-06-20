@@ -38,6 +38,21 @@ namespace s32.Sceh.DataModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public bool IsNegative
+        {
+            get { return _score < 0; }
+        }
+
+        public bool IsNeutral
+        {
+            get { return _score == 0; }
+        }
+
+        public bool IsPositive
+        {
+            get { return _score > 0; }
+        }
+
         public UserNotes Notes
         {
             get
@@ -59,6 +74,13 @@ namespace s32.Sceh.DataModel
                     var oldScore = _score;
                     _score = value;
                     NotifyPropertyChanged();
+                    if (oldScore == 0 || value == 0)
+                        NotifyPropertyChanged("IsNeutral");
+                    if (oldScore > 0 != value > 0)
+                    {
+                        NotifyPropertyChanged("IsPositive");
+                        NotifyPropertyChanged("IsNegative");
+                    }
                     UserNotes notes;
                     if (_notes != null && _notes.TryGetTarget(out notes))
                         notes.ScoreChanged(oldScore > 0 || value > 0, oldScore < 0 || value < 0);

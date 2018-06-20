@@ -168,8 +168,11 @@
   <data name="Select" xml:space="preserve">
     <value>Select</value>
   </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
   <data name="ShowAll" xml:space="preserve">
-    <value>Show all cards</value>
+    <value>_Show all cards</value>
   </data>
   <data name="ShowDuplicates" xml:space="preserve">
     <value>Show duplicated cards for trade</value>
