@@ -295,20 +295,38 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By surplus of cards, ascending.
+        ///   Looks up a localized string similar to By surplus of cards, my cards, ascending.
         /// </summary>
-        public static string SortCards_ByCardsSurplusAsc {
+        public static string SortCards_ByMyCardsSurplusAsc {
             get {
-                return ResourceManager.GetString("SortCards_ByCardsSurplusAsc", resourceCulture);
+                return ResourceManager.GetString("SortCards_ByMyCardsSurplusAsc", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to By surplus of cards, descending.
+        ///   Looks up a localized string similar to By surplus of cards, my cards, descending.
         /// </summary>
-        public static string SortCards_ByCardsSurplusDesc {
+        public static string SortCards_ByMyCardsSurplusDesc {
             get {
-                return ResourceManager.GetString("SortCards_ByCardsSurplusDesc", resourceCulture);
+                return ResourceManager.GetString("SortCards_ByMyCardsSurplusDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By set completion rate, my cards, ascending.
+        /// </summary>
+        public static string SortCards_ByMySetCompletionRateAsc {
+            get {
+                return ResourceManager.GetString("SortCards_ByMySetCompletionRateAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By set completion rate, my cards, descending.
+        /// </summary>
+        public static string SortCards_ByMySetCompletionRateDesc {
+            get {
+                return ResourceManager.GetString("SortCards_ByMySetCompletionRateDesc", resourceCulture);
             }
         }
         
@@ -331,6 +349,42 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to By surplus of cards, other cards, ascending.
+        /// </summary>
+        public static string SortCards_ByOtherCardsSurplusAsc {
+            get {
+                return ResourceManager.GetString("SortCards_ByOtherCardsSurplusAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By surplus of cards, other cards, descending.
+        /// </summary>
+        public static string SortCards_ByOtherCardsSurplusDesc {
+            get {
+                return ResourceManager.GetString("SortCards_ByOtherCardsSurplusDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By set completion rate, other cards, ascending.
+        /// </summary>
+        public static string SortCards_ByOtherSetCompletionRateAsc {
+            get {
+                return ResourceManager.GetString("SortCards_ByOtherSetCompletionRateAsc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to By set completion rate, other cards, descending.
+        /// </summary>
+        public static string SortCards_ByOtherSetCompletionRateDesc {
+            get {
+                return ResourceManager.GetString("SortCards_ByOtherSetCompletionRateDesc", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to By card SCE worth, ascending.
         /// </summary>
         public static string SortCards_BySceWorthAsc {
@@ -345,24 +399,6 @@ namespace s32.Sceh.WinApp.Translations {
         public static string SortCards_BySceWorthDesc {
             get {
                 return ResourceManager.GetString("SortCards_BySceWorthDesc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to By set completion rate, ascending.
-        /// </summary>
-        public static string SortCards_BySetCompletionRateAsc {
-            get {
-                return ResourceManager.GetString("SortCards_BySetCompletionRateAsc", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to By set completion rate, descending.
-        /// </summary>
-        public static string SortCards_BySetCompletionRateDesc {
-            get {
-                return ResourceManager.GetString("SortCards_BySetCompletionRateDesc", resourceCulture);
             }
         }
         

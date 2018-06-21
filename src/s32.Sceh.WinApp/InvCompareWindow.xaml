@@ -655,25 +655,45 @@
           </MenuItem.CommandParameter>
         </MenuItem>
         <Separator />
-        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByCardsSurplusAsc}" Command="ctl:ScehCommands.SortCards">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByMyCardsSurplusAsc}" Command="ctl:ScehCommands.SortCards">
           <MenuItem.CommandParameter>
-            <hlp:SteamAppSort>ByCardsSurplus</hlp:SteamAppSort>
+            <hlp:SteamAppSort>ByMyCardsSurplus</hlp:SteamAppSort>
           </MenuItem.CommandParameter>
         </MenuItem>
-        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByCardsSurplusDesc}" Command="ctl:ScehCommands.SortCards">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByMyCardsSurplusDesc}" Command="ctl:ScehCommands.SortCards">
           <MenuItem.CommandParameter>
-            <hlp:SteamAppSort>ByCardsSurplus,Descending</hlp:SteamAppSort>
+            <hlp:SteamAppSort>ByMyCardsSurplus,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByOtherCardsSurplusAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByOtherCardsSurplus</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByOtherCardsSurplusDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByOtherCardsSurplus,Descending</hlp:SteamAppSort>
           </MenuItem.CommandParameter>
         </MenuItem>
         <Separator />
-        <MenuItem Header="{x:Static resx:MenuItems.SortCards_BySetCompletionRateAsc}" Command="ctl:ScehCommands.SortCards">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByMySetCompletionRateAsc}" Command="ctl:ScehCommands.SortCards">
           <MenuItem.CommandParameter>
-            <hlp:SteamAppSort>BySetCompletionRate</hlp:SteamAppSort>
+            <hlp:SteamAppSort>ByMySetCompletionRate</hlp:SteamAppSort>
           </MenuItem.CommandParameter>
         </MenuItem>
-        <MenuItem Header="{x:Static resx:MenuItems.SortCards_BySetCompletionRateDesc}" Command="ctl:ScehCommands.SortCards">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByMySetCompletionRateDesc}" Command="ctl:ScehCommands.SortCards">
           <MenuItem.CommandParameter>
-            <hlp:SteamAppSort>BySetCompletionRate,Descending</hlp:SteamAppSort>
+            <hlp:SteamAppSort>ByMySetCompletionRate,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByOtherSetCompletionRateAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByOtherSetCompletionRate</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByOtherSetCompletionRateDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByOtherSetCompletionRate,Descending</hlp:SteamAppSort>
           </MenuItem.CommandParameter>
         </MenuItem>
       </MenuItem>
