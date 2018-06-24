@@ -75,7 +75,7 @@ namespace s32.Sceh.WinApp.Helpers
                 return 1;
 
             if (result < -Double.Epsilon)
-                return 1;
+                return -1;
 
             return 0;
         }

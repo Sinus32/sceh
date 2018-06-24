@@ -88,6 +88,33 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Copy card _name.
+        /// </summary>
+        public static string CopyCardName {
+            get {
+                return ResourceManager.GetString("CopyCardName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy _game and card name.
+        /// </summary>
+        public static string CopyGameAndCardName {
+            get {
+                return ResourceManager.GetString("CopyGameAndCardName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Copy game _name.
+        /// </summary>
+        public static string CopyGameName {
+            get {
+                return ResourceManager.GetString("CopyGameName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Copy _name.
         /// </summary>
         public static string CopyName {
@@ -192,6 +219,15 @@ namespace s32.Sceh.WinApp.Translations {
         public static string MyProfile {
             get {
                 return ResourceManager.GetString("MyProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open market pages for each selected card.
+        /// </summary>
+        public static string OpenAllMarketPages {
+            get {
+                return ResourceManager.GetString("OpenAllMarketPages", resourceCulture);
             }
         }
         

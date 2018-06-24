@@ -126,6 +126,15 @@
   <data name="ChangeProfile" xml:space="preserve">
     <value>Z_mień profil</value>
   </data>
+  <data name="CopyCardName" xml:space="preserve">
+    <value>Kopiuj _nazwę karty</value>
+  </data>
+  <data name="CopyGameAndCardName" xml:space="preserve">
+    <value>Kopiuj nazwę _gry i karty</value>
+  </data>
+  <data name="CopyGameName" xml:space="preserve">
+    <value>Kopiuj _nazwę gry</value>
+  </data>
   <data name="CopyName" xml:space="preserve">
     <value>Kopiuj _nazwę</value>
   </data>
@@ -161,6 +170,9 @@
   </data>
   <data name="MyProfile" xml:space="preserve">
     <value>_Mój profil</value>
+  </data>
+  <data name="OpenAllMarketPages" xml:space="preserve">
+    <value>Otwórz strony rynku dla każdej zaznaczonej karty</value>
   </data>
   <data name="OpenSceInvPage" xml:space="preserve">
     <value>Steam _Card Exchange</value>
