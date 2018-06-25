@@ -43,6 +43,7 @@
     <BitmapImage x:Key="noMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/no.png" />
     <BitmapImage x:Key="saveMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/save.png" />
     <BitmapImage x:Key="copyMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/copy.png" />
+    <BitmapImage x:Key="copyPlusMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/copyPlus.png" />
     <BitmapImage x:Key="badgeMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/badge.png" />
     <BitmapImage x:Key="gameMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/game.png" />
     <BitmapImage x:Key="marketMenuIcon" ice:Freeze="True" UriSource="Img/MenuIcons/market.png" />

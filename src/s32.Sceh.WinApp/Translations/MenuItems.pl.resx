@@ -126,6 +126,15 @@
   <data name="ChangeProfile" xml:space="preserve">
     <value>Z_mień profil</value>
   </data>
+  <data name="CopyCardName" xml:space="preserve">
+    <value>Kopiuj _nazwę karty</value>
+  </data>
+  <data name="CopyGameAndCardName" xml:space="preserve">
+    <value>Kopiuj nazwę _gry i karty</value>
+  </data>
+  <data name="CopyGameName" xml:space="preserve">
+    <value>Kopiuj _nazwę gry</value>
+  </data>
   <data name="CopyName" xml:space="preserve">
     <value>Kopiuj _nazwę</value>
   </data>
@@ -162,6 +171,9 @@
   <data name="MyProfile" xml:space="preserve">
     <value>_Mój profil</value>
   </data>
+  <data name="OpenAllMarketPages" xml:space="preserve">
+    <value>Otwórz strony rynku dla każdej zaznaczonej karty</value>
+  </data>
   <data name="OpenSceInvPage" xml:space="preserve">
     <value>Steam _Card Exchange</value>
   </data>
@@ -195,11 +207,17 @@
   <data name="SortCards_ByCardAvgPriceDesc" xml:space="preserve">
     <value>Według średniej ceny karty, malejąco</value>
   </data>
-  <data name="SortCards_ByCardsSurplusAsc" xml:space="preserve">
-    <value>Według nadwyżki kart, rosnąco</value>
+  <data name="SortCards_ByMyCardsSurplusAsc" xml:space="preserve">
+    <value>Według nadwyżki kart, moje karty, rosnąco</value>
   </data>
-  <data name="SortCards_ByCardsSurplusDesc" xml:space="preserve">
-    <value>Według nadwyżki kart, malejąco</value>
+  <data name="SortCards_ByMyCardsSurplusDesc" xml:space="preserve">
+    <value>Według nadwyżki kart, moje karty, malejąco</value>
+  </data>
+  <data name="SortCards_ByMySetCompletionRateAsc" xml:space="preserve">
+    <value>Według stopnia ukończenia zestawu, moje karty, rosnąco</value>
+  </data>
+  <data name="SortCards_ByMySetCompletionRateDesc" xml:space="preserve">
+    <value>Według stopnia ukończenia zestawu, moje karty, malejąco</value>
   </data>
   <data name="SortCards_ByNameAsc" xml:space="preserve">
     <value>Według nazwy, rosnąco</value>
@@ -207,23 +225,29 @@
   <data name="SortCards_ByNameDesc" xml:space="preserve">
     <value>Według nazwy, malejąco</value>
   </data>
+  <data name="SortCards_ByOtherCardsSurplusAsc" xml:space="preserve">
+    <value>Według nadwyżki kart, jego karty, rosnąco</value>
+  </data>
+  <data name="SortCards_ByOtherCardsSurplusDesc" xml:space="preserve">
+    <value>Według nadwyżki kart, jego karty, malejąco</value>
+  </data>
+  <data name="SortCards_ByOtherSetCompletionRateAsc" xml:space="preserve">
+    <value>Według stopnia ukończenia zestawu, jego karty, rosnąco</value>
+  </data>
+  <data name="SortCards_ByOtherSetCompletionRateDesc" xml:space="preserve">
+    <value>Według stopnia ukończenia zestawu, jego karty, malejąco</value>
+  </data>
   <data name="SortCards_BySceWorthAsc" xml:space="preserve">
     <value>Według wartości SCE, rosnąco</value>
   </data>
   <data name="SortCards_BySceWorthDesc" xml:space="preserve">
     <value>Według wartości SCE, malejąco</value>
   </data>
-  <data name="SortCards_BySetCompletionRateAsc" xml:space="preserve">
-    <value>Według stopnia ukończenia zbioru, rosnąco</value>
-  </data>
-  <data name="SortCards_BySetCompletionRateDesc" xml:space="preserve">
-    <value>Według stopnia ukończenia zbioru, malejąco</value>
-  </data>
   <data name="SortCards_ByTotalUniqueCardsAsc" xml:space="preserve">
-    <value>Według ilości kart w zbiorze, rosnąco</value>
+    <value>Według ilości kart w zestawie, rosnąco</value>
   </data>
   <data name="SortCards_ByTotalUniqueCardsDesc" xml:space="preserve">
-    <value>Według ilości kart w zbiorze, malejąco</value>
+    <value>Według ilości kart wzestawie, malejąco</value>
   </data>
   <data name="StorePage" xml:space="preserve">
     <value>_Strona sklepu</value>

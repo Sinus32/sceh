@@ -22,6 +22,8 @@
     <CommandBinding Command="ctl:ScehCommands.EditNote" CanExecute="EditNote_CanExecute" Executed="EditNote_Executed" />
     <CommandBinding Command="ctl:ScehCommands.MakeOffer" CanExecute="MakeOffer_CanExecute" Executed="MakeOffer_Executed" />
     <CommandBinding Command="ctl:ScehCommands.ShowHideCards" CanExecute="ShowHideCards_CanExecute" Executed="ShowHideCards_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.SelectCardsFromOffer" CanExecute="SelectCardsFromOffer_CanExecute" Executed="SelectCardsFromOffer_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenAllMarketPages" CanExecute="OpenAllMarketPages_CanExecute" Executed="OpenAllMarketPages_Executed" />
     <CommandBinding Command="ctl:ScehCommands.SortCards" CanExecute="SortCards_CanExecute" Executed="SortCards_Executed" />
     <CommandBinding Command="ctl:ScehCommands.DeselectCards" CanExecute="DeselectCards_CanExecute" Executed="DeselectCards_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenMarketPage" CanExecute="OpenMarketPage_CanExecute" Executed="OpenMarketPage_Executed" />
@@ -37,7 +39,7 @@
     <CommandBinding Command="ctl:ScehCommands.OpenPostHistory" CanExecute="OpenPostHistory_CanExecute" Executed="OpenPostHistory_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenSceInvPage" CanExecute="OpenSceInvPage_CanExecute" Executed="OpenSceInvPage_Executed" />
     <CommandBinding Command="ctl:ScehCommands.CopyName" CanExecute="CopyName_CanExecute" Executed="CopyName_Executed" />
-    <CommandBinding Command="ctl:ScehCommands.SelectCardsFromOffer" CanExecute="SelectCardsFromOffer_CanExecute" Executed="SelectCardsFromOffer_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.CopyNamePlus" CanExecute="CopyNamePlus_CanExecute" Executed="CopyNamePlus_Executed" />
   </Window.CommandBindings>
   <Window.Resources>
     <Color x:Key="steamAppNormalColor" A="255" R="238" G="225" B="242" />
@@ -326,7 +328,7 @@
           <Image Source="{StaticResource marketMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.CopyGameName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
         <MenuItem.Icon>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
@@ -354,9 +356,14 @@
           <Image Source="{StaticResource marketMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.CopyCardName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
         <MenuItem.Icon>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
+      <MenuItem Header="{x:Static resx:MenuItems.CopyGameAndCardName}" Command="ctl:ScehCommands.CopyNamePlus" CommandParameter="{Binding}">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource copyPlusMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
       <Separator />
@@ -377,7 +384,7 @@
       </MenuItem>
     </ContextMenu>
     <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
-      <ToggleButton IsChecked="{Binding IsSelected}" ContextMenu="{StaticResource cardMenu}" MouseDoubleClick="CardButton_MouseDoubleClick"
+      <ToggleButton IsChecked="{Binding IsSelected}" ContextMenu="{StaticResource cardMenu}"
           ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
         <ToggleButton.ToolTip>
           <TextBlock>
@@ -655,25 +662,45 @@
           </MenuItem.CommandParameter>
         </MenuItem>
         <Separator />
-        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByCardsSurplusAsc}" Command="ctl:ScehCommands.SortCards">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByMyCardsSurplusAsc}" Command="ctl:ScehCommands.SortCards">
           <MenuItem.CommandParameter>
-            <hlp:SteamAppSort>ByCardsSurplus</hlp:SteamAppSort>
+            <hlp:SteamAppSort>ByMyCardsSurplus</hlp:SteamAppSort>
           </MenuItem.CommandParameter>
         </MenuItem>
-        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByCardsSurplusDesc}" Command="ctl:ScehCommands.SortCards">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByMyCardsSurplusDesc}" Command="ctl:ScehCommands.SortCards">
           <MenuItem.CommandParameter>
-            <hlp:SteamAppSort>ByCardsSurplus,Descending</hlp:SteamAppSort>
+            <hlp:SteamAppSort>ByMyCardsSurplus,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByOtherCardsSurplusAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByOtherCardsSurplus</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByOtherCardsSurplusDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByOtherCardsSurplus,Descending</hlp:SteamAppSort>
           </MenuItem.CommandParameter>
         </MenuItem>
         <Separator />
-        <MenuItem Header="{x:Static resx:MenuItems.SortCards_BySetCompletionRateAsc}" Command="ctl:ScehCommands.SortCards">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByMySetCompletionRateAsc}" Command="ctl:ScehCommands.SortCards">
           <MenuItem.CommandParameter>
-            <hlp:SteamAppSort>BySetCompletionRate</hlp:SteamAppSort>
+            <hlp:SteamAppSort>ByMySetCompletionRate</hlp:SteamAppSort>
           </MenuItem.CommandParameter>
         </MenuItem>
-        <MenuItem Header="{x:Static resx:MenuItems.SortCards_BySetCompletionRateDesc}" Command="ctl:ScehCommands.SortCards">
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByMySetCompletionRateDesc}" Command="ctl:ScehCommands.SortCards">
           <MenuItem.CommandParameter>
-            <hlp:SteamAppSort>BySetCompletionRate,Descending</hlp:SteamAppSort>
+            <hlp:SteamAppSort>ByMySetCompletionRate,Descending</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByOtherSetCompletionRateAsc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByOtherSetCompletionRate</hlp:SteamAppSort>
+          </MenuItem.CommandParameter>
+        </MenuItem>
+        <MenuItem Header="{x:Static resx:MenuItems.SortCards_ByOtherSetCompletionRateDesc}" Command="ctl:ScehCommands.SortCards">
+          <MenuItem.CommandParameter>
+            <hlp:SteamAppSort>ByOtherSetCompletionRate,Descending</hlp:SteamAppSort>
           </MenuItem.CommandParameter>
         </MenuItem>
       </MenuItem>
@@ -681,6 +708,12 @@
         <MenuItem Header="{x:Static resx:MenuItems.SelectCardsFromOffer}" Command="ctl:ScehCommands.SelectCardsFromOffer">
           <MenuItem.Icon>
             <Image Source="{StaticResource selectFromOfferMenuIcon}" Width="20" Height="20" />
+          </MenuItem.Icon>
+        </MenuItem>
+        <Separator />
+        <MenuItem Header="{x:Static resx:MenuItems.OpenAllMarketPages}" Command="ctl:ScehCommands.OpenAllMarketPages" CommandParameter="{Binding AllSelectedCards}">
+          <MenuItem.Icon>
+            <Image Source="{StaticResource marketMenuIcon}" Width="20" Height="20" />
           </MenuItem.Icon>
         </MenuItem>
         <Separator />
@@ -796,7 +829,7 @@
               Padding="{TemplateBinding Control.Padding}"
               BorderBrush="{TemplateBinding Border.BorderBrush}"
               Background="{TemplateBinding Panel.Background}">
-            <ScrollViewer Focusable="False" Padding="{TemplateBinding Control.Padding}">
+            <ScrollViewer Focusable="False" Padding="{TemplateBinding Control.Padding}" PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
               <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
             </ScrollViewer>
           </Border>

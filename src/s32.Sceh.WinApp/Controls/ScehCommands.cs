@@ -12,11 +12,11 @@ namespace s32.Sceh.WinApp.Controls
     {
         private static readonly RoutedCommand _ok, _cancel, _compare, _editNote,
             _showHideCards, _sortCards, _selectCardsFromOffer, _deselectCards,
-            _openMarketPage, _openStorePage, _openBadgePage, _openTradingForum,
-            _openProfilePage, _openInventoryPage, _openUserBadges,
+            _openMarketPage, _openAllMarketPages, _openStorePage, _openBadgePage,
+            _openTradingForum, _openProfilePage, _openInventoryPage, _openUserBadges,
             _openIncomingOffers, _openSentOffers, _openTradeTopics, _openPostHistory,
             _openSceInvPage,
-            _makeOffer, _copyName, _pasteTag;
+            _makeOffer, _copyName, _copyNamePlus, _pasteTag;
 
         static ScehCommands()
         {
@@ -28,6 +28,7 @@ namespace s32.Sceh.WinApp.Controls
             _sortCards = new RoutedCommand("SortCards", typeof(ScehCommands));
             _deselectCards = new RoutedCommand("DeselectCards", typeof(ScehCommands));
             _openMarketPage = new RoutedCommand("OpenMarketPage", typeof(ScehCommands));
+            _openAllMarketPages = new RoutedCommand("OpenAllMarketPages", typeof(ScehCommands));
             _openStorePage = new RoutedCommand("OpenStorePage", typeof(ScehCommands));
             _openBadgePage = new RoutedCommand("OpenBadgePage", typeof(ScehCommands));
             _openTradingForum = new RoutedCommand("OpenTradingForum", typeof(ScehCommands));
@@ -41,6 +42,7 @@ namespace s32.Sceh.WinApp.Controls
             _openSceInvPage = new RoutedCommand("OpenSceInvPage", typeof(ScehCommands));
             _makeOffer = new RoutedCommand("MakeOffer", typeof(ScehCommands));
             _copyName = new RoutedCommand("CopyName", typeof(ScehCommands));
+            _copyNamePlus = new RoutedCommand("CopyNamePlus", typeof(ScehCommands));
             _pasteTag = new RoutedCommand("PasteTag", typeof(ScehCommands));
             _selectCardsFromOffer = new RoutedCommand("SelectCardsFromOffer", typeof(ScehCommands));
         }
@@ -58,6 +60,11 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand CopyName
         {
             get { return _copyName; }
+        }
+
+        public static RoutedCommand CopyNamePlus
+        {
+            get { return _copyNamePlus; }
         }
 
         public static RoutedCommand DeselectCards
@@ -78,6 +85,11 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand Ok
         {
             get { return _ok; }
+        }
+
+        public static RoutedCommand OpenAllMarketPages
+        {
+            get { return _openAllMarketPages; }
         }
 
         public static RoutedCommand OpenBadgePage

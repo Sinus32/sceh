@@ -21,10 +21,14 @@ namespace s32.Sceh.WinApp.Helpers
 
         ByTotalUniqueCards = 0x08,
 
-        ByCardsSurplus = 0x0A,
+        ByMyCardsSurplus = 0x0A,
 
-        BySetCompletionRate = 0x0C,
-        
+        ByOtherCardsSurplus = 0x0C,
+
+        ByMySetCompletionRate = 0x0E,
+
+        ByOtherSetCompletionRate = 0x10,
+
         FieldMask = 0xFE,
     }
 }

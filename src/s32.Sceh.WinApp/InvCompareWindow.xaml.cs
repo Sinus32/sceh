@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -104,6 +105,18 @@ namespace s32.Sceh.WinApp
             ((InvCompareWindow)d).SteamProfiles = ProfileHelper.LoadProfiles(firstProfileId);
         }
 
+        private void ShowException(Exception ex)
+        {
+            var sb = new StringBuilder(ex.Message);
+            for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
+                sb.AppendLine().Append(inner.Message);
+            MessageBox.Show(sb.ToString(), Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+            if (Debugger.IsAttached)
+                Debugger.Break();
+        }
+
+        #region Events
+
         private void CollectionViewSource_FilterByHideProp(object sender, FilterEventArgs e)
         {
             var steamApp = e.Item as SteamApp;
@@ -123,15 +136,16 @@ namespace s32.Sceh.WinApp
             e.Accepted = true;
         }
 
-        private void ShowException(Exception ex)
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            var sb = new StringBuilder(ex.Message);
-            for (var inner = ex.InnerException; inner != null; inner = inner.InnerException)
-                sb.AppendLine().Append(inner.Message);
-            MessageBox.Show(sb.ToString(), Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Error);
-            if (Debugger.IsAttached)
-                Debugger.Break();
+            if (e.Delta > 0)
+                ((ScrollViewer)sender).LineUp();
+            else if (e.Delta < 0)
+                ((ScrollViewer)sender).LineDown();
+            e.Handled = true;
         }
+
+        #endregion Events
 
         #region Cards enumerators
 
@@ -198,18 +212,6 @@ namespace s32.Sceh.WinApp
 
         #region Commands
 
-        private void CardButton_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            const string PATTERN = "https://steamcommunity.com/market/listings/{0}/{1}";
-            var card = ((FrameworkElement)sender).DataContext as Card;
-            if (card != null)
-            {
-                var url = String.Format(PATTERN, card.AppId, card.MarketHashName);
-                if (url != null)
-                    System.Diagnostics.Process.Start(url);
-            }
-        }
-
         private void ChangeProfile_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = !CommunicationState.Instance.IsInProgress;
@@ -272,6 +274,21 @@ namespace s32.Sceh.WinApp
             {
                 var profile = (SteamProfile)e.Parameter;
                 Clipboard.SetText(profile.Name);
+            }
+        }
+
+        private void CopyNamePlus_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is Card;
+        }
+
+        private void CopyNamePlus_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                var text = String.Concat(card.MarketFeeAppName, ' ', card.Name);
+                Clipboard.SetText(text);
             }
         }
 
@@ -342,6 +359,44 @@ namespace s32.Sceh.WinApp
             catch (Exception ex)
             {
                 ShowException(ex);
+            }
+        }
+
+        private void OpenAllMarketPages_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            var steamApps = SteamApps;
+            if (steamApps != null && steamApps.Count > 0 && e.Parameter is IEnumerable<Card>)
+            {
+                e.CanExecute = ((IEnumerable<Card>)e.Parameter).Count() < 20;
+            }
+            else
+            {
+                e.CanExecute = false;
+            }
+        }
+
+        private void OpenAllMarketPages_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            const string PATTERN = "https://steamcommunity.com/market/listings/{0}/{1}";
+
+            var steamApps = SteamApps;
+            var cards = e.Parameter as IEnumerable<Card>;
+            if (steamApps != null && steamApps.Count > 0 && cards != null)
+            {
+                foreach (Card card in cards)
+                {
+                    try
+                    {
+                        var url = String.Format(PATTERN, card.AppId, card.MarketHashName);
+                        var escaped = url.Replace(" ", "%20");
+                        System.Diagnostics.Process.Start(url);
+                        Thread.Sleep(10);
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowException(ex);
+                    }
+                }
             }
         }
 
@@ -613,6 +668,7 @@ namespace s32.Sceh.WinApp
 
             var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
             cvs.View.Refresh();
+            CommandManager.InvalidateRequerySuggested();
         }
 
         private void SortCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -634,8 +690,9 @@ namespace s32.Sceh.WinApp
 
             var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
             ((ListCollectionView)cvs.View).CustomSort = new SteamAppComparer(sortValue);
+            CommandManager.InvalidateRequerySuggested();
         }
-        
+
         #endregion Commands
 
         #region InventoryLoadWorker
