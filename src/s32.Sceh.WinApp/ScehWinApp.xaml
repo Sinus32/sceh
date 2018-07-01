@@ -109,7 +109,7 @@
           <Setter Property="Stretch" Value="None" />
           <Setter Property="HorizontalAlignment" Value="Center" />
           <Setter Property="VerticalAlignment" Value="Center" />
-          <Setter Property="Margin" Value="5,1" />
+          <Setter Property="Margin" Value="1" />
           <Style.Triggers>
             <DataTrigger Binding="{Binding IsPositive}" Value="True">
               <Setter Property="Source" Value="{StaticResource scoreUpIcon}" />
@@ -125,15 +125,15 @@
           <ItemsControl ItemsSource="{Binding Notes, Mode=OneWay}">
             <ItemsControl.ItemsPanel>
               <ItemsPanelTemplate>
-                <WrapPanel Orientation="Vertical" HorizontalAlignment="Left" Grid.IsSharedSizeScope="True" />
+                <WrapPanel Orientation="Vertical" HorizontalAlignment="Left" />
               </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
               <DataTemplate>
                 <Grid>
                   <Grid.ColumnDefinitions>
-                    <ColumnDefinition SharedSizeGroup="ColumnOne" />
-                    <ColumnDefinition SharedSizeGroup="ColumnTwo" />
+                    <ColumnDefinition Width="19" />
+                    <ColumnDefinition Width="29" />
                     <ColumnDefinition Width="*" />
                   </Grid.ColumnDefinitions>
                   <Grid.RowDefinitions>

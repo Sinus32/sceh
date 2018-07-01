@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using s32.Sceh.Code;
 using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Controls;
@@ -41,9 +42,8 @@ namespace s32.Sceh.WinApp
         public static readonly DependencyProperty SteamProfilesProperty =
             DependencyProperty.Register("SteamProfiles", typeof(List<SteamProfile>), typeof(InvCompareWindow), new PropertyMetadata(null));
 
-        private CardsCompareManager _cardsCompareManager;
-
-        private BackgroundWorker _inventoryLoadWorker;
+        private readonly CardsCompareManager _cardsCompareManager;
+        private readonly BackgroundWorker _inventoryLoadWorker;
 
         public InvCompareWindow()
         {
@@ -327,6 +327,39 @@ namespace s32.Sceh.WinApp
             editor.AutoFocus = true;
         }
 
+        private string EncodeMarketHashNameForUrl(string marketHashName)
+        {
+            var sb = new StringBuilder(marketHashName.Length);
+            foreach (char ch in marketHashName)
+            {
+                if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9') || ch >= (char)0x80)
+                {
+                    sb.Append(ch);
+                    continue;
+                }
+
+                switch (ch)
+                {
+                    case '-':
+                    case '_':
+                    case '.':
+                    case '!':
+                    case '*':
+                    case '(':
+                    case ')':
+                        sb.Append(ch);
+                        break;
+
+                    default:
+                        var c = ((int)ch).ToString("X2");
+                        sb.Append('%').Append(c);
+                        break;
+                }
+            }
+
+            return sb.ToString();
+        }
+
         private void ExitApp_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -387,8 +420,8 @@ namespace s32.Sceh.WinApp
                 {
                     try
                     {
-                        var url = String.Format(PATTERN, card.AppId, card.MarketHashName);
-                        var escaped = url.Replace(" ", "%20");
+                        var encoded = EncodeMarketHashNameForUrl(card.MarketHashName);
+                        var url = String.Format(PATTERN, card.AppId, encoded);
                         System.Diagnostics.Process.Start(url);
                         Thread.Sleep(10);
                     }
@@ -472,15 +505,15 @@ namespace s32.Sceh.WinApp
             else if (e.Parameter is Card)
             {
                 var card = (Card)e.Parameter;
-                url = String.Format(PATTERN_CARD, card.AppId, card.MarketHashName);
+                var encoded = EncodeMarketHashNameForUrl(card.MarketHashName);
+                url = String.Format(PATTERN_CARD, card.AppId, encoded);
             }
 
             if (url != null)
             {
                 try
                 {
-                    var escaped = url.Replace(" ", "%20");
-                    System.Diagnostics.Process.Start(escaped);
+                    System.Diagnostics.Process.Start(url);
                 }
                 catch (Exception ex)
                 {
@@ -668,7 +701,6 @@ namespace s32.Sceh.WinApp
 
             var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
             cvs.View.Refresh();
-            CommandManager.InvalidateRequerySuggested();
         }
 
         private void SortCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -690,7 +722,6 @@ namespace s32.Sceh.WinApp
 
             var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
             ((ListCollectionView)cvs.View).CustomSort = new SteamAppComparer(sortValue);
-            CommandManager.InvalidateRequerySuggested();
         }
 
         #endregion Commands

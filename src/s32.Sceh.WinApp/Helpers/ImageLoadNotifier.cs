@@ -15,6 +15,7 @@ using s32.Sceh.Code;
 using s32.Sceh.DataModel;
 using s32.Sceh.WinApp.Controls;
 using System.Diagnostics;
+using s32.Sceh.WinApp.Translations;
 
 namespace s32.Sceh.WinApp.Helpers
 {
@@ -42,7 +43,7 @@ namespace s32.Sceh.WinApp.Helpers
                     if (wr.TryGetTarget(out imageCtl) && set.Add(imageCtl))
                     {
                         var setter = new ImageSourceSetter(imageCtl, localFilePath);
-                        imageCtl.Dispatcher.Invoke(setter.Action);
+                        SafeCallSetterAction(imageCtl, setter);
                     }
                 }
             }
@@ -55,7 +56,7 @@ namespace s32.Sceh.WinApp.Helpers
             if (localFilePath != null && File.Exists(localFilePath))
             {
                 var setter = new ImageSourceSetter(imageCtl, localFilePath);
-                imageCtl.Dispatcher.Invoke(setter.Action);
+                SafeCallSetterAction(imageCtl, setter);
                 ImageDownloader.EnqueueDownload(imageFile, oldFilePriority, false);
             }
             else
@@ -75,6 +76,24 @@ namespace s32.Sceh.WinApp.Helpers
                         targets.Add(new WeakReference<LazyImage>(imageCtl));
                 }
                 ImageDownloader.EnqueueDownload(imageFile, newFilePriority, true);
+            }
+        }
+
+        private static void SafeCallSetterAction(LazyImage imageCtl, ImageSourceSetter setter)
+        {
+            try
+            {
+                imageCtl.Dispatcher.Invoke(setter.Action);
+            }
+            catch (TaskCanceledException)
+            {
+                // do nothing
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Strings.ErrorTitle, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                if (Debugger.IsAttached)
+                    Debugger.Break();
             }
         }
 

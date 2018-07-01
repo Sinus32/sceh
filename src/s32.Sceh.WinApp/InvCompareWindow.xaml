@@ -289,95 +289,103 @@
         </DataTrigger>
       </Style.Triggers>
     </Style>
+    <Style x:Key="contextMenu" TargetType="{x:Type ContextMenu}">
+      <Style.Resources>
+        <Style TargetType="{x:Type MenuItem}">
+          <Setter Property="CommandTarget" Value="{Binding PlacementTarget, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}" />
+          <Setter Property="CommandParameter" Value="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}}" />
+        </Style>
+      </Style.Resources>
+    </Style>
     <CollectionViewSource x:Key="steamAppsView" Source="{Binding SteamApps}" Filter="CollectionViewSource_FilterByHideProp" />
-    <ContextMenu x:Key="profileMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:MenuItems.Profile}" Command="ctl:ScehCommands.OpenProfilePage" CommandParameter="{Binding}">
+    <ContextMenu x:Key="profileMenu" Style="{StaticResource contextMenu}">
+      <MenuItem Header="{x:Static resx:MenuItems.Profile}" Command="ctl:ScehCommands.OpenProfilePage">
         <MenuItem.Icon>
           <Image Source="{StaticResource profileMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.CopyName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.CopyName}" Command="ctl:ScehCommands.CopyName">
         <MenuItem.Icon>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.Inventory}" Command="ctl:ScehCommands.OpenInventoryPage" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.Inventory}" Command="ctl:ScehCommands.OpenInventoryPage">
         <MenuItem.Icon>
           <Image Source="{StaticResource backpackMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.Badges}" Command="ctl:ScehCommands.OpenUserBadges" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.Badges}" Command="ctl:ScehCommands.OpenUserBadges">
         <MenuItem.Icon>
           <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.PostHistory}" Command="ctl:ScehCommands.OpenPostHistory" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.PostHistory}" Command="ctl:ScehCommands.OpenPostHistory">
         <MenuItem.Icon>
           <Image Source="{StaticResource postHistoryMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
     </ContextMenu>
-    <ContextMenu x:Key="steamAppMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:MenuItems.StorePage}" Command="ctl:ScehCommands.OpenStorePage" CommandParameter="{Binding}">
+    <ContextMenu x:Key="steamAppMenu" Style="{StaticResource contextMenu}">
+      <MenuItem Header="{x:Static resx:MenuItems.StorePage}" Command="ctl:ScehCommands.OpenStorePage">
         <MenuItem.Icon>
           <Image Source="{StaticResource gameMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.MarketPage}" Command="ctl:ScehCommands.OpenMarketPage" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.MarketPage}" Command="ctl:ScehCommands.OpenMarketPage">
         <MenuItem.Icon>
           <Image Source="{StaticResource marketMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.CopyGameName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.CopyGameName}" Command="ctl:ScehCommands.CopyName">
         <MenuItem.Icon>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
       <Separator />
-      <MenuItem Header="{x:Static resx:MenuItems.BadgePage}" Command="ctl:ScehCommands.OpenBadgePage" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.BadgePage}" Command="ctl:ScehCommands.OpenBadgePage">
         <MenuItem.Icon>
           <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.TradingForum}" Command="ctl:ScehCommands.OpenTradingForum" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.TradingForum}" Command="ctl:ScehCommands.OpenTradingForum">
         <MenuItem.Icon>
           <Image Source="{StaticResource forumMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.OpenSceInvPage}" Command="ctl:ScehCommands.OpenSceInvPage" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.OpenSceInvPage}" Command="ctl:ScehCommands.OpenSceInvPage">
         <MenuItem.Icon>
           <Image Source="{StaticResource sceIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
     </ContextMenu>
-    <ContextMenu x:Key="cardMenu" DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}">
-      <MenuItem Header="{x:Static resx:MenuItems.MarketPage}" Command="ctl:ScehCommands.OpenMarketPage" CommandParameter="{Binding}">
+    <ContextMenu x:Key="cardMenu" Style="{StaticResource contextMenu}">
+      <MenuItem Header="{x:Static resx:MenuItems.MarketPage}" Command="ctl:ScehCommands.OpenMarketPage">
         <MenuItem.Icon>
           <Image Source="{StaticResource marketMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.CopyCardName}" Command="ctl:ScehCommands.CopyName" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.CopyCardName}" Command="ctl:ScehCommands.CopyName">
         <MenuItem.Icon>
           <Image Source="{StaticResource copyMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.CopyGameAndCardName}" Command="ctl:ScehCommands.CopyNamePlus" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.CopyGameAndCardName}" Command="ctl:ScehCommands.CopyNamePlus">
         <MenuItem.Icon>
           <Image Source="{StaticResource copyPlusMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
       <Separator />
-      <MenuItem Header="{x:Static resx:MenuItems.BadgePage}" Command="ctl:ScehCommands.OpenBadgePage" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.BadgePage}" Command="ctl:ScehCommands.OpenBadgePage">
         <MenuItem.Icon>
           <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.TradingForum}" Command="ctl:ScehCommands.OpenTradingForum" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.TradingForum}" Command="ctl:ScehCommands.OpenTradingForum">
         <MenuItem.Icon>
           <Image Source="{StaticResource forumMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
-      <MenuItem Header="{x:Static resx:MenuItems.OpenSceInvPage}" Command="ctl:ScehCommands.OpenSceInvPage" CommandParameter="{Binding}">
+      <MenuItem Header="{x:Static resx:MenuItems.OpenSceInvPage}" Command="ctl:ScehCommands.OpenSceInvPage">
         <MenuItem.Icon>
           <Image Source="{StaticResource sceIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
