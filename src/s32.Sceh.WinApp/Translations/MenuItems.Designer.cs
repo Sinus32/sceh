@@ -169,6 +169,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Foil badge page.
+        /// </summary>
+        public static string FoilBadgePage {
+            get {
+                return ResourceManager.GetString("FoilBadgePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Formatted text.
         /// </summary>
         public static string FormattedText {

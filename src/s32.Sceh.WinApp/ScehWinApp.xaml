@@ -19,7 +19,9 @@
     <SolidColorBrush x:Key="overlayColorBrush" ice:Freeze="True" Color="{StaticResource overlayColor}" />
     <SolidColorBrush x:Key="formColorBrush" ice:Freeze="True" Color="{StaticResource formColor}" />
     <BitmapImage x:Key="defaultAvatar" ice:Freeze="True" UriSource="Img/avatar.jpg" />
+    <BitmapImage x:Key="avatarError" ice:Freeze="True" UriSource="Img/avatarError.jpg" />
     <BitmapImage x:Key="defaultCard" ice:Freeze="True" UriSource="Img/card.png" />
+    <BitmapImage x:Key="cardError" ice:Freeze="True" UriSource="Img/cardError.png" />
     <BitmapImage x:Key="compareIcon" ice:Freeze="True" UriSource="Img/compare.png" />
     <BitmapImage x:Key="noteIcon" ice:Freeze="True" UriSource="Img/note.png" />
     <BitmapImage x:Key="scoreDownIcon" ice:Freeze="True" UriSource="Img/scoreDown.png" />
@@ -181,7 +183,8 @@
               </Grid.RowDefinitions>
               <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Height="24"
                   NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
-                  Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
+                  Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar},
+                    Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}, ConverterParameter={StaticResource avatarError}}" />
               <TextBlock Text="{Binding Name}" Grid.Column="1"
                   VerticalAlignment="Center" Margin="2,0" />
               <TextBlock Text="{Binding CustomUrlOrSteamId, StringFormat=({0})}" Grid.Column="2"

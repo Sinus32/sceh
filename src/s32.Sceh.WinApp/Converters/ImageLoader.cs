@@ -28,9 +28,16 @@ namespace s32.Sceh.WinApp.Converters
             if (String.IsNullOrEmpty(localFilePath))
                 return null;
 
-            byte[] byteSource;
-            if (TryLoadOrGetFromCache(localFilePath, out byteSource))
-                return GetImage(byteSource);
+            try
+            {
+                byte[] byteSource;
+                if (TryLoadOrGetFromCache(localFilePath, out byteSource))
+                    return GetImage(byteSource);
+            }
+            catch (NotSupportedException)
+            {
+                return parameter as BitmapImage;
+            }
             return null;
         }
 

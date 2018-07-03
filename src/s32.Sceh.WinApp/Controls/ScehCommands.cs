@@ -13,9 +13,9 @@ namespace s32.Sceh.WinApp.Controls
         private static readonly RoutedCommand _ok, _cancel, _compare, _editNote,
             _showHideCards, _sortCards, _selectCardsFromOffer, _deselectCards,
             _openMarketPage, _openAllMarketPages, _openStorePage, _openBadgePage,
-            _openTradingForum, _openProfilePage, _openInventoryPage, _openUserBadges,
-            _openIncomingOffers, _openSentOffers, _openTradeTopics, _openPostHistory,
-            _openSceInvPage,
+            _openFoilBadgePage, _openTradingForum, _openProfilePage, _openInventoryPage,
+            _openUserBadges, _openIncomingOffers, _openSentOffers, _openTradeTopics,
+            _openPostHistory, _openSceInvPage,
             _makeOffer, _copyName, _copyNamePlus, _pasteTag;
 
         static ScehCommands()
@@ -31,6 +31,7 @@ namespace s32.Sceh.WinApp.Controls
             _openAllMarketPages = new RoutedCommand("OpenAllMarketPages", typeof(ScehCommands));
             _openStorePage = new RoutedCommand("OpenStorePage", typeof(ScehCommands));
             _openBadgePage = new RoutedCommand("OpenBadgePage", typeof(ScehCommands));
+            _openFoilBadgePage = new RoutedCommand("OpenFoilBadgePage", typeof(ScehCommands));
             _openTradingForum = new RoutedCommand("OpenTradingForum", typeof(ScehCommands));
             _openProfilePage = new RoutedCommand("OpenProfilePage", typeof(ScehCommands));
             _openInventoryPage = new RoutedCommand("OpenInventoryPage", typeof(ScehCommands));
@@ -95,6 +96,11 @@ namespace s32.Sceh.WinApp.Controls
         public static RoutedCommand OpenBadgePage
         {
             get { return _openBadgePage; }
+        }
+
+        public static RoutedCommand OpenFoilBadgePage
+        {
+            get { return _openFoilBadgePage; }
         }
 
         public static RoutedCommand OpenIncomingOffers

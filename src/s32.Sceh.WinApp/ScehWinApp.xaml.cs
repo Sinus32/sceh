@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Net;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -50,12 +51,15 @@ namespace s32.Sceh.WinApp
             SetCulture();
 
             DataManager.Initialize();
-            _imageDownloaderWorker = new ImageDownloader.Worker[30];
+
+            ServicePointManager.DefaultConnectionLimit = 12;
+            _imageDownloaderWorker = new ImageDownloader.Worker[12];
             for (int i = 0; i < _imageDownloaderWorker.Length; ++i)
             {
                 _imageDownloaderWorker[i] = new ImageDownloader.Worker(ImageLoadNotifier.FileIsReady);
                 _imageDownloaderWorker[i].Start();
             }
+
             _autoSaveTimer = new DispatcherTimer();
             _autoSaveTimer.Interval = new TimeSpan(0, 1, 0);
             _autoSaveTimer.Tick += AutoSaveTimer_Tick;

@@ -153,6 +153,9 @@
   <data name="Exit" xml:space="preserve">
     <value>_Zakończ</value>
   </data>
+  <data name="FoilBadgePage" xml:space="preserve">
+    <value>_Foliowana odznaka Steam</value>
+  </data>
   <data name="FormattedText" xml:space="preserve">
     <value>Sformatowany tekst</value>
   </data>

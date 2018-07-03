@@ -29,6 +29,7 @@
     <CommandBinding Command="ctl:ScehCommands.OpenMarketPage" CanExecute="OpenMarketPage_CanExecute" Executed="OpenMarketPage_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenStorePage" CanExecute="OpenStorePage_CanExecute" Executed="OpenStorePage_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenBadgePage" CanExecute="OpenBadgePage_CanExecute" Executed="OpenBadgePage_Executed" />
+    <CommandBinding Command="ctl:ScehCommands.OpenFoilBadgePage" CanExecute="OpenFoilBadgePage_CanExecute" Executed="OpenFoilBadgePage_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenTradingForum" CanExecute="OpenTradingForum_CanExecute" Executed="OpenTradingForum_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenProfilePage" CanExecute="OpenProfilePage_CanExecute" Executed="OpenProfilePage_Executed" />
     <CommandBinding Command="ctl:ScehCommands.OpenInventoryPage" CanExecute="OpenInventoryPage_CanExecute" Executed="OpenInventoryPage_Executed" />
@@ -347,6 +348,11 @@
           <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
         </MenuItem.Icon>
       </MenuItem>
+      <MenuItem Header="{x:Static resx:MenuItems.FoilBadgePage}" Command="ctl:ScehCommands.OpenFoilBadgePage">
+        <MenuItem.Icon>
+          <Image Source="{StaticResource badgeMenuIcon}" Width="20" Height="20" />
+        </MenuItem.Icon>
+      </MenuItem>
       <MenuItem Header="{x:Static resx:MenuItems.TradingForum}" Command="ctl:ScehCommands.OpenTradingForum">
         <MenuItem.Icon>
           <Image Source="{StaticResource forumMenuIcon}" Width="20" Height="20" />
@@ -406,7 +412,8 @@
             <ctl:LazyImage x:Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}, Mode=OneWay}"
                 NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
                 Width="77" Height="89" Stretch="Uniform" Delay="400"
-                Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}" />
+                Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard},
+                  Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}, ConverterParameter={StaticResource cardError}}" />
           </Border>
           <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
               Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
@@ -744,13 +751,15 @@
     </Menu>
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="None"
         NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
-        Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}"
+        Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar},
+          Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}, ConverterParameter={StaticResource avatarError}}"
         ContextMenu="{StaticResource profileMenu}" DataContext="{Binding OwnerProfile}" Grid.Row="1" Grid.RowSpan="2" />
     <TextBlock Text="{Binding Name}" DataContext="{Binding OwnerProfile}" VerticalAlignment="Center"
         ContextMenu="{StaticResource profileMenu}" FontSize="16" Margin="2" Grid.Row="1" Grid.Column="1" />
     <ctl:LazyImage ImageFile="{Binding AvatarSmallUrl, Converter={StaticResource avatarImageFileConv}}" Stretch="Uniform"
         NewFilePriority="{x:Static code:DownloadPriority.High}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
-        Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar}, Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}}"
+        Source="{Binding LocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultAvatar},
+          Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}, ConverterParameter={StaticResource avatarError}}"
         ContextMenu="{StaticResource profileMenu}" DataContext="{Binding SecondProfile}" Grid.Row="3" Height="26" />
     <TextBlock Text="{Binding Name}" DataContext="{Binding SecondProfile}" VerticalAlignment="Center"
         ContextMenu="{StaticResource profileMenu}" FontSize="16" Margin="2" Grid.Row="3" Grid.Column="1" />

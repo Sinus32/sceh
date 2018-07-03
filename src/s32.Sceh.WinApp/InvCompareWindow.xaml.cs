@@ -102,7 +102,10 @@ namespace s32.Sceh.WinApp
         private static void OwnerProfileChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var firstProfileId = e.NewValue == null ? (long?)null : ((SteamProfile)e.NewValue).SteamId;
-            ((InvCompareWindow)d).SteamProfiles = ProfileHelper.LoadProfiles(firstProfileId);
+            var wnd = (InvCompareWindow)d;
+            wnd.SteamProfiles = ProfileHelper.LoadProfiles(firstProfileId);
+            if (firstProfileId.HasValue)
+                wnd.cbOtherProfile.SelectedIndex = 0;
         }
 
         private void ShowException(Exception ex)
@@ -441,6 +444,32 @@ namespace s32.Sceh.WinApp
         private void OpenBadgePage_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             const string PATTERN = "{0}/gamecards/{1}/";
+            string url = null;
+            if (e.Parameter is SteamApp)
+            {
+                var steamApp = (SteamApp)e.Parameter;
+                var invLink = SteamDataDownloader.GetProfileUri(OwnerProfile, SteamUrlPattern.CommunityPage);
+                url = String.Format(PATTERN, invLink, steamApp.Id);
+            }
+            else if (e.Parameter is Card)
+            {
+                var card = (Card)e.Parameter;
+                var invLink = SteamDataDownloader.GetProfileUri(card.Owner, SteamUrlPattern.CommunityPage);
+                url = String.Format(PATTERN, invLink, card.MarketFeeApp);
+            }
+
+            if (url != null)
+                System.Diagnostics.Process.Start(url);
+        }
+
+        private void OpenFoilBadgePage_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = e.Parameter is Card || e.Parameter is SteamApp;
+        }
+
+        private void OpenFoilBadgePage_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            const string PATTERN = "{0}/gamecards/{1}/?border=1";
             string url = null;
             if (e.Parameter is SteamApp)
             {
