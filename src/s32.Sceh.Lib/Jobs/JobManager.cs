@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,18 +9,41 @@ namespace s32.Sceh.Jobs
 {
     public class JobManager
     {
+        public const int MAX_JOBS = 0x10000;
         private readonly StatefulJob[] _jobs;
-        private int _jobCount;
+        private readonly ReadOnlyCollection<StatefulJob> _jobsStorage;
         private long _currPriority;
+        private int _jobCount;
 
         public JobManager(int maxJobs)
         {
+            if (maxJobs < 1)
+                throw new ArgumentOutOfRangeException("maxJobs", "Maximum number of jobs is too low (should be at least 1)");
+            if (maxJobs > MAX_JOBS)
+                throw new ArgumentOutOfRangeException("maxJobs", "Maximum number of jobs is too high (should be at most " + MAX_JOBS + ")");
             _jobs = new StatefulJob[maxJobs];
+            _jobsStorage = new ReadOnlyCollection<StatefulJob>(_jobs);
+        }
+
+        public int JobCount
+        {
+            get { return _jobCount; }
+        }
+
+        public ReadOnlyCollection<StatefulJob> JobsStorage
+        {
+            get { return _jobsStorage; }
         }
 
         public StatefulJob PutJob<TJob>(string id, Func<string, TJob> jobBuilder)
             where TJob : StatefulJob
         {
+            if (id == null)
+                throw new ArgumentNullException("id");
+
+            if (jobBuilder == null)
+                throw new ArgumentNullException("jobBuilder");
+
             lock (this)
             {
                 StatefulJob job;
@@ -51,17 +75,28 @@ namespace s32.Sceh.Jobs
 
         public void RemoveJob(StatefulJob job)
         {
+            if (job == null)
+                throw new ArgumentNullException("job");
+
             lock (this)
             {
-                if (!Object.ReferenceEquals(job, _jobs[job.Position - 1]))
-                    throw new InvalidOperationException("The job does not belong to this job manager");
-
-                MoveTop(job);
+                var jobIndex = job.Position - 1;
+                if (jobIndex < 0 || jobIndex >= _jobCount || !Object.ReferenceEquals(job, _jobs[jobIndex]))
+                    throw new ArgumentException("The job does not belong to this job manager", "job");
 
                 var lastJob = _jobs[--_jobCount];
                 _jobs[_jobCount] = null;
 
-                BubbleDown(lastJob);
+                if (_jobCount > 0 && jobIndex < _jobCount)
+                {
+                    _jobs[jobIndex] = lastJob;
+                    lastJob.Position = jobIndex + 1;
+
+                    MoveTop(lastJob);
+                    BubbleDown(lastJob);
+                }
+
+                job.Dispose();
             }
         }
 
