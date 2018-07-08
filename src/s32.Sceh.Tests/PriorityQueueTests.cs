@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using s32.Sceh.Jobs;
+using System.IO;
+using System.Threading;
 
 namespace s32.Sceh.Tests
 {
@@ -41,9 +44,13 @@ namespace s32.Sceh.Tests
                         if (job != null)
                             dict[job.Id] = job;
                         break;
+
                     case CommandType.Remove:
                         job = dict[cmd.Argument];
-                        manager.RemoveJob(job);
+                        if (job.Position == 0)
+                            Assert.ThrowsException<ArgumentException>(() => manager.RemoveJob(job));
+                        else
+                            manager.RemoveJob(job);
                         break;
                 }
 
@@ -68,6 +75,9 @@ namespace s32.Sceh.Tests
             yield return new object[] { 8, "p1;p2;p3;p4;p5;p6;p7;r6", "7;4;5;1;3;2" };
             yield return new object[] { 8, "p1;p2;p3;p4;p5;p6;p7;r6;r3", "7;4;5;1;2" };
             yield return new object[] { 8, "p1;p2;p3;p4;p5;p6;p7;r1", "7;5;6;4;3;2" };
+            yield return new object[] { 8, "p1;p2;p3;p4;p5;p6;p7;r7", "6;4;5;1;3;2" };
+            yield return new object[] { 8, "p1;p2;p3;p4;p5;p6;p7;r7;r4;r7;p1", "1;6;5;3;2" };
+            yield return new object[] { 3, "p1;p2;p3;r2;r1;r2;r3;r1;p4;p3;p2;p1", "2/6;4/4;3/5" };
         }
 
         private IEnumerable<Command> ParseInput(string input)
@@ -125,9 +135,13 @@ namespace s32.Sceh.Tests
 
             for (int i = 0; i < manager.JobCount; ++i)
             {
+                var parts = array[i].Split('/');
                 var job = jobs[i];
                 Assert.IsNotNull(job);
-                Assert.AreEqual(job.Id, array[i]);
+                Assert.AreEqual(job.Id, parts[0]);
+
+                if (parts.Length > 1)
+                    Assert.AreEqual(job.Priority, Int64.Parse(parts[1]));
             }
         }
 

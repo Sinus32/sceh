@@ -16,7 +16,7 @@ namespace s32.Sceh.Code
 {
     public class ImageDownloader
     {
-        private const int IMAGE_FILENAME_LENGTH = 8;
+        private const int IMAGE_FILENAME_LENGTH = 12;
         private const int MINUTES_DELAY = 60 * 24 * 7;
         private static readonly ConcurrentDictionary<ImageFile, int> _isInQueue;
         private static readonly ConcurrentStack<ImageFile>[] _queue;
@@ -48,6 +48,7 @@ namespace s32.Sceh.Code
         {
             const string referer = "https://steamcommunity.com/";
             var request = SteamDataDownloader.PrepareRequest(image.ImageUrl, HttpMethod.Get, FileType.AcceptedImageTypes, referer);
+            request.AllowAutoRedirect = false;
 
             if (fileExists)
             {

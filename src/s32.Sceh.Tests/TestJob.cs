@@ -13,18 +13,15 @@ namespace s32.Sceh.Tests
             : base(id)
         {
         }
-
-        public override void DoStep()
-        {
-        }
-
-        protected override void Cleanup()
-        {
-        }
-
+        
         public static StatefulJob Builder(string id)
         {
             return new TestJob(id);
+        }
+
+        protected override JobResult DoWork()
+        {
+            throw new NotImplementedException();
         }
     }
 }

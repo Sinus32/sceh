@@ -89,6 +89,11 @@
     <Compile Include="DataModel\SteamProfile.cs" />
     <Compile Include="DataModel\SteamProfileKey.cs" />
     <Compile Include="DataModel\UserNotes.cs" />
+    <Compile Include="Jobs\Impl\ImageDownloadJob.cs" />
+    <Compile Include="Jobs\Impl\ImageDownloadResult.cs" />
+    <Compile Include="Jobs\JobFinishedEventArgs.cs" />
+    <Compile Include="Jobs\JobFinishedEventHandler.cs" />
+    <Compile Include="Jobs\JobResult.cs" />
     <Compile Include="Jobs\JobState.cs" />
     <Compile Include="Jobs\StatefulJob.cs" />
     <Compile Include="Jobs\JobManager.cs" />

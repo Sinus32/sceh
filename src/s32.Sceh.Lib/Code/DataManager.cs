@@ -138,10 +138,13 @@ namespace s32.Sceh.Code
 
             lock (_currentData)
             {
+                if (_imageUrlLookup.TryGetValue(key, out result))
+                    return result;
+
                 result = new ImageFile(directory);
                 result.ImageUrl = imageUrl;
                 directory.Images.Add(result);
-                _imageUrlLookup[key] = result;
+                _imageUrlLookup.Add(key, result);
             }
 
             return result;
@@ -245,13 +248,8 @@ namespace s32.Sceh.Code
 
             _imageUrlLookup = new Dictionary<string, ImageFile>();
             foreach (var dir in _currentData.ImageDirectories)
-            {
                 foreach (var img in dir.Images)
-                {
-                    img.Directory = dir;
-                    _imageUrlLookup[LookupKey(dir, img)] = img;
-                }
-            }
+                    _imageUrlLookup[LookupKey(img)] = img;
         }
 
         public static string LocalFilePath(ImageFile image)
@@ -304,9 +302,9 @@ namespace s32.Sceh.Code
             }
         }
 
-        private static string LookupKey(ImageDirectory dir, ImageFile img)
+        private static string LookupKey(ImageFile img)
         {
-            return LookupKey(dir, img.ImageUrl);
+            return LookupKey(img.Directory, img.ImageUrl);
         }
 
         private static string LookupKey(ImageDirectory dir, Uri imageUrl)

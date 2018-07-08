@@ -8,10 +8,16 @@ namespace s32.Sceh.Jobs
 {
     public enum JobState
     {
-        New,
+        NotStarted,
 
-        Started,
+        InProgress,
+
+        Canceled,
 
         Finished,
+
+        Exception,
+
+        Aborted,
     }
 }

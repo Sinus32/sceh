@@ -238,7 +238,7 @@ namespace s32.Sceh.Code
             return GetProfileUri(steamProfile.SteamId, steamProfile.CustomUrl, page, preferCustomUrl);
         }
 
-        internal static HttpWebRequest PrepareRequest(Uri uri, HttpMethod method, string accept, string referer)
+        public static HttpWebRequest PrepareRequest(Uri uri, HttpMethod method, string accept, string referer)
         {
             var request = (HttpWebRequest)HttpWebRequest.Create(uri);
             request.Method = method.Method;
