@@ -11,12 +11,12 @@ namespace s32.Sceh.DataModel
 {
     public class SteamApp : INotifyPropertyChanged
     {
+        internal int _myCardsTotal, _myUniqueCards, _otherCardsTotal, _otherUniqueCards;
+        private readonly long _id;
+        private readonly List<Card> _myCards, _otherCards;
+        private readonly string _name;
         private bool _hide, _myIsSelected, _otherIsSelected;
-        private long _id;
         private bool? _marketable;
-        private List<Card> _myCards, _otherCards;
-        private int _myCardsTotal, _myUniqueCards, _otherCardsTotal, _otherUniqueCards;
-        private string _name;
         private SceAppState _sceState;
         private double _setPrice, _cardAvg, _boosterAvg;
         private int? _totalUniqueCards, _sceWorth;
@@ -77,17 +77,9 @@ namespace s32.Sceh.DataModel
             set { _marketable = value; }
         }
 
-        public List<Card> MyCards
+        public IList<Card> MyCards
         {
             get { return _myCards; }
-            set
-            {
-                if (_myCards != value)
-                {
-                    _myCards = value;
-                    NotifyPropertyChanged();
-                }
-            }
         }
 
         public int MyCardsTotal
@@ -120,7 +112,7 @@ namespace s32.Sceh.DataModel
             get { return _name; }
         }
 
-        public List<Card> OtherCards
+        public IList<Card> OtherCards
         {
             get { return _otherCards; }
         }
@@ -174,7 +166,7 @@ namespace s32.Sceh.DataModel
             set { _totalUniqueCards = value; }
         }
 
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));

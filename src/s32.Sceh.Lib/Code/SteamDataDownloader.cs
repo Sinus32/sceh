@@ -34,7 +34,7 @@ namespace s32.Sceh.Code
             DeserializationError
         }
 
-        public static List<Card> GetCards(SteamProfileKey profile, ScehSettings settings, out string errorMessage)
+        public static List<CardData> GetCards(SteamProfileKey profile, ScehSettings settings, out string errorMessage)
         {
             if (settings == null)
                 throw new ArgumentNullException("settings");
@@ -42,7 +42,7 @@ namespace s32.Sceh.Code
             return GetCards(profile, settings.Language, out errorMessage);
         }
 
-        public static List<Card> GetCards(SteamProfileKey profile, string language, out string errorMessage)
+        public static List<CardData> GetCards(SteamProfileKey profile, string language, out string errorMessage)
         {
             if (String.IsNullOrEmpty(language))
                 throw new ArgumentNullException("language", "Language cannot be empty");
@@ -91,9 +91,9 @@ namespace s32.Sceh.Code
                 return null;
             }
 
-            var result = new List<Card>();
+            var result = new List<CardData>();
 
-            Load(profile, result, ret);
+            Load(result, ret);
 
             while (ret.MoreItems)
             {
@@ -126,7 +126,7 @@ namespace s32.Sceh.Code
                     return null;
                 }
 
-                Load(profile, result, ret);
+                Load(result, ret);
             }
 
             result.Sort(CardComparison);
@@ -276,7 +276,7 @@ namespace s32.Sceh.Code
             return request;
         }
 
-        private static int CardComparison(Card x, Card y)
+        private static int CardComparison(CardData x, CardData y)
         {
             long ret = x.MarketFeeApp - y.MarketFeeApp;
             if (ret == 0)
@@ -370,7 +370,7 @@ namespace s32.Sceh.Code
             }
         }
 
-        private static void Load(SteamProfileKey owner, List<Card> result, ApiInventoryResp ret)
+        private static void Load(List<CardData> result, ApiInventoryResp ret)
         {
             var dict = new Dictionary<CardEqualityKey, ApiInventoryResp.Description>();
             foreach (var dt in ret.Descriptions)
@@ -379,7 +379,7 @@ namespace s32.Sceh.Code
             {
                 var desc = dict[new CardEqualityKey(dt.ClassId, dt.InstanceId)];
                 if (desc.Tradable)
-                    result.Add(new Card(owner, dt, desc));
+                    result.Add(new CardData(dt, desc));
             }
         }
 

@@ -713,7 +713,7 @@ namespace s32.Sceh.WinApp
 
         private void ShowHideCards_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (e.Parameter is CardsCompareManager.ShowHideStrategy)
+            if (e.Parameter is ShowHideStrategy)
             {
                 var steamApps = SteamApps;
                 e.CanExecute = steamApps != null && steamApps.Count > 0;
@@ -726,7 +726,7 @@ namespace s32.Sceh.WinApp
 
         private void ShowHideCards_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            _cardsCompareManager.ShowHideCards((CardsCompareManager.ShowHideStrategy)e.Parameter);
+            _cardsCompareManager.ShowHideCards((ShowHideStrategy)e.Parameter);
 
             var cvs = (CollectionViewSource)this.FindResource("steamAppsView");
             cvs.View.Refresh();
@@ -782,9 +782,9 @@ namespace s32.Sceh.WinApp
 
                     if (result.OwnerInv.IsInventoryAvailable && result.SecondInv.IsInventoryAvailable)
                     {
-                        if (result.OwnerInv.SteamId == result.SecondInv.SteamId)
+                        if (result.OwnerInv == result.SecondInv)
                         {
-                            _cardsCompareManager.Fill(result.OwnerInv.Cards, new List<Card>());
+                            _cardsCompareManager.Fill(result.OwnerInv, UserInventory.Empty);
                             _cardsCompareManager.ShowHideCards(CardsCompareManager.ShowMyCardsStrategy);
                             var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
                             steamApps.AddRange(_cardsCompareManager.SteamApps);
@@ -793,7 +793,7 @@ namespace s32.Sceh.WinApp
                         }
                         else
                         {
-                            _cardsCompareManager.Fill(result.OwnerInv.Cards, result.SecondInv.Cards);
+                            _cardsCompareManager.Fill(result.OwnerInv, result.SecondInv);
                             _cardsCompareManager.ShowHideCards(CardsCompareManager.ShowTradeSugestionsStrategy);
                             var steamApps = new List<SteamApp>(_cardsCompareManager.SteamApps.Count);
                             steamApps.AddRange(_cardsCompareManager.SteamApps);

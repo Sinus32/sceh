@@ -202,7 +202,7 @@ namespace s32.Sceh.Code
 
             string errorMessage;
             result = new UserInventory();
-            result.SteamId = profile.SteamId;
+            result.Profile = profile;
             result.Cards = SteamDataDownloader.GetCards(profile, _currentData.Settings, out errorMessage);
             result.ErrorMessage = errorMessage;
             result.IsInventoryAvailable = errorMessage == null && result.Cards != null;

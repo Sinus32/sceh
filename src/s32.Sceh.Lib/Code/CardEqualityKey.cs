@@ -13,32 +13,11 @@ namespace s32.Sceh.Code
         public long InstanceId;
         public string MarketHashName;
 
-        public CardEqualityKey(Card card)
-        {
-            if (card != null)
-            {
-                ClassId = card.ClassId;
-                InstanceId = card.InstanceId;
-                MarketHashName = card.MarketHashName;
-            }
-            else
-            {
-                ClassId = 0;
-                InstanceId = 0;
-                MarketHashName = null;
-            }
-        }
-
-        public CardEqualityKey(long classId, long instanceId)
+        public CardEqualityKey(long classId, long instanceId, string marketHashName = null)
         {
             ClassId = classId;
             InstanceId = instanceId;
-            MarketHashName = null;
-        }
-
-        public static implicit operator CardEqualityKey(Card card)
-        {
-            return new CardEqualityKey(card);
+            MarketHashName = marketHashName;
         }
 
         public bool Equals(CardEqualityKey other)

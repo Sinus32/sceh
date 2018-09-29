@@ -8,9 +8,19 @@ namespace s32.Sceh.DataModel
 {
     public class UserInventory
     {
-        public List<Card> Cards { get; set; }
+        public static readonly UserInventory Empty;
+
+        static UserInventory()
+        {
+            Empty = new UserInventory();
+            Empty.Profile = new SteamProfileKey(0, null);
+            Empty.Cards = new List<CardData>();
+            Empty.IsInventoryAvailable = true;
+        }
+
+        public List<CardData> Cards { get; set; }
         public string ErrorMessage { get; set; }
         public bool IsInventoryAvailable { get; set; }
-        public long SteamId { get; set; }
+        public SteamProfileKey Profile { get; set; }
     }
 }

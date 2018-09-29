@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>s32.Sceh</RootNamespace>
     <AssemblyName>ScehLib</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,11 +66,13 @@
     <Compile Include="Code\FilenameGenerator.cs" />
     <Compile Include="Code\ImageDownloader.cs" />
     <Compile Include="Code\FileType.cs" />
+    <Compile Include="Code\ShowHideStrategy.cs" />
     <Compile Include="Code\StInventoryData.cs" />
     <Compile Include="Code\SteamUrlPattern.cs" />
     <Compile Include="Code\RandomString.cs" />
     <Compile Include="Code\SteamDataDownloader.cs" />
     <Compile Include="DataModel\Card.cs" />
+    <Compile Include="DataModel\CardData.cs" />
     <Compile Include="DataModel\ItemClass.cs" />
     <Compile Include="DataModel\PathConfig.cs" />
     <Compile Include="DataModel\SceAppData.cs" />
