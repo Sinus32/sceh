@@ -1,0 +1,17 @@
+﻿<Window x:Class="s32.Sceh.WinApp.Test"
+				xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+				xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+				xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+				xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+				xmlns:local="clr-namespace:s32.Sceh.WinApp"
+				mc:Ignorable="d"
+				Title="Test" Height="359.228" Width="551.891">
+	<Canvas>
+		<Rectangle Fill="Aqua"
+			Height="189"
+			Width="270"
+			Canvas.Right="135"
+			Canvas.Top="66"
+			RadiusX="22.977" Canvas.Left="152" RadiusY="22.977" />
+	</Canvas>
+</Window>

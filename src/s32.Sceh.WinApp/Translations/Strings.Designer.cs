@@ -88,6 +88,15 @@ namespace s32.Sceh.WinApp.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0}x.
+        /// </summary>
+        public static string DuplicateCountFormat {
+            get {
+                return ResourceManager.GetString("DuplicateCountFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         public static string ErrorTitle {

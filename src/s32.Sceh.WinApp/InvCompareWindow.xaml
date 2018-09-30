@@ -94,202 +94,6 @@
       <GradientStop Color="{StaticResource cardIsDuplicatedColor}" Offset="0.7" />
       <GradientStop Color="{StaticResource cardIsSelectedColor}" Offset="0.9" />
     </LinearGradientBrush>
-    <Style x:Key="steamAppHeaderStyle" TargetType="{x:Type Rectangle}">
-      <Setter Property="Fill" Value="{StaticResource steamAppNormalBrush}" />
-      <Style.Triggers>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding MyIsSelected}" Value="True" />
-            <Condition Binding="{Binding OtherIsSelected}" Value="False" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="Fill" Value="{StaticResource steamAppMyIsSelectedBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding MyIsSelected}" Value="False" />
-            <Condition Binding="{Binding OtherIsSelected}" Value="True" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="Fill" Value="{StaticResource steamAppOtherIsSelectedBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding MyIsSelected}" Value="True" />
-            <Condition Binding="{Binding OtherIsSelected}" Value="True" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="Fill" Value="{StaticResource steamAppBothAreSelectedBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-      </Style.Triggers>
-    </Style>
-    <Style x:Key="cardBorderStyle" TargetType="{x:Type Border}">
-      <Setter Property="BorderBrush" Value="{StaticResource cardNormalBrush}" />
-      <Setter Property="BorderThickness" Value="6,0,0,0" />
-      <Setter Property="CornerRadius" Value="2" />
-      <Style.Triggers>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding IsDuplicated}" Value="True" />
-            <Condition Binding="{Binding OtherHaveIt}" Value="False" />
-            <Condition Binding="{Binding IsSelected}" Value="False" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="BorderBrush" Value="{StaticResource cardIsDuplicatedBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding IsDuplicated}" Value="False" />
-            <Condition Binding="{Binding OtherHaveIt}" Value="True" />
-            <Condition Binding="{Binding IsSelected}" Value="False" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="BorderBrush" Value="{StaticResource cardOtherHaveItBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding IsDuplicated}" Value="True" />
-            <Condition Binding="{Binding OtherHaveIt}" Value="True" />
-            <Condition Binding="{Binding IsSelected}" Value="False" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="BorderBrush" Value="{StaticResource cardIsDuplicatedAndOtherHaveItBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding IsDuplicated}" Value="False" />
-            <Condition Binding="{Binding OtherHaveIt}" Value="False" />
-            <Condition Binding="{Binding IsSelected}" Value="True" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="BorderBrush" Value="{StaticResource cardIsSelectedBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding IsDuplicated}" Value="True" />
-            <Condition Binding="{Binding OtherHaveIt}" Value="False" />
-            <Condition Binding="{Binding IsSelected}" Value="True" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="BorderBrush" Value="{StaticResource cardIsSelectedAndIsDuplicatedBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding IsDuplicated}" Value="False" />
-            <Condition Binding="{Binding OtherHaveIt}" Value="True" />
-            <Condition Binding="{Binding IsSelected}" Value="True" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="BorderBrush" Value="{StaticResource cardIsSelectedAndOtherHaveItBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding IsDuplicated}" Value="True" />
-            <Condition Binding="{Binding OtherHaveIt}" Value="True" />
-            <Condition Binding="{Binding IsSelected}" Value="True" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="BorderBrush" Value="{StaticResource cardIsSelectedAndIsDuplicatedAndOtherHaveItBrush}" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-      </Style.Triggers>
-      <Style.Resources>
-        <Style TargetType="ctl:LazyImage">
-          <Style.Triggers>
-            <DataTrigger Binding="{Binding OtherHaveIt}" Value="True">
-              <Setter Property="Opacity" Value="0.45" />
-            </DataTrigger>
-          </Style.Triggers>
-        </Style>
-      </Style.Resources>
-    </Style>
-    <Style x:Key="cardAlternateText" TargetType="{x:Type TextBlock}">
-      <Setter Property="Visibility" Value="Collapsed" />
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding DelayedLocalFilePath, ElementName=CardImage}" Value="{x:Null}">
-          <Setter Property="Visibility" Value="Visible" />
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
-    <Style x:Key="myCardsColumn" TargetType="{x:Type ColumnDefinition}">
-      <Setter Property="Width" Value="1*" />
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding DataContext.CompareWithSelf, ElementName=mainGrid}" Value="True">
-          <Setter Property="Width" Value="9*" />
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
-    <Style x:Key="myCardsSummary" TargetType="{x:Type TextBlock}">
-      <Setter Property="Foreground" Value="Black" />
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding MyIsSelected}" Value="True">
-          <Setter Property="Foreground" Value="White" />
-        </DataTrigger>
-        <DataTrigger Binding="{Binding IHaveMoreThanHalf}" Value="True">
-          <Setter Property="Foreground" Value="BlueViolet" />
-          <Setter Property="FontWeight" Value="Bold" />
-        </DataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding MyIsSelected}" Value="True" />
-            <Condition Binding="{Binding IHaveMoreThanHalf}" Value="True" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="Foreground" Value="Gold" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-      </Style.Triggers>
-    </Style>
-    <Style x:Key="otherCardsSummary" TargetType="{x:Type TextBlock}">
-      <Setter Property="Foreground" Value="Black" />
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding OtherIsSelected}" Value="True">
-          <Setter Property="Foreground" Value="White" />
-        </DataTrigger>
-        <DataTrigger Binding="{Binding HeHaveMoreThanHalf}" Value="True">
-          <Setter Property="Foreground" Value="BlueViolet" />
-          <Setter Property="FontWeight" Value="Bold" />
-        </DataTrigger>
-        <MultiDataTrigger>
-          <MultiDataTrigger.Conditions>
-            <Condition Binding="{Binding OtherIsSelected}" Value="True" />
-            <Condition Binding="{Binding HeHaveMoreThanHalf}" Value="True" />
-          </MultiDataTrigger.Conditions>
-          <MultiDataTrigger.Setters>
-            <Setter Property="Foreground" Value="Gold" />
-          </MultiDataTrigger.Setters>
-        </MultiDataTrigger>
-        <DataTrigger Binding="{Binding DataContext.CompareWithSelf, ElementName=mainGrid}" Value="True">
-          <Setter Property="Visibility" Value="Collapsed" />
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
-    <Style x:Key="sceState" TargetType="{x:Type Rectangle}">
-      <Setter Property="Fill" Value="Black" />
-      <Style.Triggers>
-        <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.Disabled}">
-          <Setter Property="Fill" Value="DarkGray" />
-        </DataTrigger>
-        <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.NoCards}">
-          <Setter Property="Fill" Value="CornflowerBlue" />
-        </DataTrigger>
-        <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.LastCard}">
-          <Setter Property="Fill" Value="Firebrick" />
-        </DataTrigger>
-        <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.Normal}">
-          <Setter Property="Fill" Value="LimeGreen" />
-        </DataTrigger>
-      </Style.Triggers>
-    </Style>
     <Style x:Key="contextMenu" TargetType="{x:Type ContextMenu}">
       <Style.Resources>
         <Style TargetType="{x:Type MenuItem}">
@@ -397,126 +201,6 @@
         </MenuItem.Icon>
       </MenuItem>
     </ContextMenu>
-    <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
-      <ToggleButton IsChecked="{Binding IsSelected}" ContextMenu="{StaticResource cardMenu}"
-          ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
-        <ToggleButton.ToolTip>
-          <TextBlock>
-            <Run Text="{Binding ItemClassName, Mode=OneWay}" FontStyle="Italic" />: <Run Text="{Binding Name, Mode=OneWay}" FontWeight="Bold" /><LineBreak />
-            <Run Text="{Binding MarketHashName, Mode=OneWay}" /><LineBreak />
-            <Run Text="{Binding DroprateName, Mode=OneWay}" />
-          </TextBlock>
-        </ToggleButton.ToolTip>
-        <Grid>
-          <Border Style="{StaticResource cardBorderStyle}">
-            <ctl:LazyImage x:Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}, Mode=OneWay}"
-                NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
-                Width="77" Height="89" Stretch="Uniform" Delay="400"
-                Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard},
-                  Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}, ConverterParameter={StaticResource cardError}}" />
-          </Border>
-          <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
-              Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-          <TextBlock Text="{Binding Name, Mode=OneWay}" FontSize="11" Width="72" Height="60" Margin="7,12,0,0" TextAlignment="Center"
-              VerticalAlignment="Top" TextWrapping="Wrap" Style="{StaticResource cardAlternateText}" />
-        </Grid>
-      </ToggleButton>
-    </DataTemplate>
-    <DataTemplate x:Key="steamAppTemplate" DataType="dm:SteamApp">
-      <Grid ContextMenu="{StaticResource steamAppMenu}">
-        <Grid.Resources>
-          <CollectionViewSource x:Key="myCardsView" Source="{Binding MyCards, Mode=OneWay}" Filter="CollectionViewSource_FilterByHideProp" />
-          <CollectionViewSource x:Key="otherCardsView" Source="{Binding OtherCards, Mode=OneWay}" Filter="CollectionViewSource_FilterByHideProp" />
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Style="{StaticResource myCardsColumn}" />
-          <ColumnDefinition Width="1*" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-          <RowDefinition />
-          <RowDefinition />
-        </Grid.RowDefinitions>
-        <Rectangle Style="{StaticResource steamAppHeaderStyle}" Grid.ColumnSpan="2" />
-        <TextBlock Grid.Column="0" TextAlignment="Left" Padding="10,3" Style="{StaticResource myCardsSummary}">
-          <TextBlock.Text>
-            <MultiBinding StringFormat="{x:Static resx:Strings.AppCardsSummary}">
-              <Binding Path="MyCardsTotal" Mode="OneWay" />
-              <Binding Path="MyUniqueCards" Mode="OneWay" />
-              <Binding Path="TotalUniqueCards" Mode="OneWay" />
-            </MultiBinding>
-          </TextBlock.Text>
-        </TextBlock>
-        <TextBlock Grid.Column="1" TextAlignment="Right" Padding="10,3" Style="{StaticResource otherCardsSummary}">
-          <TextBlock.Text>
-            <MultiBinding StringFormat="{x:Static resx:Strings.AppCardsSummary}">
-              <Binding Path="OtherCardsTotal" Mode="OneWay" />
-              <Binding Path="OtherUniqueCards" Mode="OneWay" />
-              <Binding Path="TotalUniqueCards" Mode="OneWay" />
-            </MultiBinding>
-          </TextBlock.Text>
-        </TextBlock>
-        <TextBlock TextAlignment="Center" Padding="0,3" Grid.ColumnSpan="2">
-          <TextBlock.Inlines>
-            <Run Text="{Binding Name, Mode=OneWay}" />
-            <InlineUIContainer BaselineAlignment="Center">
-              <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
-                Margin="0,0,12,0" Height="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-            </InlineUIContainer>
-            <Run Text="{Binding CardAvg, StringFormat=${0:F2}}" />
-            <InlineUIContainer BaselineAlignment="Center">
-              <Rectangle Margin="8,0,0,0" Width="7" Height="7" Style="{StaticResource sceState}" />
-            </InlineUIContainer>
-            <Run Text="{Binding SceWorth, Mode=OneWay, StringFormat={}{0}c}" />
-          </TextBlock.Inlines>
-        </TextBlock>
-        <ItemsControl Grid.Row="1" Grid.Column="0" Margin="0,0,30,0"
-            ItemsSource="{Binding Source={StaticResource myCardsView}}"
-            ItemTemplate="{StaticResource cardTemplate}">
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-              <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
-            </ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
-          <ItemsControl.ItemContainerStyle>
-            <Style TargetType="{x:Type ContentPresenter}">
-              <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                  <Setter Property="Panel.ZIndex" Value="99" />
-                </Trigger>
-              </Style.Triggers>
-              <Style.Resources>
-                <Style TargetType="{x:Type ToggleButton}">
-                  <Setter Property="Margin" Value="1,1,-30,1" />
-                </Style>
-              </Style.Resources>
-            </Style>
-          </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
-        <ItemsControl Grid.Row="1" Grid.Column="1" Margin="30,0,0,0"
-            ItemsSource="{Binding Source={StaticResource otherCardsView}}"
-            ItemTemplate="{StaticResource cardTemplate}">
-          <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-              <WrapPanel Orientation="Horizontal" HorizontalAlignment="Right" />
-            </ItemsPanelTemplate>
-          </ItemsControl.ItemsPanel>
-          <ItemsControl.ItemContainerStyle>
-            <Style TargetType="{x:Type ContentPresenter}">
-              <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                  <Setter Property="Panel.ZIndex" Value="99" />
-                </Trigger>
-              </Style.Triggers>
-              <Style.Resources>
-                <Style TargetType="{x:Type ToggleButton}">
-                  <Setter Property="Margin" Value="-30,1,1,1" />
-                </Style>
-              </Style.Resources>
-            </Style>
-          </ItemsControl.ItemContainerStyle>
-        </ItemsControl>
-      </Grid>
-    </DataTemplate>
   </Window.Resources>
   <Grid Name="mainGrid">
     <Grid.ColumnDefinitions>
@@ -833,7 +517,349 @@
     <ItemsControl Grid.Row="4" Grid.ColumnSpan="3" VirtualizingPanel.CacheLength="3" VirtualizingPanel.CacheLengthUnit="Item"
         ItemsSource="{Binding Source={StaticResource steamAppsView}}" VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling"
         ScrollViewer.CanContentScroll="True" BorderBrush="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"
-        BorderThickness="0,1" ItemTemplate="{StaticResource steamAppTemplate}">
+        BorderThickness="0,1">
+      <ItemsControl.Resources>
+        <Style x:Key="steamAppHeaderStyle" TargetType="{x:Type Rectangle}">
+          <Setter Property="Fill" Value="{StaticResource steamAppNormalBrush}" />
+          <Style.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding MyIsSelected}" Value="True" />
+                <Condition Binding="{Binding OtherIsSelected}" Value="False" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="Fill" Value="{StaticResource steamAppMyIsSelectedBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding MyIsSelected}" Value="False" />
+                <Condition Binding="{Binding OtherIsSelected}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="Fill" Value="{StaticResource steamAppOtherIsSelectedBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding MyIsSelected}" Value="True" />
+                <Condition Binding="{Binding OtherIsSelected}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="Fill" Value="{StaticResource steamAppBothAreSelectedBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+          </Style.Triggers>
+        </Style>
+        <Style x:Key="myCardsColumn" TargetType="{x:Type ColumnDefinition}">
+          <Setter Property="Width" Value="1*" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding DataContext.CompareWithSelf, ElementName=mainGrid}" Value="True">
+              <Setter Property="Width" Value="9*" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+        <Style x:Key="myCardsSummary" TargetType="{x:Type TextBlock}">
+          <Setter Property="Foreground" Value="Black" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding MyIsSelected}" Value="True">
+              <Setter Property="Foreground" Value="White" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IHaveMoreThanHalf}" Value="True">
+              <Setter Property="Foreground" Value="BlueViolet" />
+              <Setter Property="FontWeight" Value="Bold" />
+            </DataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding MyIsSelected}" Value="True" />
+                <Condition Binding="{Binding IHaveMoreThanHalf}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="Foreground" Value="Gold" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+          </Style.Triggers>
+        </Style>
+        <Style x:Key="otherCardsSummary" TargetType="{x:Type TextBlock}">
+          <Setter Property="Foreground" Value="Black" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding OtherIsSelected}" Value="True">
+              <Setter Property="Foreground" Value="White" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding HeHaveMoreThanHalf}" Value="True">
+              <Setter Property="Foreground" Value="BlueViolet" />
+              <Setter Property="FontWeight" Value="Bold" />
+            </DataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding OtherIsSelected}" Value="True" />
+                <Condition Binding="{Binding HeHaveMoreThanHalf}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="Foreground" Value="Gold" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <DataTrigger Binding="{Binding DataContext.CompareWithSelf, ElementName=mainGrid}" Value="True">
+              <Setter Property="Visibility" Value="Collapsed" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+        <Style x:Key="sceState" TargetType="{x:Type Rectangle}">
+          <Setter Property="Fill" Value="Black" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.Disabled}">
+              <Setter Property="Fill" Value="DarkGray" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.NoCards}">
+              <Setter Property="Fill" Value="CornflowerBlue" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.LastCard}">
+              <Setter Property="Fill" Value="Firebrick" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding SceState}" Value="{x:Static dm:SceAppState.Normal}">
+              <Setter Property="Fill" Value="LimeGreen" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+        <Style x:Key="cardBorderStyle" TargetType="{x:Type Border}">
+          <Setter Property="BorderBrush" Value="{StaticResource cardNormalBrush}" />
+          <Setter Property="BorderThickness" Value="6,0,0,0" />
+          <Setter Property="CornerRadius" Value="2" />
+          <Style.Triggers>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsDuplicated}" Value="True" />
+                <Condition Binding="{Binding OtherHaveIt}" Value="False" />
+                <Condition Binding="{Binding IsSelected}" Value="False" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="BorderBrush" Value="{StaticResource cardIsDuplicatedBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsDuplicated}" Value="False" />
+                <Condition Binding="{Binding OtherHaveIt}" Value="True" />
+                <Condition Binding="{Binding IsSelected}" Value="False" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="BorderBrush" Value="{StaticResource cardOtherHaveItBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsDuplicated}" Value="True" />
+                <Condition Binding="{Binding OtherHaveIt}" Value="True" />
+                <Condition Binding="{Binding IsSelected}" Value="False" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="BorderBrush" Value="{StaticResource cardIsDuplicatedAndOtherHaveItBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsDuplicated}" Value="False" />
+                <Condition Binding="{Binding OtherHaveIt}" Value="False" />
+                <Condition Binding="{Binding IsSelected}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="BorderBrush" Value="{StaticResource cardIsSelectedBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsDuplicated}" Value="True" />
+                <Condition Binding="{Binding OtherHaveIt}" Value="False" />
+                <Condition Binding="{Binding IsSelected}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="BorderBrush" Value="{StaticResource cardIsSelectedAndIsDuplicatedBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsDuplicated}" Value="False" />
+                <Condition Binding="{Binding OtherHaveIt}" Value="True" />
+                <Condition Binding="{Binding IsSelected}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="BorderBrush" Value="{StaticResource cardIsSelectedAndOtherHaveItBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+              <MultiDataTrigger.Conditions>
+                <Condition Binding="{Binding IsDuplicated}" Value="True" />
+                <Condition Binding="{Binding OtherHaveIt}" Value="True" />
+                <Condition Binding="{Binding IsSelected}" Value="True" />
+              </MultiDataTrigger.Conditions>
+              <MultiDataTrigger.Setters>
+                <Setter Property="BorderBrush" Value="{StaticResource cardIsSelectedAndIsDuplicatedAndOtherHaveItBrush}" />
+              </MultiDataTrigger.Setters>
+            </MultiDataTrigger>
+          </Style.Triggers>
+          <Style.Resources>
+            <Style TargetType="ctl:LazyImage">
+              <Style.Triggers>
+                <DataTrigger Binding="{Binding OtherHaveIt}" Value="True">
+                  <Setter Property="Opacity" Value="0.45" />
+                </DataTrigger>
+              </Style.Triggers>
+            </Style>
+          </Style.Resources>
+        </Style>
+        <Style x:Key="cardAlternateText" TargetType="{x:Type TextBlock}">
+          <Setter Property="Visibility" Value="Collapsed" />
+          <Setter Property="FontSize" Value="11" />
+          <Setter Property="TextAlignment" Value="Center" />
+          <Setter Property="VerticalAlignment" Value="Top" />
+          <Setter Property="TextWrapping" Value="Wrap" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding DelayedLocalFilePath, ElementName=CardImage}" Value="{x:Null}">
+              <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+        <Style x:Key="duplicateCount" TargetType="ctl:OutlinedTextBlock">
+          <Setter Property="Visibility" Value="Collapsed" />
+          <Setter Property="Fill" Value="OrangeRed" />
+          <Setter Property="Stroke" Value="White" />
+          <Setter Property="StrokeThickness" Value="1" />
+          <Setter Property="FontSize" Value="21" />
+          <Setter Property="FontWeight" Value="Bold" />
+          <Style.Triggers>
+            <DataTrigger Binding="{Binding IsDuplicated}" Value="True">
+              <Setter Property="Visibility" Value="Visible" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsOverstocked}" Value="True">
+              <Setter Property="Fill" Value="Crimson" />
+            </DataTrigger>
+          </Style.Triggers>
+        </Style>
+        <DataTemplate x:Key="cardTemplate" DataType="dm:Card">
+          <ToggleButton IsChecked="{Binding IsSelected}" ContextMenu="{StaticResource cardMenu}"
+              ToolTipService.InitialShowDelay="100" ToolTipService.ShowDuration="180000">
+            <ToggleButton.ToolTip>
+              <TextBlock>
+                <Run Text="{Binding ItemClassName, Mode=OneWay}" FontStyle="Italic" />: <Run Text="{Binding Name, Mode=OneWay}" FontWeight="Bold" /><LineBreak />
+                <Run Text="{Binding MarketHashName, Mode=OneWay}" /><LineBreak />
+                <Run Text="{Binding DroprateName, Mode=OneWay}" />
+              </TextBlock>
+            </ToggleButton.ToolTip>
+            <Canvas Width="83" Height="89">
+              <Border Style="{StaticResource cardBorderStyle}">
+                <ctl:LazyImage x:Name="CardImage" ImageFile="{Binding Converter={StaticResource cardImageFileConv}, Mode=OneWay}"
+                    NewFilePriority="{x:Static code:DownloadPriority.Medium}" OldFilePriority="{x:Static code:DownloadPriority.Low}"
+                    Width="77" Height="89" Stretch="Uniform" Delay="400"
+                    Source="{Binding DelayedLocalFilePath, RelativeSource={RelativeSource Self}, TargetNullValue={StaticResource defaultCard},
+                    Mode=OneWay, IsAsync=True, Converter={StaticResource imageLoader}, ConverterParameter={StaticResource cardError}}" />
+              </Border>
+              <Image Canvas.Right="3" Canvas.Bottom="3" Stretch="None"
+                  Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}" />
+              <TextBlock Canvas.Left="8" Canvas.Top="12" Width="72" Height="60"
+                  Style="{StaticResource cardAlternateText}" Text="{Binding Name, Mode=OneWay}" />
+              <ctl:OutlinedTextBlock Canvas.Left="12" Canvas.Bottom="12" Width="64" Height="30"
+                  Style="{StaticResource duplicateCount}" Text="{Binding DuplicateCount, StringFormat={x:Static resx:Strings.DuplicateCountFormat}}" />
+            </Canvas>
+          </ToggleButton>
+        </DataTemplate>
+      </ItemsControl.Resources>
+      <ItemsControl.ItemTemplate>
+        <DataTemplate DataType="dm:SteamApp">
+          <Grid ContextMenu="{StaticResource steamAppMenu}">
+            <Grid.Resources>
+              <CollectionViewSource x:Key="myCardsView" Source="{Binding MyCards, Mode=OneWay}" Filter="CollectionViewSource_FilterByHideProp" />
+              <CollectionViewSource x:Key="otherCardsView" Source="{Binding OtherCards, Mode=OneWay}" Filter="CollectionViewSource_FilterByHideProp" />
+            </Grid.Resources>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Style="{StaticResource myCardsColumn}" />
+              <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition />
+              <RowDefinition />
+            </Grid.RowDefinitions>
+            <Rectangle Style="{StaticResource steamAppHeaderStyle}" Grid.ColumnSpan="2" />
+            <TextBlock Grid.Column="0" TextAlignment="Left" Padding="10,3" Style="{StaticResource myCardsSummary}">
+              <TextBlock.Text>
+                <MultiBinding StringFormat="{x:Static resx:Strings.AppCardsSummary}">
+                  <Binding Path="MyCardsTotal" Mode="OneWay" />
+                  <Binding Path="MyUniqueCards" Mode="OneWay" />
+                  <Binding Path="TotalUniqueCards" Mode="OneWay" />
+                </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+            <TextBlock Grid.Column="1" TextAlignment="Right" Padding="10,3" Style="{StaticResource otherCardsSummary}">
+              <TextBlock.Text>
+                <MultiBinding StringFormat="{x:Static resx:Strings.AppCardsSummary}">
+                  <Binding Path="OtherCardsTotal" Mode="OneWay" />
+                  <Binding Path="OtherUniqueCards" Mode="OneWay" />
+                  <Binding Path="TotalUniqueCards" Mode="OneWay" />
+                </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+            <TextBlock TextAlignment="Center" Padding="0,3" Grid.ColumnSpan="2">
+              <TextBlock.Inlines>
+                <Run Text="{Binding Name, Mode=OneWay}" />
+                <InlineUIContainer BaselineAlignment="Center">
+                  <Image Source="{StaticResource nonMarketable}" Visibility="{Binding Marketable, Converter={StaticResource hideToVisibilityConv}, Mode=OneWay}"
+                Margin="0,0,12,0" Height="14" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                </InlineUIContainer>
+                <Run Text="{Binding CardAvg, StringFormat=${0:F2}}" />
+                <InlineUIContainer BaselineAlignment="Center">
+                  <Rectangle Margin="8,0,0,0" Width="7" Height="7" Style="{StaticResource sceState}" />
+                </InlineUIContainer>
+                <Run Text="{Binding SceWorth, Mode=OneWay, StringFormat={}{0}c}" />
+              </TextBlock.Inlines>
+            </TextBlock>
+            <ItemsControl Grid.Row="1" Grid.Column="0" Margin="0,0,30,0"
+                ItemsSource="{Binding Source={StaticResource myCardsView}}"
+                ItemTemplate="{StaticResource cardTemplate}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <WrapPanel Orientation="Horizontal" HorizontalAlignment="Left" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+                  <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                      <Setter Property="Panel.ZIndex" Value="99" />
+                    </Trigger>
+                  </Style.Triggers>
+                  <Style.Resources>
+                    <Style TargetType="{x:Type ToggleButton}">
+                      <Setter Property="Margin" Value="1,1,-30,1" />
+                    </Style>
+                  </Style.Resources>
+                </Style>
+              </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+            <ItemsControl Grid.Row="1" Grid.Column="1" Margin="30,0,0,0"
+                ItemsSource="{Binding Source={StaticResource otherCardsView}}"
+                ItemTemplate="{StaticResource cardTemplate}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <WrapPanel Orientation="Horizontal" HorizontalAlignment="Right" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemContainerStyle>
+                <Style TargetType="{x:Type ContentPresenter}">
+                  <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                      <Setter Property="Panel.ZIndex" Value="99" />
+                    </Trigger>
+                  </Style.Triggers>
+                  <Style.Resources>
+                    <Style TargetType="{x:Type ToggleButton}">
+                      <Setter Property="Margin" Value="-30,1,1,1" />
+                    </Style>
+                  </Style.Resources>
+                </Style>
+              </ItemsControl.ItemContainerStyle>
+            </ItemsControl>
+          </Grid>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <VirtualizingStackPanel />

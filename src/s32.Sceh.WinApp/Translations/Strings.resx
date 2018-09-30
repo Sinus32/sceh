@@ -216,4 +216,7 @@
   <data name="WrongProfileIdOrUrl" xml:space="preserve">
     <value>Profile not found</value>
   </data>
+  <data name="DuplicateCountFormat" xml:space="preserve">
+    <value>{0}x</value>
+  </data>
 </root>

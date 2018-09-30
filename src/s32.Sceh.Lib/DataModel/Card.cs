@@ -129,6 +129,11 @@ namespace s32.Sceh.DataModel
             get { return _cardData.IsFoilCard; }
         }
 
+        public bool IsOverstocked
+        {
+            get { return _duplicateCount >= 7; }
+        }
+
         public bool IsSelected
         {
             get { return _isSelected; }
